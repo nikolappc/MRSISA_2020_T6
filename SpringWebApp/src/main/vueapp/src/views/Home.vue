@@ -1,6 +1,8 @@
 <template>
   <div class="home">
-    Hello world!
+    <v-container>
+      Hello world!
+    </v-container>
   </div>
 </template>
 
