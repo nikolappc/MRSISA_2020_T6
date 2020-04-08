@@ -1,14 +1,41 @@
 <template>
   <div class="profilPacijenta">
-    <h1>Moj profil {{ ulogovan.email }}</h1>
-    <h3>Lozinka: {{ ulogovan.lozinka }}</h3>
-    <h3>Ime: {{ ulogovan.ime }}</h3>
-    <h3>Prezime: {{ ulogovan.prezime }}</h3>
-    <h3>Adresa: {{ ulogovan.adresa }}</h3>
-    <h3>Grad: {{ ulogovan.grad }}</h3>
-    <h3>Drzava: {{ ulogovan.drzava }}</h3>
-    <h3>Telefon: {{ ulogovan.telefon }}</h3>
-    <h3>Osiguranik: {{ ulogovan.osiguranik }}</h3>
+    <v-simple-table>
+      <thead>
+        <th>Moj profil</th>
+        <th>{{ ulogovan.email }}</th>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Korisnicko ime:</td>
+          <td>{{ ulogovan.username }}</td>
+        </tr>
+        <tr>
+          <td>Lozinka:</td>
+          <td>{{ ulogovan.password }}</td>
+        </tr>
+        <tr>
+          <td>Ime:</td>
+          <td>{{ ulogovan.ime }}</td>
+        </tr>
+        <tr>
+          <td>Prezime:</td>
+          <td>{{ ulogovan.prezime }}</td>
+        </tr>
+        <tr>
+          <td>Adresa:</td>
+          <td>{{ ulogovan.adresa }}</td>
+        </tr>
+        <tr>
+          <td>Telefon:</td>
+          <td>{{ ulogovan.brojTelefona }}</td>
+        </tr>
+        <tr>
+          <td>Jedinstveni broj osiguranika:</td>
+          <td>{{ ulogovan.jbo }}</td>
+        </tr>
+      </tbody>
+    </v-simple-table>
   </div>
 </template>
 

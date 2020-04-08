@@ -29,6 +29,20 @@ public abstract class Osoba {
 		this.adresa = adresa;
 	}
 	
+	public Osoba(Long id,String ime, String prezime, String email, String brojTelefona, String username, String password,
+			String adresa, String jbo) {
+		super();
+		this.id = id;
+		this.ime = ime;
+		this.prezime = prezime;
+		this.email = email;
+		this.brojTelefona = brojTelefona;
+		this.username = username;
+		this.password = password;
+		this.adresa = adresa;
+		this.jbo = jbo;
+	}
+	
 	
 	
 	public Long getId() {

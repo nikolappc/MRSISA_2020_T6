@@ -1,6 +1,7 @@
 <template>
   <div class="home">
-    Hello world!
+    <h1>Hello world!</h1>
+    <v-btn :to="{path: 'profilPacijenta'}" dark medium left class="blue" slot="action">Profil pacijenta</v-btn>
   </div>
 </template>
 
