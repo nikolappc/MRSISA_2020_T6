@@ -13,13 +13,14 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   name: 'ProfilPacijenta',
   data: () => ({
     ulogovan : {},
   }),
   mounted () {
-      this.axios
+      axios
       .get('api/pacijent/ulogovan')
       .then(response => {
           this.ulogovan = response.data;

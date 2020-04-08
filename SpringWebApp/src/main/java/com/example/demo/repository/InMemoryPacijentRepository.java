@@ -1,8 +1,10 @@
-package com.example.demo;
+package com.example.demo.repository;
 
 import java.util.Collection;
 
 import org.springframework.stereotype.Repository;
+
+import com.example.demo.domain.Pacijent;
 
 
 @Repository
