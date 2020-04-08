@@ -6,10 +6,12 @@
       dark
     >
       Klinički centar
-    </v-app-bar>
+    </v-app-bar>  
 
     <router-view/>
   </v-app>
+
+
 </template>
 
 <script>
