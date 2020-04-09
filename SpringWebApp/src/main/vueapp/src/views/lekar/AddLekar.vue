@@ -62,7 +62,7 @@
 
 <script>
 import axios from "axios";
-import router from "../router/index.js"
+import router from "../../router/index.js"
 export default {
     name: 'AddLekar',
     data: function() { return {

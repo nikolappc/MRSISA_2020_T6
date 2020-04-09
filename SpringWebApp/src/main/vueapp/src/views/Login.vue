@@ -1,6 +1,7 @@
 <template >
-  <v-conteiner class="blue lighten-1">
-
+  <v-container class="blue lighten-1"
+  fluid
+  height="100%">
   <v-row justify="center">
     <v-col class="col-6">
       <v-card
@@ -38,7 +39,7 @@
       </v-card>
     </v-col>
   </v-row>
-  </v-conteiner>
+  </v-container>
 </template>
 
 <script>

@@ -36,22 +36,16 @@ Vue.use(VueRouter, VueAxios, axios)
   {
     path: '/lekar/add',
     name: 'dodajLekara',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about1" */ '../views/AddLekar.vue')
+    component: () => import('../views/lekar/AddLekar.vue')
   },
   {
     path: '/lekari',
     name: 'listaLekara',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about1" */ '../views/ListaLekara.vue')
+    component: () => import('../views/lekar/ListaLekara.vue')
   },
   {
     path: '/login',
-    name: 'listaLekara',
+    name: 'Login',
     component: () => import('../views/Login.vue')
   
   }

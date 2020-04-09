@@ -10,8 +10,9 @@
       <v-spacer></v-spacer>
 
       <router-link  to="/"><v-btn icon><v-icon color="white">mdi-home</v-icon></v-btn></router-link>
+      <router-link  to="/login"><v-btn icon><v-icon color="white">mdi-account</v-icon></v-btn></router-link>
     </v-app-bar>  
-    <div style="height: 56px" ></div>
+    <div style="height: 56px" v-if="$route.path != '/login'"></div>
     <router-view/>
   </v-app>
 
