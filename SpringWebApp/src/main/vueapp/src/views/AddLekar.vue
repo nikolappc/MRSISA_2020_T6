@@ -36,7 +36,18 @@
       label="Password"
       required
     ></v-text-field>
-    
+    <v-text-field
+      v-model="lekar.brojTelefona"
+      label="Broj Telefona"
+    ></v-text-field>
+    <v-text-field
+      v-model="lekar.adresa"
+      label="Adresa"
+    ></v-text-field>
+    <v-text-field
+      v-model="lekar.jbo"
+      label="Jedinstveni broj osiguranika"
+    ></v-text-field>
     <v-btn
       :disabled="!valid"
       color="success"
