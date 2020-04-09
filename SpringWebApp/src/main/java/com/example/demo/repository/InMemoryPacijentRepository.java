@@ -9,7 +9,7 @@ import com.example.demo.domain.Pacijent;
 
 @Repository
 public class InMemoryPacijentRepository implements PacijentRepository {
-	private final Pacijent ulogovani = new Pacijent("email@gmail.com", "12345678", "Pero", "Peric", "Despota Stefana 7", "Novi Sad", "Srbija", "054/111-111", "0");
+	private final Pacijent ulogovani = new Pacijent(12345L, "Hari", "Poter", "potter@gmail.com", "054/111-111", "hpotter", "12345678", "Dijagon Aleja, London, UK", "000");
 	
 	@Override
 	public Pacijent getPacijent() {

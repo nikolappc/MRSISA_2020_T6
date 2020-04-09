@@ -27,6 +27,8 @@ public class LekarServiceImpl implements LekarService {
 
 	@Override
 	public Lekar create(Lekar lekar) {
+		Long id = (long) this.findAll().size();
+		lekar.setId(id);
 		return lekarRepo.create(lekar);
 	}
 
