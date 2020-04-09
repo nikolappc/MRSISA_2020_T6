@@ -1,9 +1,10 @@
 <template>
   <v-app>
     <v-app-bar
-      app
+
       color="primary"
       dark
+      max-height="50"
     >
       Klinički centar
     </v-app-bar>  
