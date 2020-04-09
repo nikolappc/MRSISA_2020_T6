@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import Home from '../views/Home.vue';
+import HomeMed from '../views/HomeMed.vue';
 Vue.use(VueRouter, VueAxios, axios)
 
   const routes = [
@@ -10,6 +11,11 @@ Vue.use(VueRouter, VueAxios, axios)
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/HomeMed',
+    name: 'HomeMed',
+    component: HomeMed
   },
   {
     path: '/about',
