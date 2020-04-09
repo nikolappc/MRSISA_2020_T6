@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar
+    <v-app-bar v-if="$route.path != '/login'"
       app
       color="primary"
       dark
@@ -9,9 +9,9 @@
       Klinički centar
       <v-spacer></v-spacer>
 
-      <v-btn icon><router-link to="/"><v-icon color="white">mdi-home</v-icon></router-link></v-btn>
+      <router-link  to="/"><v-btn icon><v-icon color="white">mdi-home</v-icon></v-btn></router-link>
     </v-app-bar>  
-
+    <div style="height: 56px" ></div>
     <router-view/>
   </v-app>
 

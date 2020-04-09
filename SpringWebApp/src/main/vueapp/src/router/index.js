@@ -48,6 +48,12 @@ Vue.use(VueRouter, VueAxios, axios)
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about1" */ '../views/ListaLekara.vue')
+  },
+  {
+    path: '/login',
+    name: 'listaLekara',
+    component: () => import('../views/Login.vue')
+  
   }
   
 ]
