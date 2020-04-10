@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package isamrs.controller;
 
 import java.util.Collection;
 
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.domain.Lekar;
-import com.example.demo.service.LekarServiceImpl;
+import isamrs.domain.Lekar;
+import isamrs.service.LekarServiceImpl;
 @RestController
 @RequestMapping("/lekar")
 public class LekarController {

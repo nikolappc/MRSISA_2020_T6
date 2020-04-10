@@ -1,10 +1,10 @@
-package com.example.demo.repository;
+package isamrs.repository;
 
 import java.util.Collection;
 
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.domain.Pacijent;
+import isamrs.domain.Pacijent;
 
 
 @Repository

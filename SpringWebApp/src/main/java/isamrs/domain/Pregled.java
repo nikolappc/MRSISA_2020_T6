@@ -1,4 +1,4 @@
-package com.example.demo.domain;
+package isamrs.domain;
 
 public class Pregled extends Posjeta {
 

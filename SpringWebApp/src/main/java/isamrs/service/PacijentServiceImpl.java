@@ -1,12 +1,12 @@
-package com.example.demo.service;
+package isamrs.service;
 
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.domain.Pacijent;
-import com.example.demo.repository.InMemoryPacijentRepository;
+import isamrs.domain.Pacijent;
+import isamrs.repository.InMemoryPacijentRepository;
 
 
 @Service

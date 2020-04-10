@@ -1,4 +1,4 @@
-package com.example.demo;
+package isamrs;
 
 import java.util.List;
 

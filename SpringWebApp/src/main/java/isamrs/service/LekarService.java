@@ -1,8 +1,8 @@
-package com.example.demo.service;
+package isamrs.service;
 
 import java.util.Collection;
 
-import com.example.demo.domain.Lekar;
+import isamrs.domain.Lekar;
 
 public interface LekarService {
 	Collection<Lekar> findAll();

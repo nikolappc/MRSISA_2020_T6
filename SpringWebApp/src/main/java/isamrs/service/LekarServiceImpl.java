@@ -1,12 +1,12 @@
-package com.example.demo.service;
+package isamrs.service;
 
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.domain.Lekar;
-import com.example.demo.repository.LekarRepositoryInterface;
+import isamrs.domain.Lekar;
+import isamrs.repository.LekarRepositoryInterface;
 
 @Service
 public class LekarServiceImpl implements LekarService {

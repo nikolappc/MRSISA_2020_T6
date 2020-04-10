@@ -1,8 +1,8 @@
-package com.example.demo.repository;
+package isamrs.repository;
 
 import java.util.Collection;
 
-import com.example.demo.domain.Lekar;
+import isamrs.domain.Lekar;
 public interface LekarRepositoryInterface {
 	Collection<Lekar> findAll();
 

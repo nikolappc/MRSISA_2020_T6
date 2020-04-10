@@ -1,11 +1,11 @@
-package com.example.demo.repository;
+package isamrs.repository;
 
 import java.util.Collection;
 import java.util.HashMap;
 
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.domain.Lekar;
+import isamrs.domain.Lekar;
 
 @Repository
 public class LekarRepository implements LekarRepositoryInterface{
