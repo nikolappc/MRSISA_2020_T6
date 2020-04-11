@@ -88,4 +88,14 @@ public class Lekar extends MedicniskoOsoblje {
       this.pregled = newPregled;
    }
 
+public Long getId() {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+public void setId(Long id) {
+	// TODO Auto-generated method stub
+	
+}
+
 }

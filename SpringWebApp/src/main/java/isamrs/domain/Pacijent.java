@@ -12,7 +12,12 @@ public class Pacijent extends Osoba {
    public ZdravstveniKarton zdravstveniKarton;
    
    
-   /** @pdGenerated default parent getter */
+   public Pacijent(long l, String string, String string2, String string3, String string4, String string5, String string6,
+		String string7, String string8) {
+	// TODO Auto-generated constructor stub
+}
+
+/** @pdGenerated default parent getter */
    public ZdravstveniKarton getZdravstveniKarton() {
       return zdravstveniKarton;
    }
