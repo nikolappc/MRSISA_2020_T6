@@ -8,7 +8,45 @@ package isamrs.domain;
 
 import java.util.*;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+@Entity
+@Table(name="dijagnoze")
 public class Dijagnoza {
-   private Integer sifraDijagnoze;
+	
+	@Id
+	@Column(name="sifra", unique=true, nullable=false)
+	private Integer sifraDijagnoze;
+	
+	
+	@Column(name="naziv", unique=false, nullable=false)
+	private String nazivDijagnoze;
+
+	
+	
+	public Dijagnoza() {
+		super();
+	}
+
+	public Integer getSifraDijagnoze() {
+		return sifraDijagnoze;
+	}
+
+	public void setSifraDijagnoze(Integer sifraDijagnoze) {
+		this.sifraDijagnoze = sifraDijagnoze;
+	}
+
+	public String getNazivDijagnoze() {
+		return nazivDijagnoze;
+	}
+
+	public void setNazivDijagnoze(String nazivDijagnoze) {
+		this.nazivDijagnoze = nazivDijagnoze;
+	}
+	
+	
+	
 
 }

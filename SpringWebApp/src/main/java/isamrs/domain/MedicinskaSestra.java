@@ -8,11 +8,23 @@ package isamrs.domain;
 
 import java.util.*;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+@Entity
+@Table(name = "medicinske_sestre")
 public class MedicinskaSestra extends MedicniskoOsoblje {
+	@OneToMany
+	@Column(name = "id")
    public java.util.Collection<Recepti> overeniRecepti;
    
    
-   /** @pdGenerated default getter */
+   public MedicinskaSestra() {
+		super();
+	}
+
+/** @pdGenerated default getter */
    public java.util.Collection<Recepti> getOvereniRecepti() {
       if (overeniRecepti == null)
          overeniRecepti = new java.util.HashSet<Recepti>();

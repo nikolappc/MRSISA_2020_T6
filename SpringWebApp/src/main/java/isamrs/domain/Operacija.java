@@ -8,11 +8,23 @@ package isamrs.domain;
 
 import java.util.*;
 
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+@Entity
+@Table(name = "operacije")
 public class Operacija extends Poseta {
+	@OneToMany
+	@JoinColumn(name = "id")
    public java.util.Collection<Lekar> lekar;
    
    
-   /** @pdGenerated default getter */
+   public Operacija() {
+		super();
+	}
+
+/** @pdGenerated default getter */
    public java.util.Collection<Lekar> getLekar() {
       if (lekar == null)
          lekar = new java.util.HashSet<Lekar>();

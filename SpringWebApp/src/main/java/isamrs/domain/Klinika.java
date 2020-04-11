@@ -8,24 +8,60 @@ package isamrs.domain;
 
 import java.util.*;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+@Entity
+@Table(name = "klinike")
 public class Klinika {
+	@Id
+	@Column(name="id", unique = true, nullable = false)
+	private Integer id;
+	@Column(name = "naziv", unique = true, nullable = false)
    private String naziv;
+	@Column(name = "adresa", unique = false, nullable = false)
    private String adresa;
+	@Column(name = "opis", unique = false, nullable = false)
    private String opis;
-   private Integer id;
    
-   public java.util.Collection<MedicniskoOsoblje> medicniskoOsoblje;
-   public java.util.Collection<Sala> sala;
+	
+	@OneToMany
+	@JoinColumn(name = "id")
+	public java.util.Collection<MedicniskoOsoblje> medicniskoOsoblje;
+	@OneToMany
+	@JoinColumn(name = "id")
+	public java.util.Collection<Sala> sala;
+	@OneToMany
+	@JoinColumn(name = "id")
    public java.util.Collection<Pacijent> pacijent;
+	@OneToMany
+	@JoinColumn(name = "id")
    public java.util.Collection<Poseta> poseta;
+	@OneToMany
+	@JoinColumn(name = "id")
    public Cenovnik cenovnik;
+	@OneToMany
+	@JoinColumn(name = "id")
    public java.util.Collection<TipPosete> tipPosete;
+	@OneToMany
+	@JoinColumn(name = "id")
    public java.util.Collection<Ocena> ocena;
+	@OneToMany
+	@JoinColumn(name = "id")
    public java.util.Collection<AdministratorKlinike> administratorKlinike;
+	@OneToMany
+	@JoinColumn(name = "id")
    public TipKlinike tipKlinike;
    
    
-   /** @pdGenerated default getter */
+   public Klinika() {
+		super();
+	}
+
+/** @pdGenerated default getter */
    public java.util.Collection<MedicniskoOsoblje> getMedicniskoOsoblje() {
       if (medicniskoOsoblje == null)
          medicniskoOsoblje = new java.util.HashSet<MedicniskoOsoblje>();

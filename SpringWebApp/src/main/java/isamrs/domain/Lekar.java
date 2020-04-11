@@ -8,12 +8,28 @@ package isamrs.domain;
 
 import java.util.*;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+@Entity
+@Table(name = "lekari")
 public class Lekar extends MedicniskoOsoblje {
-   public java.util.Collection<Ocena> ocena;
-   public Pregled[] pregled;
+	@OneToMany
+	@JoinColumn(name = "id")
+	public java.util.Collection<Ocena> ocena;
+	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY,mappedBy = "lekar")
+	public Pregled[] pregled;
    
    
-   /** @pdGenerated default getter */
+   public Lekar() {
+		super();
+	}
+
+/** @pdGenerated default getter */
    public java.util.Collection<Ocena> getOcena() {
       if (ocena == null)
          ocena = new java.util.HashSet<Ocena>();

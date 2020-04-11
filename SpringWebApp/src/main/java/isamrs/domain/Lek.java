@@ -8,7 +8,27 @@ package isamrs.domain;
 
 import java.util.*;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+@Entity
+@Table(name = "lekovi")
 public class Lek {
+	@Id
+	@Column(name="sifra_leka", unique = true, nullable = false)
    private Integer sifraLeka;
+
+	public Lek() {
+		super();
+	}
+
+	public Integer getSifraLeka() {
+		return sifraLeka;
+	}
+
+	public void setSifraLeka(Integer sifraLeka) {
+		this.sifraLeka = sifraLeka;
+	}
 
 }

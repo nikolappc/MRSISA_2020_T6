@@ -8,8 +8,16 @@ package isamrs.domain;
 
 import java.util.*;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
+@MappedSuperclass
 public abstract class MedicniskoOsoblje extends Osoba {
+	@OneToMany
+	@JoinColumn(name = "id")
    public java.util.Collection<GodisnjiOdmor> godisnjiOdmor;
+	@OneToMany
+	@JoinColumn(name = "id")
    public RadnoVreme[] radnoVreme;
    
    

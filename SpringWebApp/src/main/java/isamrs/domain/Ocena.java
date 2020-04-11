@@ -8,7 +8,32 @@ package isamrs.domain;
 
 import java.util.*;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+@Entity
+@Table(name = "ocene")
 public class Ocena {
-   private int vrednost;
+	@Id
+	@Column(name = "id", unique = true, nullable = false)
+	private Integer id;
+	@Column(name = "vrednost",nullable = false, unique = false)
+	private int vrednost;
+	public Ocena() {
+		super();
+	}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public int getVrednost() {
+		return vrednost;
+	}
+	public void setVrednost(int vrednost) {
+		this.vrednost = vrednost;
+	}
 
 }
