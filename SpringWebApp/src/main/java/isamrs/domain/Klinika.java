@@ -10,6 +10,8 @@ import java.util.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -18,6 +20,7 @@ import javax.persistence.Table;
 @Table(name = "klinike")
 public class Klinika {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id", unique = true, nullable = false)
 	private Integer id;
 	@Column(name = "naziv", unique = true, nullable = false)
