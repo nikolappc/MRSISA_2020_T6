@@ -15,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 @Entity
 @Table(name = "klinike")
@@ -43,7 +44,7 @@ public class Klinika {
 	@OneToMany
 	@JoinColumn(name = "id")
    public java.util.Collection<Poseta> poseta;
-	@OneToMany
+	@OneToOne
 	@JoinColumn(name = "id")
    public Cenovnik cenovnik;
 	@OneToMany
@@ -55,7 +56,7 @@ public class Klinika {
 	@OneToMany
 	@JoinColumn(name = "id")
    public java.util.Collection<AdministratorKlinike> administratorKlinike;
-	@OneToMany
+	@OneToOne
 	@JoinColumn(name = "id")
    public TipKlinike tipKlinike;
    

@@ -9,7 +9,7 @@ import isamrs.domain.Lekar;
 
 @Repository
 public class LekarRepository implements LekarRepositoryInterface{
-	private HashMap<Long,Lekar> lekari = new HashMap<Long, Lekar>();
+	private HashMap<Integer,Lekar> lekari = new HashMap<Integer, Lekar>();
 
 	@Override
 	public Collection<Lekar> findAll() {

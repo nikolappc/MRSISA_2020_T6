@@ -1,124 +1,126 @@
-/***********************************************************************
- * Module:  Pregled.java
- * Author:  Dusan
- * Purpose: Defines the Class Pregled
- ***********************************************************************/
-
 package isamrs.domain;
 
 import java.util.*;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "pregled")
 public class Pregled extends Poseta {
-   public java.util.Collection<Recepti> recepti;
-   public Lekar lekar;
-   public java.util.Collection<Dijagnoza> dijagnoza;
-   
-   
-   /** @pdGenerated default getter */
-   public java.util.Collection<Recepti> getRecepti() {
-      if (recepti == null)
-         recepti = new java.util.HashSet<Recepti>();
-      return recepti;
-   }
-   
-   /** @pdGenerated default iterator getter */
-   public java.util.Iterator getIteratorRecepti() {
-      if (recepti == null)
-         recepti = new java.util.HashSet<Recepti>();
-      return recepti.iterator();
-   }
-   
-   /** @pdGenerated default setter
-     * @param newRecepti */
-   public void setRecepti(java.util.Collection<Recepti> newRecepti) {
-      removeAllRecepti();
-      for (java.util.Iterator iter = newRecepti.iterator(); iter.hasNext();)
-         addRecepti((Recepti)iter.next());
-   }
-   
-   /** @pdGenerated default add
-     * @param newRecepti */
-   public void addRecepti(Recepti newRecepti) {
-      if (newRecepti == null)
-         return;
-      if (this.recepti == null)
-         this.recepti = new java.util.HashSet<Recepti>();
-      if (!this.recepti.contains(newRecepti))
-         this.recepti.add(newRecepti);
-   }
-   
-   /** @pdGenerated default remove
-     * @param oldRecepti */
-   public void removeRecepti(Recepti oldRecepti) {
-      if (oldRecepti == null)
-         return;
-      if (this.recepti != null)
-         if (this.recepti.contains(oldRecepti))
-            this.recepti.remove(oldRecepti);
-   }
-   
-   /** @pdGenerated default removeAll */
-   public void removeAllRecepti() {
-      if (recepti != null)
-         recepti.clear();
-   }
-   /** @pdGenerated default parent getter */
-   public Lekar getLekar() {
-      return lekar;
-   }
-   
-   /** @pdGenerated default parent setter
-     * @param newLekar */
-   public void setLekar(Lekar newLekar) {
-      this.lekar = newLekar;
-   }
-   /** @pdGenerated default getter */
-   public java.util.Collection<Dijagnoza> getDijagnoza() {
-      if (dijagnoza == null)
-         dijagnoza = new java.util.HashSet<Dijagnoza>();
-      return dijagnoza;
-   }
-   
-   /** @pdGenerated default iterator getter */
-   public java.util.Iterator getIteratorDijagnoza() {
-      if (dijagnoza == null)
-         dijagnoza = new java.util.HashSet<Dijagnoza>();
-      return dijagnoza.iterator();
-   }
-   
-   /** @pdGenerated default setter
-     * @param newDijagnoza */
-   public void setDijagnoza(java.util.Collection<Dijagnoza> newDijagnoza) {
-      removeAllDijagnoza();
-      for (java.util.Iterator iter = newDijagnoza.iterator(); iter.hasNext();)
-         addDijagnoza((Dijagnoza)iter.next());
-   }
-   
-   /** @pdGenerated default add
-     * @param newDijagnoza */
-   public void addDijagnoza(Dijagnoza newDijagnoza) {
-      if (newDijagnoza == null)
-         return;
-      if (this.dijagnoza == null)
-         this.dijagnoza = new java.util.HashSet<Dijagnoza>();
-      if (!this.dijagnoza.contains(newDijagnoza))
-         this.dijagnoza.add(newDijagnoza);
-   }
-   
-   /** @pdGenerated default remove
-     * @param oldDijagnoza */
-   public void removeDijagnoza(Dijagnoza oldDijagnoza) {
-      if (oldDijagnoza == null)
-         return;
-      if (this.dijagnoza != null)
-         if (this.dijagnoza.contains(oldDijagnoza))
-            this.dijagnoza.remove(oldDijagnoza);
-   }
-   
-   /** @pdGenerated default removeAll */
-   public void removeAllDijagnoza() {
-      if (dijagnoza != null)
-         dijagnoza.clear();
-   }
+
+	@OneToMany(mappedBy = "pregled", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	public ArrayList<Recepti> recepti;
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	public Lekar lekar;
+
+	@OneToMany(mappedBy = "pregled", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	public ArrayList<Dijagnoza> dijagnoza;
+
+	public ArrayList<Recepti> getRecepti() {
+		if (recepti == null)
+			recepti = new ArrayList<Recepti>();
+		return recepti;
+	}
+
+	public java.util.Iterator getIteratorRecepti() {
+		if (recepti == null)
+			recepti = new java.util.ArrayList<Recepti>();
+		return recepti.iterator();
+	}
+
+	public void setRecepti(ArrayList<Recepti> newRecepti) {
+		removeAllRecepti();
+		for (java.util.Iterator iter = newRecepti.iterator(); iter.hasNext();)
+			addRecepti((Recepti) iter.next());
+	}
+
+	public void addRecepti(Recepti newRecepti) {
+		if (newRecepti == null)
+			return;
+		if (this.recepti == null)
+			this.recepti = new ArrayList<Recepti>();
+		if (!this.recepti.contains(newRecepti))
+			this.recepti.add(newRecepti);
+	}
+
+	public void removeRecepti(Recepti oldRecepti) {
+		if (oldRecepti == null)
+			return;
+		if (this.recepti != null)
+			if (this.recepti.contains(oldRecepti))
+				this.recepti.remove(oldRecepti);
+	}
+
+	public void removeAllRecepti() {
+		if (recepti != null)
+			recepti.clear();
+	}
+
+	public Lekar getLekar() {
+		return lekar;
+	}
+
+	public void setLekar(Lekar newLekar) {
+		this.lekar = newLekar;
+	}
+
+	public ArrayList<Dijagnoza> getDijagnoza() {
+		if (dijagnoza == null)
+			dijagnoza = new ArrayList<Dijagnoza>();
+		return dijagnoza;
+	}
+
+	public java.util.Iterator getIteratorDijagnoza() {
+		if (dijagnoza == null)
+			dijagnoza = new ArrayList<Dijagnoza>();
+		return dijagnoza.iterator();
+	}
+
+	public void setDijagnoza(ArrayList<Dijagnoza> newDijagnoza) {
+		removeAllDijagnoza();
+		for (java.util.Iterator iter = newDijagnoza.iterator(); iter.hasNext();)
+			addDijagnoza((Dijagnoza) iter.next());
+	}
+
+	public void addDijagnoza(Dijagnoza newDijagnoza) {
+		if (newDijagnoza == null)
+			return;
+		if (this.dijagnoza == null)
+			this.dijagnoza = new ArrayList<Dijagnoza>();
+		if (!this.dijagnoza.contains(newDijagnoza))
+			this.dijagnoza.add(newDijagnoza);
+	}
+
+	public void removeDijagnoza(Dijagnoza oldDijagnoza) {
+		if (oldDijagnoza == null)
+			return;
+		if (this.dijagnoza != null)
+			if (this.dijagnoza.contains(oldDijagnoza))
+				this.dijagnoza.remove(oldDijagnoza);
+	}
+
+	public void removeAllDijagnoza() {
+		if (dijagnoza != null)
+			dijagnoza.clear();
+	}
+
+	public Pregled(String opis, Integer id, Termin termin, TipPosete tipPosete, ZdravstveniKarton zdravstveniKarton,
+			Sala sala, ArrayList<Recepti> recepti, Lekar lekar, ArrayList<Dijagnoza> dijagnoza) {
+		super(opis, id, termin, tipPosete, zdravstveniKarton, sala);
+		this.recepti = recepti;
+		this.lekar = lekar;
+		this.dijagnoza = dijagnoza;
+	}
+
+	public Pregled() {
+	}
 
 }
