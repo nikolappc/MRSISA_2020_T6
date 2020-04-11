@@ -14,6 +14,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -30,15 +32,20 @@ public class Klinika {
    private String adresa;
 	@Column(name = "opis", unique = false, nullable = false)
    private String opis;
-	@Column(name = "cenovnik", nullable = false, unique = false)
+	@OneToOne
 	public Cenovnik cenovnik;
-	@Column(name = "tip", nullable = false, unique = false)
+	@OneToOne
 	public TipKlinike tipKlinike;
    
-	
 	@OneToMany
 	@JoinColumn(name = "id")
-	public java.util.Collection<MedicniskoOsoblje> medicniskoOsoblje;
+	public java.util.Collection<Lekar> lekari;
+	@OneToMany
+	@JoinColumn(name = "id")
+	public java.util.Collection<MedicinskaSestra> sestre;
+	/*@OneToMany
+	@JoinColumn(name = "id")
+	public java.util.Collection<MedicniskoOsoblje> medicniskoOsoblje;*/
 	@OneToMany
 	@JoinColumn(name = "id")
 	public java.util.Collection<Sala> sala;
@@ -57,42 +64,36 @@ public class Klinika {
 	@OneToMany
 	@JoinColumn(name = "id")
    public java.util.Collection<AdministratorKlinike> administratorKlinike;
-<<<<<<< HEAD
+/*
 	@OneToOne
 	@JoinColumn(name = "id")
    public TipKlinike tipKlinike;
-=======
->>>>>>> 357e5956b688ff3f5f1fdbb2086433aeffaa2a7c
+*/
    
    
    public Klinika() {
 		super();
 	}
 
-/** @pdGenerated default getter */
-   public java.util.Collection<MedicniskoOsoblje> getMedicniskoOsoblje() {
+  /* public java.util.Collection<MedicniskoOsoblje> getMedicniskoOsoblje() {
       if (medicniskoOsoblje == null)
          medicniskoOsoblje = new java.util.HashSet<MedicniskoOsoblje>();
       return medicniskoOsoblje;
    }
    
-   /** @pdGenerated default iterator getter */
    public java.util.Iterator getIteratorMedicniskoOsoblje() {
       if (medicniskoOsoblje == null)
          medicniskoOsoblje = new java.util.HashSet<MedicniskoOsoblje>();
       return medicniskoOsoblje.iterator();
    }
    
-   /** @pdGenerated default setter
-     * @param newMedicniskoOsoblje */
    public void setMedicniskoOsoblje(java.util.Collection<MedicniskoOsoblje> newMedicniskoOsoblje) {
       removeAllMedicniskoOsoblje();
       for (java.util.Iterator iter = newMedicniskoOsoblje.iterator(); iter.hasNext();)
          addMedicniskoOsoblje((MedicniskoOsoblje)iter.next());
    }
    
-   /** @pdGenerated default add
-     * @param newMedicniskoOsoblje */
+   
    public void addMedicniskoOsoblje(MedicniskoOsoblje newMedicniskoOsoblje) {
       if (newMedicniskoOsoblje == null)
          return;
@@ -102,8 +103,7 @@ public class Klinika {
          this.medicniskoOsoblje.add(newMedicniskoOsoblje);
    }
    
-   /** @pdGenerated default remove
-     * @param oldMedicniskoOsoblje */
+   
    public void removeMedicniskoOsoblje(MedicniskoOsoblje oldMedicniskoOsoblje) {
       if (oldMedicniskoOsoblje == null)
          return;
@@ -112,11 +112,11 @@ public class Klinika {
             this.medicniskoOsoblje.remove(oldMedicniskoOsoblje);
    }
    
-   /** @pdGenerated default removeAll */
    public void removeAllMedicniskoOsoblje() {
       if (medicniskoOsoblje != null)
          medicniskoOsoblje.clear();
-   }
+   }*/
+   
    /** @pdGenerated default getter */
    public java.util.Collection<Sala> getSala() {
       if (sala == null)

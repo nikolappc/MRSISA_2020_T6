@@ -11,23 +11,23 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-@Entity(name = "zdravstveni_karton")
+@Entity(name = "zdravstveniKarton")
 public class ZdravstveniKarton {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@OneToMany(mappedBy = "poseta", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	public ArrayList<Poseta> poseta;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	public Collection<Poseta> poseta;
 	
-	@OneToMany(mappedBy = "dijagnoza", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	public ArrayList<Dijagnoza> dijagnoza;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	public Collection<Dijagnoza> dijagnoza;
 	
-	@OneToOne(mappedBy = "zdravstveni_karton")
+	@OneToOne(mappedBy = "zdravstveniKarton")
 	public Pacijent pacijent;
 
-	public java.util.Collection<Poseta> getPoseta() {
+	public Collection<Poseta> getPoseta() {
 		if (poseta == null)
 			poseta = new ArrayList<Poseta>();
 		return poseta;
@@ -39,7 +39,7 @@ public class ZdravstveniKarton {
 		return poseta.iterator();
 	}
 
-	public void setPoseta(java.util.Collection<Poseta> newPoseta) {
+	public void setPoseta(Collection<Poseta> newPoseta) {
 		removeAllPoseta();
 		for (java.util.Iterator iter = newPoseta.iterator(); iter.hasNext();)
 			addPoseta((Poseta) iter.next());
@@ -77,7 +77,7 @@ public class ZdravstveniKarton {
 		}
 	}
 
-	public java.util.Collection<Dijagnoza> getDijagnoza() {
+	public Collection<Dijagnoza> getDijagnoza() {
 		if (dijagnoza == null)
 			dijagnoza = new ArrayList<Dijagnoza>();
 		return dijagnoza;
@@ -89,7 +89,7 @@ public class ZdravstveniKarton {
 		return dijagnoza.iterator();
 	}
 
-	public void setDijagnoza(java.util.Collection<Dijagnoza> newDijagnoza) {
+	public void setDijagnoza(Collection<Dijagnoza> newDijagnoza) {
 		removeAllDijagnoza();
 		for (java.util.Iterator iter = newDijagnoza.iterator(); iter.hasNext();)
 			addDijagnoza((Dijagnoza) iter.next());
@@ -139,7 +139,7 @@ public class ZdravstveniKarton {
 		this.id = id;
 	}
 
-	public ZdravstveniKarton(Integer id, ArrayList<Poseta> poseta, ArrayList<Dijagnoza> dijagnoza, Pacijent pacijent) {
+	public ZdravstveniKarton(Integer id, Collection<Poseta> poseta, Collection<Dijagnoza> dijagnoza, Pacijent pacijent) {
 		super();
 		this.id = id;
 		this.poseta = poseta;

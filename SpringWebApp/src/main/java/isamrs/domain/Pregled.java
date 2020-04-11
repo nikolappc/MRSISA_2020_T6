@@ -15,16 +15,18 @@ import javax.persistence.Table;
 @Table(name = "pregled")
 public class Pregled extends Poseta {
 
-	@OneToMany(mappedBy = "pregled", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	public ArrayList<Recepti> recepti;
+	//@OneToMany(mappedBy = "pregled", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	public Collection<Recepti> recepti;
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	public Lekar lekar;
 
-	@OneToMany(mappedBy = "pregled", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	public ArrayList<Dijagnoza> dijagnoza;
+	//@OneToMany(mappedBy = "pregled", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	public Collection<Dijagnoza> dijagnoza;
 
-	public ArrayList<Recepti> getRecepti() {
+	public Collection<Recepti> getRecepti() {
 		if (recepti == null)
 			recepti = new ArrayList<Recepti>();
 		return recepti;
@@ -32,11 +34,11 @@ public class Pregled extends Poseta {
 
 	public java.util.Iterator getIteratorRecepti() {
 		if (recepti == null)
-			recepti = new java.util.ArrayList<Recepti>();
+			recepti = new ArrayList<Recepti>();
 		return recepti.iterator();
 	}
 
-	public void setRecepti(ArrayList<Recepti> newRecepti) {
+	public void setRecepti(Collection<Recepti> newRecepti) {
 		removeAllRecepti();
 		for (java.util.Iterator iter = newRecepti.iterator(); iter.hasNext();)
 			addRecepti((Recepti) iter.next());
@@ -72,7 +74,7 @@ public class Pregled extends Poseta {
 		this.lekar = newLekar;
 	}
 
-	public ArrayList<Dijagnoza> getDijagnoza() {
+	public Collection<Dijagnoza> getDijagnoza() {
 		if (dijagnoza == null)
 			dijagnoza = new ArrayList<Dijagnoza>();
 		return dijagnoza;
@@ -84,7 +86,7 @@ public class Pregled extends Poseta {
 		return dijagnoza.iterator();
 	}
 
-	public void setDijagnoza(ArrayList<Dijagnoza> newDijagnoza) {
+	public void setDijagnoza(Collection<Dijagnoza> newDijagnoza) {
 		removeAllDijagnoza();
 		for (java.util.Iterator iter = newDijagnoza.iterator(); iter.hasNext();)
 			addDijagnoza((Dijagnoza) iter.next());
@@ -113,7 +115,7 @@ public class Pregled extends Poseta {
 	}
 
 	public Pregled(String opis, Integer id, Termin termin, TipPosete tipPosete, ZdravstveniKarton zdravstveniKarton,
-			Sala sala, ArrayList<Recepti> recepti, Lekar lekar, ArrayList<Dijagnoza> dijagnoza) {
+			Sala sala, Collection<Recepti> recepti, Lekar lekar, Collection<Dijagnoza> dijagnoza) {
 		super(opis, id, termin, tipPosete, zdravstveniKarton, sala);
 		this.recepti = recepti;
 		this.lekar = lekar;

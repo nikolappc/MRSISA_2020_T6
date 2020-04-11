@@ -30,6 +30,7 @@ public class Dijagnoza {
 	@Column(name="naziv", unique=false, nullable=false)
 	private String nazivDijagnoze;
 	
+	
 	public Dijagnoza() {
 		super();
 	}

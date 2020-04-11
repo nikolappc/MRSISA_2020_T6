@@ -22,7 +22,7 @@ public class Lekar extends MedicniskoOsoblje {
 	@JoinColumn(name = "id")
 	public java.util.Collection<Ocena> ocena;
 	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY,mappedBy = "lekar")
-	public Pregled[] pregled;
+	public Collection<Pregled> pregled;
    
    
    public Lekar() {
@@ -78,17 +78,17 @@ public class Lekar extends MedicniskoOsoblje {
          ocena.clear();
    }
    /** @pdGenerated default getter */
-   public Pregled[] getPregled() {
+   public Collection<Pregled> getPregled() {
       return pregled;
    }
    
    /** @pdGenerated default setter
      * @param newPregled */
-   public void setPregled(Pregled[] newPregled) {
+   public void setPregled(Collection<Pregled> newPregled) {
       this.pregled = newPregled;
    }
 
-public Long getId() {
+public Integer getId() {
 	// TODO Auto-generated method stub
 	return null;
 }

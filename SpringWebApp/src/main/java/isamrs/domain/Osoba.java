@@ -10,13 +10,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
+import javax.persistence.MappedSuperclass;
 
-@Entity
-@Inheritance(strategy = TABLE_PER_CLASS)
+//@Entity
+//@Inheritance(strategy = TABLE_PER_CLASS)
+@MappedSuperclass
 public abstract class Osoba {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.TABLE)
 	private Integer id;
 
 	@Column(name = "ime", unique = false, nullable = false)

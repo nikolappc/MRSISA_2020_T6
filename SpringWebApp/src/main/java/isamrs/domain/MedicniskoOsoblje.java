@@ -18,7 +18,7 @@ public abstract class MedicniskoOsoblje extends Osoba {
    public java.util.Collection<GodisnjiOdmor> godisnjiOdmor;
 	@OneToMany
 	@JoinColumn(name = "id")
-   public RadnoVreme[] radnoVreme;
+   public Collection<RadnoVreme> radnoVreme;
    
    
    /** @pdGenerated default getter */
@@ -70,13 +70,13 @@ public abstract class MedicniskoOsoblje extends Osoba {
          godisnjiOdmor.clear();
    }
    /** @pdGenerated default getter */
-   public RadnoVreme[] getRadnoVreme() {
+   public Collection<RadnoVreme> getRadnoVreme() {
       return radnoVreme;
    }
    
    /** @pdGenerated default setter
      * @param newRadnoVreme */
-   public void setRadnoVreme(RadnoVreme[] newRadnoVreme) {
+   public void setRadnoVreme(Collection<RadnoVreme> newRadnoVreme) {
       this.radnoVreme = newRadnoVreme;
    }
 

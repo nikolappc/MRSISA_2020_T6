@@ -21,10 +21,10 @@ public class TipPosete {
 	@Column(name = "tip", unique = true, nullable = false)
 	private Tip tip;
 
-	@OneToMany(mappedBy = "tipPosete", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	public ArrayList<StavkaCenovnika> stavkaCenovnika;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	public Collection<StavkaCenovnika> stavkaCenovnika;
 
-	public ArrayList<StavkaCenovnika> getStavkaCenovnika() {
+	public Collection<StavkaCenovnika> getStavkaCenovnika() {
 		if (stavkaCenovnika == null)
 			stavkaCenovnika = new ArrayList<StavkaCenovnika>();
 		return stavkaCenovnika;
@@ -36,7 +36,7 @@ public class TipPosete {
 		return stavkaCenovnika.iterator();
 	}
 
-	public void setStavkaCenovnika(java.util.Collection<StavkaCenovnika> newStavkaCenovnika) {
+	public void setStavkaCenovnika(Collection<StavkaCenovnika> newStavkaCenovnika) {
 		removeAllStavkaCenovnika();
 		for (java.util.Iterator iter = newStavkaCenovnika.iterator(); iter.hasNext();)
 			addStavkaCenovnika((StavkaCenovnika) iter.next());
@@ -80,7 +80,7 @@ public class TipPosete {
 		this.tip = tip;
 	}
 
-	public TipPosete(int id, Tip tip, ArrayList<StavkaCenovnika> stavkaCenovnika) {
+	public TipPosete(int id, Tip tip, Collection<StavkaCenovnika> stavkaCenovnika) {
 		super();
 		this.id = id;
 		this.tip = tip;
