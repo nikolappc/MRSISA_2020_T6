@@ -30,6 +30,10 @@ public class Klinika {
    private String adresa;
 	@Column(name = "opis", unique = false, nullable = false)
    private String opis;
+	@Column(name = "cenovnik", nullable = false, unique = false)
+	public Cenovnik cenovnik;
+	@Column(name = "tip", nullable = false, unique = false)
+	public TipKlinike tipKlinike;
    
 	
 	@OneToMany
@@ -46,9 +50,6 @@ public class Klinika {
    public java.util.Collection<Poseta> poseta;
 	@OneToOne
 	@JoinColumn(name = "id")
-   public Cenovnik cenovnik;
-	@OneToMany
-	@JoinColumn(name = "id")
    public java.util.Collection<TipPosete> tipPosete;
 	@OneToMany
 	@JoinColumn(name = "id")
@@ -56,9 +57,12 @@ public class Klinika {
 	@OneToMany
 	@JoinColumn(name = "id")
    public java.util.Collection<AdministratorKlinike> administratorKlinike;
+<<<<<<< HEAD
 	@OneToOne
 	@JoinColumn(name = "id")
    public TipKlinike tipKlinike;
+=======
+>>>>>>> 357e5956b688ff3f5f1fdbb2086433aeffaa2a7c
    
    
    public Klinika() {
