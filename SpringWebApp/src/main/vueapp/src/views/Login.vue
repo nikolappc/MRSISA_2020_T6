@@ -3,10 +3,9 @@
   fluid
   height="100%">
   <v-row justify="center">
-    <v-col class="col-6">
+    <v-col cols="6">
       <v-card
         outlined
-        mar
       >
 
       <v-form 

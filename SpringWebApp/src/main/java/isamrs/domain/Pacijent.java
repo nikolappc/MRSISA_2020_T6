@@ -1,17 +1,33 @@
+/***********************************************************************
+ * Module:  Pacijent.java
+ * Author:  Dusan
+ * Purpose: Defines the Class Pacijent
+ ***********************************************************************/
+
 package isamrs.domain;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class Pacijent extends Osoba {
-	
-	private ZdravstveniKarton karton;
-	private ArrayList<Posjeta> posjete;
-
-	public Pacijent(Long id,String ime, String prezime, String email, String brojTelefona, String username, String password,
-			String adresa, String jbo) {
-		super(id, ime, prezime, email, brojTelefona, username, password, adresa, jbo);
-		this.posjete = new ArrayList<Posjeta>();
-		
-	}
+   public ZdravstveniKarton zdravstveniKarton;
+   
+   
+   /** @pdGenerated default parent getter */
+   public ZdravstveniKarton getZdravstveniKarton() {
+      return zdravstveniKarton;
+   }
+   
+   /** @pdGenerated default parent setter
+     * @param newZdravstveniKarton */
+   public void setZdravstveniKarton(ZdravstveniKarton newZdravstveniKarton) {
+      if (this.zdravstveniKarton == null || !this.zdravstveniKarton.equals(newZdravstveniKarton))
+      {
+         if (this.zdravstveniKarton != null)
+            this.zdravstveniKarton.setPacijent(null);
+         this.zdravstveniKarton = newZdravstveniKarton;
+         if (this.zdravstveniKarton != null)
+            this.zdravstveniKarton.setPacijent(this);
+      }
+   }
 
 }
