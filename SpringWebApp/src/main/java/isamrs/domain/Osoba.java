@@ -18,7 +18,7 @@ import javax.persistence.MappedSuperclass;
 public abstract class Osoba {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@Column(name = "ime", unique = false, nullable = false)

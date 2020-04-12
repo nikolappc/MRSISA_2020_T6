@@ -13,6 +13,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
+//@MappedSuperclass
 
 @Entity
 @Inheritance(strategy = TABLE_PER_CLASS)

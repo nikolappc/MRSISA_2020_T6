@@ -55,7 +55,7 @@ public class Klinika {
 	@OneToMany
 	@JoinColumn(name = "id")
    public java.util.Collection<Poseta> poseta;
-	@OneToOne
+	@OneToMany
 	@JoinColumn(name = "id")
    public java.util.Collection<TipPosete> tipPosete;
 	@OneToMany
