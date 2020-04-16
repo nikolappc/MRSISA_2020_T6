@@ -4,6 +4,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import Home from '../views/Home.vue';
 import HomeMed from '../views/HomeMed.vue';
+import ProfilPacijentaIzmjena from '../views/ProfilPacijentaIzmjena.vue';
 Vue.use(VueRouter, VueAxios, axios)
 
   const routes = [
@@ -32,6 +33,14 @@ Vue.use(VueRouter, VueAxios, axios)
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about1" */ '../views/ProfilPacijenta.vue')
+  },
+  {
+    path: '/profilPacijentaIzmjena',
+    name: 'profilPacijentaIzmjena',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: ProfilPacijentaIzmjena
   },
   {
     path: '/lekar/add',

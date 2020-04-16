@@ -1,5 +1,5 @@
 <template>
-  <div class="profilPacijenta">
+  <div class="profilPacijentaIzmjena">
     <v-simple-table>
       <thead>
         <th>Moj profil</th>
@@ -35,21 +35,3 @@
     <v-btn :to="{path: 'profilPacijentaIzmjena'}" dark medium left class="blue" slot="action">Izmijena profila</v-btn>
   </div>
 </template>
-
-<script>
-import axios from 'axios';
-export default {
-  name: 'ProfilPacijenta',
-  data: () => ({
-    ulogovan : {},
-  }),
-  mounted () {
-      axios
-      .get('api/pacijent/ulogovan')
-      .then(response => {
-          this.ulogovan = response.data;
-      })
-      .catch(function (error) { console.log(error); });
-  }
-}
-</script>
