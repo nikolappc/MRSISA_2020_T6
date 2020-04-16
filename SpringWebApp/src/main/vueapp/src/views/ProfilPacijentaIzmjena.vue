@@ -1,55 +1,60 @@
 <template>
   <div class="profilPacijentaIzmjena">
-    <v-form
-      ref="form"
-      v-model="valid"
-    >
-      <v-text-field
-        v-model="izmijenjen.ime"
-        :rules="imeRules"
-        label="Ime"
-        required
-      ></v-text-field>
-      <v-text-field
-        v-model="izmijenjen.prezime"
-        :rules="prezimeRules"
-        label="Prezime"
-        required
-      ></v-text-field>
-      <v-text-field
-        v-model="novaSifra"
-        :rules="passwordRules"
-        label="Lozinka"
-        required
-      ></v-text-field>
-      <v-text-field
-        v-model="novaSifraPotvrda"
-        :rules="password2Rules"
-        label="Potvrda lozinke"
-        required
-      ></v-text-field>
-      <v-text-field
-        v-model="izmijenjen.brojTelefona"
-        label="Broj Telefona"
-      ></v-text-field>
-      <v-text-field
-        v-model="izmijenjen.adresa"
-        label="Adresa"
-      ></v-text-field>
-      <v-text-field
-        v-model="izmijenjen.jbo"
-        label="Jedinstveni broj osiguranika"
-      ></v-text-field>
-      <v-btn
-        :disabled="!valid"
-        color="success"
-        class="mr-4"
-        @click="izmijeniProfil"
+    <v-container>
+      <v-form
+        ref="form"
+        v-model="valid"
       >
-        Izmijeni profil
-      </v-btn>
+        <v-text-field
+          v-model="izmijenjen.ime"
+          :rules="imeRules"
+          label="Ime"
+          required
+        ></v-text-field>
+        <v-text-field
+          v-model="izmijenjen.prezime"
+          :rules="prezimeRules"
+          label="Prezime"
+          required
+        ></v-text-field>
+        <v-text-field
+          v-model="novaSifra"
+          :rules="passwordRules"
+          label="Lozinka"
+          required
+        ></v-text-field>
+        <v-text-field
+          v-model="novaSifraPotvrda"
+          :rules="password2Rules"
+          label="Potvrda lozinke"
+          required
+        ></v-text-field>
+        <v-text-field
+          v-model="izmijenjen.brojTelefona"
+          :rules="brojTelefonaRules"
+          label="Broj Telefona"
+        ></v-text-field>
+        <v-text-field
+          v-model="izmijenjen.adresa"
+          :rules="adresaRules"
+          label="Adresa"
+        ></v-text-field>
+        <v-text-field
+          v-model="izmijenjen.jbo"
+          :rules="jboRules"
+          label="Jedinstveni broj osiguranika"
+        ></v-text-field>
+        <v-btn
+          :disabled="!valid"
+          color="success"
+          class="mr-4"
+          @click="izmijeniProfil"
+        >
+          Izmijeni profil
+        </v-btn>
 
-    </v-form>
+      </v-form>
+    </v-container>
   </div>
 </template>
 
@@ -82,11 +87,22 @@ export default {
       prezimeRules: [
         v => !!v || 'Prezime je obavezno polje'
       ],
+      brojTelefonaRules: [
+        v => !!v || 'Broj telefona je obavezno polje'
+      ],
+      adresaRules: [
+        v => !!v || 'Adresa je obavezno polje'
+      ],
+      jboRules: [
+        v => !!v || 'Jedinstveni broj osiguranika je obavezno polje'
+      ],
       passwordRules: [
-        v => !!v || 'Lozinka je obavezno polje'
+        v => !!v || 'Lozinka je obavezno polje',
+        v => v === this.novaSifraPotvrda || 'Lozinke se ne poklapaju' 
       ],
       password2Rules: [
         v => !!v || 'Potvrda lozinke je obavezno polje',
+        v => v === this.novaSifra || 'Lozinke se ne poklapaju' 
       ],
     }
 	},
@@ -110,26 +126,17 @@ export default {
 
   },
   methods: {
-        izmijeniProfil: function(event) {
-            event.preventDefault();
-            axios
-            .post('api/pacijent/izmjena',this.izmijenjen)
-            .then(() => {
-                router.push("/profilPacijenta");
-            })
-            .catch(function (error) { console.log(error); });
-        },
-        provjeraLozinke : function() {
-          if (this.novaSifraPotvrda != this.novaSifra) {
-            this.valid = false;
-            return "What are you trying to do here?";  
-          } else {
-            this.izmijenjen.password = this.novaSifra;
-            this.valid = true;
-            return true;
-          }
-        }
+    izmijeniProfil: function(event) {
+        event.preventDefault();
+        axios
+        .post('api/pacijent/izmjena',this.izmijenjen)
+        .then(() => {
+            router.push("/profilPacijenta");
+        })
+        .catch(function (error) { console.log(error); });
     }
+  },
+    
 }
 </script>
 
