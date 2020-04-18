@@ -4,6 +4,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import Home from '../views/Home.vue';
 import HomeMed from '../views/HomeMed.vue';
+import RegKlinika from '../views/adminKlinickogCentra/RegKlinika.vue';
 Vue.use(VueRouter, VueAxios, axios)
 
   const routes = [
@@ -16,6 +17,11 @@ Vue.use(VueRouter, VueAxios, axios)
     path: '/HomeMed',
     name: 'HomeMed',
     component: HomeMed
+  },
+  {
+    path:"/regKlinika",
+    name:"RegKlinika",
+    component:RegKlinika
   },
   {
     path: '/about',

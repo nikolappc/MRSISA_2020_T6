@@ -27,11 +27,11 @@ public class Klinika {
 	@Column(name="id", unique = true, nullable = false)
 	private Integer id;
 	@Column(name = "naziv", unique = true, nullable = false)
-   private String naziv;
+	private String naziv;
 	@Column(name = "adresa", unique = false, nullable = false)
-   private String adresa;
+	private String adresa;
 	@Column(name = "opis", unique = false, nullable = false)
-   private String opis;
+	private String opis;
 	@OneToOne
 	public Cenovnik cenovnik;
 	@OneToOne
