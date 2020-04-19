@@ -2,43 +2,17 @@ package isamrs.service;
 
 import java.util.Collection;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import isamrs.domain.Klinika;
-import isamrs.repository.KlinikaRepository;
+import isamrs.domain.Lekar;
 
-public class KlinikaService implements IService<Klinika>{
+public interface KlinikaService {
+	Collection<Klinika> findAll();
 
-	@Autowired
-	private KlinikaRepository repo;
-	
-	@Override
-	public Collection<Klinika> findAll() {
-		return repo.findAll();
-	}
+	Klinika findOne(Long id);
 
-	@Override
-	public Klinika findOne(Long id) {
-		// TODO Auto-generated method stub
-		return repo.findOne(id);
-	}
+	Klinika create(Klinika t);
 
-	@Override
-	public Klinika create(Klinika t) {
-		// TODO Auto-generated method stub
-		return repo.create(t);
-	}
+	Klinika update(Long id,Klinika t);
 
-	@Override
-	public Klinika update(Long id, Klinika t) {
-		// TODO Auto-generated method stub
-		return repo.update(t);
-	}
-
-	@Override
-	public void delete(Long id) {
-		// TODO Auto-generated method stub
-		
-	}
-	
+	void delete(Long id);
 }
