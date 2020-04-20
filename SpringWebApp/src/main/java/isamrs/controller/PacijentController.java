@@ -37,7 +37,7 @@ public class PacijentController {
 	public ResponseEntity<Pacijent> updatePacijent(@RequestBody Pacijent pacijent) {
 		Pacijent p = pacijentService.findOne(pacijent.getId());
 
-		/*if (p == null) {
+		if (p == null) {
 			return new ResponseEntity<Pacijent>(p, HttpStatus.BAD_REQUEST);
 		}
 
@@ -48,7 +48,7 @@ public class PacijentController {
 		p.setJbo(pacijent.getJbo());
 		p.setAdresa(pacijent.getAdresa());
 
-		p = pacijentService.save(p);*/
+		p = pacijentService.save(p);
 		
 		pacijentService.izmijeniUlogovanog(pacijent);
 		

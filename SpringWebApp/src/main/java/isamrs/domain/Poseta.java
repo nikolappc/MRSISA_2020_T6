@@ -4,42 +4,45 @@ import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 
 import java.util.*;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
-//@MappedSuperclass
 
-@Entity
-@Inheritance(strategy = TABLE_PER_CLASS)
+//@Entity
+//@Inheritance(strategy = TABLE_PER_CLASS)
+@MappedSuperclass
 public class Poseta {
 
 	@Column(name = "ime", unique = false, nullable = false)
 	private String opis;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@OneToOne
-	@JoinColumn(name = "id")
+	@JoinColumn(name = "id_termina")
 	public Termin termin;
 
 	@OneToOne
-	@JoinColumn(name = "id")
+	@JoinColumn(name = "id_tipa_posete")
 	public TipPosete tipPosete;
 
-	@OneToOne
-	@JoinColumn(name = "id")
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name="id_kartona")
 	public ZdravstveniKarton zdravstveniKarton;
 
-	@OneToOne
-	@JoinColumn(name = "id")
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_sale")
 	public Sala sala;
 
 	public Termin getTermin() {
@@ -67,11 +70,11 @@ public class Poseta {
 			if (this.zdravstveniKarton != null) {
 				ZdravstveniKarton oldZdravstveniKarton = this.zdravstveniKarton;
 				this.zdravstveniKarton = null;
-				oldZdravstveniKarton.removePoseta(this);
+				//oldZdravstveniKarton.rmovePregled(this);
 			}
 			if (newZdravstveniKarton != null) {
 				this.zdravstveniKarton = newZdravstveniKarton;
-				this.zdravstveniKarton.addPoseta(this);
+				//this.zdravstveniKarton.addPregled(this);
 			}
 		}
 	}

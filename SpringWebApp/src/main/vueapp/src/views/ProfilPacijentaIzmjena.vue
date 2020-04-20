@@ -127,6 +127,7 @@ export default {
   },
   methods: {
     izmijeniProfil: function(event) {
+		this.izmijenjen.password = this.novaSifra;
         event.preventDefault();
         axios
         .post('api/pacijent/izmjena',this.izmijenjen)

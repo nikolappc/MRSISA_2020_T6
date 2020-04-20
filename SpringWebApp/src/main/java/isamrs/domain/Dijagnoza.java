@@ -15,22 +15,26 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 @Entity
-@Table(name="dijagnoze")
+@Table(name = "dijagnoze")
 public class Dijagnoza {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="sifra", unique=true, nullable=false)
+	@Column(name = "sifra", unique = true, nullable = false)
 	private Integer sifraDijagnoze;
-	
-	
-	@Column(name="naziv", unique=false, nullable=false)
+
+	@Column(name = "naziv", unique = false, nullable = false)
 	private String nazivDijagnoze;
 	
-	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_pregleda")
+	private Pregled pregled;
+
 	public Dijagnoza() {
 		super();
 	}
@@ -50,8 +54,5 @@ public class Dijagnoza {
 	public void setNazivDijagnoze(String nazivDijagnoze) {
 		this.nazivDijagnoze = nazivDijagnoze;
 	}
-	
-	
-	
 
 }
