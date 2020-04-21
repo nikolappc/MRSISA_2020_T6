@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import isamrs.domain.Klinika;
-import isamrs.service.KlinikaService;
+import isamrs.service.KlinikaServiceImpl;
 
 @RestController
 @RequestMapping("/klinika")
 public class KlinikaController {
 	@Autowired
-	private KlinikaService klinikaService;
+	private KlinikaServiceImpl klinikaService;
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Klinika>> getKlinike(){
