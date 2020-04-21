@@ -15,15 +15,14 @@ import javax.persistence.Table;
 @Table(name = "pregled")
 public class Pregled extends Poseta {
 
-	//@OneToMany(mappedBy = "pregled", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "pregled", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	public Collection<Recepti> recepti;
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name="id_lekara")
 	public Lekar lekar;
 
-	//@OneToMany(mappedBy = "pregled", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "pregled", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	public Collection<Dijagnoza> dijagnoza;
 
 	public Collection<Recepti> getRecepti() {

@@ -8,10 +8,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
-@Entity(name = "zdravstveniKarton")
+@Entity
+@Table(name = "zdravstveni_kartoni")
 public class ZdravstveniKarton {
 
 	@Id
@@ -19,63 +22,17 @@ public class ZdravstveniKarton {
 	private Integer id;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	public Collection<Poseta> poseta;
+	@JoinColumn(name="id_kartona")
+	public Collection<Pregled> pregledi;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name="id_kartona")
 	public Collection<Dijagnoza> dijagnoza;
 	
 	@OneToOne(mappedBy = "zdravstveniKarton")
 	public Pacijent pacijent;
 
-	public Collection<Poseta> getPoseta() {
-		if (poseta == null)
-			poseta = new ArrayList<Poseta>();
-		return poseta;
-	}
-
-	public java.util.Iterator getIteratorPoseta() {
-		if (poseta == null)
-			poseta = new ArrayList<Poseta>();
-		return poseta.iterator();
-	}
-
-	public void setPoseta(Collection<Poseta> newPoseta) {
-		removeAllPoseta();
-		for (java.util.Iterator iter = newPoseta.iterator(); iter.hasNext();)
-			addPoseta((Poseta) iter.next());
-	}
-
-	public void addPoseta(Poseta newPoseta) {
-		if (newPoseta == null)
-			return;
-		if (this.poseta == null)
-			this.poseta = new ArrayList<Poseta>();
-		if (!this.poseta.contains(newPoseta)) {
-			this.poseta.add(newPoseta);
-			newPoseta.setZdravstveniKarton(this);
-		}
-	}
-
-	public void removePoseta(Poseta oldPoseta) {
-		if (oldPoseta == null)
-			return;
-		if (this.poseta != null)
-			if (this.poseta.contains(oldPoseta)) {
-				this.poseta.remove(oldPoseta);
-				oldPoseta.setZdravstveniKarton((ZdravstveniKarton) null);
-			}
-	}
-
-	public void removeAllPoseta() {
-		if (poseta != null) {
-			Poseta oldPoseta;
-			for (java.util.Iterator iter = getIteratorPoseta(); iter.hasNext();) {
-				oldPoseta = (Poseta) iter.next();
-				iter.remove();
-				oldPoseta.setZdravstveniKarton((ZdravstveniKarton) null);
-			}
-		}
-	}
+	
 
 	public Collection<Dijagnoza> getDijagnoza() {
 		if (dijagnoza == null)
@@ -139,10 +96,10 @@ public class ZdravstveniKarton {
 		this.id = id;
 	}
 
-	public ZdravstveniKarton(Integer id, Collection<Poseta> poseta, Collection<Dijagnoza> dijagnoza, Pacijent pacijent) {
+	public ZdravstveniKarton(Integer id, Collection<Pregled> pregled, Collection<Dijagnoza> dijagnoza, Pacijent pacijent) {
 		super();
 		this.id = id;
-		this.poseta = poseta;
+		this.pregledi = pregled;
 		this.dijagnoza = dijagnoza;
 		this.pacijent = pacijent;
 	}

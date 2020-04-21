@@ -4,11 +4,16 @@ import java.util.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="stavke_cenovnika")
 public class StavkaCenovnika {
 
 	@Id
@@ -17,6 +22,10 @@ public class StavkaCenovnika {
 
 	@Column(name = "cena", unique = true, nullable = false)
 	private Double cena;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_cenovnik")
+	private Cenovnik cenovnik;
 
 	public Integer getId() {
 		return id;
