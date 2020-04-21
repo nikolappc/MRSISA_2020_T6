@@ -5,7 +5,8 @@ import VueAxios from 'vue-axios'
 import Home from '../views/Home.vue';
 import HomeMed from '../views/HomeMed.vue';
 import RegKlinika from '../views/adminKlinickogCentra/RegKlinika.vue';
-import ProfilPacijentaIzmjena from '../views/ProfilPacijentaIzmjena.vue';
+import RegTipKlinike from '../views/adminKlinickogCentra/RegTipKlinike.vue';
+// import ProfilPacijentaIzmjena from '../views/ProfilPacijentaIzmjena.vue';
 Vue.use(VueRouter, VueAxios, axios)
 
   const routes = [
@@ -23,6 +24,11 @@ Vue.use(VueRouter, VueAxios, axios)
     path:"/regKlinika",
     name:"RegKlinika",
     component:RegKlinika
+  },
+  {
+    path:"/regTipKlinike",
+    name:"RegTipKlinike",
+    component:RegTipKlinike
   },
   {
     path: '/about',
