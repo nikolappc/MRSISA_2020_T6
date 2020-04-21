@@ -9,15 +9,15 @@ package isamrs.domain;
 import java.util.*;
 
 public class KlinickiCentar {
-   public java.util.Collection<Klinika> klinika;
-   public AdministratorKlinickogCentra administratorKlinickogCentra;
-   public java.util.Collection<TipKlinike> tipKlinike;
-   public java.util.Collection<Lek> šifrarnikLekova;
-   public java.util.Collection<Dijagnoza> šifrarnikDijagnoza;
+   public Collection<Klinika> klinika;
+   public Collection<AdministratorKlinickogCentra> administratorKlinickogCentra;
+   public Collection<TipKlinike> tipKlinike;
+   public Collection<Lek> šifrarnikLekova;
+   public Collection<Dijagnoza> šifrarnikDijagnoza;
    
    
    /** @pdGenerated default getter */
-   public java.util.Collection<Klinika> getKlinika() {
+   public Collection<Klinika> getKlinika() {
       if (klinika == null)
          klinika = new java.util.HashSet<Klinika>();
       return klinika;
@@ -32,7 +32,7 @@ public class KlinickiCentar {
    
    /** @pdGenerated default setter
      * @param newKlinika */
-   public void setKlinika(java.util.Collection<Klinika> newKlinika) {
+   public void setKlinika(Collection<Klinika> newKlinika) {
       removeAllKlinika();
       for (java.util.Iterator iter = newKlinika.iterator(); iter.hasNext();)
          addKlinika((Klinika)iter.next());
@@ -64,40 +64,50 @@ public class KlinickiCentar {
       if (klinika != null)
          klinika.clear();
    }
-   /** @pdGenerated default parent getter */
-   public AdministratorKlinickogCentra getAdministratorKlinickogCentra() {
-      return administratorKlinickogCentra;
-   }
+  
    
-   /** @pdGenerated default parent setter
-     * @param newAdministratorKlinickogCentra */
-   public void setAdministratorKlinickogCentra(AdministratorKlinickogCentra newAdministratorKlinickogCentra) {
-      this.administratorKlinickogCentra = newAdministratorKlinickogCentra;
-   }
-   /** @pdGenerated default getter */
-   public java.util.Collection<TipKlinike> getTipKlinike() {
+   
+   
+   public Collection<AdministratorKlinickogCentra> getAdministratorKlinickogCentra() {
+	return administratorKlinickogCentra;
+	}
+	
+	public void setAdministratorKlinickogCentra(Collection<AdministratorKlinickogCentra> administratorKlinickogCentra) {
+		this.administratorKlinickogCentra = administratorKlinickogCentra;
+	}
+	
+	public Collection<Lek> getŠifrarnikLekova() {
+		return šifrarnikLekova;
+	}
+	
+	public void setŠifrarnikLekova(Collection<Lek> šifrarnikLekova) {
+		this.šifrarnikLekova = šifrarnikLekova;
+	}
+	
+	public Collection<Dijagnoza> getŠifrarnikDijagnoza() {
+		return šifrarnikDijagnoza;
+	}
+	
+	public void setŠifrarnikDijagnoza(Collection<Dijagnoza> šifrarnikDijagnoza) {
+		this.šifrarnikDijagnoza = šifrarnikDijagnoza;
+	}
+
+
+   public Collection<TipKlinike> getTipKlinike() {
       if (tipKlinike == null)
          tipKlinike = new java.util.HashSet<TipKlinike>();
       return tipKlinike;
    }
    
-   /** @pdGenerated default iterator getter */
-   public java.util.Iterator getIteratorTipKlinike() {
-      if (tipKlinike == null)
-         tipKlinike = new java.util.HashSet<TipKlinike>();
-      return tipKlinike.iterator();
-   }
    
-   /** @pdGenerated default setter
-     * @param newTipKlinike */
-   public void setTipKlinike(java.util.Collection<TipKlinike> newTipKlinike) {
+   
+   public void setTipKlinike(Collection<TipKlinike> newTipKlinike) {
       removeAllTipKlinike();
       for (java.util.Iterator iter = newTipKlinike.iterator(); iter.hasNext();)
          addTipKlinike((TipKlinike)iter.next());
    }
    
-   /** @pdGenerated default add
-     * @param newTipKlinike */
+   
    public void addTipKlinike(TipKlinike newTipKlinike) {
       if (newTipKlinike == null)
          return;
@@ -107,8 +117,7 @@ public class KlinickiCentar {
          this.tipKlinike.add(newTipKlinike);
    }
    
-   /** @pdGenerated default remove
-     * @param oldTipKlinike */
+   
    public void removeTipKlinike(TipKlinike oldTipKlinike) {
       if (oldTipKlinike == null)
          return;
@@ -117,35 +126,33 @@ public class KlinickiCentar {
             this.tipKlinike.remove(oldTipKlinike);
    }
    
-   /** @pdGenerated default removeAll */
+   
    public void removeAllTipKlinike() {
       if (tipKlinike != null)
          tipKlinike.clear();
    }
-   /** @pdGenerated default getter */
-   public java.util.Collection<Lek> getšifrarnikLekova() {
+   
+   public Collection<Lek> getšifrarnikLekova() {
       if (šifrarnikLekova == null)
          šifrarnikLekova = new java.util.HashSet<Lek>();
       return šifrarnikLekova;
    }
    
-   /** @pdGenerated default iterator getter */
+   
    public java.util.Iterator getIteratoršifrarnikLekova() {
       if (šifrarnikLekova == null)
          šifrarnikLekova = new java.util.HashSet<Lek>();
       return šifrarnikLekova.iterator();
    }
    
-   /** @pdGenerated default setter
-     * @param newšifrarnikLekova */
-   public void setšifrarnikLekova(java.util.Collection<Lek> newšifrarnikLekova) {
+   
+   public void setšifrarnikLekova(Collection<Lek> newšifrarnikLekova) {
       removeAllšifrarnikLekova();
       for (java.util.Iterator iter = newšifrarnikLekova.iterator(); iter.hasNext();)
          addšifrarnikLekova((Lek)iter.next());
    }
    
-   /** @pdGenerated default add
-     * @param newLek */
+   
    public void addšifrarnikLekova(Lek newLek) {
       if (newLek == null)
          return;
@@ -155,8 +162,7 @@ public class KlinickiCentar {
          this.šifrarnikLekova.add(newLek);
    }
    
-   /** @pdGenerated default remove
-     * @param oldLek */
+   
    public void removešifrarnikLekova(Lek oldLek) {
       if (oldLek == null)
          return;
@@ -171,22 +177,21 @@ public class KlinickiCentar {
          šifrarnikLekova.clear();
    }
    /** @pdGenerated default getter */
-   public java.util.Collection<Dijagnoza> getšifrarnikDijagnoza() {
+   public Collection<Dijagnoza> getšifrarnikDijagnoza() {
       if (šifrarnikDijagnoza == null)
          šifrarnikDijagnoza = new java.util.HashSet<Dijagnoza>();
       return šifrarnikDijagnoza;
    }
    
-   /** @pdGenerated default iterator getter */
+   
    public java.util.Iterator getIteratoršifrarnikDijagnoza() {
       if (šifrarnikDijagnoza == null)
          šifrarnikDijagnoza = new java.util.HashSet<Dijagnoza>();
       return šifrarnikDijagnoza.iterator();
    }
    
-   /** @pdGenerated default setter
-     * @param newšifrarnikDijagnoza */
-   public void setšifrarnikDijagnoza(java.util.Collection<Dijagnoza> newšifrarnikDijagnoza) {
+   
+   public void setšifrarnikDijagnoza(Collection<Dijagnoza> newšifrarnikDijagnoza) {
       removeAllšifrarnikDijagnoza();
       for (java.util.Iterator iter = newšifrarnikDijagnoza.iterator(); iter.hasNext();)
          addšifrarnikDijagnoza((Dijagnoza)iter.next());
