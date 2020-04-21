@@ -36,7 +36,7 @@ public class Klinika {
 	@Column(name = "opis", unique = false, nullable = false)
 	private String opis;
 	@OneToOne
-	public Cenovnik cenovnik;
+	public Cenovnik cenovnik ;
 	@OneToOne
 	public TipKlinike tipKlinike;
 
