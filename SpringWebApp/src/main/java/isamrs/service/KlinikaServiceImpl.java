@@ -1,17 +1,20 @@
 package isamrs.service;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import isamrs.domain.Klinika;
-import isamrs.repository.KlinikaRepository;
-import isamrs.repository.KlinikaRepositoryInterface;
+import com.fasterxml.jackson.annotation.OptBoolean;
 
-public class KlinikaServiceImpl implements KlinikaService{
+import isamrs.domain.Klinika;
+import isamrs.exceptions.NotFoundException;
+import isamrs.repository.KlinikaRepository;
+
+public class KlinikaServiceImpl implements Service<Klinika, Long>{
 
 	@Autowired
-	private KlinikaRepositoryInterface repo;
+	private KlinikaRepository repo;
 	
 	@Override
 	public Collection<Klinika> findAll() {
@@ -20,23 +23,25 @@ public class KlinikaServiceImpl implements KlinikaService{
 
 	@Override
 	public Klinika findOne(Long id) {
-		return repo.findOne(id);
+		Optional<Klinika> klinika = repo.findById(id);
+		if(klinika.isPresent()) {
+			return  klinika.get();			
+		}
+		throw new NotFoundException();
 	}
 
 	@Override
 	public Klinika create(Klinika t) {
-		// TODO Auto-generated method stub
-		return repo.create(t);
+		return repo.save(t);
 	}
 
 	@Override
 	public Klinika update(Long id, Klinika t) {
-		return repo.update(t);
+		return repo.save(t);
 	}
 
 	@Override
 	public void delete(Long id) {
-		repo.delete(id);
+		repo.deleteById(id);
 	}
-	
 }
