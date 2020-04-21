@@ -9,9 +9,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="tipovi_posete")
 public class TipPosete {
 
 	@Id
@@ -22,6 +25,7 @@ public class TipPosete {
 	private Tip tip;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name="id_tipa_posete")
 	public Collection<StavkaCenovnika> stavkaCenovnika;
 
 	public Collection<StavkaCenovnika> getStavkaCenovnika() {

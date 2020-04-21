@@ -14,17 +14,20 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "cenovnici")
 public class Cenovnik {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	public java.util.Collection<StavkaCenovnika> stavkaCenovnika;
+	@OneToMany(mappedBy = "cenovnik", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	public Collection<StavkaCenovnika> stavkaCenovnika;
 
 	/** @pdGenerated default getter */
 	public java.util.Collection<StavkaCenovnika> getStavkaCenovnika() {

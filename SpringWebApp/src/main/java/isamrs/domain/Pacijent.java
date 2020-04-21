@@ -12,11 +12,11 @@ import javax.persistence.Table;
 public class Pacijent extends Osoba {
 
 	@OneToOne
-	@JoinColumn(name = "id")
+	@JoinColumn(name = "id_pacijenta")
 	private Integer id;
 
 	@OneToOne
-	@JoinColumn(name = "id")
+	@JoinColumn(name = "id_kartona")
 	private ZdravstveniKarton zdravstveniKarton;
 
 	public Pacijent() {
@@ -28,7 +28,7 @@ public class Pacijent extends Osoba {
 		super(ime, prezime, password, brojTelefona, jbo, adresa, email, id);
 		this.zdravstveniKarton = zdravstveniKarton;
 	}
-	
+
 	public Pacijent(String ime, String prezime, String password, String brojTelefona, String jbo, String adresa,
 			String email, Integer id) {
 		super(ime, prezime, password, brojTelefona, jbo, adresa, email, id);
