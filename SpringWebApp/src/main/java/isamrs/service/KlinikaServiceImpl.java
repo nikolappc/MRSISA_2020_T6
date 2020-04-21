@@ -11,6 +11,7 @@ import isamrs.domain.Klinika;
 import isamrs.exceptions.NotFoundException;
 import isamrs.repository.KlinikaRepository;
 
+@org.springframework.stereotype.Service
 public class KlinikaServiceImpl implements Service<Klinika, Long>{
 
 	@Autowired

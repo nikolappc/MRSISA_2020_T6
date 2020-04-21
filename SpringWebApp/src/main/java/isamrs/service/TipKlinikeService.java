@@ -9,6 +9,8 @@ import isamrs.domain.TipKlinike;
 import isamrs.exceptions.NotFoundException;
 import isamrs.repository.TipKlinikeRepository;
 
+
+@org.springframework.stereotype.Service
 public class TipKlinikeService implements Service<TipKlinike, Long>{
 
 	@Autowired
