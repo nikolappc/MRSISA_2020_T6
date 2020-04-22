@@ -41,13 +41,13 @@ public class TipKlinikeController {
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<TipKlinike>> getTipoviKlinike(){
 		Collection<TipKlinike> tipovi = service.findAll();
-		return new ResponseEntity<Collection<TipKlinike>>(tipovi, HttpStatus.FOUND);
+		return new ResponseEntity<Collection<TipKlinike>>(tipovi, HttpStatus.OK);
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TipKlinike> createTipKlinike(@RequestBody TipKlinike t){
 		TipKlinike t2 = service.create(t);
-		return new ResponseEntity<TipKlinike>(t2, HttpStatus.CREATED);
+		return new ResponseEntity<TipKlinike>(t2, HttpStatus.OK);
 	}
 	
 	@PutMapping(value = "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

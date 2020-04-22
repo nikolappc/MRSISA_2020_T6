@@ -12,6 +12,7 @@
                                 <v-text-field
                                     label="Naziv klinike"
                                     :rules="rules"
+                                    required
                                 >
                                     
                                 </v-text-field>
@@ -20,6 +21,8 @@
                                     item-text="tip"
                                     item-value="id"
                                     label="Tip klinike"
+                                    required
+                                    :rules="rules"
                                 >
 
                                 </v-select>
@@ -28,6 +31,7 @@
                                         <v-text-field
                                             label="Mesto"
                                         :rules="rules"
+                                        required
                                         >
                     
                                         </v-text-field>
@@ -36,6 +40,7 @@
                                         <v-text-field
                                         label="Ulica"
                                         :rules="rules"
+                                        required
                                         >
                     
                                         </v-text-field>
@@ -44,6 +49,7 @@
                                         <v-text-field
                                             label="Broj"
                                             :rules="rules"
+                                            required
                                         >
                     
                                         </v-text-field>
@@ -52,6 +58,7 @@
                                 <v-textarea
                                     label="Opis"
                                     :rules="rules"
+                                    required
                                 >
                                     
                                 </v-textarea>
@@ -107,7 +114,7 @@
                 grad:"",
                 opis:"",
                 tipKlinike:"",
-                tipoviKlinika:[{id:"dadsad",tip:"WOW"},{id:"da",tip:"LEL"}],
+                tipoviKlinika:[],
             }
         },
         mounted:function () {

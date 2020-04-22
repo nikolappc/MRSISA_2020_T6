@@ -18,7 +18,8 @@ public class TipKlinikeService implements Service<TipKlinike, Long>{
 	
 	@Override
 	public Collection<TipKlinike> findAll() {
-		return tipRepo.findAll();
+		Collection<TipKlinike> t = tipRepo.findAll();
+		return t;
 	}
 
 	@Override
