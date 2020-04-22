@@ -4,6 +4,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import Home from '../views/Home.vue';
 import HomeMed from '../views/HomeMed.vue';
+import RegLekova from '../views/adminKlinickogCentra/RegLekova.vue';
 import RegKlinika from '../views/adminKlinickogCentra/RegKlinika.vue';
 import RegTipKlinike from '../views/adminKlinickogCentra/RegTipKlinike.vue';
 import ProfilPacijentaIzmjena from '../views/ProfilPacijentaIzmjena.vue';
@@ -20,6 +21,11 @@ Vue.use(VueRouter, VueAxios, axios)
     path: '/HomeMed',
     name: 'HomeMed',
     component: HomeMed
+  },
+  {
+    path:"/regLekova",
+    name:"RegLekova",
+    component:RegLekova
   },
   {
     path:"/regKlinika",
