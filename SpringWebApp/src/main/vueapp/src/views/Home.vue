@@ -4,6 +4,7 @@
       <h1>Hello world!</h1>
       <v-btn :to="{path: 'profilPacijenta'}" dark medium left class="blue" slot="action">Profil pacijenta</v-btn>
       <v-btn :to="{path: 'lekari'}" dark medium left class="blue" slot="action">Lista lekara</v-btn>
+      <v-btn :to="{path: 'zdravstveniKartonPrikaz'}" dark medium left class="blue" slot="action">Zdravstveni karton</v-btn>
     </v-container>
   </div>
 </template>

@@ -39,6 +39,32 @@ public class Recepti {
 	public void setLek(Lek newLek) {
 		this.lek = newLek;
 	}
+	
+	
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public boolean isOveren() {
+		return overen;
+	}
+
+	public void setOveren(boolean overen) {
+		this.overen = overen;
+	}
+
+	public Pregled getPregled() {
+		return pregled;
+	}
+
+	public void setPregled(Pregled pregled) {
+		this.pregled = pregled;
+	}
 
 	public Recepti(Integer id, boolean overen, Lek lek) {
 		super();

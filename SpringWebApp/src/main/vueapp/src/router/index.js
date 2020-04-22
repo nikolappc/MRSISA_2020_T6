@@ -6,7 +6,8 @@ import Home from '../views/Home.vue';
 import HomeMed from '../views/HomeMed.vue';
 import RegKlinika from '../views/adminKlinickogCentra/RegKlinika.vue';
 import RegTipKlinike from '../views/adminKlinickogCentra/RegTipKlinike.vue';
-// import ProfilPacijentaIzmjena from '../views/ProfilPacijentaIzmjena.vue';
+import ProfilPacijentaIzmjena from '../views/ProfilPacijentaIzmjena.vue';
+import ZdravstveniKartonPrikaz from '../views/ZdravstveniKartonPrikaz.vue';
 Vue.use(VueRouter, VueAxios, axios)
 
   const routes = [
@@ -45,6 +46,16 @@ Vue.use(VueRouter, VueAxios, axios)
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about1" */ '../views/ProfilPacijenta.vue')
+  },
+  {
+    path: '/profilPacijentaIzmjena',
+    name: 'profilPacijentaIzmjena',
+    component: ProfilPacijentaIzmjena
+  },
+  {
+    path: '/zdravstveniKartonPrikaz',
+    name: 'zdravstveniKartonPrikaz',
+    component: ZdravstveniKartonPrikaz
   },
   {
     path: '/lekar/add',

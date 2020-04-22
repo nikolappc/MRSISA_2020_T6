@@ -2,9 +2,9 @@ insert into administratori_klinickog_centra (id, adresa, broj_telefona, email, i
 
 insert into cenovnici (id) values (0);
 
-insert into zdravstveni_kartoni (id) values (0);
-insert into zdravstveni_kartoni (id) values (1);
-insert into zdravstveni_kartoni (id) values (2);
+insert into zdravstveni_kartoni (id, visina, tezina, krvna_grupa) values (0, 1.6, 60, 'A+');
+insert into zdravstveni_kartoni (id, visina, tezina, krvna_grupa) values (1, 1.7, 70, 'B-');
+insert into zdravstveni_kartoni (id, visina, tezina, krvna_grupa) values (2, 1.8, 80, '0+');
 
 insert into tipovi_klinike (id, tip) values (0, 'tip 1');
 insert into klinike (id, adresa, naziv, opis, cenovnik_id, tip_klinike_id) values (0, 'Dijagon Aleja', 'Sent Mungo', 'bolnica', 0, 0);
