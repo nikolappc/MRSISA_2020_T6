@@ -4,6 +4,21 @@
 			<h2>Zdravstveni karton</h2>
 			<h4>{{ ulogovan.ime }} {{ ulogovan.prezime }}</h4>
       <v-simple-table>
+        <tbody>
+          <tr>
+            <td>Visina:</td>
+            <td>{{ karton.visina }}</td>
+          </tr>
+          <tr>
+            <td>Tezina:</td>
+            <td>{{ karton.tezina }}</td>
+          </tr>
+          <tr>
+            <td>Krvna grupa:</td>
+            <td>{{ karton.krvnaGrupa }}</td>
+        </tbody>
+      </v-simple-table>
+      <v-simple-table>
         <thead>
 					<th>Id pregleda</th>
 					<th>Opis</th>
@@ -35,6 +50,7 @@ export default {
   data: () => ({
     ulogovan : {},
     pregledi : [],
+    karton : {}
   }),
   mounted () {
       axios
@@ -45,7 +61,12 @@ export default {
           .get('api/pacijent/listaPregleda/' + this.ulogovan.id)
           .then(response => {
               this.pregledi = response.data;
-          })
+          });
+          axios
+          .get('api/pacijent/karton/' + this.ulogovan.id)
+          .then(response => {
+              this.karton = response.data;
+          });
       })
       .catch(function (error) { console.log(error); });
 	},

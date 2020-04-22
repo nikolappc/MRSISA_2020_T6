@@ -3,6 +3,7 @@ package isamrs.domain;
 import java.util.*;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -20,6 +21,15 @@ public class ZdravstveniKarton {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	
+	@Column(name = "visina", unique = false)
+	private Double visina;
+	
+	@Column(name = "tezina", unique = false)
+	private Double tezina;
+	
+	@Column(name = "krvna_grupa", unique = false)
+	private String krvnaGrupa;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name="id_kartona")
@@ -106,5 +116,50 @@ public class ZdravstveniKarton {
 
 	public ZdravstveniKarton() {
 	}
+	
+	public ZdravstveniKarton(Integer id, Double visina, Double tezina, String krvnaGrupa, Collection<Pregled> pregledi,
+			Collection<Dijagnoza> dijagnoza, Pacijent pacijent) {
+		super();
+		this.id = id;
+		this.visina = visina;
+		this.tezina = tezina;
+		this.krvnaGrupa = krvnaGrupa;
+		this.pregledi = pregledi;
+		this.dijagnoza = dijagnoza;
+		this.pacijent = pacijent;
+	}
+
+	public Double getVisina() {
+		return visina;
+	}
+
+	public void setVisina(Double visina) {
+		this.visina = visina;
+	}
+
+	public Double getTezina() {
+		return tezina;
+	}
+
+	public void setTezina(Double tezina) {
+		this.tezina = tezina;
+	}
+
+	public String getKrvnaGrupa() {
+		return krvnaGrupa;
+	}
+
+	public void setKrvnaGrupa(String krvnaGrupa) {
+		this.krvnaGrupa = krvnaGrupa;
+	}
+
+	public Collection<Pregled> getPregledi() {
+		return pregledi;
+	}
+
+	public void setPregledi(Collection<Pregled> pregledi) {
+		this.pregledi = pregledi;
+	}
+
 
 }

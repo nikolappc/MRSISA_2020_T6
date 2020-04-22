@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import isamrs.domain.Sala;
+import isamrs.dto.SalaTerminiDTO;
 import isamrs.service.SalaService;
 @RestController
 @RequestMapping("/sala")
@@ -32,7 +33,7 @@ public class SalaController {
 
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Sala> getSala(@PathVariable("id") Long id) {
+	public ResponseEntity<Sala> getSala(@PathVariable("id") Integer id) {
 		Sala sala = salaService.findOne(id);
 
 		if (sala == null) {
@@ -50,7 +51,7 @@ public class SalaController {
 
 
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Sala> updateSala(@RequestBody Sala sala, @PathVariable Long id)
+	public ResponseEntity<Sala> updateSala(@RequestBody Sala sala, @PathVariable Integer id)
 			throws Exception {
 		
 		Sala updatedSala = salaService.update(id,sala);
@@ -58,8 +59,12 @@ public class SalaController {
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Sala> deleteSala(@PathVariable("id") Long id) {
-		salaService.delete(id);
+	public ResponseEntity<Sala> deleteSala(@PathVariable("id") Integer id) {
+		try {
+			salaService.delete(id);
+		} catch (Exception e) {
+			return new ResponseEntity<Sala>(HttpStatus.FORBIDDEN);
+		}
 		return new ResponseEntity<Sala>(HttpStatus.NO_CONTENT);
 	}
 	

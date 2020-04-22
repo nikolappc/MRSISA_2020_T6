@@ -1,17 +1,49 @@
 package isamrs.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import isamrs.domain.Lekar;
+import isamrs.domain.Osoba;
+import isamrs.dto.OsobaDTO;
+import isamrs.repository.LekarRepository;
 
-public interface LekarService {
-	Collection<Lekar> findAll();
+@Service
+public class LekarService {
 
-	Lekar findOne(Long id);
+	@Autowired
+	private LekarRepository lekarRepo;
+	
+	
+	public Collection<OsobaDTO> findAll() {
+		ArrayList<OsobaDTO> lekari = new ArrayList<OsobaDTO>();
+		for(Lekar l : lekarRepo.findAll()) {
+			lekari.add(new OsobaDTO(l));
+		}
+		
+		return lekari;
+	}
 
-	Lekar create(Lekar lekar);
+	public Lekar findOne(Integer id) {
+		return lekarRepo.findById(id).orElseGet(null);
+	}
 
-	Lekar update(Long id,Lekar lekar);
+	public Lekar create(Lekar lekar) {
+		lekar.setId((int)lekarRepo.count());
+		return lekarRepo.save(lekar);
+	}
 
-	void delete(Long id);
+	public Lekar update(Integer id,Lekar lekar) {
+		Lekar lekarForUpdate = lekarRepo.findById(id).orElseGet(null);
+		return lekarRepo.save(lekar);
+	}
+
+	public void delete(Integer id) throws Exception {
+		lekarRepo.deleteById(id);
+	}
+
+	
 }

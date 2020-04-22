@@ -10,53 +10,38 @@
                 <th></th>
             </thead>
             <tbody>
-                <Lekar @click="dialog = true" v-for="lekar in lekari" v-bind:key="lekar.id" v-bind:lekar="lekar" v-on:del-lekar="deleteLekar" />
-                <v-dialog
-                v-model="dialog"
-                max-width="290"
-                >
-                <v-card>
-                    <v-card-title class="headline">Use Google's location service?</v-card-title>
-
-                    <v-card-text>
-                    Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
-                    </v-card-text>
-
-                    <v-card-actions>
-                    <v-spacer></v-spacer>
-
-                    <v-btn
-                        color="green darken-1"
-                        text
-                        @click="dialog = false"
-                    >
-                        Disagree
-                    </v-btn>
-
-                        <v-btn
-                            color="green darken-1"
-                            @click="dialog = false"
-                        >
-                            Save
-                        </v-btn>
-                    </v-card-actions>
-                </v-card>
-                </v-dialog>
+                <Lekar v-for="lekar in lekari" v-bind:key="lekar.id" v-bind:lekar="lekar" v-on:del-lekar="deleteLekar"
+                v-on:otvori="otvoriDialog"/>
+                
             </tbody>
             <tr>
                 <td align="right" colspan='4'><v-btn :to="{path: 'lekar/add'}" dark medium left class="blue" slot="action">Dodaj lekara</v-btn></td>
             </tr>
         </v-simple-table>
+        <v-dialog
+            v-model="dialog"
+            max-width="500"
+            >
+                <v-card>
+                    <v-card-title class="headline">Izmeni lekara</v-card-title>
+
+                        <IzmenaLekara  v-bind:lekar="dialogLekar" />
+
+                    
+                </v-card>
+        </v-dialog>
     </div>
 </template>
 
 <script>
 import Lekar from "./Lekar.vue"
+import IzmenaLekara from "./IzmenaLekar.vue"
 import axios from "axios"
 export default {
     data: () => ({
         lekari : null,
-        dialog : false
+        dialog : false,
+        dialogLekar: null
     }),
     mounted () {
         axios
@@ -68,12 +53,21 @@ export default {
             .catch(() => { this.lekari = [{ime: 'pera',prezime: ''}]; });
     },
     components: {
-        Lekar
+        Lekar,
+        IzmenaLekara
     },
     methods: {
         deleteLekar: function(id){
             this.lekari = this.lekari.filter(lekar => lekar.id !== id);
-        }
+        },
+        otvoriDialog: function(id){
+            this.dialogLekar = {...this.lekari.filter(lekar => lekar.id === id)[0]};
+            this.dialog = true;
+        },
+        promeniLekara: function(id){
+            id;
+        },
+
     }
 }
 </script>
