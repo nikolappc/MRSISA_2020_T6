@@ -20,9 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import isamrs.domain.Pacijent;
 import isamrs.domain.Pregled;
+import isamrs.domain.ZdravstveniKarton;
 import isamrs.dto.PregledDTO;
+import isamrs.dto.ZdravstveniKartonDTO;
 import isamrs.service.PacijentService;
 import isamrs.service.PregledService;
+import isamrs.service.ZdravstveniKartonServiceImpl;
 
 
 
@@ -34,7 +37,11 @@ public class PacijentController {
 	@Autowired
 	private PacijentService pacijentService;
 	
-	@Autowired PregledService pregledService;
+	@Autowired 
+	private PregledService pregledService;
+	
+	@Autowired
+	private ZdravstveniKartonServiceImpl kartonService;
 
 	@GetMapping(value = "/ulogovan", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Pacijent> getPacijent() {
@@ -77,5 +84,15 @@ public class PacijentController {
 		return new ResponseEntity<List<PregledDTO>>(preglediDTO, HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/karton/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ZdravstveniKartonDTO> getKarton(@PathVariable("id") Integer id) {
+		Pacijent p = pacijentService.findOne(id);
+
+		ZdravstveniKarton zk = kartonService.findOne(p.getZdravstveniKarton().getId());
+		
+		ZdravstveniKartonDTO zk_dto = new ZdravstveniKartonDTO(zk);
+		
+		return new ResponseEntity<ZdravstveniKartonDTO>(zk_dto, HttpStatus.OK);
+	}
 
 }
