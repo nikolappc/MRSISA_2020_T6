@@ -6,6 +6,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -22,7 +23,7 @@ public class Pregled extends Poseta {
 	@JoinColumn(name="id_lekara")
 	public Lekar lekar;
 
-	@OneToMany(mappedBy = "pregled", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(mappedBy = "pregled", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	public Collection<Dijagnoza> dijagnoza;
 
 	public Collection<Recepti> getRecepti() {

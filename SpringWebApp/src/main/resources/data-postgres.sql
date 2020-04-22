@@ -48,8 +48,8 @@ insert into operacije (id, ime, id_sale, id_termina, id_tipa_posete, id_kartona,
 insert into recepti (id, overen, id_recepta, id_pregleda) values (0, false, 0, 0);
 insert into recepti (id, overen, id_recepta, id_pregleda) values (1, true, 1, 1);
 
-insert into dijagnoze (sifra, naziv, id_pregleda, id_kartona) values (0, 'Covid-19', 0, 0);
-insert into dijagnoze (sifra, naziv, id_pregleda, id_kartona) values (1, 'Depresija', 1, 1);
+insert into dijagnoze (sifra, naziv, id_kartona) values (0, 'Covid-19', 0);
+insert into dijagnoze (sifra, naziv, id_kartona) values (1, 'Depresija', 1);
 
 insert into stavke_cenovnika (id, cena, id_cenovnik, id_tipa_posete) values (0, 10.5, 0, 0);
 
