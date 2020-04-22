@@ -30,7 +30,7 @@ export default {
     name: 'AddSalu',
     data: function() { return {
       sala: { 
-          id: 0,
+          id: null,
           naziv: '',
           },
       valid: true,

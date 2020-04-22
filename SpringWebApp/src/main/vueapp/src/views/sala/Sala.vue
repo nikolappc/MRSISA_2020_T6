@@ -33,7 +33,8 @@ export default {
                 alert("Uspesno ste obrisali salu");
                 this.$emit("del-sala",this.sala.id);
             })
-            .catch(function (error) { console.log(error); });
+            .catch(function (error) { alert("Sala se koristi u nekom pregledu");
+            console.log(error); });
       }
     },
     components: {

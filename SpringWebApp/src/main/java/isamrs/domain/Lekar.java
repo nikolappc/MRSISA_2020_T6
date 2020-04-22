@@ -183,14 +183,6 @@ public class Lekar extends Osoba {
 		this.radnoVreme = newRadnoVreme;
 	}
 
-	public Integer getId() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	public void setId(Long id) {
-		// TODO Auto-generated method stub
-
-	}
 
 }

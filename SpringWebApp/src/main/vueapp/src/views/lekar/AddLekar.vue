@@ -2,6 +2,7 @@
   <v-form
     ref="form"
     v-model="valid"
+    
   >
     <v-text-field
       v-model="lekar.ime"
@@ -24,12 +25,6 @@
       required
     ></v-text-field>
     <v-text-field
-      v-model="lekar.username"
-      :rules="imeRules"
-      label="Username"
-      required
-    ></v-text-field>
-    <v-text-field
       :type="'password'"
       v-model="lekar.password"
       :rules="passwordRules"
@@ -39,14 +34,17 @@
     <v-text-field
       v-model="lekar.brojTelefona"
       label="Broj Telefona"
+      required
     ></v-text-field>
     <v-text-field
       v-model="lekar.adresa"
       label="Adresa"
+      required
     ></v-text-field>
     <v-text-field
       v-model="lekar.jbo"
       label="Jedinstveni broj osiguranika"
+      required
     ></v-text-field>
     <v-btn
       :disabled="!valid"
@@ -72,7 +70,6 @@ export default {
           email: '',
           jbo: '',
           id: 0,
-          username: '',
           password: ''
           },
       valid: true,

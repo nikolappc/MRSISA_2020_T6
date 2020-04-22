@@ -61,6 +61,18 @@ Vue.use(VueRouter, VueAxios, axios)
     name: 'Login',
     component: () => import('../views/Login.vue')
   
+  },
+  {
+    path: '/sale',
+    name: 'Sale',
+    component: () => import('../views/sala/ListaSala.vue')
+
+  },
+  {
+    path: '/sala/add',
+    name: 'AddSala',
+    component: () => import('../views/sala/AddSala.vue')
+
   }
   
 ]
