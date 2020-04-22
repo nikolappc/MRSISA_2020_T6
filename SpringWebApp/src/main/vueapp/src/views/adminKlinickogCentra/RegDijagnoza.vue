@@ -10,32 +10,25 @@
                         <v-card>
                             <v-container>
                                 <v-text-field
-                                    label="Šifra leka"
+                                    label="Šifra dijagnoze"
                                     :rules="rules"
-                                    type="number"
                                     required
-                                    v-model="sifraLeka"
+                                    v-model="sifraDijagnoze"
                                 >
                                 </v-text-field>
                                 <v-text-field
-                                    label="Naziv leka"
+                                    label="Naziv dijagnoze"
                                     :rules="rules"
                                     required
-                                    v-model="nazivLeka"
+                                    v-model="nazivDijagnoze"
                                 >
                                 </v-text-field>
-                                <v-textarea
-                                    label="Opis leka"
-                                    :rules="rules"
-                                    required
-                                >
-                                </v-textarea>
                                 <v-row>
                                     <v-spacer>
             
                                     </v-spacer>
                                     <v-btn @click="registruj" color="success">
-                                        Registruj lek
+                                        Registruj dijagnozu
                                     </v-btn>
                                 </v-row>
                             </v-container>
@@ -48,38 +41,14 @@
 </template>
 
 <script>
-    /*
-     * Funkcija koja proverava da li se string sastoji samo od brojeva i slova
-     */
-    function isAlphaNumeric(str) {
-        var code, i, len;
-
-        for (i = 0, len = str.length; i < len; i++) {
-            code = str.charCodeAt(i);
-            if (!(code > 47 && code < 58) && // numeric (0-9)
-                !(code > 64 && code < 91) && // upper alpha (A-Z)
-                !(code > 96 && code < 123)) { // lower alpha (a-z)
-            return false;
-            }
-        }
-        return true;
-    }
-
     const axios = require('axios');
     export default {
-        name:"RegLekova",
+        name:"RegDijagnoza",
         data:function () {
             return {
                 rules:[v=>!!v||"Ovo polje je obavezno!"],
-                sifraRules:[
-                    v=>!!v||"Ovo polje je obavezno!"
-                    , v=>v.length!=12||"Šifra mora biti dužine 12 karaktera."
-                    , v=>v.toUpperCase()!=v||"Šifra mora sadržati samo velika slova."
-                    , v=>!isAlphaNumeric(v)||"Šifra mora sadržati samo brojeve i slova."
-                ],
-                sifraLeka:"",
-                nazivLeka:"",
-                opisLeka:""
+                sifraDijagnoze:"",
+                nazivDijagnoze:"",
             }
         },
         methods:{
@@ -87,9 +56,9 @@
                 if(!this.$refs.forma.validate()){
                     return;
                 }
-                axios.post("/lek", {nazivLeka:this.nazivLeka, opisLeka:this.opisLeka, sifraLeka:this.sifraLeka})
+                axios.post("/dijagnoza", {nazivDijagnoze:this.nazivDijagnoze, sifraDijagnoze:this.sifraDijagnoze})
                     .then(()=>{
-                        alert("Uspesno registrovan lek.");
+                        alert("Uspesno registrovana dijagnoza.");
                     })
                     .catch(error=>{
                         alert(error);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    

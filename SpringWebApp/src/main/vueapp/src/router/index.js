@@ -4,6 +4,10 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import Home from '../views/Home.vue';
 import HomeMed from '../views/HomeMed.vue';
+import PregledLekova from '../views/adminKlinickogCentra/PregledLekova.vue';
+import PregledDijagnoza from '../views/adminKlinickogCentra/PregledDijagnoza.vue';
+import PregledKlinika from '../views/adminKlinickogCentra/PregledKlinika.vue';
+import RegDijagnoza from '../views/adminKlinickogCentra/RegDijagnoza.vue';
 import RegLekova from '../views/adminKlinickogCentra/RegLekova.vue';
 import RegKlinika from '../views/adminKlinickogCentra/RegKlinika.vue';
 import RegTipKlinike from '../views/adminKlinickogCentra/RegTipKlinike.vue';
@@ -23,9 +27,29 @@ Vue.use(VueRouter, VueAxios, axios)
     component: HomeMed
   },
   {
+    path:"/pregledLekova",
+    name:"PregledLekova",
+    component:PregledLekova
+  },
+  {
+    path:"/pregledDijagnoza",
+    name:"PregledDijagnoza",
+    component:PregledDijagnoza
+  },
+  {
+    path:"/pregledKlinika",
+    name:"PregledKlinika",
+    component:PregledKlinika
+  },
+  {
     path:"/regLekova",
     name:"RegLekova",
     component:RegLekova
+  },
+  {
+    path:"/regDijagnoza",
+    name:"RegDijagnoza",
+    component:RegDijagnoza
   },
   {
     path:"/regKlinika",
