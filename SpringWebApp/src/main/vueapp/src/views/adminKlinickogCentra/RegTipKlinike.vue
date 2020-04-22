@@ -14,11 +14,12 @@
                                 <v-text-field
                                     label="Naziv specijalizacije klinike"
                                     :rules="rules"
+                                    v-model="tip"
+                                    required
                                 >
                                 </v-text-field>
                                 <v-row>
                                     <v-spacer>
-            
                                     </v-spacer>
                                     <v-btn @click="registruj" color="success">
                                         Registruj tip klinike
