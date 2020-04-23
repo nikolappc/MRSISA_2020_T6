@@ -121,6 +121,8 @@
             axios.get("/tipKlinike")
                 .then(res=>{
                     this.tipoviKlinika = res.data;
+                    console.log(this.tipoviKlinika);
+                    
                 })
                 .catch(error=>{
                     alert(error);

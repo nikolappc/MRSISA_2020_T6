@@ -25,7 +25,6 @@ import javax.persistence.Table;
 public class Dijagnoza {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "sifra", unique = true, nullable = false)
 	private Integer sifraDijagnoze;
 

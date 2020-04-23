@@ -79,6 +79,7 @@
             axios.get("/klinika")
                 .then(res=>{
                     this.klinike = res.data;
+                    console.log(this.klinike);
                 })
                 .catch(error=>{
                     alert(error);

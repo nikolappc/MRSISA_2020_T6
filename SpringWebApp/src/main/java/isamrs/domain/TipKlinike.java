@@ -15,6 +15,7 @@ public class TipKlinike {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
 
 	@Column(name = "tip", unique = true, nullable = false)

@@ -19,7 +19,6 @@ import javax.persistence.Table;
 @Table(name = "lekovi")
 public class Lek {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "sifra_leka", unique = true, nullable = false)
 	private Integer sifraLeka;
 	

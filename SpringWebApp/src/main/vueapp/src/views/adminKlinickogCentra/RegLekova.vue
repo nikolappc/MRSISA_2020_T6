@@ -28,6 +28,7 @@
                                     label="Opis leka"
                                     :rules="rules"
                                     required
+                                    v-model="opisLeka"
                                 >
                                 </v-textarea>
                                 <v-row>

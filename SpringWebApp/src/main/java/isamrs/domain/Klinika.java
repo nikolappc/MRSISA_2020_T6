@@ -29,42 +29,56 @@ public class Klinika {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
+	
 	@Column(name = "naziv", unique = true, nullable = false)
 	private String naziv;
+	
 	@Column(name = "adresa", unique = false, nullable = false)
 	private String adresa;
+	
 	@Column(name = "opis", unique = false, nullable = false)
 	private String opis;
+	
 	@OneToOne
 	public Cenovnik cenovnik ;
+	
 	@OneToOne
+	@JoinColumn(name = "tip_klinike_id", referencedColumnName = "id")
 	public TipKlinike tipKlinike;
 
-	@OneToMany
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_klinike")
 	public java.util.Collection<Lekar> lekari;
-	@OneToMany
+	
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_klinike")
 	public java.util.Collection<MedicinskaSestra> sestre;
-	@OneToMany
+	
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_klinike")
 	public java.util.Collection<Sala> sala;
-	@OneToMany
+	
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_klinike")
 	public java.util.Collection<Pacijent> pacijent;
-	@OneToMany
+	
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_klinike")
 	public java.util.Collection<Pregled> pregledi;
-	@OneToMany
+	
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_klinike")
 	public java.util.Collection<Operacija> operacije;
-	@OneToMany
+	
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_klinike")
 	public java.util.Collection<TipPosete> tipPosete;
-	@OneToMany
+	
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_klinike")
 	public java.util.Collection<Ocena> ocena;
-	@OneToMany
+	
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_klinike")
 	public java.util.Collection<AdministratorKlinike> administratorKlinike;
 	/*
