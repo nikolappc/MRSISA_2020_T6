@@ -16,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -31,9 +32,9 @@ public class Dijagnoza {
 	@Column(name = "naziv", unique = false, nullable = false)
 	private String nazivDijagnoze;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_pregleda")
-	private Pregled pregled;
+	private Collection<Pregled> pregled;
 
 	public Dijagnoza() {
 		super();

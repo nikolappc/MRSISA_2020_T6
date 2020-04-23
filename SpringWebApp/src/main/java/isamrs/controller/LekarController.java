@@ -16,23 +16,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import isamrs.domain.Lekar;
-import isamrs.service.LekarServiceImpl;
+import isamrs.dto.OsobaDTO;
+import isamrs.service.LekarService;
 @RestController
 @RequestMapping("/lekar")
 public class LekarController {
 	
 	@Autowired
-	private LekarServiceImpl lekarService;
+	private LekarService lekarService;
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Lekar>> getLekars() {
-		Collection<Lekar> lekari = lekarService.findAll();
-		return new ResponseEntity<Collection<Lekar>>(lekari, HttpStatus.OK);
+	public ResponseEntity<Collection<OsobaDTO>> getLekars() {
+		Collection<OsobaDTO> lekari = lekarService.findAll();
+		return new ResponseEntity<Collection<OsobaDTO>>(lekari, HttpStatus.OK);
 	}
 
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Lekar> getLekar(@PathVariable("id") Long id) {
+	public ResponseEntity<Lekar> getLekar(@PathVariable("id") Integer id) {
 		Lekar lekar = lekarService.findOne(id);
 
 		if (lekar == null) {
@@ -50,7 +51,7 @@ public class LekarController {
 
 
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Lekar> updateLekar(@RequestBody Lekar lekar, @PathVariable Long id)
+	public ResponseEntity<Lekar> updateLekar(@RequestBody Lekar lekar, @PathVariable Integer id)
 			throws Exception {
 		
 		Lekar updatedLekar = lekarService.update(id,lekar);
@@ -61,8 +62,12 @@ public class LekarController {
 	 * url: /api/Lekars/1 DELETE
 	 */
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Lekar> deleteLekar(@PathVariable("id") Long id) {
-		lekarService.delete(id);
+	public ResponseEntity<Lekar> deleteLekar(@PathVariable("id") Integer id) {
+		try {
+			lekarService.delete(id);
+		} catch (Exception e) {
+			return new ResponseEntity<Lekar>(HttpStatus.FORBIDDEN);
+		}
 		return new ResponseEntity<Lekar>(HttpStatus.NO_CONTENT);
 	}
 	

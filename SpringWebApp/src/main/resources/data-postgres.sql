@@ -16,9 +16,9 @@ insert into lekari (id, adresa, broj_telefona, email, ime, jbo, password, prezim
 
 insert into godisnji_odmori (id, kraj, pocetak, id_lekara) values (0, to_timestamp('2020-03-10', 'YYYY-MM-DD'), to_timestamp('2020-03-03', 'YYYY-MM-DD'), 0);
 
-insert into lekovi (sifra_leka) values (0);
-insert into lekovi (sifra_leka) values (1);
-insert into lekovi (sifra_leka) values (2);
+insert into lekovi (sifra_leka, naziv_leka) values (0, 'Bromazepam');
+insert into lekovi (sifra_leka, naziv_leka) values (1, 'Bensedin');
+insert into lekovi (sifra_leka, naziv_leka) values (2, 'Brufen');
 
 insert into termini (id, kraj, pocetak) values (0, to_timestamp('2020-03-20 08:00', ' YYYY-MM-DD HH:MI'), to_timestamp('2020-03-20 09:00', ' YYYY-MM-DD HH:MI'));
 insert into termini (id, kraj, pocetak) values (1, to_timestamp('2020-03-20 09:00', ' YYYY-MM-DD HH:MI'), to_timestamp('2020-03-20 10:00', ' YYYY-MM-DD HH:MI'));
@@ -48,8 +48,8 @@ insert into operacije (id, ime, id_sale, id_termina, id_tipa_posete, id_kartona,
 insert into recepti (id, overen, id_recepta, id_pregleda) values (0, false, 0, 0);
 insert into recepti (id, overen, id_recepta, id_pregleda) values (1, true, 1, 1);
 
-insert into dijagnoze (sifra, naziv, id_pregleda, id_kartona) values (0, 'Covid-19', 0, 0);
-insert into dijagnoze (sifra, naziv, id_pregleda, id_kartona) values (1, 'Depresija', 1, 1);
+insert into dijagnoze (sifra, naziv, id_kartona) values (0, 'Covid-19', 0);
+insert into dijagnoze (sifra, naziv, id_kartona) values (1, 'Depresija', 1);
 
 insert into stavke_cenovnika (id, cena, id_cenovnik, id_tipa_posete) values (0, 10.5, 0, 0);
 

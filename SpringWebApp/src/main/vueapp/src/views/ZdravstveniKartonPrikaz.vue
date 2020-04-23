@@ -58,7 +58,7 @@
 import axios from 'axios';
 import moment from 'moment';
 export default {
-  name: 'ProfilPacijenta',
+  name: 'ZdravstveniKartonPrikaz',
   data: () => ({
     ulogovan : {},
     pregledi : [],
