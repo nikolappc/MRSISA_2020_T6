@@ -15,8 +15,8 @@ import isamrs.domain.Pacijent;
 
 @Repository
 public class PacijentRepositoryCustomImpl implements PacijentRepositoryCustom{
-	//private final Pacijent ulogovani = new Pacijent("Harry", "Potter", "harry12345", "065/823-115", "000", "Hogwarts", "harry@gmail.com", 1);
-	private final Pacijent ulogovani = new Pacijent("Ron", "Weasley", "ron12345", "065/823-115", "000", "Hogwarts", "ron@gmail.com", 2);
+	private final Pacijent ulogovani = new Pacijent("Harry", "Potter", "harry12345", "065/823-115", "000", "Hogwarts", "harry@gmail.com", 1);
+	//private final Pacijent ulogovani = new Pacijent("Ron", "Weasley", "ron12345", "065/823-115", "000", "Hogwarts", "ron@gmail.com", 2);
 
 	@Override
 	public Pacijent getPacijent() {

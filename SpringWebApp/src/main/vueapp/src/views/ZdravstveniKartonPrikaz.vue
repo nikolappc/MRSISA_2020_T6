@@ -26,6 +26,8 @@
 					<th>Pocetak</th>
 					<th>Kraj</th>
 					<th>Tip</th>
+          <th>Dijagnoze</th>
+          <th>Recepti</th>
         </thead>
         <tbody>
 					<tr v-for="p in this.pregledi" v-bind:key="p.id">
@@ -35,6 +37,16 @@
 							<td>{{ formatDate(p.termin.pocetak) }}</td>
 							<td>{{ formatDate(p.termin.kraj) }}</td>
 							<td>{{ p.tip.tip }}</td>
+              <td>
+                <ul v-for="d in p.dijagnoze" v-bind:key="d.sifraDijagnoze">
+                  <li>{{ d.sifraDijagnoze }}</li>
+                </ul>
+              </td>
+              <td>
+                <ul v-for="r in p.recepti" v-bind:key="r.id">
+                  <li>{{ r.lek.sifraLeka }} {{ overenRecept(r.overen) }}</li>
+                </ul>
+              </td>
           </tr>
         </tbody>
       </v-simple-table>
@@ -73,7 +85,14 @@ export default {
 	methods: {
     formatDate(value) {
 			return moment(String(value)).format('YYYY MM DD HH:mm');
-		}
+		},
+    overenRecept(value) {
+      if (value == true) {
+        return "(overen)";
+      } else {
+        return "(nije overen)";
+      }
+    }
   },
 }
 </script>
