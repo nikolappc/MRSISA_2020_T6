@@ -16,6 +16,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "operacije")
 public class Operacija extends Poseta {
@@ -23,6 +25,7 @@ public class Operacija extends Poseta {
 	@ManyToMany
 	@JoinTable(name = "lekari_operacije", joinColumns = { @JoinColumn(name = "operacija_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "lekar_id") })
+	@JsonBackReference
 	public java.util.Collection<Lekar> lekari;
 
 	public Operacija() {

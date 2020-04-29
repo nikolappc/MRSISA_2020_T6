@@ -16,16 +16,16 @@ public class TipKlinike {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
-	private Integer id;
+	private Long id;
 
 	@Column(name = "tip", unique = true, nullable = false)
 	private String tip;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -37,7 +37,7 @@ public class TipKlinike {
 		this.tip = tip;
 	}
 
-	public TipKlinike(Integer id, String tip) {
+	public TipKlinike(Long id, String tip) {
 		super();
 		this.id = id;
 		this.tip = tip;

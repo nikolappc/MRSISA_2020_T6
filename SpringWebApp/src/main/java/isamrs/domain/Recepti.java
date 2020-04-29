@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name="recepti")
 public class Recepti {
@@ -30,6 +32,7 @@ public class Recepti {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_pregleda")
+	@JsonBackReference
 	private Pregled pregled;
 
 	public Lek getLek() {

@@ -22,6 +22,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "klinike")
 public class Klinika {
@@ -48,38 +51,55 @@ public class Klinika {
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_klinike")
+//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	public java.util.Collection<Lekar> lekari;
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_klinike")
+//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
+	@JsonManagedReference
 	public java.util.Collection<MedicinskaSestra> sestre;
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_klinike")
+	@JsonManagedReference
+//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	public java.util.Collection<Sala> sala;
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_klinike")
+//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
+	@JsonManagedReference
 	public java.util.Collection<Pacijent> pacijent;
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_klinike")
+//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
+	@JsonManagedReference
 	public java.util.Collection<Pregled> pregledi;
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_klinike")
+//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
+	@JsonManagedReference
 	public java.util.Collection<Operacija> operacije;
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_klinike")
+//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
+	@JsonManagedReference
 	public java.util.Collection<TipPosete> tipPosete;
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_klinike")
+//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
+	@JsonManagedReference
 	public java.util.Collection<Ocena> ocena;
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_klinike")
+//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
+	@JsonManagedReference
 	public java.util.Collection<AdministratorKlinike> administratorKlinike;
 	/*
 	 * @OneToOne
@@ -122,6 +142,14 @@ public class Klinika {
 	 * public void removeAllMedicniskoOsoblje() { if (medicniskoOsoblje != null)
 	 * medicniskoOsoblje.clear(); }
 	 */
+
+	public Klinika(String naziv, String adresa, String opis, TipKlinike tipKlinike) {
+		// TODO Auto-generated constructor stub
+		this.naziv = naziv;
+		this.adresa = adresa;
+		this.opis = opis;
+		this.tipKlinike = tipKlinike;
+	}
 
 	/** @pdGenerated default getter */
 	public java.util.Collection<Sala> getSala() {
@@ -446,5 +474,71 @@ public class Klinika {
 	public void setTipKlinike(TipKlinike newTipKlinike) {
 		this.tipKlinike = newTipKlinike;
 	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getNaziv() {
+		return naziv;
+	}
+
+	public void setNaziv(String naziv) {
+		this.naziv = naziv;
+	}
+
+	public String getAdresa() {
+		return adresa;
+	}
+
+	public void setAdresa(String adresa) {
+		this.adresa = adresa;
+	}
+
+	public String getOpis() {
+		return opis;
+	}
+
+	public void setOpis(String opis) {
+		this.opis = opis;
+	}
+
+	public java.util.Collection<Lekar> getLekari() {
+		return lekari;
+	}
+
+	public void setLekari(java.util.Collection<Lekar> lekari) {
+		this.lekari = lekari;
+	}
+
+	public java.util.Collection<MedicinskaSestra> getSestre() {
+		return sestre;
+	}
+
+	public void setSestre(java.util.Collection<MedicinskaSestra> sestre) {
+		this.sestre = sestre;
+	}
+
+	public java.util.Collection<Pregled> getPregledi() {
+		return pregledi;
+	}
+
+	public void setPregledi(java.util.Collection<Pregled> pregledi) {
+		this.pregledi = pregledi;
+	}
+
+	public java.util.Collection<Operacija> getOperacije() {
+		return operacije;
+	}
+
+	public void setOperacije(java.util.Collection<Operacija> operacije) {
+		this.operacije = operacije;
+	}
+	
+	
 
 }

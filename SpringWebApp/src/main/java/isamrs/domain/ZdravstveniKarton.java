@@ -14,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "zdravstveni_kartoni")
 public class ZdravstveniKarton {
@@ -33,6 +35,7 @@ public class ZdravstveniKarton {
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name="id_kartona")
+	@JsonBackReference
 	public Collection<Pregled> pregledi;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -40,6 +43,7 @@ public class ZdravstveniKarton {
 	public Collection<Dijagnoza> dijagnoza;
 	
 	@OneToOne(mappedBy = "zdravstveniKarton")
+	@JsonBackReference
 	public Pacijent pacijent;
 
 	
