@@ -2,7 +2,6 @@ package isamrs.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,9 +9,9 @@ import org.springframework.stereotype.Service;
 import isamrs.domain.Pregled;
 import isamrs.domain.Sala;
 import isamrs.dto.SalaTerminiDTO;
+import isamrs.dto.TerminDTO;
 import isamrs.repository.PregledRepository;
 import isamrs.repository.SalaRepository;
-import net.bytebuddy.implementation.bytecode.Throw;
 
 @Service
 public class SalaService {
@@ -23,9 +22,26 @@ public class SalaService {
 	@Autowired
 	private PregledRepository pregledRepo;
 	
+	
 	public Collection<Sala> findAll() {
-		
+	
 		return salaRepo.findAll();
+	}
+	
+	
+	public Collection<SalaTerminiDTO> findAllDTO(){
+		ArrayList<SalaTerminiDTO> lista = new ArrayList<SalaTerminiDTO>();
+		
+		for (Sala s : salaRepo.findAll()) {
+			ArrayList<TerminDTO> pregledi = new ArrayList<TerminDTO>();
+			for(Pregled p : pregledRepo.findBySala(s)) {
+				pregledi.add(new TerminDTO(p)); 
+			}
+			
+			lista.add(new SalaTerminiDTO(s, pregledi));
+		}
+		
+		return lista;
 	}
 
 	public Sala findOne(Integer id) {

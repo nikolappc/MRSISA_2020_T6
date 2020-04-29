@@ -8,7 +8,7 @@
                 max-width="600"
                 >
                 <v-card>
-                    <Kalendar />
+                    <Kalendar v-bind:events="termini"/>
                 </v-card>
                 
       </v-dialog>
@@ -24,7 +24,7 @@ export default {
     data: () => ({
         dialog : false
     }),
-    props: ["sala"],
+    props: ["sala","termini"],
     methods: {
       deleteSala: function(){
         axios

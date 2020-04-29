@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import isamrs.domain.Pregled;
+import isamrs.domain.Sala;
 import isamrs.repository.PacijentRepository;
 import isamrs.repository.PregledRepository;
 
@@ -51,6 +52,7 @@ public class PregledServiceImpl implements PregledService {
 	public List<Pregled> findByKartonId(Integer id) {
 		return pregledRepository.findByIdKarton(id);
 	}
+
 	
 
 }

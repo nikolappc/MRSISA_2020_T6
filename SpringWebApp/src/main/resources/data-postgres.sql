@@ -2,6 +2,12 @@ insert into administratori_klinickog_centra (id, adresa, broj_telefona, email, i
 
 insert into cenovnici (id) values (0);
 
+insert into stavke_cenovnika (cena, id_cenovnik) values (10.5, 0);
+insert into stavke_cenovnika (cena, id_cenovnik) values (20, 0);
+insert into stavke_cenovnika (cena, id_cenovnik) values (30, 0);
+insert into stavke_cenovnika (cena, id_cenovnik) values (40, 0);
+insert into stavke_cenovnika (cena, id_cenovnik) values (50, 0);
+
 insert into zdravstveni_kartoni (id, visina, tezina, krvna_grupa) values (0, 1.6, 60, 'A+');
 insert into zdravstveni_kartoni (id, visina, tezina, krvna_grupa) values (1, 1.7, 70, 'B-');
 insert into zdravstveni_kartoni (id, visina, tezina, krvna_grupa) values (2, 1.8, 80, '0+');
@@ -38,8 +44,8 @@ insert into radna_vremena (id, kraj, pocetak, id_lekara) values (0, to_timestamp
 insert into sale (id, naziv, id_klinike) values (0, 'sala 1', 0);
 insert into sale (id, naziv, id_klinike) values (1, 'operaciona', 0);
 
-insert into tipovi_posete (id, tip, id_klinike) values (0, 1, 0);
-insert into tipovi_posete (id, tip, id_klinike) values (1, 0, 0);
+insert into tipovi_posete (id, tip, id_klinike, id_stavke, naziv) values (0, 1, 0, 2,'Super specijalni pregled');
+insert into tipovi_posete (id, tip, id_klinike, id_stavke,naziv) values (1, 0, 0, 1,'Super specijalna operacija');
 
 insert into pregled (id, ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike) values (0, 'korona test', 0, 0, 0, 0, 1, 0);
 insert into pregled (id, ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike) values (1, 'terapija', 0, 1, 0, 1, 1, 0);
@@ -51,7 +57,7 @@ insert into recepti (id, overen, id_recepta, id_pregleda) values (1, true, 1, 1)
 insert into dijagnoze (sifra, naziv, id_kartona) values (0, 'Covid-19', 0);
 insert into dijagnoze (sifra, naziv, id_kartona) values (1, 'Depresija', 1);
 
-insert into stavke_cenovnika (id, cena, id_cenovnik, id_tipa_posete) values (0, 10.5, 0, 0);
+
 
 insert into medicinske_sestre_overeni_recepti (medicinska_sestra_id, overeni_recepti_id) values (0, 1);
 
