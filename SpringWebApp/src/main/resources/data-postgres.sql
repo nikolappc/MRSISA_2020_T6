@@ -23,7 +23,6 @@ insert into lekovi (sifra_leka, naziv_leka) values (2, 'Brufen');
 insert into termini (id, kraj, pocetak) values (0, to_timestamp('2020-03-20 08:00', ' YYYY-MM-DD HH:MI'), to_timestamp('2020-03-20 09:00', ' YYYY-MM-DD HH:MI'));
 insert into termini (id, kraj, pocetak) values (1, to_timestamp('2020-03-20 09:00', ' YYYY-MM-DD HH:MI'), to_timestamp('2020-03-20 10:00', ' YYYY-MM-DD HH:MI'));
 insert into termini (id, kraj, pocetak) values (2, to_timestamp('2020-03-20 08:00', ' YYYY-MM-DD HH:MI'), to_timestamp('2020-03-20 10:00', ' YYYY-MM-DD HH:MI'));
-
 insert into medicinske_sestre (id, adresa, broj_telefona, email, ime, jbo, password, prezime, id_klinike) values (0, 'Godrics Hollow', '064/123-114', 'evans@gmail.com', 'Lily', '000', 'lily12345', 'Evans', 0);
 
 insert into ocene (id, vrednost, id_lekara) values (0, 10, 0);
@@ -40,10 +39,11 @@ insert into sale (id, naziv, id_klinike) values (0, 'sala 1', 0);
 insert into sale (id, naziv, id_klinike) values (1, 'operaciona', 0);
 
 insert into tipovi_posete (id, tip, id_klinike) values (0, 1, 0);
+insert into tipovi_posete (id, tip, id_klinike) values (1, 0, 0);
 
 insert into pregled (id, ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike) values (0, 'korona test', 0, 0, 0, 0, 1, 0);
 insert into pregled (id, ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike) values (1, 'terapija', 0, 1, 0, 1, 1, 0);
-insert into operacije (id, ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike) values (0, 'slijepo crijevo', 1, 2, 0, 2, 0);
+insert into operacije (id, ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike) values (0, 'slijepo crijevo', 1, 2, 1, 2, 0);
 
 insert into recepti (id, overen, id_recepta, id_pregleda) values (0, false, 0, 0);
 insert into recepti (id, overen, id_recepta, id_pregleda) values (1, true, 1, 1);
@@ -57,3 +57,5 @@ insert into medicinske_sestre_overeni_recepti (medicinska_sestra_id, overeni_rec
 
 insert into lekari_operacije (operacija_id, lekar_id) values (0, 0);
 
+insert into dijagnoze_pregled (dijagnoza_sifra, pregled_id) values (0, 0);
+insert into dijagnoze_pregled (dijagnoza_sifra, pregled_id) values (1, 1);

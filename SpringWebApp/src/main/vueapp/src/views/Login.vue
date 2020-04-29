@@ -57,7 +57,7 @@ export default {
     methods: {
         login: function() {
             axios
-            .post('login',{ username: this.username, password: this.password})
+            .post('api/login',{ username: this.username, password: this.password})
             .then(() => {
                 router.push("/");
             })

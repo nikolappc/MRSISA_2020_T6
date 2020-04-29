@@ -1,19 +1,44 @@
 <template>
   <div class="home">
     <v-container>
-      <h1>Hello world!</h1>
-      <v-btn :to="{path: 'profilPacijenta'}" dark medium left class="blue" slot="action">Profil pacijenta</v-btn>
-      <v-btn :to="{path: 'lekari'}" dark medium left class="blue" slot="action">Lista lekara</v-btn>
-      <v-btn :to="{path: 'zdravstveniKartonPrikaz'}" dark medium left class="blue" slot="action">Zdravstveni karton</v-btn>
-    </v-container>
+      <h1>Klinicki centar</h1>
+      
+	</v-container>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
+import axios from 'axios';
+import router from "../router/index.js"
 
 export default {
   name: 'Home',
+   data: () => ({
+    ulogovan : {},
+  }),
+  mounted () {
+      axios
+      .get('api/ulogovan')
+      .then(response => {
+          this.ulogovan = response.data;
+          if (this.ulogovan.tip == "PACIJENT") {
+            router.push("/homePacijent");
+          } else if (this.ulogovan.tip == "LEKAR") {
+            router.push("/homeLekar");
+          }
+          else if (this.ulogovan.tip == "SESTRA") {
+            router.push("/homeMed");
+          }
+          else if (this.ulogovan.tip == "ADMIN_K") {
+            router.push("/homeAdminKlinike");
+          }
+          else {
+            router.push("/homeAdminKC");
+          }
+      })
+      .catch(function (error) { console.log(error); router.push("/loginPage"); });
+  }
   
 }
 </script>

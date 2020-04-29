@@ -10,7 +10,23 @@ import java.util.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 @Entity
 @Table(name = "administratori_klinickog_centra")
 public class AdministratorKlinickogCentra extends Osoba {
+	
+	@Transient
+	public String tip = "ADMIN_KC";
+	
+	public AdministratorKlinickogCentra() {
+		this.setTip("ADMIN_KC");
+	}
+
+	public AdministratorKlinickogCentra(String ime, String prezime, String password, String brojTelefona, String jbo, String adresa,
+			String email, Integer id) {
+		super(ime, prezime, password, brojTelefona, jbo, adresa, email, id);
+		this.setTip("ADMIN_KC");
+	}
+
 }

@@ -2,7 +2,7 @@
   <div class="zdravstveniKartonPrikaz">
     <v-container>
 			<h2>Zdravstveni karton</h2>
-			<h4>{{ ulogovan.ime }} {{ ulogovan.prezime }}</h4>
+			<h4>{{ ulogovan.ime }} {{ ulogovan.prezime }} {{ ulogovan.tip }}</h4>
       <v-simple-table>
         <tbody>
           <tr>
@@ -28,6 +28,7 @@
 					<th>Tip</th>
           <th>Dijagnoze</th>
           <th>Recepti</th>
+          <th>Lekari</th>
         </thead>
         <tbody>
 					<tr v-for="p in this.pregledi" v-bind:key="p.id">
@@ -38,14 +39,34 @@
 							<td>{{ formatDate(p.termin.kraj) }}</td>
 							<td>{{ p.tip.tip }}</td>
               <td>
-                <ul v-for="d in p.dijagnoze" v-bind:key="d.sifraDijagnoze">
-                  <li>{{ d.sifraDijagnoze }}</li>
-                </ul>
+                <div v-if="p.hasOwnProperty('dijagnoze')">
+                  <ul v-for="d in p.dijagnoze" v-bind:key="d.sifraDijagnoze">
+                    <li>{{ d.nazivDijagnoze }}</li>
+                  </ul>
+                </div>
+                <div v-else>
+                  -
+                </div>
               </td>
               <td>
-                <ul v-for="r in p.recepti" v-bind:key="r.id">
-                  <li>{{ r.lek.sifraLeka }} {{ overenRecept(r.overen) }}</li>
-                </ul>
+                <div v-if="p.hasOwnProperty('recepti')">
+                  <ul v-for="r in p.recepti" v-bind:key="r.id">
+                    <li>{{ r.lek.nazivLeka }} {{ overenRecept(r.overen) }}</li>
+                  </ul>
+                </div>
+                <div v-else>
+                  -
+                </div>
+              </td>
+              <td>
+                <div v-if="p.hasOwnProperty('lekar')">
+                  {{ p.lekar }}
+                </div>
+                <div v-else>
+                  <ul v-for="r in p.lekari" v-bind:key="r">       <!-- id stringova?? -->
+                    <li>{{ r }}</li>
+                  </ul>
+                </div>
               </td>
           </tr>
         </tbody>
@@ -57,6 +78,8 @@
 <script>
 import axios from 'axios';
 import moment from 'moment';
+import router from "../router/index.js"
+
 export default {
   name: 'ZdravstveniKartonPrikaz',
   data: () => ({
@@ -66,7 +89,7 @@ export default {
   }),
   mounted () {
       axios
-      .get('api/pacijent/ulogovan')
+      .get('api/ulogovan')
       .then(response => {
           this.ulogovan = response.data;
           axios
@@ -80,7 +103,7 @@ export default {
               this.karton = response.data;
           });
       })
-      .catch(function (error) { console.log(error); });
+      .catch(function (error) { console.log(error); router.push("/"); });
 	},
 	methods: {
     formatDate(value) {

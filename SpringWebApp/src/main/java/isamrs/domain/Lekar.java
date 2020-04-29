@@ -18,6 +18,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -46,9 +48,13 @@ public class Lekar extends Osoba {
 			@JoinColumn(name = "operacija_id") })
 	@JsonBackReference
 	public Collection<Operacija> operacije;
+	
+	@Transient
+	public String tip = "LEKAR";
 
 	public Lekar() {
 		super();
+		this.setTip("LEKAR");
 	}
 
 	/** @pdGenerated default getter */
@@ -187,6 +193,7 @@ public class Lekar extends Osoba {
 		this.radnoVreme = newRadnoVreme;
 	}
 
+	
 
 
 }

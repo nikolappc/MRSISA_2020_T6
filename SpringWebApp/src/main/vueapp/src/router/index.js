@@ -12,7 +12,12 @@ import RegLekova from '../views/adminKlinickogCentra/RegLekova.vue';
 import RegKlinika from '../views/adminKlinickogCentra/RegKlinika.vue';
 import RegTipKlinike from '../views/adminKlinickogCentra/RegTipKlinike.vue';
 import ProfilPacijentaIzmjena from '../views/ProfilPacijentaIzmjena.vue';
+import HomePacijent from '../views/HomePacijent.vue';
+import HomeLekar from '../views/HomeLekar.vue';
+import HomeAdminKlinike from '../views/HomeAdminKlinike.vue';
+import HomeAdminKC from '../views/HomeAdminKC.vue';
 import ZdravstveniKartonPrikaz from '../views/ZdravstveniKartonPrikaz.vue';
+
 Vue.use(VueRouter, VueAxios, axios)
 
   const routes = [
@@ -98,7 +103,7 @@ Vue.use(VueRouter, VueAxios, axios)
     component: () => import('../views/lekar/ListaLekara.vue')
   },
   {
-    path: '/login',
+    path: '/loginPage',
     name: 'Login',
     component: () => import('../views/Login.vue')
   
@@ -113,8 +118,27 @@ Vue.use(VueRouter, VueAxios, axios)
     path: '/sala/add',
     name: 'AddSala',
     component: () => import('../views/sala/AddSala.vue')
-
-  }
+  },
+  {
+    path:"/homePacijent",
+    name:"HomePacijent",
+    component:HomePacijent
+  },
+  {
+    path:"/homeLekar",
+    name:"HomeLekar",
+    component:HomeLekar
+  },
+  {
+    path:"/homeAdminKlinike",
+    name:"HomeAdminKlinike",
+    component:HomeAdminKlinike
+  },
+  {
+    path:"/homeAdminKC",
+    name:"HomeAdminKC",
+    component:HomeAdminKC
+  },
   
 ]
 

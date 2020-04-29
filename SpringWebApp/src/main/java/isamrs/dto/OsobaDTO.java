@@ -14,6 +14,7 @@ public class OsobaDTO {
 	private String jbo;
 	private String adresa;
 	private String email;
+	private String tip;
 	
 	public OsobaDTO() {
 		
@@ -29,6 +30,7 @@ public class OsobaDTO {
 		this.adresa = o.getAdresa();
 		this.email = o.getEmail();
 		this.id = new Integer(o.getId());
+		this.tip = o.getTip();
 	}
 	
 	
@@ -83,6 +85,12 @@ public class OsobaDTO {
 		this.email = email;
 	}
 	
+	public String getTip() {
+		return tip;
+	}
+	public void setTip(String tip) {
+		this.tip = tip;
+	}
 	
 	
 }

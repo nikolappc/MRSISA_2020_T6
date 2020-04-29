@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import isamrs.domain.Lekar;
 import isamrs.domain.Osoba;
+import isamrs.domain.Pacijent;
 import isamrs.dto.OsobaDTO;
 import isamrs.repository.LekarRepository;
 
@@ -43,6 +44,10 @@ public class LekarService {
 
 	public void delete(Integer id) throws Exception {
 		lekarRepo.deleteById(id);
+	}
+	
+	public Lekar findByEmail(String email) {
+		return lekarRepo.findByEmail(email);
 	}
 
 	
