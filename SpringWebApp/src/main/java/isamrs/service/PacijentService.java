@@ -6,8 +6,10 @@ import isamrs.domain.Pacijent;
 
 
 public interface PacijentService {
-	Pacijent getPacijent();
+	/*Pacijent getPacijent();
 	void izmijeniUlogovanog(Pacijent novi);
+	*/
 	Pacijent findOne(int id);
 	Pacijent save(Pacijent pacijent);
+	Pacijent findByEmail(String email);
 }

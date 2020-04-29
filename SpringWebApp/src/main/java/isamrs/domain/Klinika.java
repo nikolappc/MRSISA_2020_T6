@@ -22,6 +22,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "klinike")
 public class Klinika {
@@ -58,6 +60,7 @@ public class Klinika {
 	@JoinColumn(name = "id_klinike")
 	public java.util.Collection<Sala> sala;
 	
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_klinike")
 	public java.util.Collection<Pacijent> pacijent;

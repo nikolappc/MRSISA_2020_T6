@@ -18,6 +18,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 
 @Entity
 @Table(name = "lekari")
@@ -42,9 +44,13 @@ public class Lekar extends Osoba {
 	@JoinTable(name = "lekari_operacije", joinColumns = { @JoinColumn(name = "lekar_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "operacija_id") })
 	public Collection<Operacija> operacije;
+	
+	@Transient
+	public String tip = "LEKAR";
 
 	public Lekar() {
 		super();
+		this.setTip("LEKAR");
 	}
 
 	/** @pdGenerated default getter */
@@ -183,6 +189,7 @@ public class Lekar extends Osoba {
 		this.radnoVreme = newRadnoVreme;
 	}
 
+	
 
 
 }

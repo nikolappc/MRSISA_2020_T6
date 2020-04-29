@@ -1,12 +1,16 @@
 package isamrs.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import isamrs.domain.Pacijent;
+import isamrs.domain.Pregled;
 
 @Repository
-public interface PacijentRepository extends JpaRepository<Pacijent, Integer>, PacijentRepositoryCustom{
-
+public interface PacijentRepository extends JpaRepository<Pacijent, Integer>{
+	@Query("SELECT p FROM Pacijent p WHERE p.email = ?1")
+	public Pacijent findByEmail(String email);
 }

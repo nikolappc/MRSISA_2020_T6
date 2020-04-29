@@ -13,6 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 
 @Entity
 @Table(name = "medicinske_sestre")
@@ -26,9 +28,13 @@ public class MedicinskaSestra extends Osoba {
 	@OneToMany
 	@JoinColumn(name = "id_sestre")
 	public Collection<RadnoVreme> radnoVreme;
+	
+	@Transient
+	public String tip = "SESTRA";
 
 	public MedicinskaSestra() {
 		super();
+		this.setTip("SESTRA");
 	}
 
 	/** @pdGenerated default getter */
@@ -153,5 +159,10 @@ public class MedicinskaSestra extends Osoba {
 	public void setRadnoVreme(Collection<RadnoVreme> newRadnoVreme) {
 		this.radnoVreme = newRadnoVreme;
 	}
+	
+	
+	
+	
+	
 
 }

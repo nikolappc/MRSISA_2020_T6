@@ -14,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "zdravstveni_kartoni")
 public class ZdravstveniKarton {
@@ -39,6 +41,7 @@ public class ZdravstveniKarton {
 	@JoinColumn(name="id_kartona")
 	public Collection<Dijagnoza> dijagnoza;
 	
+	@JsonIgnore
 	@OneToOne(mappedBy = "zdravstveniKarton")
 	public Pacijent pacijent;
 

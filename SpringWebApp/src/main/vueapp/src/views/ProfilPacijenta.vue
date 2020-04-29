@@ -40,6 +40,8 @@
 
 <script>
 import axios from 'axios';
+import router from "../router/index.js"
+
 export default {
   name: 'ProfilPacijenta',
   data: () => ({
@@ -47,11 +49,11 @@ export default {
   }),
   mounted () {
       axios
-      .get('api/pacijent/ulogovan')
+      .get('api/ulogovan')
       .then(response => {
           this.ulogovan = response.data;
       })
-      .catch(function (error) { console.log(error); });
+      .catch(function (error) { console.log(error); router.push("/"); });
   }
 }
 </script>

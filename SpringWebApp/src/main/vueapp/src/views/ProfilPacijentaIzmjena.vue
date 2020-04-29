@@ -109,7 +109,7 @@ export default {
       
   mounted () {
       axios
-      .get('api/pacijent/ulogovan')
+      .get('api/ulogovan')
       .then(response => {
           this.ulogovan = response.data;
           this.izmijenjen.id = response.data.id;
@@ -121,7 +121,7 @@ export default {
           this.novaSifra = response.data.password;
           this.novaSifraPotvrda = response.data.password;
       })
-      .catch(function (error) { console.log(error); });
+      .catch(function (error) { console.log(error); router.push("/"); });
       
 
   },

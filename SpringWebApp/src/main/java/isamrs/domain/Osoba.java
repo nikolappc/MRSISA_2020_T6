@@ -11,11 +11,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
+
 
 //@Entity
 //@Inheritance(strategy = TABLE_PER_CLASS)
 @MappedSuperclass
-public abstract class Osoba {
+public abstract class Osoba{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,7 +43,11 @@ public abstract class Osoba {
 
 	@Column(name = "email", unique = true, nullable = false)
 	private String email;
-
+	
+	@Transient
+	private String tip;
+	
+	
 	public Osoba() {
 	}
 
@@ -56,6 +62,14 @@ public abstract class Osoba {
 		this.adresa = adresa;
 		this.email = email;
 		this.id = id;
+	}
+	
+	public String getTip() {
+		return tip;
+	}
+
+	public void setTip(String tip) {
+		this.tip = tip;
 	}
 
 	public String getIme() {
@@ -165,6 +179,6 @@ public abstract class Osoba {
 				+ ", brojTelefona=" + brojTelefona + ", jbo=" + jbo + ", adresa=" + adresa + ", email=" + email + "]";
 	}
 	
-	
 
+	
 }
