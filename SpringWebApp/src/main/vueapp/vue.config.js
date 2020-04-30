@@ -6,5 +6,5 @@ module.exports = {
   ],
 
   outputDir: path.resolve(__dirname,'..\\resources\\static'),
-  // publicPath:""
+  publicPath:""
 }

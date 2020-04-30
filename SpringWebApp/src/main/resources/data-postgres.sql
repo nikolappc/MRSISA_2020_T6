@@ -6,6 +6,12 @@ insert into zdravstveni_kartoni (id, visina, tezina, krvna_grupa) values (1, 1.6
 insert into zdravstveni_kartoni (id, visina, tezina, krvna_grupa) values (2, 1.7, 70, 'B-');
 insert into zdravstveni_kartoni (id, visina, tezina, krvna_grupa) values (3, 1.8, 80, '0+');
 
+insert into stavke_cenovnika (cena, id_cenovnik) values (10.5, 1);
+insert into stavke_cenovnika (cena, id_cenovnik) values (20, 1);
+insert into stavke_cenovnika (cena, id_cenovnik) values (30, 1);
+insert into stavke_cenovnika (cena, id_cenovnik) values (40, 1);
+insert into stavke_cenovnika (cena, id_cenovnik) values (50, 1);
+
 insert into tipovi_klinike (id, tip) values (1, 'tip 1');
 insert into klinike (id, adresa, naziv, opis, cenovnik_id, tip_klinike_id) values (1, 'Dijagon Aleja', 'Sent Mungo', 'bolnica', 1, 1);
 
@@ -40,8 +46,8 @@ insert into radna_vremena (id, kraj, pocetak, id_lekara) values (1, to_timestamp
 insert into sale (id, naziv, id_klinike) values (1, 'sala 1', 1);
 insert into sale (id, naziv, id_klinike) values (2, 'operaciona', 1);
 
-insert into tipovi_posete (id, tip, id_klinike) values (1, 1, 1);
-insert into tipovi_posete (id, tip, id_klinike) values (2, 0, 1);
+insert into tipovi_posete (id, tip, id_klinike, id_stavke, naziv) values (1, 1, 1, 2,'Super specijalni pregled');
+insert into tipovi_posete (id, tip, id_klinike, id_stavke,naziv) values (2, 0, 1, 1,'Super specijalna operacija');
 
 insert into pregled (id, ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike) values (1, 'korona test', 1, 1, 1, 1, 2, 1);
 insert into pregled (id, ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike) values (2, 'terapija', 1, 2, 1, 2, 2, 1);
@@ -54,7 +60,8 @@ insert into recepti (id, overen, id_recepta, id_pregleda) values (2, true, 2, 2)
 insert into dijagnoze (sifra, naziv, id_kartona) values (1, 'Covid-19', 1);
 insert into dijagnoze (sifra, naziv, id_kartona) values (2, 'Depresija', 2);
 
-insert into stavke_cenovnika (id, cena, id_cenovnik, id_tipa_posete) values (1, 10.5, 1, 1);
+/*insert into stavke_cenovnika (id, cena, id_cenovnik, id_tipa_posete) values (1, 10.5, 1, 1);*/
+
 
 insert into medicinske_sestre_overeni_recepti (medicinska_sestra_id, overeni_recepti_id) values (1, 2);
 

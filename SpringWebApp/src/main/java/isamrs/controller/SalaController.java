@@ -31,7 +31,13 @@ public class SalaController {
 		return new ResponseEntity<Collection<Sala>>(sale, HttpStatus.OK);
 	}
 
-
+	
+	@GetMapping(value = "/DTO", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<SalaTerminiDTO>> getSalaDTO() {
+		Collection<SalaTerminiDTO> sale = salaService.findAllDTO();
+		return new ResponseEntity<Collection<SalaTerminiDTO>>(sale, HttpStatus.OK);
+	}
+	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Sala> getSala(@PathVariable("id") Integer id) {
 		Sala sala = salaService.findOne(id);

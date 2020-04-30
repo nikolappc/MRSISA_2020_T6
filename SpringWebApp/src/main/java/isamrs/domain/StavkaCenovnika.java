@@ -10,10 +10,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name="stavke_cenovnika")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class StavkaCenovnika {
 
 	@Id
@@ -25,7 +31,32 @@ public class StavkaCenovnika {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cenovnik")
+	@JsonIgnore
 	private Cenovnik cenovnik;
+	
+	
+//	@OneToOne(mappedBy = "stavkaCenovnika",fetch = FetchType.LAZY)
+//	private TipPosete tip;
+//	
+//	
+//	
+//	
+//	
+//	public TipPosete getTip() {
+//		return tip;
+//	}
+//
+//	public void setTip(TipPosete tip) {
+//		if (tip == null) {
+//            if (this.tip != null) {
+//                this.tip.setStavkaCenovnika(null);
+//            }
+//        }
+//        else {
+//            tip.setStavkaCenovnika(this);
+//        }
+//        this.tip = tip;
+//	}
 
 	public Integer getId() {
 		return id;

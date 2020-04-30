@@ -12,20 +12,26 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "pregled")
 public class Pregled extends Poseta {
 
 	@OneToMany(mappedBy = "pregled", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonBackReference
 	public Collection<Recepti> recepti;
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name="id_lekara")
+	@JsonBackReference
 	public Lekar lekar;
 
 	@ManyToMany(mappedBy = "pregled", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	public Collection<Dijagnoza> dijagnoza;
 
+	
+	
 	public Collection<Recepti> getRecepti() {
 		if (recepti == null)
 			recepti = new ArrayList<Recepti>();

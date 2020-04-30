@@ -8,7 +8,8 @@
                 <th></th>
             </thead>
             <tbody>
-                <Sala @click="dialog = true" v-for="sala in sale" v-bind:key="sala.id" v-bind:sala="sala" v-on:del-sala="deleteSala" />
+                <Sala @click="dialog = true" v-for="sala in sale" v-bind:key="sala.id"
+                 v-bind:sala="sala.sala" v-on:del-sala="deleteSala" v-bind:termini="sala.posete" />
                 <v-dialog
                 v-model="dialog"
                 max-width="290"
@@ -24,6 +25,20 @@
 </template>
 
 <script>
+
+    function preurediDatum(sale){
+        for (let sala of sale){
+            for(let termin of sala.posete){
+                termin.start = formatirajDatum(termin.start);
+                termin.end = formatirajDatum(termin.end);
+        }
+    }
+    return sale;
+    }
+    function formatirajDatum(datum){
+        return datum.substring(0, 10) + " " + datum.substring(11,16); 
+    }
+
 import Sala from "./Sala.vue"
 import axios from "axios"
 export default {
@@ -33,9 +48,9 @@ export default {
     }),
     mounted () {
         axios
-            .get('sala')
+            .get('sala/DTO')
             .then(response => {
-                this.sale = response.data;
+                this.sale = preurediDatum(response.data);
                 console.log(response);
             })
             .catch(() => { this.sale = [{id: '1',naziv: 'Neka klinika'}]; });
@@ -46,7 +61,8 @@ export default {
     methods: {
         deleteSala: function(id){
             this.sale = this.sale.filter(sala => sala.id !== id);
-        }
+        },
+        
     }
 }
 </script>

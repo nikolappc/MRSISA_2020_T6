@@ -1,6 +1,7 @@
 package isamrs.controller;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import isamrs.domain.Klinika;
+import isamrs.dto.KlinikaDTO;
 import isamrs.service.KlinikaServiceImpl;
 
 @RestController
@@ -25,37 +27,47 @@ public class KlinikaController {
 	private KlinikaServiceImpl klinikaService;
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Klinika>> getKlinike(){
+	public ResponseEntity<Collection<KlinikaDTO>> getKlinike(){
 		Collection<Klinika> klinike = klinikaService.findAll();
-		return new ResponseEntity<Collection<Klinika>>(klinike, HttpStatus.OK);
+		Collection<KlinikaDTO> kdto = klinike.parallelStream().map(this::mapToDTO).collect(Collectors.toList());
+		return new ResponseEntity<Collection<KlinikaDTO>>(kdto, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Klinika> getKlinika(@PathVariable("id") Long id){
+	public ResponseEntity<KlinikaDTO> getKlinika(@PathVariable("id") Long id){
 		Klinika k = klinikaService.findOne(id);
 		if(k==null) {
-			return new ResponseEntity<Klinika>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<KlinikaDTO>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<Klinika>(k, HttpStatus.OK);
+		return new ResponseEntity<KlinikaDTO>(mapToDTO(k), HttpStatus.OK);
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Klinika> createKlinika(@RequestBody Klinika k){
-		Klinika klinika = klinikaService.create(k);
+	public ResponseEntity<KlinikaDTO> createKlinika(@RequestBody KlinikaDTO k){
+		Klinika klinika = klinikaService.create(mapToEntity(k));
 		
-		return new ResponseEntity<Klinika>(klinika, HttpStatus.CREATED);
+		return new ResponseEntity<KlinikaDTO>(mapToDTO(klinika), HttpStatus.CREATED);
 	}
 	
 	@PutMapping(value = "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Klinika> updateKlinika(@RequestBody Klinika k, @PathVariable("id") Integer id){
-		Klinika klinika = klinikaService.update((long)id, k);
+	public ResponseEntity<KlinikaDTO> updateKlinika(@RequestBody KlinikaDTO k, @PathVariable("id") Integer id){
+		Klinika klinika = klinikaService.update((long)id, mapToEntity(k));
 		
-		return new ResponseEntity<Klinika>(klinika, HttpStatus.CREATED);
+		return new ResponseEntity<KlinikaDTO>(mapToDTO(klinika), HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Klinika> deleteKlinika(@PathVariable Long id){
+	public ResponseEntity<KlinikaDTO> deleteKlinika(@PathVariable Long id){
 		klinikaService.delete(id);
-		return new ResponseEntity<Klinika>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<KlinikaDTO>(HttpStatus.NO_CONTENT);
 	}
+	
+	
+	private KlinikaDTO mapToDTO(Klinika k) {
+		return new KlinikaDTO(k.getNaziv(), k.getAdresa(), k.getOpis(), k.getTipKlinike());
+	}
+	private Klinika mapToEntity(KlinikaDTO k) {
+		return new Klinika(k.getNaziv(), k.getAdresa(), k.getOpis(), k.getTipKlinike());
+	}
+	
 }

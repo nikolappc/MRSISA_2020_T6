@@ -1,16 +1,13 @@
 package isamrs.dto;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import isamrs.domain.Lekar;
-import isamrs.domain.Pregled;
+import isamrs.domain.Poseta;
 import isamrs.domain.Sala;
 
 public class SalaTerminiDTO {
 	
 	private Sala sala;
-	private Lekar lekar;
+	private ArrayList<TerminDTO> posete;
 	
 	
 	
@@ -20,10 +17,10 @@ public class SalaTerminiDTO {
 	
 	
 	
-	public SalaTerminiDTO(Sala sala, Lekar lekar) {
+	public SalaTerminiDTO(Sala sala, ArrayList<TerminDTO> posete) {
 		super();
 		this.sala = sala;
-		this.lekar = lekar;
+		this.posete = posete;
 	}
 
 
@@ -35,13 +32,18 @@ public class SalaTerminiDTO {
 		this.sala = sala;
 	}
 
-	public Lekar getLekar() {
-		return lekar;
+
+
+	public ArrayList<TerminDTO> getPosete() {
+		return posete;
 	}
 
-	public void setLekar(Lekar lekar) {
-		this.lekar = lekar;
+
+
+	public void setPosete(ArrayList<TerminDTO> posete) {
+		this.posete = posete;
 	}
+
 	
 	
 	

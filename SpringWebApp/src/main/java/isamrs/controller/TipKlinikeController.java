@@ -31,7 +31,7 @@ public class TipKlinikeController {
 	public ResponseEntity<TipKlinike> getTipKlinike(@PathVariable("id")Long id){
 		try {
 			TipKlinike t = service.findOne(id);
-			return new ResponseEntity<TipKlinike>(t, HttpStatus.FOUND);
+			return new ResponseEntity<TipKlinike>(t, HttpStatus.OK);
 		}catch (NotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Tip Klinike sa id-jem: "+id+ " nije pronadjen.", e);
 		}

@@ -12,6 +12,8 @@ import javax.persistence.Transient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "pacijent")
 public class Pacijent extends Osoba {
@@ -19,6 +21,7 @@ public class Pacijent extends Osoba {
 	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name = "id_kartona")
+	@JsonBackReference
 	private ZdravstveniKarton zdravstveniKarton;
 	
 	@Transient

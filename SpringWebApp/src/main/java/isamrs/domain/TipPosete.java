@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -24,48 +25,22 @@ public class TipPosete {
 	@Column(name = "tip", unique = true, nullable = false)
 	private Tip tip;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name="id_tipa_posete")
-	public Collection<StavkaCenovnika> stavkaCenovnika;
+	@Column(name = "naziv", unique = true, nullable = false)
+	private String naziv;
+	
+	
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name="id_stavke")
+	private StavkaCenovnika stavkaCenovnika;
 
-	public Collection<StavkaCenovnika> getStavkaCenovnika() {
-		if (stavkaCenovnika == null)
-			stavkaCenovnika = new ArrayList<StavkaCenovnika>();
+	
+
+	public StavkaCenovnika getStavkaCenovnika() {
 		return stavkaCenovnika;
 	}
 
-	public java.util.Iterator getIteratorStavkaCenovnika() {
-		if (stavkaCenovnika == null)
-			stavkaCenovnika = new ArrayList<StavkaCenovnika>();
-		return stavkaCenovnika.iterator();
-	}
-
-	public void setStavkaCenovnika(Collection<StavkaCenovnika> newStavkaCenovnika) {
-		removeAllStavkaCenovnika();
-		for (java.util.Iterator iter = newStavkaCenovnika.iterator(); iter.hasNext();)
-			addStavkaCenovnika((StavkaCenovnika) iter.next());
-	}
-
-	public void addStavkaCenovnika(StavkaCenovnika newStavkaCenovnika) {
-		if (newStavkaCenovnika == null)
-			return;
-		if (this.stavkaCenovnika == null)
-			this.stavkaCenovnika = new ArrayList<StavkaCenovnika>();
-		if (!this.stavkaCenovnika.contains(newStavkaCenovnika))
-			this.stavkaCenovnika.add(newStavkaCenovnika);
-	}
-
-	public void removeStavkaCenovnika(StavkaCenovnika oldStavkaCenovnika) {
-		if (oldStavkaCenovnika == null)
-			return;
-		if (this.stavkaCenovnika != null)
-			if (this.stavkaCenovnika.contains(oldStavkaCenovnika))
-				this.stavkaCenovnika.remove(oldStavkaCenovnika);
-	}
-
-	public void removeAllStavkaCenovnika() {
-		if (stavkaCenovnika != null)
-			stavkaCenovnika.clear();
+	public void setStavkaCenovnika(StavkaCenovnika stavkaCenovnika) {
+		this.stavkaCenovnika = stavkaCenovnika;
 	}
 
 	public int getId() {
@@ -83,12 +58,23 @@ public class TipPosete {
 	public void setTip(Tip tip) {
 		this.tip = tip;
 	}
+	
+	
 
-	public TipPosete(int id, Tip tip, Collection<StavkaCenovnika> stavkaCenovnika) {
+	public String getNaziv() {
+		return naziv;
+	}
+
+	public void setNaziv(String naziv) {
+		this.naziv = naziv;
+	}
+
+	public TipPosete(int id, Tip tip, StavkaCenovnika stavkaCenovnika, String naziv) {
 		super();
 		this.id = id;
 		this.tip = tip;
 		this.stavkaCenovnika = stavkaCenovnika;
+		this.naziv = naziv;
 	}
 
 	public TipPosete() {
