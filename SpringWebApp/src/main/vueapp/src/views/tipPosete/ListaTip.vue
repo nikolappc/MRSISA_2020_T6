@@ -1,21 +1,20 @@
 <template>
     <div>
-        <h2>Lista lekara</h2>
+        <h2>Lista tipova</h2>
         <v-simple-table border="1">
             <thead>
-                <th>Ime</th>
-                <th>Prezime</th>
-                <th>Adresa</th>
-                <th>Broj Telefona</th>
+                <th>Naziv</th>
+                <th>Tip (Din/h)</th>
+                <th>Cena</th>
                 <th></th>
             </thead>
             <tbody>
-                <Lekar v-for="lekar in lekari" v-bind:key="lekar.id" v-bind:lekar="lekar" v-on:del-lekar="deleteLekar"
+                <Tip v-for="tip in tipovi" v-bind:key="tip.id" v-bind:tip="tip" v-on:del-tip="deleteTip"
                 v-on:otvori="otvoriDialog"/>
                 
             </tbody>
             <tr>
-                <td align="right" colspan='4'><v-btn :to="{path: 'lekar/add'}" dark medium left class="blue" slot="action">Dodaj lekara</v-btn></td>
+                <td align="right" colspan='4'><v-btn :to="{path: '/tipoviPoseta/add'}" dark medium left class="blue" slot="action">Dodaj tip</v-btn></td>
             </tr>
         </v-simple-table>
         <v-dialog
@@ -23,9 +22,9 @@
             max-width="500"
             >
                 <v-card>
-                    <v-card-title class="headline">Izmeni lekara</v-card-title>
+                    <v-card-title class="headline">Izmeni tip</v-card-title>
 
-                        <IzmenaLekara  v-bind:lekar="dialogLekar" />
+                        <IzmenaTipa  v-bind:tip="dialogTip" />
 
                     
                 </v-card>
@@ -34,37 +33,37 @@
 </template>
 
 <script>
-import Lekar from "./Lekar.vue"
-import IzmenaLekara from "./IzmenaLekar.vue"
+import Tip from "./Tip.vue"
+import IzmenaTipa from "./IzmenaTip.vue"
 import axios from "axios"
 export default {
     data: () => ({
-        lekari : null,
+        tipovi : null,
         dialog : false,
-        dialogLekar: null
+        dialogTip: null
     }),
     mounted () {
         axios
-            .get('lekar')
+            .get('tip')
             .then(response => {
-                this.lekari = response.data;
+                this.tipovi = response.data;
                 console.log(response);
             })
-            .catch(() => { this.lekari = [{ime: 'pera',prezime: ''}]; });
+            .catch(() => { this.tipovi = [{naziv: 'pera',tip: 'operacija',stavkaCenovnika: {cena: 20}}]; });
     },
     components: {
-        Lekar,
-        IzmenaLekara
+        Tip,
+        IzmenaTipa
     },
     methods: {
-        deleteLekar: function(id){
-            this.lekari = this.lekari.filter(lekar => lekar.id !== id);
+        deleteTip: function(id){
+            this.tipovi = this.tipovi.filter(tip => tip.id !== id);
         },
         otvoriDialog: function(id){
-            this.dialogLekar = {...this.lekari.filter(lekar => lekar.id === id)[0]};
+            this.dialogTip = {...this.tipovi.filter(tip => tip.id === id)[0]};
             this.dialog = true;
         },
-        promeniLekara: function(id){
+        promeniTipa: function(id){
             id;
         },
 

@@ -5,6 +5,8 @@ import java.util.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,7 +24,8 @@ public class TipPosete {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(name = "tip", unique = true, nullable = false)
+	@Enumerated
+	@Column(name = "tip", nullable = false,columnDefinition = "smallint")
 	private Tip tip;
 
 	@Column(name = "naziv", unique = true, nullable = false)

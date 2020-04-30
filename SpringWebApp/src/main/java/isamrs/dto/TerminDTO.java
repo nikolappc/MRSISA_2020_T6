@@ -19,11 +19,7 @@ public class TerminDTO {
 		this.start = pregled.getTermin().getPocetak();
 		this.end = pregled.getTermin().getKraj();
 		
-		this.name = "Pacijent: ";
-		this.name += pregled.getZdravstveniKarton().getPacijent().getIme() + 
-				" " + pregled.getZdravstveniKarton().getPacijent().getPrezime();
-		this.name += "\nLekar: " + pregled.getLekar().getIme() + 
-				" " + pregled.getLekar().getPrezime() + "\n";
+		this.name = pregled.getLekar().getIme() + " " + pregled.getLekar().getPrezime() ;
 	}
 	
 	public Date getStart() {

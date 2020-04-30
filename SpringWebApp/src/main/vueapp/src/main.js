@@ -1,4 +1,6 @@
 import Vue from 'vue'
+import DatetimePicker from 'vuetify-datetime-picker' 
+Vue.use(DatetimePicker)
 import App from './App.vue'
 import router from './router'
 import store from './store'

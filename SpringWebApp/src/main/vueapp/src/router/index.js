@@ -120,6 +120,21 @@ Vue.use(VueRouter, VueAxios, axios)
     component: () => import('../views/sala/AddSala.vue')
   },
   {
+    path: '/tipoviPoseta',
+    name: 'TipPosete',
+    component: () => import('../views/tipPosete/ListaTip.vue')
+  },
+  {
+    path: '/tipoviPoseta/add',
+    name: 'TipPoseteAdd',
+    component: () => import('../views/tipPosete/AddTip.vue')
+  },
+  {
+    path: '/DodavanjeTermina',
+    name: 'DodavanjeTermina',
+    component: () => import('../views/DodavanjeTermina.vue')
+  },
+  {
     path:"/homePacijent",
     name:"HomePacijent",
     component:HomePacijent

@@ -17,6 +17,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 //@Entity
 //@Inheritance(strategy = TABLE_PER_CLASS)
 @MappedSuperclass
@@ -29,7 +32,7 @@ public class Poseta {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_termina")
 	public Termin termin;
 
@@ -39,6 +42,7 @@ public class Poseta {
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name="id_kartona")
+	@JsonBackReference
 	public ZdravstveniKarton zdravstveniKarton;
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
