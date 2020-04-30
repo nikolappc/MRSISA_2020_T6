@@ -228,6 +228,14 @@ export default {
               return b[index] < a[index] ? -1 : 1;
             }
           }
+          else if (index=='opis') {
+            if (!isDesc) {
+                return a[index].toLowerCase().localeCompare(b[index].toLowerCase());
+              }
+              else {
+                return b[index].toLowerCase().localeCompare(a[index].toLowerCase());
+              }
+          }
           else {
             if(typeof a[index] !== 'undefined'){
               if (!isDesc) {
