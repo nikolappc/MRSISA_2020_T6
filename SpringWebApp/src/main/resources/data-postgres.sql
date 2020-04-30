@@ -53,6 +53,7 @@ insert into pregled (id, ime, id_sale, id_termina, id_tipa_posete, id_kartona, i
 insert into pregled (id, ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike) values (2, 'terapija', 1, 2, 1, 2, 2, 1);
 insert into pregled (id, ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike) values (3, 'previjanje', 1, 4, 1, 2, 2, 1);
 insert into operacije (id, ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike) values (1, 'slijepo crijevo', 2, 3, 2, 3, 1);
+insert into operacije (id, ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike) values (2, 'slijepo crijevo', 2, 3, 2, 2, 1);
 
 insert into recepti (id, overen, id_recepta, id_pregleda) values (1, false, 1, 1);
 insert into recepti (id, overen, id_recepta, id_pregleda) values (2, true, 2, 2);
