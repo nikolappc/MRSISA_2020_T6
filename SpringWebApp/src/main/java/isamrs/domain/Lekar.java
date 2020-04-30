@@ -46,7 +46,7 @@ public class Lekar extends Osoba {
 	@ManyToMany
 	@JoinTable(name = "lekari_operacije", joinColumns = { @JoinColumn(name = "lekar_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "operacija_id") })
-	@JsonBackReference
+	@JsonBackReference(value = "operacijeReference")
 	public Collection<Operacija> operacije;
 	
 	@Transient

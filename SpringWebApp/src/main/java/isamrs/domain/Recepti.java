@@ -32,7 +32,7 @@ public class Recepti {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_pregleda")
-	@JsonBackReference
+	@JsonBackReference(value = "pregledReference")
 	private Pregled pregled;
 
 	public Lek getLek() {

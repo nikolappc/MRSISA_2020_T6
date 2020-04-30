@@ -19,12 +19,12 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class Pregled extends Poseta {
 
 	@OneToMany(mappedBy = "pregled", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JsonBackReference
+	@JsonBackReference(value = "receptiReference")
 	public Collection<Recepti> recepti;
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name="id_lekara")
-	@JsonBackReference
+	@JsonBackReference(value = "lekarReference")
 	public Lekar lekar;
 
 	@ManyToMany(mappedBy = "pregled", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

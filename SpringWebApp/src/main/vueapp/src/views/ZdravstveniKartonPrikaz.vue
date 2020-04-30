@@ -7,11 +7,11 @@
         <tbody>
           <tr>
             <td>Visina:</td>
-            <td>{{ karton.visina }}</td>
+            <td>{{ karton.visina }} m</td>
           </tr>
           <tr>
             <td>Tezina:</td>
-            <td>{{ karton.tezina }}</td>
+            <td>{{ karton.tezina }} kg</td>
           </tr>
           <tr>
             <td>Krvna grupa:</td>
@@ -206,15 +206,23 @@ export default {
     },
     customSort: function(items, index, isDesc) {
       items.sort((a, b) => {
-          if (index[0]=='termin.pocetak' || index[0]=='termin.kraj') {
-            if (!isDesc[0]) {
-                return new Date(b[index]) - new Date(a[index]);
+          if (index=='termin.pocetak' || index=='termin.kraj') {
+            //var d1 = new Date(a[index]);
+            //var d2 = new Date(b[index]);
+            if (!isDesc) {
+                //return new Date(b[index]) - new Date(a[index]);
+                //return dates.compare(new Date(a[index]), new Date(b[index]));
+                //return d1 < d2;
+                return a[index] < b[index];
             } else {
-                return new Date(a[index]) - new Date(b[index]);
+                //return new Date(a[index]) - new Date(b[index]);
+                //return dates.compare(new Date(b[index]), new Date(a[index]));
+                //return d2 < d1;
+                return b[index] < a[index];
             }
           }
-          else if (index[0]=='id' || index[0]=='sala.id') {
-            if (!isDesc[0]) {
+          else if (index=='id' || index=='sala.id') {
+            if (!isDesc) {
               return a[index] < b[index] ? -1 : 1;
             } else {
               return b[index] < a[index] ? -1 : 1;
@@ -222,11 +230,11 @@ export default {
           }
           else {
             if(typeof a[index] !== 'undefined'){
-              if (!isDesc[0]) {
-                 return a[index].toLowerCase().localeCompare(b[index].toLowerCase());
+              if (!isDesc) {
+                return a[index].toLowerCase().localeCompare(b[index].toLowerCase());
               }
               else {
-                  return b[index].toLowerCase().localeCompare(a[index].toLowerCase());
+                return b[index].toLowerCase().localeCompare(a[index].toLowerCase());
               }
             }
           }

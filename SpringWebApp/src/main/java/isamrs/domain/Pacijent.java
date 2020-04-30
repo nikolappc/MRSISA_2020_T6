@@ -21,7 +21,7 @@ public class Pacijent extends Osoba {
 	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name = "id_kartona")
-	@JsonBackReference
+	@JsonBackReference(value = "zdravstveniKartonReference")
 	private ZdravstveniKarton zdravstveniKarton;
 	
 	@Transient

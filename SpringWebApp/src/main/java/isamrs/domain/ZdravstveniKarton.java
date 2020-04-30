@@ -37,7 +37,7 @@ public class ZdravstveniKarton {
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name="id_kartona")
-	@JsonBackReference
+	@JsonBackReference(value = "preglediReference1")
 	public Collection<Pregled> pregledi;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -45,7 +45,7 @@ public class ZdravstveniKarton {
 	public Collection<Dijagnoza> dijagnoza;
 	
 	@OneToOne(mappedBy = "zdravstveniKarton")
-	@JsonBackReference
+	@JsonBackReference(value = "pacijentReference")
 	public Pacijent pacijent;
 
 	

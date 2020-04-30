@@ -25,7 +25,7 @@ public class Operacija extends Poseta {
 	@ManyToMany
 	@JoinTable(name = "lekari_operacije", joinColumns = { @JoinColumn(name = "operacija_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "lekar_id") })
-	@JsonBackReference
+	@JsonBackReference(value = "lekariReference")
 	public java.util.Collection<Lekar> lekari;
 
 	public Operacija() {
