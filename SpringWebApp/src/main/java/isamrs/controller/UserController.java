@@ -64,7 +64,9 @@ public class UserController {
 	
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Osoba> loginUser(HttpServletRequest req, @RequestBody UserDTO user) {
-    	
+    	if (req.getSession().getAttribute("user") != null) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Vec je ulogovan korisnik.");
+    	}
     	
     	AdministratorKlinickogCentra akc = adminKCService.findByEmail(user.getUsername());
     	if (akc != null) {
@@ -141,6 +143,15 @@ public class UserController {
 		} else {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nema ulogovanog korisnika.");
 		}
+	}
+	
+	@GetMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Boolean> logout(HttpServletRequest req) {
+		if (req.getSession().getAttribute("user") != null) {
+			req.getSession().invalidate();
+			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		}
+		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
 	}
 	
 

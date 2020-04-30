@@ -2,6 +2,7 @@
   <div class="home">
     <v-container>
       <h1>Lekar</h1>
+      <v-btn @click="logoutFunc()" dark medium left class="blue" slot="action">Odjavi se</v-btn>
     </v-container>
   </div>
 </template>
@@ -23,6 +24,16 @@ export default {
           this.ulogovan = response.data;
       })
       .catch(function (error) { console.log(error); router.push("/loginPage"); });
+  },
+  methods: {
+    logoutFunc: function() {
+        axios
+        .get('api/logout')
+        .then(() => {
+            router.push("/loginPage");
+        })
+        .catch(function (error) { console.log(error); });
+    }
   }
   
 }

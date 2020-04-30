@@ -71,6 +71,51 @@
           </tr>
         </tbody>
       </v-simple-table>
+      <!--<v-data-table
+        :headers="headers"
+        :items="pregledi"
+        :items-per-page="10"
+        class="elevation-1"
+        :custom-sort="customSort">
+        <template slot="pregledi" slot-scope="props">
+          <td>{{ props.item.id }}</td>
+          <td>{{ props.item.opis }}</td>
+          <td>{{ props.item.sala.id }}</td>
+          <td>{{ formatDate(props.item.termin.pocetak) }}</td>
+          <td>{{ formatDate(props.item.termin.kraj) }}</td>
+          <td>{{ props.item.tip.tip }}</td>
+          <td>
+            <div v-if="props.item.hasOwnProperty('dijagnoze')">
+              <ul v-for="d in p.dijagnoze" v-bind:key="d.sifraDijagnoze">
+                <li>{{ d.nazivDijagnoze }}</li>
+              </ul>
+            </div>
+            <div v-else>
+              -
+            </div>
+          </td>
+          <td>
+            <div v-if="props.item.hasOwnProperty('recepti')">
+              <ul v-for="r in p.recepti" v-bind:key="r.id">
+                <li>{{ r.lek.nazivLeka }} {{ overenRecept(r.overen) }}</li>
+              </ul>
+            </div>
+            <div v-else>
+              -
+            </div>
+          </td>
+          <td>
+            <div v-if="props.item.hasOwnProperty('lekar')">
+              {{ p.lekar }}
+            </div>
+            <div v-else>
+              <ul v-for="r in props.item.lekari" v-bind:key="r">     
+                <li>{{ r }}</li>
+              </ul>
+            </div>
+          </td>
+        </template>
+      </v-data-table>-->
     </v-container>
   </div>
 </template>
@@ -85,7 +130,54 @@ export default {
   data: () => ({
     ulogovan : {},
     pregledi : [],
-    karton : {}
+    karton : {},
+    /*headers: [
+        {
+          text: 'Id',
+          sortable: true,
+          value: 'id',
+        },
+        {
+          text: 'Opis', 
+          value: 'opis', 
+          sortable: true, 
+        },
+        {
+          text: 'Sala', 
+          value: 'sala', 
+          sortable: true, 
+        },
+        {
+          text: 'Pocetak', 
+          value: 'pocetak', 
+          sortable: true, 
+        },
+        {
+          text: 'Kraj', 
+          value: 'kraj', 
+          sortable: true, 
+        },
+        {
+          text: 'Tip', 
+          value: 'tip', 
+          sortable: true, 
+        },
+        {
+          text: 'Dijagnoze', 
+          value: 'dijagnoze', 
+          sortable: false, 
+        },
+        {
+          text: 'Recepti', 
+          value: 'recepti', 
+          sortable: true, 
+        },
+        {
+          text: 'Lekari', 
+          value: 'lekari', 
+          sortable: true, 
+        },
+      ]*/
   }),
   mounted () {
       axios
@@ -115,7 +207,29 @@ export default {
       } else {
         return "(nije overen)";
       }
-    }
+    },
+    /*customSort: function(items, index, isDesc) {
+      items.sort((a, b) => {
+          if (index[0]=='pocetak' || index[0]==='kraj') {
+            if (!isDesc[0]) {
+                return new Date(b[index]) - new Date(a[index]);
+            } else {
+                return new Date(a[index]) - new Date(b[index]);
+            }
+          }
+          else {
+            if(typeof a[index] !== 'undefined'){
+              if (!isDesc[0]) {
+                 return a[index].toLowerCase().localeCompare(b[index].toLowerCase());
+              }
+              else {
+                  return b[index].toLowerCase().localeCompare(a[index].toLowerCase());
+              }
+            }
+          }
+      });
+      return items;
+    }*/
   },
 }
 </script>

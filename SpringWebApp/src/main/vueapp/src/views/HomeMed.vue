@@ -97,12 +97,17 @@
           </v-col>
         </v-row>
       </v-card>
+
+      <v-btn @click="logoutFunc()" dark medium left class="blue" slot="action">Odjavi se</v-btn>
     </v-container>
 </div>
 </template>
 
 <script>
 // @ is an alias to /src
+import router from "../router/index.js"
+import axios from 'axios';
+
 
 export default {
   name: 'HomeMed',
@@ -115,6 +120,24 @@ export default {
       vacation:require("../assets/vacation.jpg"),
     }
   },
+  mounted () {
+      axios
+      .get('api/ulogovan')
+      .then(response => {
+          this.ulogovan = response.data;
+      })
+      .catch(function (error) { console.log(error); router.push("/loginPage"); });
+  },
+  methods: {
+    logoutFunc: function() {
+        axios
+        .get('api/logout')
+        .then(() => {
+            router.push("/loginPage");
+        })
+        .catch(function (error) { console.log(error); });
+    }
+  }
 }
 </script>
 

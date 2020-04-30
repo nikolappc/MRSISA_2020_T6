@@ -3,6 +3,7 @@
     <v-container>
       <h1>AdministratorKlinike</h1>
       <v-btn :to="{path: 'lekari'}" dark medium left class="blue" slot="action">Lista lekara</v-btn>
+      <v-btn @click="logoutFunc()" dark medium left class="blue" slot="action">Odjavi se</v-btn>
     </v-container>
   </div>
 </template>
@@ -24,6 +25,16 @@ export default {
           this.ulogovan = response.data;
       })
       .catch(function (error) { console.log(error); router.push("/loginPage"); });
+  },
+  methods: {
+    logoutFunc: function() {
+        axios
+        .get('api/logout')
+        .then(() => {
+            router.push("/loginPage");
+        })
+        .catch(function (error) { console.log(error); });
+    }
   }
   
 }
