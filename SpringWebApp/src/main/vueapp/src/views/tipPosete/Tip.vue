@@ -1,9 +1,8 @@
 <template>
   <tr>
-      <td @click="otvoriDialog">{{tip.id}}</td>
       <td @click="otvoriDialog">{{tip.naziv}}</td>
       <td @click="otvoriDialog">{{tip.tip}}</td>
-      <td @click="otvoriDialog">{{tip.cena}}</td>
+      <td @click="otvoriDialog">{{tip.stavkaCenovnika.cena}}</td>
       <td><v-btn icon @click="deleteTip"><v-icon>mdi-delete</v-icon></v-btn></td>
   </tr>
   
