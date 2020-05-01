@@ -98,7 +98,6 @@
         </v-row>
       </v-card>
 
-      <v-btn @click="logoutFunc()" dark medium left class="blue" slot="action">Odjavi se</v-btn>
     </v-container>
 </div>
 </template>

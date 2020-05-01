@@ -58,8 +58,9 @@ export default {
         login: function() {
             axios
             .post('api/login',{ username: this.username, password: this.password})
-            .then(() => {
-                router.push("/");
+            .then(res => {
+              this.$store.commit("setUlogovan", res.data);
+              router.push("/");
             })
             .catch(function () { router.push("/"); });
         }
