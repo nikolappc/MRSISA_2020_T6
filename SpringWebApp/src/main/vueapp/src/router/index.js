@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-import Home from '../views/Home.vue';
 import HomeMed from '../views/HomeMed.vue';
 import PregledLekova from '../views/adminKlinickogCentra/PregledLekova.vue';
 import PregledDijagnoza from '../views/adminKlinickogCentra/PregledDijagnoza.vue';
@@ -24,7 +23,7 @@ Vue.use(VueRouter, VueAxios, axios)
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: () => import('../views/Login.vue')
   },
   {
     path: '/HomeMed',

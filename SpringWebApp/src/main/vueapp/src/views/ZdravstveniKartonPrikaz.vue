@@ -16,6 +16,7 @@
           <tr>
             <td>Krvna grupa:</td>
             <td>{{ karton.krvnaGrupa }}</td>
+          </tr>
         </tbody>
       </v-simple-table>
       <!--<v-simple-table>
