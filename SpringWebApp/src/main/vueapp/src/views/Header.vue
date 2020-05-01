@@ -1,17 +1,20 @@
 <template>
     <v-app-bar v-if="$route.path != '/login'"
-      app
-      color="primary"
-      dark
-      :img="header"
+        color="primary"
+        app
+        dark
     >
-      Klinički centar
-      <v-spacer></v-spacer>
+        Klinički centar
+        {{ulogovan}}
+        <v-spacer></v-spacer>
 
-      <v-btn icon @click="homeFunc"><v-icon color="white">mdi-home</v-icon></v-btn>
-      <router-link v-if="ulogovan=={}"  to="/login"><v-btn icon><v-icon color="white">mdi-account</v-icon></v-btn></router-link>
-      <router-link v-if="ulogovan=={}"  to="/login"><v-btn icon><v-icon color="white">mdi-account</v-icon></v-btn></router-link>
-      <v-btn @click="logoutFunc" icon><v-icon color="white">mdi-logout</v-icon></v-btn>
+        <router-link to="/">
+            <v-btn icon><v-icon color="white">mdi-home</v-icon></v-btn>
+        </router-link>
+        <router-link v-if="!ulogovan"  to="/loginPage">
+            <v-btn icon><v-icon color="white">mdi-login</v-icon></v-btn>
+        </router-link>
+        <v-btn v-if="ulogovan" @click="logoutFunc" icon><v-icon color="white">mdi-logout</v-icon></v-btn>
     </v-app-bar>
 </template>
 <script>
@@ -19,9 +22,15 @@
     export default {
         name:"Header",
         data:function () {
-            return {
-                ulogovan : {}
-            };
+            return{
+
+            }
+        },
+        computed:{
+            ulogovan(){
+                return this.$store.state.ulogovan
+            }
+
         },
         methods:{
             logoutFunc: function() {
@@ -31,22 +40,6 @@
                     this.$router.push("/loginPage");
                 })
                 .catch(function (error) { console.log(error); });
-            },
-            homeFunc:function () {
-                if (this.ulogovan.tip == "PACIJENT") {
-                    this.$router.push("/homePacijent");
-                } else if (this.ulogovan.tip == "LEKAR") {
-                    this.$router.push("/homeLekar");
-                }
-                else if (this.ulogovan.tip == "SESTRA") {
-                    this.$router.push("/homeMed");
-                }
-                else if (this.ulogovan.tip == "ADMIN_K") {
-                    this.$router.push("/homeAdminKlinike");
-                }
-                else {
-                    this.$router.push("/homeAdminKC");
-                }
             }
         },
         mounted:function(){
@@ -54,8 +47,12 @@
                 .get('api/ulogovan')
                 .then(response => {
                     this.ulogovan = response.data;
+                    this.$store.commit("setUlogovan", this.ulogovan);
                 })
-                .catch(function (error) { console.log(error); this.$router.push("/loginPage"); });
+                .catch(error=>{ 
+                    console.log(error);
+                    // this.$router.push("/loginPage"); 
+                });
         }
     }
 </script>
