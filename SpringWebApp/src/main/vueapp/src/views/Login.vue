@@ -59,10 +59,14 @@ export default {
             axios
             .post('api/login',{ username: this.username, password: this.password})
             .then(res => {
+              console.log(res.data);
               this.$store.commit("setUlogovan", res.data);
               router.push("/");
             })
-            .catch(function () { router.push("/"); });
+            .catch(function (error) { 
+              router.push("/");
+              console.log(error);
+            });
         }
     }
 }
