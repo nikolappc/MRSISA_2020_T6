@@ -1,6 +1,8 @@
 package isamrs.controller;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import isamrs.domain.Klinika;
+import isamrs.domain.Operacija;
+import isamrs.domain.Pacijent;
+import isamrs.domain.Pregled;
 import isamrs.dto.KlinikaDTO;
+import isamrs.dto.KlinikaZaPacijentaDTO;
+import isamrs.dto.OperacijaDTO;
+import isamrs.dto.PosetaDTO;
+import isamrs.dto.PregledDTO;
 import isamrs.service.KlinikaServiceImpl;
 
 @RestController
@@ -68,6 +77,18 @@ public class KlinikaController {
 	}
 	private Klinika mapToEntity(KlinikaDTO k) {
 		return new Klinika(k.getNaziv(), k.getAdresa(), k.getOpis(), k.getTipKlinike());
+	}
+	
+	
+	@GetMapping(value = "/klinikeZaPacijenta", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<KlinikaZaPacijentaDTO>> getPregledi() {
+		Collection<Klinika> klinike = klinikaService.findAll();
+		
+		List<KlinikaZaPacijentaDTO> klinikeDTO = new ArrayList<>();
+		for (Klinika klinika : klinike) {
+			klinikeDTO.add(new KlinikaZaPacijentaDTO(klinika));
+		}
+		return new ResponseEntity<List<KlinikaZaPacijentaDTO>>(klinikeDTO, HttpStatus.OK);
 	}
 	
 }

@@ -22,6 +22,7 @@
             <v-text-field
               v-model="novaSifraPotvrda"
               :rules="password2Rules"
+              :error-messages='passwordMatchError()'
               label="Potvrda lozinke"
               required
             ></v-text-field>
@@ -139,16 +140,21 @@ export default {
             }
         });
     },
+    passwordMatchError () {
+      return (this.novaSifraPotvrda === this.novaSifraPotvrda) ? '' : 'Lozinke se ne poklapaju';
+    }
   },
   watch: {
     novaSifra: function() {
       this.$nextTick(() => {
-        this.$refs.form.validate();
+        //this.$refs.form.validate();
+        this.novaSifraPotvrda += "";
       });
     },
     novaSifraPotvrda: function() {
       this.$nextTick(() => {
-        this.$refs.form.validate();
+        //this.$refs.form.validate();
+        this.novaSifra += "";
       });
     }
   },

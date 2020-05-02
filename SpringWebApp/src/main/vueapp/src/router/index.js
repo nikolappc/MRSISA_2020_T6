@@ -18,6 +18,9 @@ import HomeAdminKlinike from '../views/HomeAdminKlinike.vue';
 import HomeAdminKC from '../views/HomeAdminKC.vue';
 import ZdravstveniKartonPrikaz from '../views/ZdravstveniKartonPrikaz.vue';
 import Registracija from '../views/Registracija.vue';
+import PosjetePacijenta from '../views/PosjetePacijenta.vue';
+import KlinikeZaPacijenta from '../views/KlinikeZaPacijenta.vue';
+
 
 
 Vue.use(VueRouter, VueAxios, axios)
@@ -160,6 +163,16 @@ Vue.use(VueRouter, VueAxios, axios)
     path:"/registracija",
     name:"Registracija",
     component:Registracija
+  },
+  {
+    path:"/posjetePacijenta",
+    name:"PosjetePacijenta",
+    component:PosjetePacijenta
+  },
+  {
+    path:"/klinikeZaPacijenta",
+    name:"KlinikeZaPacijenta",
+    component:KlinikeZaPacijenta
   },
   
 ]

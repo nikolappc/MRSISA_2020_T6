@@ -66,7 +66,7 @@ export default {
             .then(() => {
                 router.push("/");
             })
-            .catch(function () { router.push("/"); });
+            .catch(function () { alert("Prijava nije uspjela. Pokusajte ponovo ili kreirajte nalog!"); router.push("/"); });
         }
     }
 }

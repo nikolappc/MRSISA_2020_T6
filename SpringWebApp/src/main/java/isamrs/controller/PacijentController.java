@@ -93,7 +93,7 @@ public class PacijentController {
 		List<PosetaDTO> preglediDTO = new ArrayList<>();
 		for (Pregled pregled : pregledi) {
 			preglediDTO.add(new PregledDTO(pregled));
-			System.out.println(pregled.getTermin().getPocetak().toString());
+			System.out.println("pacijent kontroler" + pregled.getTermin().getPocetak().toString());
 		}
 		for (Operacija operacija : operacije) {
 			preglediDTO.add(new OperacijaDTO(operacija));

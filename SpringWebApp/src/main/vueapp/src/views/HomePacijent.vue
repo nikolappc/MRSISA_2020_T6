@@ -4,6 +4,8 @@
       <h1>Pacijent</h1>
       <v-btn :to="{path: 'profilPacijenta'}" dark medium left class="blue" slot="action">Profil pacijenta</v-btn>
       <v-btn :to="{path: 'zdravstveniKartonPrikaz'}" dark medium left class="blue" slot="action">Zdravstveni karton</v-btn>
+      <v-btn :to="{path: 'posjetePacijenta'}" dark medium left class="blue" slot="action">Istorija pregleda</v-btn>
+      <v-btn :to="{path: 'klinikeZaPacijenta'}" dark medium left class="blue" slot="action">Klinike</v-btn>
       <v-btn @click="logoutFunc()" dark medium left class="blue" slot="action">Odjavi se</v-btn>
     </v-container>
   </div>
