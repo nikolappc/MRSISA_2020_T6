@@ -37,9 +37,9 @@ insert into ocene (vrednost, id_lekara) values (10, 1);
 insert into ocene (vrednost, id_lekara) values (10, 2);
 insert into ocene (vrednost, id_klinike) values (9, 1);
 
-insert into pacijent (adresa, broj_telefona, email, ime, jbo, password, prezime, id_kartona, id_klinike) values ('Knockturn Alley', '065/123-111', 'hermione@gmail.com', 'Hermione', '0101', 'hermione12345', 'Granger', 1, 1);
-insert into pacijent (adresa, broj_telefona, email, ime, jbo, password, prezime, id_kartona, id_klinike) values ('Hogwarts', '065/823-115', 'harry@gmail.com', 'Harry', '000', 'harry12345', 'Potter', 2, 1);
-insert into pacijent (adresa, broj_telefona, email, ime, jbo, password, prezime, id_kartona, id_klinike) values ('Hogwarts', '065/923-115', 'ron@gmail.com', 'Ron', '000', 'ron12345', 'Weasley', 3, 1);
+insert into pacijent (adresa, broj_telefona, email, ime, jbo, password, prezime, id_kartona, id_klinike, enabled) values ('Knockturn Alley', '065/123-111', 'hermione@gmail.com', 'Hermione', '0101', 'hermione12345', 'Granger', 1, 1, true);
+insert into pacijent (adresa, broj_telefona, email, ime, jbo, password, prezime, id_kartona, id_klinike, enabled) values ('Hogwarts', '065/823-115', 'harry@gmail.com', 'Harry', '000', 'harry12345', 'Potter', 2, 1, true);
+insert into pacijent (adresa, broj_telefona, email, ime, jbo, password, prezime, id_kartona, id_klinike, enabled) values ('Hogwarts', '065/923-115', 'ron@gmail.com', 'Ron', '000', 'ron12345', 'Weasley', 3, 1, true);
 
 insert into radna_vremena (kraj, pocetak, id_lekara) values (to_timestamp('08:00', 'HH:MI'), to_timestamp('11:00', 'HH:MI'), 1);
 

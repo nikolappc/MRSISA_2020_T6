@@ -2,7 +2,9 @@ package isamrs.service;
 
 import java.util.Collection;
 
+import isamrs.domain.Lekar;
 import isamrs.domain.Pacijent;
+import isamrs.registracija.VerificationToken;
 
 
 public interface PacijentService {
@@ -12,4 +14,8 @@ public interface PacijentService {
 	Pacijent findOne(int id);
 	Pacijent save(Pacijent pacijent);
 	Pacijent findByEmail(String email);
+	Pacijent create(Pacijent pacijent);
+	
+	void createVerificationToken(Pacijent user, String token);
+	VerificationToken getVerificationToken(String token);
 }
