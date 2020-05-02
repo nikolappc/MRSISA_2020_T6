@@ -44,7 +44,7 @@ public class PacijentServiceImpl implements PacijentService {
 		return pacijentRepository.save(pacijent);
 	}
 	
-	@Override 
+	@Override
 	public void createVerificationToken(Pacijent user, String token) {  
 		VerificationToken newUserToken = new VerificationToken(token, user);  
 		verificationTokenRepo.save(newUserToken); 
@@ -53,5 +53,10 @@ public class PacijentServiceImpl implements PacijentService {
 	@Override
 	public VerificationToken getVerificationToken(String token) {
 		return verificationTokenRepo.findByToken(token);
+	}
+
+	@Override
+	public Collection<Pacijent> findNotConfirmed() {
+		return pacijentRepository.findNotConfirmed();
 	}
 }

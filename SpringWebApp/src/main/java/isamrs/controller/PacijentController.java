@@ -119,4 +119,7 @@ public class PacijentController {
 	
 	//da li da budu odvojeno pozivi za ulogovanog, karton i listu pregleda ili sve odjednom
 
+	
+
+	
 }

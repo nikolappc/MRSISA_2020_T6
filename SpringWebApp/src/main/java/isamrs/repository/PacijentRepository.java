@@ -1,5 +1,6 @@
 package isamrs.repository;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +14,7 @@ import isamrs.domain.Pregled;
 public interface PacijentRepository extends JpaRepository<Pacijent, Integer>{
 	@Query("SELECT p FROM Pacijent p WHERE p.email = ?1")
 	public Pacijent findByEmail(String email);
+	
+	@Query("SELECT p from Pacijent p WHERE p.id NOT IN (SELECT v.user.id FROM VerificationToken v)")
+	public Collection<Pacijent> findNotConfirmed();
 }

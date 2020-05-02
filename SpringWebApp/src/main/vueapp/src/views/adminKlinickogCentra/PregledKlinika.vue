@@ -36,6 +36,19 @@
                                     </tr>
                                 </tbody>
                             </v-simple-table>
+                            <v-row
+                            align="center"
+                            justify-content="center">
+                                <v-spacer>
+                                </v-spacer>
+                                <v-col>
+                                    <router-link to="/regKlinika">
+                                        <v-btn color="success">
+                                            Registrovanje klinika
+                                        </v-btn>
+                                    </router-link>
+                                </v-col>
+                            </v-row>
                         </v-container>
                     </v-card>
                 </v-col>
@@ -53,7 +66,7 @@
                                 <v-col>
                                     <router-link to="/regKlinika">
                                         <v-btn color="success">
-                                            Registruj kliniku
+                                            Registrovanje klinika
                                         </v-btn>
                                     </router-link>
                                 </v-col>

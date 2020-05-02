@@ -30,6 +30,19 @@
                                     </tr>
                                 </tbody>
                             </v-simple-table>
+                            <v-row
+                            align="center"
+                            justify-content="center">
+                                <v-spacer>
+                                </v-spacer>
+                                <v-col>
+                                    <router-link to="/regLekova">
+                                        <v-btn color="success">
+                                            Registrovanje leka
+                                        </v-btn>
+                                    </router-link>
+                                </v-col>
+                            </v-row>
                         </v-container>
                     </v-card>
                 </v-col>
@@ -47,7 +60,7 @@
                                 <v-col>
                                     <router-link to="/regLekova">
                                         <v-btn color="success">
-                                            Registruj lek
+                                            Registrovanje leka
                                         </v-btn>
                                     </router-link>
                                 </v-col>

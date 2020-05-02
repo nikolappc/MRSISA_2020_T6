@@ -18,4 +18,6 @@ public interface PacijentService {
 	
 	void createVerificationToken(Pacijent user, String token);
 	VerificationToken getVerificationToken(String token);
+	
+	Collection<Pacijent> findNotConfirmed();
 }

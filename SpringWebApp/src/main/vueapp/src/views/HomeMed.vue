@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <v-container>
+      Dobrodošli, {{ulogovani.ime}}
       <v-card class="main-card">
 
         <v-row
@@ -8,92 +9,19 @@
           align-content="stretch"
           align="stretch"
         >
-          <v-col
-            cols="4"
+          <v-col 
+            v-for="(link, i) in linkovi"
+            :key="i"
+            lg="4"
+            md="6"
+            sm="12"
+            xs="12"
           >
-            <v-card
-              min-width="300px"
-              min-height="300px"
-              :img="patients"
-              class="card"
+            <LinkCard
+              :img="link.img"
+              :title="link.title"
             >
-            <v-container>
-              <v-card>
-                <v-card-title>
-                  Pregled pacijenata
-                </v-card-title>
-              </v-card>
-            </v-container>
-            </v-card>
-          </v-col>
-          <v-col
-            cols="4"
-          >
-            <v-card
-              min-width="300px"
-              min-height="300px"
-              :img="kalendar"
-              >
-              <v-container>
-                <v-card>
-                  <v-card-title>
-                    Radni kalendar
-                  </v-card-title>
-                </v-card>
-              </v-container>
-            </v-card>
-          </v-col>
-          <v-col
-            cols="4"
-          >
-            <v-card
-              min-width="300px" 
-              min-height="300px"
-              :img="vacation"
-
-            >
-              <v-container>
-                <v-card>
-                  <v-card-title>
-                    Zahtevi za odmor ili odsustvo
-                  </v-card-title>
-                </v-card>
-              </v-container>
-            </v-card>
-          </v-col>
-          <v-col
-            cols="4"
-          >
-            <v-card 
-              min-width="300px" 
-              min-height="300px"
-              :img="profile"
-            >
-              <v-container>
-                <v-card>
-                  <v-card-title>
-                    Profil
-                  </v-card-title>
-                </v-card>
-              </v-container>
-            </v-card>
-          </v-col>
-          <v-col
-            cols="4"
-          >
-            <v-card 
-              min-width="300px" 
-              min-height="300px"
-              :img="recepti"
-            >
-              <v-container>
-                <v-card>
-                  <v-card-title>
-                    Overavanje recepata
-                  </v-card-title>
-                </v-card>
-              </v-container>
-            </v-card>
+            </LinkCard>
           </v-col>
         </v-row>
       </v-card>
@@ -107,9 +35,12 @@
 // import router from "../router/index.js"
 // import axios from 'axios';
 
-
+import LinkCard from "../components/LinkCard.vue";
 export default {
   name: 'HomeMed',
+  components:{
+    LinkCard
+  },
   data:function(){
     return {
       patients:require("../assets/patients.jpg"),
@@ -117,6 +48,33 @@ export default {
       profile:require("../assets/profile.jpg"),
       recepti:require("../assets/recepti.jpg"),
       vacation:require("../assets/vacation.jpg"),
+      linkovi:[
+        {
+          title:"Pregled pacijenata",
+          img:require("../assets/patients.jpg")
+        },
+        {
+          title:"Radni kalendar",
+          img:require("../assets/kalendar.jpg")
+        },
+        {
+          title:"Zahtevi za odmor ili odsustvo",
+          img:require("../assets/vacation.jpg")
+        },
+        {
+          title:"Profil",
+          img:require("../assets/profile.jpg")
+        },
+        {
+          title:"Overavanje recepata",
+          img:require("../assets/recepti.jpg")
+        },
+      ],
+    }
+  },
+  computed:{
+    ulogovani(){
+      return this.$store.state.ulogovan;
     }
   },
   mounted () {

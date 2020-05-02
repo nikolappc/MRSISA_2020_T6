@@ -5,7 +5,6 @@
         dark
     >
         Klinički centar
-        {{ulogovan}}
         <v-spacer></v-spacer>
 
         <router-link to="/">

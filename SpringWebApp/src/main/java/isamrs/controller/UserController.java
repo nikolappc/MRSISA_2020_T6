@@ -6,11 +6,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -39,6 +42,7 @@ import isamrs.dto.PregledDTO;
 import isamrs.dto.RegDTO;
 import isamrs.dto.UserDTO;
 import isamrs.dto.ZdravstveniKartonDTO;
+import isamrs.registracija.OnRegistrationSuccessEvent;
 import isamrs.registracija.VerificationToken;
 import isamrs.service.AdministratorKlinickogCentraService;
 import isamrs.service.AdministratorKlinikeService;
@@ -66,6 +70,9 @@ public class UserController {
 	@Autowired 
 	private AdministratorKlinickogCentraService adminKCService;
 
+	
+	@Autowired
+	ApplicationEventPublisher eventPublisher;
 	
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Osoba> loginUser(HttpServletRequest req, @RequestBody UserDTO user) {
@@ -210,8 +217,27 @@ public class UserController {
 		return new ResponseEntity<String>("Uspjesno poslat zahtjev.", HttpStatus.OK);
     }
 	
+	@PostMapping(value = "/approveRegistration", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> approveRegistration(@RequestBody String email, WebRequest request){
+		try {
+			Pacijent pacijent = pacijentService.findByEmail(email);
+			eventPublisher.publishEvent(new OnRegistrationSuccessEvent(pacijent, request.getContextPath()));
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<String>("Uspešno odobrena registracija.", HttpStatus.OK);
+	}
 	
-	
+	@PostMapping(value = "/denyRegistration", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> denyRegistration(@RequestBody String email , WebRequest request){
+		try {
+			Pacijent pacijent = pacijentService.findByEmail(email);
+			OnRegistrationSuccessEvent orse = new OnRegistrationSuccessEvent(pacijent, request.getContextPath());
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<String>("Uspešno odbijena registracija.", HttpStatus.OK);
+	}
 	
 	@GetMapping(value = "/confirmRegistration", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE) 
 	public ResponseEntity<String> confirmRegistration(WebRequest request, @RequestParam("token") String token) {  
@@ -229,6 +255,12 @@ public class UserController {
 		return new ResponseEntity<String>("Uspjesna registracija.", HttpStatus.OK);
 	}
 	
+	// Sluzi za dobavljanje nepotvrdjenih registrovanih korisnika
+	@GetMapping(value = "/nepotvrdjeni", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<Pacijent>> getNepotvrdjeni(){
+		Collection<Pacijent> pac = pacijentService.findNotConfirmed();
+		return new ResponseEntity<Collection<Pacijent>>(pac, HttpStatus.OK);
+	}
 
 	
 
