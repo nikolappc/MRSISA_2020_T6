@@ -2,6 +2,7 @@ package isamrs.domain;
 
 import java.util.*;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -17,6 +18,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @Table(name = "pacijent")
 public class Pacijent extends Osoba {
+	
+	@Column(name = "enabled", unique = false, nullable = false)
+	private boolean enabled;
 	
 	@JsonIgnore
 	@OneToOne
@@ -58,6 +62,16 @@ public class Pacijent extends Osoba {
 				this.zdravstveniKarton.setPacijent(this);
 		}
 	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean isEnabled) {
+		this.enabled = isEnabled;
+	}
+	
+	
 
 	
 }

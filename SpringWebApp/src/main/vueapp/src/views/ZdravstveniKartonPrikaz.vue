@@ -207,37 +207,25 @@ export default {
     },
     customSort: function(items, index, isDesc) {
       items.sort((a, b) => {
-          if (index=='termin.pocetak' || index=='termin.kraj') {
-            //var d1 = new Date(a[index]);
-            //var d2 = new Date(b[index]);
-            if (!isDesc) {
+          if (index[0]=='termin.pocetak' || index[0]=='termin.kraj') {
+            var d1 = new Date(a[index]);
+            var d2 = new Date(b[index]);
+            if (!isDesc[0]) {
                 //return new Date(b[index]) - new Date(a[index]);
-                //return dates.compare(new Date(a[index]), new Date(b[index]));
-                //return d1 < d2;
-                return a[index] < b[index];
+                return d1 < d2;
             } else {
                 //return new Date(a[index]) - new Date(b[index]);
-                //return dates.compare(new Date(b[index]), new Date(a[index]));
-                //return d2 < d1;
-                return b[index] < a[index];
+                return d2 < d1;
             }
           }
-          else if (index=='id' || index=='sala.id') {
-            if (!isDesc) {
+          else {
+            if (!isDesc[0]) {
               return a[index] < b[index] ? -1 : 1;
             } else {
               return b[index] < a[index] ? -1 : 1;
             }
           }
-          else if (index=='opis') {
-            if (!isDesc) {
-                return a[index].toLowerCase().localeCompare(b[index].toLowerCase());
-              }
-              else {
-                return b[index].toLowerCase().localeCompare(a[index].toLowerCase());
-              }
-          }
-          else {
+          /*else {
             if(typeof a[index] !== 'undefined'){
               if (!isDesc) {
                 return a[index].toLowerCase().localeCompare(b[index].toLowerCase());
@@ -246,7 +234,7 @@ export default {
                 return b[index].toLowerCase().localeCompare(a[index].toLowerCase());
               }
             }
-          }
+          }*/
       });
       return items;
     }

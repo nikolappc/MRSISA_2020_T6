@@ -38,6 +38,11 @@
       </v-card>
     </v-col>
   </v-row>
+  <v-row>
+    <v-col>
+      <router-link :to="{path: 'registracija'}" slot="action">Registruj se</router-link>
+    </v-col>
+  </v-row>
   </v-container>
 </template>
 
