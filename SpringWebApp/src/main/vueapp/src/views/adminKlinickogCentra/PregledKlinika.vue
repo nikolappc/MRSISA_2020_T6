@@ -23,7 +23,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="k in klinike" :key="k.id"> 
+                                    <tr v-for="k in klinike" :key="k.id" @click="izmena(k)"> 
                                         <td>
                                             {{k.naziv}}
                                         </td>
@@ -81,18 +81,32 @@
                 </v-col>
             </v-row>
         </v-container>
+        <v-dialog
+            v-model="dialog"
+        >
+            <IzmenaKlinike
+                :klinika="klinika"
+            >
+            </IzmenaKlinike>
+        </v-dialog>
     </div>
 </template>
 
 <script>
     const axios = require('axios');
+    import IzmenaKlinike from "./IzmenaKlinike.vue";
     export default {
         name:"PregledKlinika",
         data:function () {
             return {
-                klinike:[]
+                klinike:[],
+                klinika:"",
+                dialog:false
             }
         },
+        components:{
+            IzmenaKlinike
+        },  
         mounted:function () {
             axios.get("/klinika")
                 .then(res=>{
@@ -104,6 +118,10 @@
                 });
         },
         methods:{
+            izmena(klinika){
+                this.klinika = klinika;
+                this.dialog = true;
+            },
             deleteKlinika:function (id) {
                 axios.delete("/klinika/"+id)
                     .then(res=>{

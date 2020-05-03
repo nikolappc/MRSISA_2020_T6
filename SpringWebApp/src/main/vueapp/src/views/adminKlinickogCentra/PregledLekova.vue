@@ -20,7 +20,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="l in lekovi" :key="l.sifraLeka">
+                                    <tr v-for="l in lekovi" :key="l.sifraLeka" @click="izmena(l)">
                                         <td>
                                             {{l.sifraLeka}}
                                         </td>
@@ -75,17 +75,29 @@
                 </v-col>
             </v-row>
         </v-container>
+        <v-dialog>
+            <IzmenaLeka
+                :lek = "lek"
+            >
+            </IzmenaLeka>
+        </v-dialog>
     </div>
 </template>
 
 <script>
     const axios = require('axios');
+    import IzmenaLeka from "./IzmenaLeka.vue";
     export default {
         name:"PregledLekova",
         data:function () {
             return {
-                lekovi:[]
+                lekovi:[],
+                dialog:false,
+                lek:""
             }
+        },
+        components:{
+            IzmenaLeka
         },
         mounted:function () {
             axios.get("/lek")
@@ -98,15 +110,18 @@
         },
         methods:{
             deleteLekfunction (sifra) {
-                axios.delete("/lek/"+sifraDijagnoze)
+                axios.delete("/lek/"+sifra)
                     .then(res=>{
                         alert(res.data)
                     })
                     .catch(error=>{
                         console.log(error);
-                        
                     })
-            }
+            },
+            izmena(lek){
+                this.lek = lek;
+                this.dialog = true;
+            },
         }
     }
 </script>

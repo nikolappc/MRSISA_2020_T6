@@ -64,7 +64,6 @@
         name:"RegConf",
         props:[
             "username",
-            "email",
         ],
         methods:{
             allow:function () {
@@ -74,7 +73,7 @@
                 this.notifyServer("/api/denyRegistration");
             },
             notifyServer:function(address){
-                axios.post(address, this.email)
+                axios.post(address, this.username)
                     .then(res=>{
                         alert(res.data);
                         this.$emit("resolved", this.email);
