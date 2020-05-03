@@ -51,6 +51,7 @@ public class Termin {
 		this.id = id;
 		this.pocetak = pocetak;
 		this.kraj = kraj;
+
 	}
 	
 	public Termin() {}

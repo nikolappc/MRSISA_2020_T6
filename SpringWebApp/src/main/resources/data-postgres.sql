@@ -13,7 +13,7 @@ insert into stavke_cenovnika (cena, id_cenovnik) values (40, 1);
 insert into stavke_cenovnika (cena, id_cenovnik) values (50, 1);
 
 insert into tipovi_klinike (tip) values ('tip 1');
-insert into klinike (adresa, naziv, opis, cenovnik_id, tip_klinike_id) values ('Dijagon Aleja', 'Sent Mungo', 'bolnica', 1, 1);
+insert into klinike (adresa, naziv, opis, cenovnik_id, tip_klinike_id) values ('Dijagon Aleja, London, UK', 'Sent Mungo', 'bolnica', 1, 1);
 
 insert into administratori_klinike (adresa, broj_telefona, email, ime, jbo, password, prezime, id_klinike) values ('Godrics Hollow', '066/125-112', 'dumbledore@gmail.com', 'Albus', '0221', 'albus12345', 'Dumbledore', 1);
 
@@ -26,10 +26,10 @@ insert into lekovi (sifra_leka, naziv_leka) values (1, 'Bromazepam');
 insert into lekovi (sifra_leka, naziv_leka) values (2, 'Bensedin');
 insert into lekovi (sifra_leka, naziv_leka) values (3, 'Brufen');
 
-insert into termini (kraj, pocetak) values (to_timestamp('2020-03-20 08:00', ' YYYY-MM-DD HH:MI'), to_timestamp('2020-03-20 09:00', ' YYYY-MM-DD HH:MI'));
-insert into termini (kraj, pocetak) values (to_timestamp('2020-03-20 09:00', ' YYYY-MM-DD HH:MI'), to_timestamp('2020-03-20 10:00', ' YYYY-MM-DD HH:MI'));
-insert into termini (kraj, pocetak) values (to_timestamp('2020-03-20 08:00', ' YYYY-MM-DD HH:MI'), to_timestamp('2020-03-20 10:00', ' YYYY-MM-DD HH:MI'));
-insert into termini (kraj, pocetak) values (to_timestamp('2020-03-20 10:00', ' YYYY-MM-DD HH:MI'), to_timestamp('2020-03-20 11:00', ' YYYY-MM-DD HH:MI'));
+insert into termini (kraj, pocetak) values (to_timestamp('2020-03-20 08:00', 'YYYY-MM-DD HH:MI'), to_timestamp('2020-03-20 09:00', 'YYYY-MM-DD HH:MI'));
+insert into termini (kraj, pocetak) values (to_timestamp('2020-03-20 09:00', 'YYYY-MM-DD HH:MI'), to_timestamp('2020-03-20 10:00', 'YYYY-MM-DD HH:MI'));
+insert into termini (kraj, pocetak) values (to_timestamp('2020-03-20 08:00', 'YYYY-MM-DD HH:MI'), to_timestamp('2020-03-20 10:00', 'YYYY-MM-DD HH:MI'));
+insert into termini (kraj, pocetak) values (to_timestamp('2020-03-20 10:00', 'YYYY-MM-DD HH:MI'), to_timestamp('2020-03-20 11:00', 'YYYY-MM-DD HH:MI'));
 
 insert into medicinske_sestre (adresa, broj_telefona, email, ime, jbo, password, prezime, id_klinike) values ('Godrics Hollow', '064/123-114', 'evans@gmail.com', 'Lily', '000', 'lily12345', 'Evans', 1);
 

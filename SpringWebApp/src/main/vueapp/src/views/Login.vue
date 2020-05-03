@@ -68,10 +68,7 @@ export default {
               this.$store.commit("setUlogovan", res.data);
               router.push("/");
             })
-            .catch(function (error) { 
-              router.push("/");
-              console.log(error);
-            });
+            .catch(function () { alert("Prijava nije uspjela. Pokusajte ponovo ili kreirajte nalog!"); router.push("/"); });
         }
     }
 }
