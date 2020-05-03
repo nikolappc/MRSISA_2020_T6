@@ -30,13 +30,13 @@ public class RegistrationEmailListener implements ApplicationListener<OnRegistra
 		
 		String recipient = user.getEmail();
 		String subject = "Potvrda registracije";
-		String url = event.getAppUrl() + "/confirmRegistration?token=" + token;
+		String url = event.getAppUrl() + "/api/confirmRegistration?token=" + token;
 		String message = "Uspjesno ste se registrovali. Kliknite na link da biste aktivirali svoj nalog.";
 		
 		SimpleMailMessage email = new SimpleMailMessage();
 		email.setTo(recipient);
 		email.setSubject(subject);
-		email.setText(message + "http://localhost:8081" + url);
+		email.setText(message + " http://localhost:8081" + url);
 		mailSender.send(email);
 	}
 	

@@ -242,7 +242,7 @@ public class UserController {
 		return new ResponseEntity<String>("Uspešno odbijena registracija.", HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/confirmRegistration", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE) 
+	@GetMapping(value = "/confirmRegistration", produces = MediaType.APPLICATION_JSON_VALUE) 
 	public ResponseEntity<String> confirmRegistration(WebRequest request, @RequestParam("token") String token) {  
 	    VerificationToken verificationToken = pacijentService.getVerificationToken(token);  
 	    if (verificationToken == null) {   
@@ -264,7 +264,4 @@ public class UserController {
 		Collection<Pacijent> pac = pacijentService.findNotConfirmed();
 		return new ResponseEntity<Collection<Pacijent>>(pac, HttpStatus.OK);
 	}
-
-	
-
 }
