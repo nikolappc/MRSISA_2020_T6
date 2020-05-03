@@ -27,6 +27,11 @@
                                         <td>
                                             {{d.nazivDijagnoze}}
                                         </td>
+                                        <td>
+                                            <td><v-btn icon @click="deleteDijagnoza(d.sifraDijagnoze)">
+                                                <v-icon>mdi-delete</v-icon>
+                                            </v-btn>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </v-simple-table>
@@ -90,6 +95,18 @@
                 .catch(error=>{
                     alert(error);
                 });
+        },
+        methods:{
+            deleteDijagnoza:function (sifraDijagnoze) {
+                axios.delete("/dijagnoza/"+sifraDijagnoze)
+                    .then(res=>{
+                        alert(res.data)
+                    })
+                    .catch(error=>{
+                        console.log(error);
+                        
+                    })
+            }
         }
     }
 </script>

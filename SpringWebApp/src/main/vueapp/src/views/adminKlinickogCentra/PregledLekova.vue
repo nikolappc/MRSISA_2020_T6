@@ -27,6 +27,11 @@
                                         <td>
                                             {{l.nazivLeka}}
                                         </td>
+                                        <td>
+                                            <td><v-btn icon @click="deleteLek(l.sifraLeka)">
+                                                <v-icon>mdi-delete</v-icon>
+                                            </v-btn>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </v-simple-table>
@@ -90,6 +95,18 @@
                 .catch(error=>{
                     alert(error);
                 });
+        },
+        methods:{
+            deleteLekfunction (sifra) {
+                axios.delete("/lek/"+sifraDijagnoze)
+                    .then(res=>{
+                        alert(res.data)
+                    })
+                    .catch(error=>{
+                        console.log(error);
+                        
+                    })
+            }
         }
     }
 </script>

@@ -33,6 +33,11 @@
                                         <td>
                                             {{k.tipKlinike.tip}}
                                         </td>
+                                        <td>
+                                            <td><v-btn icon @click="deleteKlinika(k.id)">
+                                                <v-icon>mdi-delete</v-icon>
+                                            </v-btn>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </v-simple-table>
@@ -97,6 +102,18 @@
                 .catch(error=>{
                     alert(error);
                 });
+        },
+        methods:{
+            deleteKlinika:function (id) {
+                axios.delete("/klinika/"+id)
+                    .then(res=>{
+                        alert(res.data)
+                    })
+                    .catch(error=>{
+                        console.log(error);
+                        
+                    })
+            }
         }
     }
 </script>
