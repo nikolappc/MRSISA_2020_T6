@@ -42,6 +42,7 @@ import isamrs.dto.PregledDTO;
 import isamrs.dto.RegDTO;
 import isamrs.dto.UserDTO;
 import isamrs.dto.ZdravstveniKartonDTO;
+import isamrs.registracija.OnRegistrationFailEvent;
 import isamrs.registracija.OnRegistrationSuccessEvent;
 import isamrs.registracija.VerificationToken;
 import isamrs.service.AdministratorKlinickogCentraService;
@@ -217,7 +218,7 @@ public class UserController {
 		return new ResponseEntity<String>("Uspjesno poslat zahtjev.", HttpStatus.OK);
     }
 	
-	@PostMapping(value = "/approveRegistration", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/approveRegistration", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> approveRegistration(@RequestBody String email, WebRequest request){
 		try {
 			Pacijent pacijent = pacijentService.findByEmail(email);
@@ -228,11 +229,12 @@ public class UserController {
 		return new ResponseEntity<String>("Uspešno odobrena registracija.", HttpStatus.OK);
 	}
 	
-	@PostMapping(value = "/denyRegistration", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/denyRegistration", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> denyRegistration(@RequestBody String email , WebRequest request){
 		try {
 			Pacijent pacijent = pacijentService.findByEmail(email);
-			OnRegistrationSuccessEvent orse = new OnRegistrationSuccessEvent(pacijent, request.getContextPath());
+			eventPublisher.publishEvent(new OnRegistrationFailEvent(pacijent, request.getContextPath()));
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

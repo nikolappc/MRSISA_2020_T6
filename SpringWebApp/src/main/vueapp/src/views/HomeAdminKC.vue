@@ -2,7 +2,9 @@
   <div class="home">
     <v-row>
       <v-col
-        cols="9"
+        lg="9"
+        md="6"
+        sm="12"
       >
         <v-container>
           <v-card class="main-card">
@@ -14,7 +16,7 @@
             >
               <v-col
                 lg="4"
-                md="6"
+                md="12"
                 sm="12"
                 xs="12"
               >
@@ -28,7 +30,7 @@
               </v-col>
               <v-col
                 lg="4"
-                md="6"
+                md="12"
                 sm="12"
                 xs="12"
               >
@@ -42,7 +44,7 @@
               </v-col>
               <v-col
                 lg="4"
-                md="6"
+                md="12"
                 sm="12"
                 xs="12"
               >
@@ -59,42 +61,43 @@
         </v-container>
       </v-col>
       <v-col
-        cols="3"
+        lg="3"
+        md="6"
+        sm="12"
       >
       <v-container>
         <v-card
               color="primary"
             >
           <v-container>
-            <v-card-title
-              dark
-            >
-              Zahtevi za registraciju
-            </v-card-title>
             <v-row>
               <v-col
                 cols="12"
               >
+                <v-card>
+                  <v-card-title
+                  >
+                    Zahtevi za registraciju
+                  </v-card-title>
+                </v-card>
               </v-col>
               <v-col
                 cols="12"
+                v-if="nepotvrdjeniKorisnici.length==0"
               >
-                <RegConf username="pero">
-            
-                </RegConf>
+                <v-card>
+                  <v-container>
+                    Trenutno nema zahteva za registraciju.
+                  </v-container>
+                </v-card>
               </v-col>
               <v-col
+                v-else
                 cols="12"
+                v-for="(user, i) in nepotvrdjeniKorisnici"
+                :key="i"
               >
-                <RegConf username="pero">
-            
-                </RegConf>
-              </v-col>
-              <v-col
-                cols="12"
-              >
-                <RegConf username="pero">
-            
+                <RegConf :username="user.email">
                 </RegConf>
               </v-col>
             </v-row>
@@ -109,7 +112,7 @@
 
 <script>
 // @ is an alias to /src
-// import axios from 'axios';
+import axios from 'axios';
 // import router from "../router/index.js"
 import LinkCard from "../components/LinkCard.vue";
 import RegConf from "../components/RegistrationConfirmation.vue";
@@ -123,17 +126,21 @@ export default {
       klinike:require("../assets/klinike.jpg"),
       lekovi:require("../assets/lekovi.jpg"),
       dijagnoze:require("../assets/dijagnoze.jpg"),
+      nepotvrdjeniKorisnici:[
+      ]
   }),
   mounted () {
-      // axios
-      // .get('api/ulogovan')
-      // .then(response => {
-      //     this.ulogovan = response.data;
-      // })
-      // .catch(function (error) { console.log(error); router.push("/loginPage"); });
+      axios
+      .get('api/nepotvrdjeni')
+      .then(response => {
+          this.nepotvrdjeniKorisnici = response.data;
+      })
+      .catch(function (error) { console.log(error); });
   },
   methods: {
-    
+    onRsolved:function (email) {
+      this.nepotvrdjeniKorisnici = this.nepotvrdjeniKorisnici.filter(k=>k.email!=email);
+    }
   }
   
 }
