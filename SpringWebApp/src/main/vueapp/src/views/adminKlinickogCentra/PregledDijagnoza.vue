@@ -19,8 +19,8 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr v-for="d in dijagnoze" :key="d.sifraDijagnoze" @click="prikaziDialog(d)"> 
+                                <tbody v-for="d in dijagnoze" :key="d.sifraDijagnoze" @click="prikaziDialog(d)">
+                                    <tr> 
                                         <td>
                                             {{d.sifraDijagnoze}}
                                         </td>

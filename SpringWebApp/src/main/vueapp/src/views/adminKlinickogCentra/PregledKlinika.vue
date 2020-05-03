@@ -22,8 +22,8 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr v-for="k in klinike" :key="k.id" @click="izmena(k)"> 
+                                <tbody v-for="k in klinike" :key="k.id" @click="izmena(k)">
+                                    <tr> 
                                         <td>
                                             {{k.naziv}}
                                         </td>

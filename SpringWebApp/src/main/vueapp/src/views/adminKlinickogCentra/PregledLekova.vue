@@ -19,8 +19,8 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr v-for="l in lekovi" :key="l.sifraLeka" @click="izmena(l)">
+                                <tbody v-for="l in lekovi" :key="l.sifraLeka" @click="izmena(l)">
+                                    <tr>
                                         <td>
                                             {{l.sifraLeka}}
                                         </td>
