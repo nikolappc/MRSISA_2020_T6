@@ -73,7 +73,7 @@
                 this.notifyServer("/api/denyRegistration");
             },
             notifyServer:function(address){
-                axios.post(address, this.username)
+                axios.get(address+"/"+this.username)
                     .then(res=>{
                         alert(res.data);
                         this.$emit("resolved", this.email);

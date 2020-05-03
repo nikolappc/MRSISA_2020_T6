@@ -218,9 +218,10 @@ public class UserController {
 		return new ResponseEntity<String>("Uspjesno poslat zahtjev.", HttpStatus.OK);
     }
 	
-	@PostMapping(value = "/approveRegistration", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> approveRegistration(@RequestBody String email, WebRequest request){
+	@GetMapping(value = "/approveRegistration/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> approveRegistration(@PathVariable("email") String email, WebRequest request){
 		try {
+			System.out.println("email:"+email);
 			Pacijent pacijent = pacijentService.findByEmail(email);
 			eventPublisher.publishEvent(new OnRegistrationSuccessEvent(pacijent, request.getContextPath()));
 		}catch(Exception e) {
@@ -229,8 +230,8 @@ public class UserController {
 		return new ResponseEntity<String>("Uspešno odobrena registracija.", HttpStatus.OK);
 	}
 	
-	@PostMapping(value = "/denyRegistration", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> denyRegistration(@RequestBody String email , WebRequest request){
+	@GetMapping(value = "/denyRegistration/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> denyRegistration(@PathVariable("email") String email , WebRequest request){
 		try {
 			Pacijent pacijent = pacijentService.findByEmail(email);
 			eventPublisher.publishEvent(new OnRegistrationFailEvent(pacijent, request.getContextPath()));

@@ -97,7 +97,7 @@
                 v-for="(user, i) in nepotvrdjeniKorisnici"
                 :key="i"
               >
-                <RegConf :username="user.email">
+                <RegConf :username="user.email" @resolved="onResolved()">
                 </RegConf>
               </v-col>
             </v-row>
@@ -138,7 +138,7 @@ export default {
       .catch(function (error) { console.log(error); });
   },
   methods: {
-    onRsolved:function (email) {
+    onResolved:function (email) {
       this.nepotvrdjeniKorisnici = this.nepotvrdjeniKorisnici.filter(k=>k.email!=email);
     }
   }
