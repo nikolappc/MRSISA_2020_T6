@@ -68,13 +68,13 @@
         ],
         methods:{
             allow:function () {
-                this.notifyServer("/api/approveRegistration/" + this.email);
+                this.notifyServer("/api/approveRegistration");
             },
             deny:function () {
-                this.notifyServer("/api/denyRegistration/" + this.email);
+                this.notifyServer("/api/denyRegistration");
             },
             notifyServer:function(address){
-                axios.get(address)
+                axios.post(address, this.email)
                     .then(res=>{
                         alert(res.data);
                         this.$emit("resolved", this.email);

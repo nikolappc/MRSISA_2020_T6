@@ -218,7 +218,7 @@ public class UserController {
 		return new ResponseEntity<String>("Uspjesno poslat zahtjev.", HttpStatus.OK);
     }
 	
-	@GetMapping(value = "/approveRegistration", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/approveRegistration", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> approveRegistration(@RequestBody String email, WebRequest request){
 		try {
 			Pacijent pacijent = pacijentService.findByEmail(email);
@@ -229,7 +229,7 @@ public class UserController {
 		return new ResponseEntity<String>("Uspešno odobrena registracija.", HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/denyRegistration", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/denyRegistration", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> denyRegistration(@RequestBody String email , WebRequest request){
 		try {
 			Pacijent pacijent = pacijentService.findByEmail(email);
