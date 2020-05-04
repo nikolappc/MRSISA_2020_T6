@@ -44,9 +44,10 @@
                             <v-row
                             align="center"
                             justify-content="center">
-                                <v-spacer>
-                                </v-spacer>
-                                <v-col>
+                                <v-col
+                                    cols="3"
+                                    class="ml-auto"
+                                >
                                     <router-link to="/regKlinika">
                                         <v-btn color="success">
                                             Registrovanje klinika

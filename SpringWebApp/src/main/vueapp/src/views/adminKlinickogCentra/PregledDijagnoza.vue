@@ -28,12 +28,31 @@
                                             {{d.nazivDijagnoze}}
                                         </td>
                                         <td>
-                                            <td><v-btn icon @click="deleteDijagnoza(d.sifraDijagnoze)">
+                                            <v-btn icon @click="deleteDijagnoza(d.sifraDijagnoze)">
                                                 <v-icon>mdi-delete</v-icon>
                                             </v-btn>
                                         </td>
                                     </tr>
                                 </tbody>
+                            </v-simple-table>
+                            <v-simple-table>
+                                <thead>
+                                    <tr>
+                                        <th>
+
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody v-for="d in dijagnoze">
+                                    <tr>
+                                        <td>
+                                            <v-btn icon @click="deleteDijagnoza(d.sifraDijagnoze)">
+                                                <v-icon>mdi-delete</v-icon>
+                                            </v-btn>
+                                        </td>
+                                    </tr>
+                                </tbody>
+
                             </v-simple-table>
                             <v-row
                             align="center"

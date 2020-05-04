@@ -73,7 +73,7 @@
                                     <v-spacer>
             
                                     </v-spacer>
-                                    <v-btn @click="registruj">
+                                    <v-btn @click="registruj" color="success">
                                         Registruj kliniku
                                     </v-btn>
                                 </v-row>
