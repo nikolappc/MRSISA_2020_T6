@@ -20,4 +20,5 @@ public interface PacijentService {
 	VerificationToken getVerificationToken(String token);
 	
 	Collection<Pacijent> findNotConfirmed();
+	Collection<Pacijent> findAll();
 }

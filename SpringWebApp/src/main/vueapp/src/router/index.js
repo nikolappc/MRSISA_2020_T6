@@ -140,6 +140,11 @@ Vue.use(VueRouter, VueAxios, axios)
     component: () => import('../views/DodavanjeTermina.vue')
   },
   {
+    path: '/listaPacijenata',
+    name: 'ListaPacijenata',
+    component: () => import('../views/pacijenti/ListaPacijenta.vue')
+  },
+  {
     path:"/homePacijent",
     name:"HomePacijent",
     component:HomePacijent
