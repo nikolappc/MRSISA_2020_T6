@@ -4,32 +4,32 @@
       <v-simple-table>
         <thead>
           <th>Moj profil</th>
-          <th>{{ ulogovan.email }}</th>
+          <th>{{ ulogovani.email }}</th>
         </thead>
         <tbody>
           <tr>
             <td>Lozinka:</td>
-            <td>{{ ulogovan.password }}</td>
+            <td>{{ ulogovani.password }}</td>
           </tr>
           <tr>
             <td>Ime:</td>
-            <td>{{ ulogovan.ime }}</td>
+            <td>{{ ulogovani.ime }}</td>
           </tr>
           <tr>
             <td>Prezime:</td>
-            <td>{{ ulogovan.prezime }}</td>
+            <td>{{ ulogovani.prezime }}</td>
           </tr>
           <tr>
             <td>Adresa:</td>
-            <td>{{ ulogovan.adresa }}</td>
+            <td>{{ ulogovani.adresa }}</td>
           </tr>
           <tr>
             <td>Telefon:</td>
-            <td>{{ ulogovan.brojTelefona }}</td>
+            <td>{{ ulogovani.brojTelefona }}</td>
           </tr>
           <tr>
             <td>Jedinstveni broj osiguranika:</td>
-            <td>{{ ulogovan.jbo }}</td>
+            <td>{{ ulogovani.jbo }}</td>
           </tr>
         </tbody>
       </v-simple-table>
@@ -39,21 +39,25 @@
 </template>
 
 <script>
-import axios from 'axios';
 import router from "../router/index.js"
 
 export default {
   name: 'ProfilPacijenta',
   data: () => ({
-    ulogovan : {},
+    ulogovani : {},
   }),
   mounted () {
-      axios
+	this.ulogovani = this.$store.state.ulogovan;
+	if (this.ulogovani=="") {
+		router.push("/");
+	} 
+	
+	/*axios
       .get('api/ulogovan')
       .then(response => {
           this.ulogovan = response.data;
       })
-      .catch(function (error) { console.log(error); router.push("/"); });
+      .catch(function (error) { console.log(error); router.push("/"); });*/
   }
 }
 </script>

@@ -1,8 +1,8 @@
 <template>
   <div class="posjetePacijenta">
     <v-container>
-			<h2>Istorija pregleda i operacija</h2>
-			<h4>{{ ulogovan.ime }} {{ ulogovan.prezime }}</h4>
+			<h2 style="text-align:center">Istorija pregleda i operacija</h2>
+			<h4>{{ ulogovani.ime }} {{ ulogovani.prezime }}</h4>
       <!--<v-simple-table>
         <thead>
 					<th>Id pregleda</th>
@@ -107,7 +107,7 @@ import router from "../router/index.js"
 export default {
   name: 'PosjetePacijenta',
   data: () => ({
-    ulogovan : {},
+    ulogovani : {},
     pregledi : [],
     headers: [
         {
@@ -158,7 +158,17 @@ export default {
       ]
   }),
   mounted () {
-      axios
+	this.ulogovani = this.$store.state.ulogovan;
+	if (this.ulogovani=="") {
+		router.push("/");
+	} else {
+		axios
+		.get('api/pacijent/listaPregleda/' + this.ulogovani.id)
+		.then(response => {
+			this.pregledi = response.data;
+		});
+	}
+      /*axios
       .get('api/ulogovan')
       .then(response => {
           this.ulogovan = response.data;
@@ -168,7 +178,7 @@ export default {
               this.pregledi = response.data;
           });
       })
-      .catch(function (error) { console.log(error); router.push("/"); });
+      .catch(function (error) { console.log(error); router.push("/"); });*/
 	},
 	methods: {
     formatDate(value) {

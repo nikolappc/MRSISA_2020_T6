@@ -55,9 +55,9 @@ public class PacijentController {
 	@Autowired 
 	private OperacijaService operacijaService;
 	
-	@Autowired
+	/*@Autowired
 	private ZdravstveniKartonServiceImpl kartonService;
-	
+	*/
 
 	
    
@@ -110,6 +110,9 @@ public class PacijentController {
 		System.out.println(id);
 		//ZdravstveniKarton zk = kartonService.findOne(p.getZdravstveniKarton().getId());
 		
+		if (p.getZdravstveniKarton() == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		ZdravstveniKarton zk = p.getZdravstveniKarton();
 		System.out.println(zk.getKrvnaGrupa());
 		
