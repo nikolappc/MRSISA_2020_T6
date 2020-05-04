@@ -36,6 +36,8 @@
                 axios
                 .get('api/logout')
                 .then(() => {
+					this.$store.commit("setUlogovan", "");
+					console.log(this.$store.state.ulogovan);
                     this.$router.push("/loginPage");
                 })
                 .catch(function (error) { console.log(error); });

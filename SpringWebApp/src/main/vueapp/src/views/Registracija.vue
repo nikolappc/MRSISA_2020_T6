@@ -22,7 +22,6 @@
             <v-text-field
               v-model="novaSifraPotvrda"
               :rules="password2Rules"
-              :error-messages='passwordMatchError()'
               label="Potvrda lozinke"
               required
             ></v-text-field>
@@ -53,13 +52,13 @@
             <v-text-field
               v-model="reg.drzava"
               :rules="Rules"
-              label="Drzava"
+              label="Država"
               required
             ></v-text-field>
             <v-text-field
               v-model="reg.brojTelefona"
               :rules="Rules"
-              label="Broj Telefona"
+              label="Broj telefona"
             ></v-text-field>
             <v-text-field
               v-model="reg.jbo"
@@ -105,7 +104,6 @@ export default {
       ],
       passwordRules: [
         v => !!v || 'Obavezno polje',
-        v => v === this.novaSifraPotvrda || 'Lozinke se ne poklapaju'
       ],
       password2Rules: [
         v => !!v || 'Obavezno polje',
@@ -115,13 +113,15 @@ export default {
 	},
       
   mounted () {
-      axios
-      .get('api/ulogovan')
-      .then(response => {
-          this.ulogovan = response.data;
+  console.log(this.$store.state.ulogovan);
+	if (this.$store.state.ulogovan != {} && this.$store.state.ulogovan != ""  && this.$store.state.ulogovan != null && this.$store.state.ulogovan != undefined) {
           router.push("/");
-      })
-      .catch(function (error) { console.log(error);  });   
+	}
+  },
+  computed:{
+    ulogovani(){
+      return this.$store.state.ulogovan;
+    }
   },
   methods: {
     posaljiZahtjev: function(event) {
@@ -130,7 +130,7 @@ export default {
         axios
         .post('api/registracija',this.reg)
         .then(() => {
-            alert("Poslali ste zahtjev za registraciju. Bice Vam poslat email na adresu \n" + this.reg.email + ", gdje mozete verifikovati Vas nalog.")
+            alert("Poslali ste zahtev za registraciju. Biće Vam poslat email na adresu \n" + this.reg.email + ", gde možete verifikovati Vaš nalog.")
             router.push("/");
         })
         .catch(function (error) { 
@@ -140,9 +140,6 @@ export default {
             }
         });
     },
-    passwordMatchError () {
-      return (this.novaSifraPotvrda === this.novaSifraPotvrda) ? '' : 'Lozinke se ne poklapaju';
-    }
   },
   watch: {
     novaSifra: function() {

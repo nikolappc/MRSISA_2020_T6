@@ -67,6 +67,8 @@ insert into dijagnoze (sifra, naziv, id_kartona) values (2, 'Depresija', 2);
 insert into medicinske_sestre_overeni_recepti (medicinska_sestra_id, overeni_recepti_id) values (1, 2);
 
 insert into lekari_operacije (operacija_id, lekar_id) values (1, 1);
+insert into lekari_operacije (operacija_id, lekar_id) values (2, 1);
+insert into lekari_operacije (operacija_id, lekar_id) values (2, 2);
 
 insert into dijagnoze_pregled (dijagnoza_sifra, pregled_id) values (1, 1);
 insert into dijagnoze_pregled (dijagnoza_sifra, pregled_id) values (2, 2);

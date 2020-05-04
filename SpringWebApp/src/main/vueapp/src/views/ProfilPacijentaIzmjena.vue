@@ -50,7 +50,7 @@
           class="mr-4"
           @click="izmijeniProfil"
         >
-          Izmijeni profil
+          Izmeni profil
         </v-btn>
 
       </v-form>
@@ -66,7 +66,7 @@ export default {
   name: 'ProfilPacijentaIzmjena',
   data: function () {
     return {
-      ulogovan : {
+      ulogovani : {
         id : "",
         email : "",
         password : "",
@@ -108,7 +108,20 @@ export default {
 	},
       
   mounted () {
-      axios
+	this.ulogovani = this.$store.state.ulogovan;
+	if (this.ulogovani=="") {
+		router.push("/");
+	} else {
+		this.izmijenjen.id = this.ulogovani.id;
+		this.izmijenjen.ime = this.ulogovani.ime;
+		this.izmijenjen.prezime = this.ulogovani.prezime;
+		this.izmijenjen.adresa = this.ulogovani.adresa;
+		this.izmijenjen.brojTelefona=this.ulogovani.brojTelefona;
+		this.izmijenjen.jbo = this.ulogovani.jbo;
+		this.novaSifra = this.ulogovani.password;
+		this.novaSifraPotvrda = this.ulogovani.password;
+	}
+      /*axios
       .get('api/ulogovan')
       .then(response => {
           this.ulogovan = response.data;
@@ -121,7 +134,7 @@ export default {
           this.novaSifra = response.data.password;
           this.novaSifraPotvrda = response.data.password;
       })
-      .catch(function (error) { console.log(error); router.push("/"); });
+      .catch(function (error) { console.log(error); router.push("/"); });*/
       
 
   },

@@ -1,7 +1,7 @@
 <template>
   <div class="klinikeZaPacijenta">
     <v-container>
-			<h2>Lista klinika u sistemu</h2>
+			<h2 style="text-align:center">Lista klinika u sistemu</h2>
       <v-data-table
         :headers="headers"
         :items="klinike"
@@ -20,7 +20,7 @@ import router from "../router/index.js"
 export default {
   name: 'KlinikeZaPacijenta',
   data: () => ({
-    ulogovan : {},
+    ulogovani : {},
     klinike : [],
     headers: [
         {
@@ -49,22 +49,21 @@ export default {
           sortable: true, 
         },
         {
-          text: 'Drzava', 
+          text: 'Država', 
           value: 'drzava', 
           sortable: false, 
         },
       ]
   }),
   mounted () {
+	this.ulogovani = this.$store.state.ulogovan;
+	if (this.ulogovani == "") {
+		router.push("/");
+	}
       axios
-      .get('api/ulogovan')
+      .get('klinika/klinikeZaPacijenta')
       .then(response => {
-          this.ulogovan = response.data;
-          axios
-          .get('klinika/klinikeZaPacijenta')
-          .then(response => {
-              this.klinike = response.data;
-          });
+          this.klinike = response.data;
       })
       .catch(function (error) { console.log(error); router.push("/"); });
 	},

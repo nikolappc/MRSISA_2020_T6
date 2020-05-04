@@ -1,8 +1,8 @@
 <template>
   <div class="zdravstveniKartonPrikaz">
     <v-container>
-			<h2>Zdravstveni karton</h2>
-			<h4>{{ ulogovan.ime }} {{ ulogovan.prezime }}</h4>
+			<h2 style="text-align:center">Zdravstveni karton</h2>
+			<h4 style="text-align:center">{{ ulogovani.ime }} {{ ulogovani.prezime }}</h4>
       <v-simple-table>
         <tbody>
           <tr>
@@ -10,7 +10,7 @@
             <td>{{ karton.visina }} m</td>
           </tr>
           <tr>
-            <td>Tezina:</td>
+            <td>Težina:</td>
             <td>{{ karton.tezina }} kg</td>
           </tr>
           <tr>
@@ -31,21 +31,20 @@ import router from "../router/index.js"
 export default {
   name: 'ZdravstveniKartonPrikaz',
   data: () => ({
-    ulogovan : {},
+    ulogovani : {},
     karton : {},
   }),
   mounted () {
+	this.ulogovani = this.$store.state.ulogovan;
+	if (this.ulogovani == "") {
+		router.push("/");
+	}
       axios
-      .get('api/ulogovan')
+      .get('api/pacijent/karton/' + this.ulogovani.id)
       .then(response => {
-          this.ulogovan = response.data;
-          axios
-          .get('api/pacijent/karton/' + this.ulogovan.id)
-          .then(response => {
-              this.karton = response.data;
-          });
+          this.karton = response.data;
       })
-      .catch(function (error) { console.log(error); router.push("/"); });
+      .catch(function (error) { console.log(error); router.push("/"); alert("Još uvek nemate svoj zdravstveni karton.");});
 	},
 	
 }

@@ -18,7 +18,7 @@ export default {
     ulogovan(){return this.$store.state.ulogovan},
   },
   mounted () {
-    if(this.ulogovan){
+    if(this.ulogovan != ""){
 
       if (this.ulogovan.tip == "PACIJENT") {
         router.push("/homePacijent");
@@ -31,9 +31,9 @@ export default {
       else if (this.ulogovan.tip == "ADMIN_K") {
         router.push("/homeAdminKlinike");
       }
-      else {
+      else if (this.ulogovan.tip == "ADMIN_KC") {
         router.push("/homeAdminKC");
-      }
+      } 
     }else{
       this.$router.push("/loginPage");
     }
