@@ -28,6 +28,7 @@ import isamrs.domain.Operacija;
 import isamrs.domain.Osoba;
 import isamrs.domain.Pacijent;
 import isamrs.domain.Pregled;
+import isamrs.domain.Sala;
 import isamrs.domain.ZdravstveniKarton;
 import isamrs.dto.OperacijaDTO;
 import isamrs.dto.PosetaDTO;
@@ -59,6 +60,12 @@ public class PacijentController {
 	private ZdravstveniKartonServiceImpl kartonService;
 	
 
+	
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<Pacijent>> getPacijents() {
+		Collection<Pacijent> pacijenti = pacijentService.findAll();
+		return new ResponseEntity<Collection<Pacijent>>(pacijenti, HttpStatus.OK);
+	}
 	
    
 	@PostMapping(value = "/izmjena", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

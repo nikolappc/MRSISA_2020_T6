@@ -59,4 +59,9 @@ public class PacijentServiceImpl implements PacijentService {
 	public Collection<Pacijent> findNotConfirmed() {
 		return pacijentRepository.findNotConfirmed();
 	}
+
+	@Override
+	public Collection<Pacijent> findAll() {
+		return pacijentRepository.findAll();
+	}
 }
