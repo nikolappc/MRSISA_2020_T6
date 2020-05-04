@@ -29,7 +29,7 @@
             sm="12"
             xs="12"
           >
-          <router-link to="/zdravstveniKartonPrikaz">
+          <router-link :to="'/zdravstveniKartonPrikaz/' + ulogovani.id">
             <LinkCard
               :img="medicalrecord"
               title="Zdravstveni karton"

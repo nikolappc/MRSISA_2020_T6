@@ -7,6 +7,29 @@ public class ZdravstveniKartonDTO {
 	private Double visina;
 	private Double tezina;
 	private String krvnaGrupa;
+	private String ime;
+	private String prezime;
+	private String email;
+	
+	
+	public String getIme() {
+		return ime;
+	}
+	public void setIme(String ime) {
+		this.ime = ime;
+	}
+	public String getPrezime() {
+		return prezime;
+	}
+	public void setPrezime(String prezime) {
+		this.prezime = prezime;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -31,17 +54,20 @@ public class ZdravstveniKartonDTO {
 	public void setKrvnaGrupa(String krvnaGrupa) {
 		this.krvnaGrupa = krvnaGrupa;
 	}
-	public ZdravstveniKartonDTO(Integer id, Double visina, Double tezina, String krvnaGrupa) {
+	public ZdravstveniKartonDTO(Integer id, Double visina, Double tezina, String krvnaGrupa, String ime, String prezime, String email) {
 		super();
 		this.id = id;
 		this.visina = visina;
 		this.tezina = tezina;
 		this.krvnaGrupa = krvnaGrupa;
+		this.ime = ime;
+		this.prezime = prezime;
+		this.email = email;
 	}
 	
 	public ZdravstveniKartonDTO() {}
 	
 	public ZdravstveniKartonDTO(ZdravstveniKarton zk) {
-		this(zk.getId(), zk.getVisina(), zk.getTezina(), zk.getKrvnaGrupa());
+		this(zk.getId(), zk.getVisina(), zk.getTezina(), zk.getKrvnaGrupa(), zk.getPacijent().getIme(), zk.getPacijent().getPrezime(), zk.getPacijent().getEmail());
 	}
 }

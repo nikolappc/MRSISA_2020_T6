@@ -93,7 +93,7 @@ Vue.use(VueRouter, VueAxios, axios)
     component: ProfilPacijentaIzmjena
   },
   {
-    path: '/zdravstveniKartonPrikaz',
+    path: '/zdravstveniKartonPrikaz/:id',
     name: 'zdravstveniKartonPrikaz',
     component: ZdravstveniKartonPrikaz
   },

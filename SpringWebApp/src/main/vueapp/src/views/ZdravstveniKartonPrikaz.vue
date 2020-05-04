@@ -2,7 +2,7 @@
   <div class="zdravstveniKartonPrikaz">
     <v-container>
 			<h2 style="text-align:center">Zdravstveni karton</h2>
-			<h4 style="text-align:center">{{ ulogovani.ime }} {{ ulogovani.prezime }}</h4>
+			<h4 style="text-align:center">{{ karton.email }}, {{ karton.ime }} {{ karton.prezime }}</h4>
       <v-simple-table>
         <tbody>
           <tr>
@@ -39,13 +39,31 @@ export default {
 	if (this.ulogovani == "") {
 		router.push("/");
 	}
-      axios
-      .get('api/pacijent/karton/' + this.ulogovani.id)
+	axios
+      .get('api/pacijent/karton/' + this.$route.params.id)
       .then(response => {
           this.karton = response.data;
       })
-      .catch(function (error) { console.log(error); router.push("/"); alert("Još uvek nemate svoj zdravstveni karton.");});
-	},
+      .catch(function (error) { console.log(error); router.push("/"); alert("Pacijent još uvek nema svoj zdravstveni karton.");});
+	
+	
+	/*if (this.ulogovani.tip == "LEKAR") {
+		axios
+      .get('api/pacijent/karton/' + this.$route.params.id)
+      .then(response => {
+          this.karton = response.data;
+      })
+      .catch(function (error) { console.log(error); router.push("/"); alert("Pacijent još uvek nema svoj zdravstveni karton.");});
+	
+	} else if (this.ulogovani.tip == "PACIJENT") {
+		axios
+		.get('api/pacijent/karton/' + this.ulogovani.id)
+		.then(response => {
+			this.karton = response.data;
+		})
+		.catch(function (error) { console.log(error); router.push("/"); alert("Još uvek nemate svoj zdravstveni karton.");});
+	*/
+},
 	
 }
 </script>
