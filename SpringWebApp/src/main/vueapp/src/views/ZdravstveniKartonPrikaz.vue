@@ -44,7 +44,8 @@ export default {
       .then(response => {
           this.karton = response.data;
       })
-      .catch(function (error) { console.log(error); router.push("/"); alert("Pacijent još uvek nema svoj zdravstveni karton.");});
+      //.catch(function (error) { console.log(error); router.push("/"); alert("Pacijent još uvek nema svoj zdravstveni karton.");});
+      .catch(function (error) { console.log(error); router.push("/"); this.$store.commit("setSnackbar", {text:"Pacijent još uvek nema svoj zdravstveni karton.", color: "info"});});
 	
 	
 	/*if (this.ulogovani.tip == "LEKAR") {
