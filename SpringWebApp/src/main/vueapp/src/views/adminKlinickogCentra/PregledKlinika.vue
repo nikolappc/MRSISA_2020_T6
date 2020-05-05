@@ -70,7 +70,7 @@
                             align="center"
                             justify-content="center">
                                 <v-col
-                                    cols="3"
+                                    cols="4"
                                     class="ml-auto"
                                 >
                                     <router-link to="/regKlinika">

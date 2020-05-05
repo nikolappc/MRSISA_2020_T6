@@ -68,8 +68,15 @@
                         cols="3"
                         class="ml-auto"
                     >
-                        <v-btn @click="izmenaKlinike">
+                        <v-btn @click="izmenaKlinike" color="success">
                             Izmena klinike
+                        </v-btn>
+                    </v-col>
+                    <v-col
+                        cols="3"
+                    >
+                        <v-btn @click="otkazi" color="success">
+                            Otkaži
                         </v-btn>
                     </v-col>
                 </v-row>
@@ -119,6 +126,9 @@
                     .catch(error=>{
                         console.log(error);
                     })
+            },
+            otkazi:function () {
+                this.$router.go();
             }
         }
 

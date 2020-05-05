@@ -27,6 +27,13 @@
                         Izmena dijagnoze
                     </v-btn>
                 </v-col>
+                <v-col
+                    cols="3"
+                >
+                    <v-btn @click="otkazi" color="success">
+                        Otkaži
+                    </v-btn>
+                </v-col>
             </v-row>
             </v-form>
         </v-container>
@@ -57,6 +64,9 @@
                     .catch(error=>{
                         console.log(error);
                     })
+            },
+            otkazi:function () {
+                this.$router.go();
             }
         }
 
