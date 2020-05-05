@@ -40,34 +40,29 @@ import isamrs.service.PacijentService;
 import isamrs.service.PregledService;
 import isamrs.service.ZdravstveniKartonServiceImpl;
 
-
-
-	
 @RestController
 @RequestMapping("/api/pacijent")
 public class PacijentController {
-	
+
 	@Autowired
 	private PacijentService pacijentService;
-	
-	@Autowired 
-	private PregledService pregledService;
-	
-	@Autowired 
-	private OperacijaService operacijaService;
-	
-	/*@Autowired
-	private ZdravstveniKartonServiceImpl kartonService;
-	*/
 
-	
+	@Autowired
+	private PregledService pregledService;
+
+	@Autowired
+	private OperacijaService operacijaService;
+
+	/*
+	 * @Autowired private ZdravstveniKartonServiceImpl kartonService;
+	 */
+
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Pacijent>> getPacijents() {
 		Collection<Pacijent> pacijenti = pacijentService.findAll();
 		return new ResponseEntity<Collection<Pacijent>>(pacijenti, HttpStatus.OK);
 	}
-	
-   
+
 	@PostMapping(value = "/izmjena", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Pacijent> updatePacijent(@RequestBody Pacijent pacijent, HttpServletRequest req) {
 		Pacijent p = pacijentService.findOne(pacijent.getId());
@@ -85,51 +80,41 @@ public class PacijentController {
 
 		p = pacijentService.save(p);
 		req.getSession().setAttribute("user", p);
-		
-		//pacijentService.izmijeniUlogovanog(pacijent);
-		
+
 		return new ResponseEntity<Pacijent>(p, HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/listaPregleda/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<PosetaDTO>> getPregledi(@PathVariable("id") Integer id) {
 		Pacijent p = pacijentService.findOne(id);
 		List<Pregled> pregledi = pregledService.findByKartonId(p.getZdravstveniKarton().getId());
 		List<Operacija> operacije = operacijaService.findByKartonId(p.getZdravstveniKarton().getId());
-		
+
 		List<PosetaDTO> preglediDTO = new ArrayList<>();
 		for (Pregled pregled : pregledi) {
 			preglediDTO.add(new PregledDTO(pregled));
-			System.out.println("pacijent kontroler" + pregled.getTermin().getPocetak().toString());
+			//System.out.println("pacijent kontroler" + pregled.getTermin().getPocetak().toString());
 		}
 		for (Operacija operacija : operacije) {
 			preglediDTO.add(new OperacijaDTO(operacija));
 		}
-		
-		
+
 		return new ResponseEntity<List<PosetaDTO>>(preglediDTO, HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/karton/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ZdravstveniKartonDTO> getKarton(@PathVariable("id") Integer id, HttpServletRequest req) {
 		Pacijent p = pacijentService.findOne(id);
-		System.out.println("KARTON");
-		System.out.println(id);
-		//ZdravstveniKarton zk = kartonService.findOne(p.getZdravstveniKarton().getId());
-		
+		//System.out.println("KARTON");
+		//System.out.println(id);
+
 		if (p.getZdravstveniKarton() == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		ZdravstveniKarton zk = p.getZdravstveniKarton();
-		System.out.println(zk.getKrvnaGrupa());
-		
+		///System.out.println(zk.getKrvnaGrupa());
+
 		ZdravstveniKartonDTO zk_dto = new ZdravstveniKartonDTO(zk);
 		return new ResponseEntity<ZdravstveniKartonDTO>(zk_dto, HttpStatus.OK);
 	}
-	
-	//da li da budu odvojeno pozivi za ulogovanog, karton i listu pregleda ili sve odjednom
-
-	
-
-	
 }
