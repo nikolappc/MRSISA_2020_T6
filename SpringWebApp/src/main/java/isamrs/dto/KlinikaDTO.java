@@ -9,6 +9,8 @@ public class KlinikaDTO {
 	private String opis;
 	public TipKlinike tipKlinike;
 	
+	
+	
 	public KlinikaDTO(Integer id,String naziv, String adresa, String opis, TipKlinike tipKlinike) {
 		super();
 		this.id = id;
