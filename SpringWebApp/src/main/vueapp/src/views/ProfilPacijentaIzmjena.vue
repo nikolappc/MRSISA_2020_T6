@@ -144,7 +144,8 @@ export default {
         event.preventDefault();
         axios
         .post('api/pacijent/izmjena',this.izmijenjen)
-        .then(() => {
+        .then(response => {
+			this.$store.commit("setUlogovan", response.data);
             router.push("/profilPacijenta");
         })
         .catch(function (error) { console.log(error); });

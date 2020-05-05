@@ -21,7 +21,7 @@ export default {
                 this.$store.commit("setSnackbar", {text:"Uspešno ste obrisali lekara", color: "success"});
                 this.$emit("del-lekar",this.lekar.id);
             })
-            .catch(function (error) { console.log(error); 
+            .catch(() => { 
               this.$store.commit("setSnackbar", {text:"Lekar ima zakazan pregled. Nije moguće brisanje", color: "error"});
             });
       },
