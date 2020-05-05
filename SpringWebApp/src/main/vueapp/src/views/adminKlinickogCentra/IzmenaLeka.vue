@@ -38,7 +38,7 @@
                     <v-col
                     cols="3"
                     >
-                        <v-btn @click="otkazi" color="success">
+                        <v-btn @click="otkazi" color="warning">
                             Otkaži
                         </v-btn>
                     </v-col>
