@@ -157,7 +157,7 @@
                         
                     })
             },
-            prikaziDialog(dijagnoza){
+            prikaziDialog:function(dijagnoza){
                 this.dijagnoza = dijagnoza;
                 this.dialog = true;
             }

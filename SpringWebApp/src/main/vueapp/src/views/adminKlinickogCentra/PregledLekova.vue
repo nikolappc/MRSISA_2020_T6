@@ -134,7 +134,7 @@
                 });
         },
         methods:{
-            deleteLekfunction (sifra) {
+            deleteLek:function (sifra) {
                 axios.delete("/lek/"+sifra)
                     .then(res=>{
                         alert(res.data)
@@ -144,7 +144,7 @@
                         console.log(error);
                     })
             },
-            izmena(lek){
+            izmena:function(lek){
                 this.lek = lek;
                 this.dialog = true;
             },
