@@ -8,52 +8,57 @@
                 <v-col v-if="dijagnoze.length!=0"> 
                     <v-card>
                         <v-container>
-                            <v-simple-table>
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            Šifra dijagnoze
-                                        </th>
-                                        <th>
-                                            Naziv dijagnoze
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody v-for="d in dijagnoze" :key="d.sifraDijagnoze" @click="prikaziDialog(d)">
-                                    <tr> 
-                                        <td>
-                                            {{d.sifraDijagnoze}}
-                                        </td>
-                                        <td>
-                                            {{d.nazivDijagnoze}}
-                                        </td>
-                                        <td>
-                                            <v-btn icon @click="deleteDijagnoza(d.sifraDijagnoze)">
-                                                <v-icon>mdi-delete</v-icon>
-                                            </v-btn>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </v-simple-table>
-                            <v-simple-table>
-                                <thead>
-                                    <tr>
-                                        <th>
-
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody v-for="d in dijagnoze">
-                                    <tr>
-                                        <td>
-                                            <v-btn icon @click="deleteDijagnoza(d.sifraDijagnoze)">
-                                                <v-icon>mdi-delete</v-icon>
-                                            </v-btn>
-                                        </td>
-                                    </tr>
-                                </tbody>
-
-                            </v-simple-table>
+                            <v-row>
+                                <v-col
+                                    cols="11"
+                                >
+                                    <v-simple-table>
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Šifra dijagnoze
+                                                </th>
+                                                <th>
+                                                    Naziv dijagnoze
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody v-for="d in dijagnoze" :key="d.sifraDijagnoze" @click="prikaziDialog(d)">
+                                            <tr> 
+                                                <td>
+                                                    {{d.sifraDijagnoze}}
+                                                </td>
+                                                <td>
+                                                    {{d.nazivDijagnoze}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </v-simple-table>
+                                </v-col>
+                                <v-col
+                                    cols="1"
+                                >
+                                    <v-simple-table>
+                                        <thead>
+                                            <tr>
+                                                <th>
+        
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody v-for="(d,i) in dijagnoze" :key="i">
+                                            <tr>
+                                                <td>
+                                                    <v-btn icon @click="deleteDijagnoza(d.sifraDijagnoze)">
+                                                        <v-icon>mdi-delete</v-icon>
+                                                    </v-btn>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+        
+                                    </v-simple-table>
+                                </v-col>
+                            </v-row>
                             <v-row
                             align="center"
                             justify-content="center">
@@ -116,7 +121,13 @@
         name:"PregledDijagnoza",
         data:function () {
             return {
-                dijagnoze:[],
+                dijagnoze:[
+                    {
+                        sifraDijagnoze:"212",
+                        nazivDijagnoze:"Smrt"
+                    }
+
+                ],
                 dijagnoza:"",
                 dialog:false
             }

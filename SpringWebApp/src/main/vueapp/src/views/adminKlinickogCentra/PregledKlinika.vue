@@ -8,39 +8,64 @@
                 <v-col v-if="klinike.length!=0"> 
                     <v-card>
                         <v-container>
-                            <v-simple-table>
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            Naziv
-                                        </th>
-                                        <th>
-                                            Adresa
-                                        </th>
-                                        <th>
-                                            Specijalizacija
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody v-for="k in klinike" :key="k.id" @click="izmena(k)">
-                                    <tr> 
-                                        <td>
-                                            {{k.naziv}}
-                                        </td>
-                                        <td>
-                                            {{k.adresa}}
-                                        </td>
-                                        <td>
-                                            {{k.tipKlinike.tip}}
-                                        </td>
-                                        <td>
-                                            <td><v-btn icon @click="deleteKlinika(k.id)">
-                                                <v-icon>mdi-delete</v-icon>
-                                            </v-btn>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </v-simple-table>
+                            <v-row>
+                                <v-col
+                                    cols="11"
+                                >
+                                    <v-simple-table>
+                                        
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Naziv
+                                                </th>
+                                                <th>
+                                                    Adresa
+                                                </th>
+                                                <th>
+                                                    Specijalizacija
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody v-for="k in klinike" :key="k.id" @click="izmena(k)">
+                                            <tr> 
+                                                <td>
+                                                    {{k.naziv}}
+                                                </td>
+                                                <td>
+                                                    {{k.adresa}}
+                                                </td>
+                                                <td>
+                                                    {{k.tipKlinike.tip}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </v-simple-table>
+                                </v-col>
+                                <v-col
+                                    cols="1"
+                                >
+                                    <v-simple-table>
+                                        <thead>
+                                            <tr>
+                                                <th>
+        
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody v-for="(k,i) in klinike" :key="i">
+                                            <tr>
+                                                <td>
+                                                    <v-btn icon @click="deleteKlinika(k.id)">
+                                                        <v-icon>mdi-delete</v-icon>
+                                                    </v-btn>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+        
+                                    </v-simple-table>
+                                </v-col>
+                            </v-row>
                             <v-row
                             align="center"
                             justify-content="center">

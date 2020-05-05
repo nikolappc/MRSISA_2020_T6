@@ -8,33 +8,58 @@
                 <v-col v-if="lekovi.length!=0"> 
                     <v-card>
                         <v-container>
-                            <v-simple-table>
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            Šifra leka
-                                        </th>
-                                        <th>
-                                            Naziv leka
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody v-for="l in lekovi" :key="l.sifraLeka" @click="izmena(l)">
-                                    <tr>
-                                        <td>
-                                            {{l.sifraLeka}}
-                                        </td>
-                                        <td>
-                                            {{l.nazivLeka}}
-                                        </td>
-                                        <td>
-                                            <td><v-btn icon @click="deleteLek(l.sifraLeka)">
-                                                <v-icon>mdi-delete</v-icon>
-                                            </v-btn>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </v-simple-table>
+                            <v-row>
+                                <v-col
+                                    cols="11"
+                                >
+                                    <v-simple-table>
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Šifra leka
+                                                </th>
+                                                <th>
+                                                    Naziv leka
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody v-for="l in lekovi" :key="l.sifraLeka" @click="izmena(l)">
+                                            <tr>
+                                                <td>
+                                                    {{l.sifraLeka}}
+                                                </td>
+                                                <td>
+                                                    {{l.nazivLeka}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </v-simple-table>
+                                </v-col>
+                                
+                                <v-col
+                                    cols="1"
+                                >
+                                    <v-simple-table>
+                                        <thead>
+                                            <tr>
+                                                <th>
+        
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody v-for="(l,i) in lekovi" :key="i">
+                                            <tr>
+                                                <td>
+                                                    <v-btn icon @click="deleteLek(l.sifraLeka)">
+                                                        <v-icon>mdi-delete</v-icon>
+                                                    </v-btn>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+        
+                                    </v-simple-table>
+                                </v-col>
+                            </v-row>
                             <v-row
                             align="center"
                             justify-content="center">
