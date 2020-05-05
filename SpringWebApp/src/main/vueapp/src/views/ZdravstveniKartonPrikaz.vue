@@ -26,10 +26,6 @@
 
 <script>
 import axios from 'axios';
-<<<<<<< HEAD
-// import moment from 'moment';
-=======
->>>>>>> branch 'master' of https://github.com/nikolappc/MRSISA_2020_T6.git
 import router from "../router/index.js"
 
 export default {
