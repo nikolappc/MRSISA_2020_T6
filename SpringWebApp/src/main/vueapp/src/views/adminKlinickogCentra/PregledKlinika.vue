@@ -126,11 +126,6 @@
         data:function () {
             return {
                 klinike:[
-                    {
-                        naziv:"asda",
-                        adresa:"aaaa",
-                        tipKlinike:{tip:"dasd"}
-                    }
 
 
                 ],
