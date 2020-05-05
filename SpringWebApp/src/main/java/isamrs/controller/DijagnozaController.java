@@ -36,7 +36,7 @@ public class DijagnozaController {
 	}
 	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Dijagnoza> getDijagnoza(@PathVariable("id") Integer id){
+	public ResponseEntity<Dijagnoza> getDijagnoza(@PathVariable("id") Long id){
 		try {			
 			Dijagnoza d = service.findOne(id);
 			return new ResponseEntity<Dijagnoza>(d, HttpStatus.OK);
@@ -53,13 +53,13 @@ public class DijagnozaController {
 	}
 
 	@PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Dijagnoza> updateDijagnoza(@RequestBody Dijagnoza d, @PathVariable("id") Integer id){
+	public ResponseEntity<Dijagnoza> updateDijagnoza(@RequestBody Dijagnoza d, @PathVariable("id") Long id){
 		Dijagnoza d2 = service.update(id, d);
 		return new ResponseEntity<Dijagnoza>(d2, HttpStatus.OK);
 	}
 	
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Dijagnoza> deleteDijagnoza(@PathVariable("id") Integer id){
+	public ResponseEntity<Dijagnoza> deleteDijagnoza(@PathVariable("id") Long id){
 		service.delete(id);
 		return new ResponseEntity<Dijagnoza>(HttpStatus.NO_CONTENT);
 	}

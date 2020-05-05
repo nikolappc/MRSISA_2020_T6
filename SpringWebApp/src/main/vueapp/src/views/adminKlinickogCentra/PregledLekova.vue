@@ -138,6 +138,7 @@
                 axios.delete("/lek/"+sifra)
                     .then(res=>{
                         alert(res.data)
+                        this.$router.go();
                     })
                     .catch(error=>{
                         console.log(error);

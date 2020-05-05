@@ -3,18 +3,32 @@ package isamrs.dto;
 import isamrs.domain.TipKlinike;
 
 public class KlinikaDTO {
+	private Integer id;
 	private String naziv;
 	private String adresa;
 	private String opis;
 	public TipKlinike tipKlinike;
 	
-	public KlinikaDTO(String naziv, String adresa, String opis, TipKlinike tipKlinike) {
+	public KlinikaDTO(Integer id,String naziv, String adresa, String opis, TipKlinike tipKlinike) {
 		super();
+		this.id = id;
 		this.naziv = naziv;
 		this.adresa = adresa;
 		this.opis = opis;
 		this.tipKlinike = tipKlinike;
 	}
+	
+	
+	public Integer getId() {
+		return id;
+	}
+
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+
 	public String getNaziv() {
 		return naziv;
 	}

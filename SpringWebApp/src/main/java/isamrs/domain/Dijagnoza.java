@@ -28,7 +28,7 @@ public class Dijagnoza {
 
 	@Id
 	@Column(name = "sifra", unique = true, nullable = false)
-	private Integer sifraDijagnoze;
+	private Long sifraDijagnoze;
 
 	@Column(name = "naziv", unique = false, nullable = false)
 	private String nazivDijagnoze;
@@ -42,11 +42,11 @@ public class Dijagnoza {
 		super();
 	}
 
-	public Integer getSifraDijagnoze() {
+	public Long getSifraDijagnoze() {
 		return sifraDijagnoze;
 	}
 
-	public void setSifraDijagnoze(Integer sifraDijagnoze) {
+	public void setSifraDijagnoze(Long sifraDijagnoze) {
 		this.sifraDijagnoze = sifraDijagnoze;
 	}
 

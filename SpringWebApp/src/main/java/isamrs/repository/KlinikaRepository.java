@@ -12,6 +12,6 @@ import org.springframework.stereotype.Repository;
 import isamrs.domain.Klinika;
 import isamrs.domain.Lekar;
 @Repository
-public interface KlinikaRepository extends JpaRepository<Klinika, Long>{
+public interface KlinikaRepository extends JpaRepository<Klinika, Integer>{
 
 }

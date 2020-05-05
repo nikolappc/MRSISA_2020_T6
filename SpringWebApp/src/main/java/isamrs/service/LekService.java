@@ -9,7 +9,7 @@ import isamrs.domain.Lek;
 import isamrs.exceptions.NotFoundException;
 import isamrs.repository.LekRepository;
 @org.springframework.stereotype.Service
-public class LekService implements Service<Lek, Integer>{
+public class LekService implements Service<Lek, Long>{
 
 	@Autowired
 	private LekRepository repo;
@@ -20,7 +20,7 @@ public class LekService implements Service<Lek, Integer>{
 	}
 
 	@Override
-	public Lek findOne(Integer id) {
+	public Lek findOne(Long id) {
 		Optional<Lek> o = repo.findById((long)id);
 		if(o.isPresent()) {
 			return o.get();
@@ -34,14 +34,14 @@ public class LekService implements Service<Lek, Integer>{
 	}
 
 	@Override
-	public Lek update(Integer id, Lek t) {
+	public Lek update(Long id, Lek t) {
 		t.setSifraLeka(id);
 		return repo.save(t);
 	}
 
 	@Override
-	public void delete(Integer id) {
-		repo.deleteById((long)id);
+	public void delete(Long id) {
+		repo.deleteById(id);
 	}
 
 }

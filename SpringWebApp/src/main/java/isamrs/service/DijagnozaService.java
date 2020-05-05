@@ -12,7 +12,7 @@ import isamrs.repository.DijagnozaRepository;
 import isamrs.repository.LekRepository;
 
 @org.springframework.stereotype.Service
-public class DijagnozaService implements Service<Dijagnoza, Integer>{
+public class DijagnozaService implements Service<Dijagnoza, Long>{
 
 	@Autowired
 	private DijagnozaRepository repo;
@@ -23,7 +23,7 @@ public class DijagnozaService implements Service<Dijagnoza, Integer>{
 	}
 
 	@Override
-	public Dijagnoza findOne(Integer id) {
+	public Dijagnoza findOne(Long id) {
 		Optional<Dijagnoza> o = repo.findById(id);
 		if(o.isPresent()) {
 			return o.get();
@@ -37,13 +37,13 @@ public class DijagnozaService implements Service<Dijagnoza, Integer>{
 	}
 
 	@Override
-	public Dijagnoza update(Integer id, Dijagnoza t) {
+	public Dijagnoza update(Long id, Dijagnoza t) {
 		t.setSifraDijagnoze(id);
 		return repo.save(t);
 	}
 
 	@Override
-	public void delete(Integer id) {
+	public void delete(Long id) {
 		repo.deleteById(id);
 	}
 	

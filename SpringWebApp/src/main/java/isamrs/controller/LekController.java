@@ -35,7 +35,7 @@ public class LekController {
 	}
 	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Lek> getLek(@PathVariable("id") Integer id){
+	public ResponseEntity<Lek> getLek(@PathVariable("id") Long id){
 		try {			
 			Lek l = service.findOne(id);
 			return new ResponseEntity<Lek>(l, HttpStatus.OK);
@@ -52,13 +52,13 @@ public class LekController {
 	}
 
 	@PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Lek> updateLek(@RequestBody Lek l, @PathVariable("id") Integer id){
+	public ResponseEntity<Lek> updateLek(@RequestBody Lek l, @PathVariable("id") Long id){
 		Lek l2 = service.update(id, l);
 		return new ResponseEntity<Lek>(l2, HttpStatus.OK);
 	}
 	
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Lek> deleteLek(@PathVariable("id") Integer id){
+	public ResponseEntity<Lek> deleteLek(@PathVariable("id") Long id){
 		service.delete(id);
 		return new ResponseEntity<Lek>(HttpStatus.NO_CONTENT);
 	}

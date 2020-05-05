@@ -12,7 +12,7 @@ import isamrs.exceptions.NotFoundException;
 import isamrs.repository.KlinikaRepository;
 
 @org.springframework.stereotype.Service
-public class KlinikaServiceImpl implements Service<Klinika, Long>{
+public class KlinikaServiceImpl implements Service<Klinika, Integer>{
 
 	@Autowired
 	private KlinikaRepository repo;
@@ -23,7 +23,7 @@ public class KlinikaServiceImpl implements Service<Klinika, Long>{
 	}
 
 	@Override
-	public Klinika findOne(Long id) {
+	public Klinika findOne(Integer id) {
 		Optional<Klinika> klinika = repo.findById(id);
 		if(klinika.isPresent()) {
 			return  klinika.get();			
@@ -37,12 +37,12 @@ public class KlinikaServiceImpl implements Service<Klinika, Long>{
 	}
 
 	@Override
-	public Klinika update(Long id, Klinika t) {
+	public Klinika update(Integer id, Klinika t) {
 		return repo.save(t);
 	}
 
 	@Override
-	public void delete(Long id) {
+	public void delete(Integer id) {
 		repo.deleteById(id);
 	}
 }

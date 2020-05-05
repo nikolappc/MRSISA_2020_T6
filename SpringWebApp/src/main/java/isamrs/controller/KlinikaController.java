@@ -43,7 +43,7 @@ public class KlinikaController {
 	}
 	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<KlinikaDTO> getKlinika(@PathVariable("id") Long id){
+	public ResponseEntity<KlinikaDTO> getKlinika(@PathVariable("id") Integer id){
 		Klinika k = klinikaService.findOne(id);
 		if(k==null) {
 			return new ResponseEntity<KlinikaDTO>(HttpStatus.NOT_FOUND);
@@ -60,25 +60,24 @@ public class KlinikaController {
 	
 	@PutMapping(value = "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<KlinikaDTO> updateKlinika(@RequestBody KlinikaDTO k, @PathVariable("id") Integer id){
-		Klinika klinika = klinikaService.update((long)id, mapToEntity(k));
+		Klinika klinika = klinikaService.update(id, mapToEntity(k));
 		
 		return new ResponseEntity<KlinikaDTO>(mapToDTO(klinika), HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<KlinikaDTO> deleteKlinika(@PathVariable Long id){
+	public ResponseEntity<KlinikaDTO> deleteKlinika(@PathVariable Integer id){
 		klinikaService.delete(id);
 		return new ResponseEntity<KlinikaDTO>(HttpStatus.NO_CONTENT);
 	}
 	
 	
 	private KlinikaDTO mapToDTO(Klinika k) {
-		return new KlinikaDTO(k.getNaziv(), k.getAdresa(), k.getOpis(), k.getTipKlinike());
+		return new KlinikaDTO(k.getId(), k.getNaziv(), k.getAdresa(), k.getOpis(), k.getTipKlinike());
 	}
 	private Klinika mapToEntity(KlinikaDTO k) {
 		return new Klinika(k.getNaziv(), k.getAdresa(), k.getOpis(), k.getTipKlinike());
 	}
-	
 	
 	@GetMapping(value = "/klinikeZaPacijenta", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<KlinikaZaPacijentaDTO>> getPregledi() {

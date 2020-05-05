@@ -20,7 +20,7 @@ import javax.persistence.Table;
 public class Lek {
 	@Id
 	@Column(name = "sifra_leka", unique = true, nullable = false)
-	private Integer sifraLeka;
+	private Long sifraLeka;
 	
 	@Column(name = "naziv_leka", unique = true, nullable = false)
 	private String nazivLeka;
@@ -32,11 +32,11 @@ public class Lek {
 		super();
 	}
 
-	public Integer getSifraLeka() {
+	public Long getSifraLeka() {
 		return sifraLeka;
 	}
 
-	public void setSifraLeka(Integer sifraLeka) {
+	public void setSifraLeka(Long sifraLeka) {
 		this.sifraLeka = sifraLeka;
 	}
 

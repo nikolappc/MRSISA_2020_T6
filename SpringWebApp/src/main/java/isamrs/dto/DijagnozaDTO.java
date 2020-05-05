@@ -3,12 +3,12 @@ package isamrs.dto;
 import isamrs.domain.Dijagnoza;
 
 public class DijagnozaDTO {
-	private Integer sifraDijagnoze;
+	private Long sifraDijagnoze;
 	private String nazivDijagnoze;
-	public Integer getSifraDijagnoze() {
+	public Long getSifraDijagnoze() {
 		return sifraDijagnoze;
 	}
-	public void setSifraDijagnoze(Integer sifraDijagnoze) {
+	public void setSifraDijagnoze(Long sifraDijagnoze) {
 		this.sifraDijagnoze = sifraDijagnoze;
 	}
 	public String getNazivDijagnoze() {
@@ -17,7 +17,7 @@ public class DijagnozaDTO {
 	public void setNazivDijagnoze(String nazivDijagnoze) {
 		this.nazivDijagnoze = nazivDijagnoze;
 	}
-	public DijagnozaDTO(Integer sifraDijagnoze, String nazivDijagnoze) {
+	public DijagnozaDTO(Long sifraDijagnoze, String nazivDijagnoze) {
 		super();
 		this.sifraDijagnoze = sifraDijagnoze;
 		this.nazivDijagnoze = nazivDijagnoze;
