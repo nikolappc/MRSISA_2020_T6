@@ -30,11 +30,10 @@ export default {
         axios
             .delete('sala/'+this.sala.id)
             .then(() => {
-                alert("Uspesno ste obrisali salu");
+                this.$store.commit("setSnackbar", {text:"Uspešno ste obrisali salu", color: "success"});
                 this.$emit("del-sala",this.sala.id);
             })
-            .catch(function (error) { alert("Sala se koristi u nekom pregledu");
-            console.log(error); });
+            .catch(() => { this.$store.commit("setSnackbar", {text:"Sala se već koristi u pregledu", color: "error"});});
       }
     },
     components: {

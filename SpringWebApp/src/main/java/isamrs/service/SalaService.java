@@ -6,10 +6,12 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import isamrs.domain.Operacija;
 import isamrs.domain.Pregled;
 import isamrs.domain.Sala;
 import isamrs.dto.SalaTerminiDTO;
 import isamrs.dto.TerminDTO;
+import isamrs.repository.OperacijaRepository;
 import isamrs.repository.PregledRepository;
 import isamrs.repository.SalaRepository;
 
@@ -22,6 +24,8 @@ public class SalaService {
 	@Autowired
 	private PregledRepository pregledRepo;
 	
+	@Autowired
+	private OperacijaRepository operacijaRepo;
 	
 	public Collection<Sala> findAll() {
 	
@@ -36,6 +40,10 @@ public class SalaService {
 			ArrayList<TerminDTO> pregledi = new ArrayList<TerminDTO>();
 			for(Pregled p : pregledRepo.findBySala(s)) {
 				pregledi.add(new TerminDTO(p)); 
+			}
+			
+			for(Operacija o : operacijaRepo.findBySala(s)) {
+				pregledi.add(new TerminDTO(o));
 			}
 			
 			lista.add(new SalaTerminiDTO(s, pregledi));
@@ -61,8 +69,7 @@ public class SalaService {
 
 	
 	public void delete(Integer id) throws Exception {
-		salaRepo.deleteById(id);			
-		
+		salaRepo.deleteById(id);
 	}
 	
 }

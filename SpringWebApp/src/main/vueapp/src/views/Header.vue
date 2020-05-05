@@ -14,6 +14,18 @@
             <v-btn icon><v-icon color="white">mdi-login</v-icon></v-btn>
         </router-link>
         <v-btn v-if="ulogovan" @click="logoutFunc" icon><v-icon color="white">mdi-logout</v-icon></v-btn>
+        <v-snackbar
+            v-model="snackbarSH"
+            :timeout="0"
+            :color="snackbarColor"
+            :style="'top: 10px'"
+            >
+            {{snackbarText}}
+
+            <v-btn text @click="zatvori">
+                <v-icon>mdi-close</v-icon>
+            </v-btn>
+        </v-snackbar>
     </v-app-bar>
 </template>
 <script>
@@ -22,12 +34,20 @@
         name:"Header",
         data:function () {
             return{
-
             }
         },
         computed:{
             ulogovan(){
                 return this.$store.state.ulogovan
+            },
+            snackbarSH(){
+                return this.$store.state.snackbar.showing
+            },
+            snackbarText(){
+                return this.$store.state.snackbar.text
+            },
+            snackbarColor(){
+                return this.$store.state.snackbar.color
             }
 
         },
@@ -41,6 +61,9 @@
                     this.$router.push("/loginPage");
                 })
                 .catch(function (error) { console.log(error); });
+            },
+            zatvori(){
+                this.$store.state.snackbar.showing = false;
             }
         },
         mounted:function(){
