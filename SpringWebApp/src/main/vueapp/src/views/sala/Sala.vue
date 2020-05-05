@@ -1,7 +1,7 @@
 <template>
   <tr>
-      <td>{{sala.id}}</td>
-      <td>{{sala.naziv}}</td>
+      <td @click="otvoriDialog">{{sala.id}}</td>
+      <td @click="otvoriDialog">{{sala.naziv}}</td>
       <td><v-btn @click="dialog = true">Kalendar</v-btn></td>
       <v-dialog
                 v-model="dialog"
@@ -33,7 +33,12 @@ export default {
                 this.$store.commit("setSnackbar", {text:"Uspešno ste obrisali salu", color: "success"});
                 this.$emit("del-sala",this.sala.id);
             })
-            .catch(() => { this.$store.commit("setSnackbar", {text:"Sala se već koristi u pregledu", color: "error"});});
+            .catch(() => { this.$store.commit("setSnackbar", {text:"Sala se već koristi u pregledu", color: "error"});
+
+            });
+      },
+      otvoriDialog: function(){
+          this.$emit("otvori",this.sala.id);
       }
     },
     components: {

@@ -17,10 +17,12 @@ export default {
         axios
             .delete('tip/'+this.tip.id)
             .then(() => {
-                alert("Uspesno ste obrisali tipa");
+                this.$store.commit("setSnackbar", {text:"Uspešno ste obrisali tipa", color: "success"});
                 this.$emit("del-tip",this.tip.id);
             })
-            .catch(function (error) { console.log(error); });
+            .catch((error) => { console.log(error); 
+               this.$store.commit("setSnackbar", {text:"Tip se koristi na poseti", color: "error"});
+            });
       },
       otvoriDialog: function(){
         this.$emit("otvori",this.tip.id);

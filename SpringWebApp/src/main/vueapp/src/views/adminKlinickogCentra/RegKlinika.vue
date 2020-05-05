@@ -70,12 +70,14 @@
                                     
                                 </v-textarea>
                                 <v-row>
-                                    <v-spacer>
-            
-                                    </v-spacer>
-                                    <v-btn @click="registruj" color="success">
-                                        Registruj kliniku
-                                    </v-btn>
+                                    <v-col
+                                        cols="3"
+                                        calss="ml-auto"
+                                    >
+                                        <v-btn @click="registruj" color="success">
+                                            Registruj kliniku
+                                        </v-btn>
+                                    </v-col>
                                 </v-row>
                             </v-container>
                         </v-card>

@@ -40,7 +40,7 @@ public class Lekar extends Osoba {
 	@JoinColumn(name = "id_lekara")
 	public java.util.Collection<GodisnjiOdmor> godisnjiOdmor;
 	
-	@OneToMany
+	@OneToMany(cascade=CascadeType.ALL)
 	@JoinColumn(name = "id_lekara")
 	public Collection<RadnoVreme> radnoVreme;
 

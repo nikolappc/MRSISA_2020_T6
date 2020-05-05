@@ -61,6 +61,66 @@
       :rules="rule"
       required
     ></v-text-field>
+    <v-menu
+        ref="menu"
+        v-model="menu"
+        :close-on-content-click="false"
+        :nudge-right="40"
+        :return-value.sync="pocetak"
+        transition="scale-transition"
+        offset-y
+        max-width="290px"
+        min-width="290px"
+        
+      >
+        <template v-slot:activator="{ on }">
+          <v-text-field
+            :rules="rule"
+            v-model="pocetak"
+            label="Početak radnog vremena"
+            prepend-icon="mdi-clock"
+            readonly
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-time-picker
+        format="24hr"
+        
+          v-if="menu"
+          v-model="pocetak"
+          full-width
+          @click:minute="$refs.menu.save(pocetak)"
+        ></v-time-picker>
+      </v-menu>
+    <v-menu
+        ref="menu2"
+        v-model="menu2"
+        :close-on-content-click="false"
+        :nudge-right="40"
+        :return-value.sync="kraj"
+        transition="scale-transition"
+        offset-y
+        max-width="290px"
+        min-width="290px"
+      >
+        <template v-slot:activator="{ on }">
+          <v-text-field
+          :rules="rule"
+            v-model="kraj"
+            label="Kraj radnog vremena"
+            prepend-icon="mdi-clock"
+            readonly
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-time-picker
+          format="24hr"
+          v-if="menu2"
+          v-model="kraj"
+          full-width
+          @click:minute="$refs.menu2.save(kraj)"
+        ></v-time-picker>
+      </v-menu>
     <v-btn
       :disabled="!valid"
       color="success"
@@ -84,15 +144,19 @@ export default {
           prezime: '',
           email: '',
           jbo: '',
-          id: 0,
+          id: null,
+          adresa: "",
           password: '',
-          brojTelefona: ""
+          brojTelefona: "",
+          radnoVreme: [{pocetak: '', kraj:''}]
           },
       valid: true,
       grad: '',
       drzava: '',
-
-
+      pocetak: '',
+      kraj: '',
+      menu: false,
+      menu2: false,
       rule: [
         v => !!v || 'Obavezno polje'
       ],
@@ -110,15 +174,21 @@ export default {
         dodajLekara: function(event) {
             event.preventDefault();
             
-            
-
+            this.lekar.adresa = this.lekar.adresa + ", " + this.grad + ", " + this.drzava;
+            this.lekar.radnoVreme[0].pocetak =  new Date("0000-01-1 " + this.pocetak);
+            this.lekar.radnoVreme[0].kraj =  new Date("0000-01-1 " + this.kraj);
             axios
             .post('lekar',this.lekar)
             .then(() => {
+                this.$store.commit("setSnackbar", {text:"Lekar je uspešno dodat", color: "success"});
                 router.push("/lekari");
             })
             .catch(function (error) { console.log(error); });
         },
+        compareTime(time1, time2) {
+
+            return time1>time2; // true if time1 is later
+        }
 
     }
     

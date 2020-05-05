@@ -64,12 +64,21 @@
                     
                 </v-textarea>
                 <v-row>
-                    <v-spacer>
-
-                    </v-spacer>
-                    <v-btn @click="izmenaKlinike">
-                        Izmena klinike
-                    </v-btn>
+                    <v-col
+                        cols="3"
+                        class="ml-auto"
+                    >
+                        <v-btn @click="izmenaKlinike" color="success">
+                            Izmena klinike
+                        </v-btn>
+                    </v-col>
+                    <v-col
+                        cols="3"
+                    >
+                        <v-btn @click="otkazi" color="warning">
+                            Otkaži
+                        </v-btn>
+                    </v-col>
                 </v-row>
             </v-form>
         </v-container>
@@ -117,6 +126,9 @@
                     .catch(error=>{
                         console.log(error);
                     })
+            },
+            otkazi:function () {
+                this.$router.go();
             }
         }
 

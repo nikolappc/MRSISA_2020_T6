@@ -18,10 +18,12 @@ export default {
         axios
             .delete('lekar/'+this.lekar.id)
             .then(() => {
-                alert("Uspesno ste obrisali lekara");
+                this.$store.commit("setSnackbar", {text:"Uspešno ste obrisali lekara", color: "success"});
                 this.$emit("del-lekar",this.lekar.id);
             })
-            .catch(function (error) { console.log(error); });
+            .catch(function (error) { console.log(error); 
+              this.$store.commit("setSnackbar", {text:"Lekar ima zakazan pregled. Nije moguće brisanje", color: "error"});
+            });
       },
       otvoriDialog: function(){
         this.$emit("otvori",this.lekar.id);

@@ -3,6 +3,9 @@
     <v-container>
       <h1>AdministratorKlinike</h1>
       <v-btn :to="{path: 'lekari'}" dark medium left class="blue" slot="action">Lista lekara</v-btn>
+      <v-btn :to="{path: 'sale'}" dark medium left class="blue" slot="action">Lista sala</v-btn>
+      <v-btn :to="{path: 'tipoviPregleda'}" dark medium left class="blue" slot="action">Lista tipovaPregleda</v-btn>
+      <v-btn :to="{path: 'DodavanjeTermina'}" dark medium left class="blue" slot="action">Dodavanje slobodnih termina</v-btn>
       <v-btn @click="logoutFunc()" dark medium left class="blue" slot="action">Odjavi se</v-btn>
     </v-container>
   </div>
