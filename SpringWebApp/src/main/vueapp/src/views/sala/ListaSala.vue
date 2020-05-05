@@ -43,7 +43,7 @@ import Sala from "./Sala.vue"
 import axios from "axios"
 export default {
     data: () => ({
-        sale : null,
+        sale : [],
         dialog : false
     }),
     mounted () {
@@ -60,7 +60,9 @@ export default {
     },
     methods: {
         deleteSala: function(id){
-            this.sale = this.sale.filter(sala => sala.id !== id);
+            console.log(this.sale);
+            this.sale = this.sale.filter(sala => sala.sala.id !== id);
+            console.log(this.sale);
         },
         
     }

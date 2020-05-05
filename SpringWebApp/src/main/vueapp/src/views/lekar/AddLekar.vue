@@ -6,44 +6,59 @@
   >
     <v-text-field
       v-model="lekar.ime"
-      :rules="imeRules"
+      :rules="rule"
       label="Ime"
       required
     ></v-text-field>
 
     <v-text-field
       v-model="lekar.email"
-      :rules="emailRules"
+      :rules="rule"
       label="E-mail"
       required
     ></v-text-field>
 
     <v-text-field
       v-model="lekar.prezime"
-      :rules="prezimeRules"
+      :rules="rule"
       label="Prezime"
       required
     ></v-text-field>
     <v-text-field
       :type="'password'"
       v-model="lekar.password"
-      :rules="passwordRules"
+      :rules="rule"
       label="Password"
       required
     ></v-text-field>
     <v-text-field
       v-model="lekar.brojTelefona"
       label="Broj Telefona"
+      :rules="rule"
       required
     ></v-text-field>
     <v-text-field
       v-model="lekar.adresa"
       label="Adresa"
+      :rules="rule"
+      required
+    ></v-text-field>
+    <v-text-field
+      v-model="grad"
+      label="Grad"
+      :rules="rule"
+      required
+    ></v-text-field>
+    <v-text-field
+      v-model="drzava"
+      label="Država"
+      :rules="rule"
       required
     ></v-text-field>
     <v-text-field
       v-model="lekar.jbo"
       label="Jedinstveni broj osiguranika"
+      :rules="rule"
       required
     ></v-text-field>
     <v-btn
@@ -70,23 +85,25 @@ export default {
           email: '',
           jbo: '',
           id: 0,
-          password: ''
+          password: '',
+          brojTelefona: ""
           },
       valid: true,
+      grad: '',
+      drzava: '',
 
-      imeRules: [
-        v => !!v || 'Ime je obavezno polje'
+
+      rule: [
+        v => !!v || 'Obavezno polje'
       ],
       emailRules: [
         v => !!v || 'E-mail je obavezan',
-        //v => /.+@.+\..+/.test(v) || 'Nije dobra forma',
-      ],
-      prezimeRules: [
-        v => !!v || 'Prezime je obavezno polje'
+        v => /.+@.+\..+/.test(v) || 'E-mail mora biti u formi pera@domen.com',
       ],
       passwordRules: [
         v => !!v || 'Password je obavezno polje'
-      ],
+      ]
+
     }
     },
     methods: {

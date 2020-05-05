@@ -68,7 +68,7 @@ export default {
               this.$store.commit("setUlogovan", res.data);
               router.push("/");
             })
-            .catch(function () { alert("Prijava nije uspela. Pokušajte ponovo ili kreirajte nalog!"); router.push("/"); });
+            .catch( () => { this.$store.commit("setSnackbar", {text:"Pokusaj ponovo", color: "error"}); });
         }
     }
 }
