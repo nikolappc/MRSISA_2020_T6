@@ -19,11 +19,14 @@
                                 >
                                 </v-text-field>
                                 <v-row>
-                                    <v-spacer>
-                                    </v-spacer>
-                                    <v-btn @click="registruj" color="success">
-                                        Registruj tip klinike
-                                    </v-btn>
+                                    <v-col
+                                        cols="3"
+                                        class="ml-auto"
+                                    >
+                                        <v-btn @click="registruj" color="success">
+                                            Registruj tip klinike
+                                        </v-btn>
+                                    </v-col>
                                 </v-row>
                             </v-container>
                         </v-card>

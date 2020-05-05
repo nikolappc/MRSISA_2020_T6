@@ -19,12 +19,21 @@
             >
             </v-text-field>
             <v-row>
-                <v-spacer>
-
-                </v-spacer>
-                <v-btn @click="izmena" color="success">
-                    Izmena dijagnoze
-                </v-btn>
+                <v-col
+                    cols="3"
+                    class="ml-auto"
+                >
+                    <v-btn @click="izmena" color="success">
+                        Izmena dijagnoze
+                    </v-btn>
+                </v-col>
+                <v-col
+                    cols="3"
+                >
+                    <v-btn @click="otkazi" color="warning">
+                        Otkaži
+                    </v-btn>
+                </v-col>
             </v-row>
             </v-form>
         </v-container>
@@ -55,6 +64,9 @@
                     .catch(error=>{
                         console.log(error);
                     })
+            },
+            otkazi:function () {
+                this.$router.go();
             }
         }
 

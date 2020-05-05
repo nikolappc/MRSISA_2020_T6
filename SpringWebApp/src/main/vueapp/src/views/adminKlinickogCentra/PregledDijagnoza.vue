@@ -62,9 +62,10 @@
                             <v-row
                             align="center"
                             justify-content="center">
-                                <v-spacer>
-                                </v-spacer>
-                                <v-col>
+                                <v-col
+                                    class="ml-auto"
+                                    cols="3"
+                                >
                                     <router-link to="/regDijagnoza">
                                         <v-btn color="success">
                                             Registrovanje dijagnoza
