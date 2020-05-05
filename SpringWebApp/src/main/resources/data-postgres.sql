@@ -52,8 +52,8 @@ insert into tipovi_posete (tip, id_klinike, id_stavke,naziv) values (0, 1, 1,'Su
 insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike) values ('korona test', 1, 1, 1, 1, 2, 1);
 insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike) values ('terapija', 1, 2, 1, 2, 2, 1);
 insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike) values ('previjanje', 1, 4, 1, 2, 2, 1);
-insert into operacije (id, ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike) values (1, 'slijepo crijevo', 2, 3, 2, 3, 1);
-insert into operacije (id, ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike) values (2, 'slijepo crijevo', 2, 3, 2, 2, 1);
+insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike) values ('slijepo crijevo', 2, 3, 2, 3, 1);
+insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike) values ('zeludac', 2, 3, 2, 2, 1);
 
 insert into recepti (overen, id_recepta, id_pregleda) values (false, 1, 1);
 insert into recepti (overen, id_recepta, id_pregleda) values (true, 2, 2);
