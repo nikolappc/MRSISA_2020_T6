@@ -8,6 +8,7 @@ public class DijagnozaDTO {
 	public Long getSifraDijagnoze() {
 		return sifraDijagnoze;
 	}
+	
 	public void setSifraDijagnoze(Long sifraDijagnoze) {
 		this.sifraDijagnoze = sifraDijagnoze;
 	}

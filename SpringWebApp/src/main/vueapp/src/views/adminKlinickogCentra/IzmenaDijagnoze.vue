@@ -47,7 +47,7 @@
         },
         methods:{
             izmena(){
-                axios.put("/dijagnoza/"+this.dijagnoza.id, this.dijagnoza)
+                axios.put("/dijagnoza/"+this.dijagnoza.sifraDijagnoze, this.dijagnoza)
                     .then(res=>{
                         alert(res.data);
                         this.$router.go();

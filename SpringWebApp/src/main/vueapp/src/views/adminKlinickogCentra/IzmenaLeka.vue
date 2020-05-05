@@ -55,7 +55,7 @@
         },
         methods:{
             izmena(){
-                axios.put("/lek/"+this.lek.id, this.lek)
+                axios.put("/lek/"+this.lek.sifraLeka, this.lek)
                     .then(res=>{
                         alert(res.data);
                         this.$router.go();
