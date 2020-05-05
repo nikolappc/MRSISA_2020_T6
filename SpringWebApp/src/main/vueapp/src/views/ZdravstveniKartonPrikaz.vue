@@ -1,8 +1,8 @@
 <template>
   <div class="zdravstveniKartonPrikaz">
     <v-container>
-			<h2>Zdravstveni karton</h2>
-			<h4>{{ ulogovan.ime }} {{ ulogovan.prezime }}</h4>
+			<h2 style="text-align:center">Zdravstveni karton</h2>
+			<h4 style="text-align:center">{{ karton.email }}, {{ karton.ime }} {{ karton.prezime }}</h4>
       <v-simple-table>
         <tbody>
           <tr>
@@ -10,7 +10,7 @@
             <td>{{ karton.visina }} m</td>
           </tr>
           <tr>
-            <td>Tezina:</td>
+            <td>Težina:</td>
             <td>{{ karton.tezina }} kg</td>
           </tr>
           <tr>
@@ -26,28 +26,48 @@
 
 <script>
 import axios from 'axios';
+<<<<<<< HEAD
 // import moment from 'moment';
+=======
+>>>>>>> branch 'master' of https://github.com/nikolappc/MRSISA_2020_T6.git
 import router from "../router/index.js"
 
 export default {
   name: 'ZdravstveniKartonPrikaz',
   data: () => ({
-    ulogovan : {},
+    ulogovani : {},
     karton : {},
   }),
   mounted () {
-      axios
-      .get('api/ulogovan')
+	this.ulogovani = this.$store.state.ulogovan;
+	if (this.ulogovani == "") {
+		router.push("/");
+	}
+	axios
+      .get('api/pacijent/karton/' + this.$route.params.id)
       .then(response => {
-          this.ulogovan = response.data;
-          axios
-          .get('api/pacijent/karton/' + this.ulogovan.id)
-          .then(response => {
-              this.karton = response.data;
-          });
+          this.karton = response.data;
       })
-      .catch(function (error) { console.log(error); router.push("/"); });
-	},
+      .catch(function (error) { console.log(error); router.push("/"); alert("Pacijent još uvek nema svoj zdravstveni karton.");});
+	
+	
+	/*if (this.ulogovani.tip == "LEKAR") {
+		axios
+      .get('api/pacijent/karton/' + this.$route.params.id)
+      .then(response => {
+          this.karton = response.data;
+      })
+      .catch(function (error) { console.log(error); router.push("/"); alert("Pacijent još uvek nema svoj zdravstveni karton.");});
+	
+	} else if (this.ulogovani.tip == "PACIJENT") {
+		axios
+		.get('api/pacijent/karton/' + this.ulogovani.id)
+		.then(response => {
+			this.karton = response.data;
+		})
+		.catch(function (error) { console.log(error); router.push("/"); alert("Još uvek nemate svoj zdravstveni karton.");});
+	*/
+},
 	
 }
 </script>

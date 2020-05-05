@@ -160,11 +160,11 @@ public class UserController {
 	
 	@GetMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Boolean> logout(HttpServletRequest req) {
-		if (req.getSession().getAttribute("user") != null) {
+		//if (req.getSession().getAttribute("user") != null) {
 			req.getSession().invalidate();
 			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
-		}
-		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+		//}
+		//return new ResponseEntity<Boolean>(false, HttpStatus.OK);
 	}
 
 	
@@ -178,27 +178,27 @@ public class UserController {
     	AdministratorKlinickogCentra akc = adminKCService.findByEmail(reg.getEmail());
     	if (akc != null) {
     		System.out.println("naslo akc");
-    		return new ResponseEntity<String>("Vec postoji registrovan nalog sa ovom email adresom.", HttpStatus.BAD_REQUEST);
+    		return new ResponseEntity<String>("Već postoji registrovan nalog sa ovom email adresom.", HttpStatus.BAD_REQUEST);
     	}
     	AdministratorKlinike ak = adminKlinikeService.findByEmail(reg.getEmail());
     	if (ak != null) {
     		System.out.println("naslo ak");
-    		return new ResponseEntity<String>("Vec postoji registrovan nalog sa ovom email adresom.", HttpStatus.BAD_REQUEST);
+    		return new ResponseEntity<String>("Već postoji registrovan nalog sa ovom email adresom.", HttpStatus.BAD_REQUEST);
     	}
     	MedicinskaSestra ms = sestraService.findByEmail(reg.getEmail());
     	if (ms != null) {
     		System.out.println("naslo sestru");
-    		return new ResponseEntity<String>("Vec postoji registrovan nalog sa ovom email adresom.", HttpStatus.BAD_REQUEST);
+    		return new ResponseEntity<String>("Već postoji registrovan nalog sa ovom email adresom.", HttpStatus.BAD_REQUEST);
     	}
     	Lekar l = lekarService.findByEmail(reg.getEmail());
     	if (l != null) {
     		System.out.println("naslo ljekara");
-    		return new ResponseEntity<String>("Vec postoji registrovan nalog sa ovom email adresom.", HttpStatus.BAD_REQUEST);
+    		return new ResponseEntity<String>("Već postoji registrovan nalog sa ovom email adresom.", HttpStatus.BAD_REQUEST);
     	}
     	Pacijent p = pacijentService.findByEmail(reg.getEmail());
     	if (p != null) {
     		System.out.println("naslo pacijenta");
-    		return new ResponseEntity<String>("Vec postoji registrovan nalog sa ovom email adresom.", HttpStatus.BAD_REQUEST);
+    		return new ResponseEntity<String>("Već postoji registrovan nalog sa ovom email adresom.", HttpStatus.BAD_REQUEST);
     	}
     	
     	Pacijent pac = new Pacijent();
@@ -255,7 +255,7 @@ public class UserController {
 	    }    
 	    user.setEnabled(true);  
 	    pacijentService.save(user);      
-		return new ResponseEntity<String>("Uspjesna registracija.", HttpStatus.OK);
+		return new ResponseEntity<String>("Uspešna registracija!", HttpStatus.OK);
 	}
 	
 	// Sluzi za dobavljanje nepotvrdjenih registrovanih korisnika

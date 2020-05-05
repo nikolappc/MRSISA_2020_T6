@@ -33,7 +33,7 @@ public class LekarService {
 	}
 
 	public Lekar create(Lekar lekar) {
-		lekar.setId((int)lekarRepo.count());
+		//lekar.setId((int)lekarRepo.count());
 		return lekarRepo.save(lekar);
 	}
 
