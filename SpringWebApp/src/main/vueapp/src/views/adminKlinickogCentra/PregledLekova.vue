@@ -104,7 +104,9 @@
                 </v-col>
             </v-row>
         </v-container>
-        <v-dialog>
+        <v-dialog
+            v-model="dialog"
+        >
             <IzmenaLeka
                 :lek = "lek"
             >
