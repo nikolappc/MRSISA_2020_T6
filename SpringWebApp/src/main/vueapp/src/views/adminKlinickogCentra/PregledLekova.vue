@@ -65,7 +65,11 @@
                             justify-content="center">
                                 <v-spacer>
                                 </v-spacer>
-                                <v-col>
+                                <v-col
+                                cols="3"
+                                class="ml-auto"
+                                >
+
                                     <router-link to="/regLekova">
                                         <v-btn color="success">
                                             Registrovanje leka
