@@ -125,7 +125,15 @@
         name:"PregledKlinika",
         data:function () {
             return {
-                klinike:[],
+                klinike:[
+                    {
+                        naziv:"asda",
+                        adresa:"aaaa",
+                        tipKlinike:{tip:"dasd"}
+                    }
+
+
+                ],
                 klinika:"",
                 dialog:false
             }
