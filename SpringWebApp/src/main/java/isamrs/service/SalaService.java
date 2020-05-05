@@ -2,6 +2,7 @@ package isamrs.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,10 +62,24 @@ public class SalaService {
 		return salaRepo.save(sala);
 	}
 
-	public Sala update(Integer id,Sala sala) {
+	public Sala update(Integer id,Sala sala) throws Exception {
 		Sala salaForUpdate = salaRepo.findById(id).orElseGet(null);
-		//Ovde ce biti neka logika za update
-		return salaRepo.save(sala);
+		
+		
+		//Ukoliko sala nema preglede i operacije izmeni je
+		List<Pregled> pregledi = pregledRepo.findBySala(sala);
+		if(pregledi.isEmpty()) {
+			List<Operacija> operacije = operacijaRepo.findBySala(sala);
+			if(operacije.isEmpty()) {
+
+				return salaRepo.save(sala);
+			}
+			else
+				throw new Exception();
+		}
+		else
+			throw new Exception();
+		
 	}
 
 	

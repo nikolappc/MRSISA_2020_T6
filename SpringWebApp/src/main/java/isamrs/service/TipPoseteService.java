@@ -1,8 +1,13 @@
 package isamrs.service;
 
 import java.util.Collection;
+import java.util.List;
 
+import isamrs.domain.Operacija;
+import isamrs.domain.Pregled;
 import isamrs.domain.TipPosete;
+import isamrs.repository.OperacijaRepository;
+import isamrs.repository.PregledRepository;
 import isamrs.repository.TipPoseteRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +18,13 @@ public class TipPoseteService {
 
 	@Autowired
 	private TipPoseteRepository tipRepo;
+	
+	@Autowired
+	private PregledRepository pregledRepo;
+	
+	@Autowired
+	private OperacijaRepository operacijaRepo;
+	
 	
 	public Collection<TipPosete> findAll() {
 		return tipRepo.findAll();
@@ -27,10 +39,24 @@ public class TipPoseteService {
 	}
 
 	public TipPosete update(Integer id, TipPosete t) throws Exception {
+		
 		TipPosete tp = tipRepo.findById(t.getId()).orElseGet(null);
-		if(tp == null) 
+
+		
+		List<Pregled> pregledi = pregledRepo.findByTip(tp);
+		if(pregledi.isEmpty()) {
+			List<Operacija> operacije = operacijaRepo.findByTip(tp);
+			if(operacije.isEmpty()) {
+
+				return tipRepo.save(t);
+			}
+			else
+				throw new Exception();
+		}
+		else
 			throw new Exception();
-		return tipRepo.save(t);
+		
+		
 	}
 
 	public void delete(Integer id) throws Exception {

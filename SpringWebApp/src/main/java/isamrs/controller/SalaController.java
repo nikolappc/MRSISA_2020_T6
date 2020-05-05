@@ -57,10 +57,16 @@ public class SalaController {
 
 
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Sala> updateSala(@RequestBody Sala sala, @PathVariable Integer id)
-			throws Exception {
+	public ResponseEntity<Sala> updateSala(@RequestBody Sala sala, @PathVariable Integer id){
 		
-		Sala updatedSala = salaService.update(id,sala);
+		
+		Sala updatedSala = null;
+		try {
+			updatedSala = salaService.update(id,sala);
+		} catch (Exception e) {
+			return new ResponseEntity<Sala>(HttpStatus.FORBIDDEN);
+		}
+		
 		return new ResponseEntity<Sala>(updatedSala, HttpStatus.OK);
 	}
 

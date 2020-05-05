@@ -1,4 +1,5 @@
 <template>
+<v-container>
   <v-form
     ref="form"
     v-model="valid"
@@ -23,7 +24,7 @@
 
     <v-text-field
       v-model="tip.stavkaCenovnika.cena"
-      :rules="imeRules"
+      :rules="cenaRules"
       label="Cena"
       required
     ></v-text-field>
@@ -37,6 +38,7 @@
     </v-btn>
 
   </v-form>
+  </v-container>
 </template>
 
 <script>
@@ -54,8 +56,12 @@ export default {
       valid: true,
 
       imeRules: [
-        v => !!v || 'Ime je obavezno polje'
+        v => !!v || 'Obavezno polje'
       ],
+      cenaRules: [
+        v => !!v || 'Obavezno polje',
+        v => parseFloat(v) > 0 || "Polje mora biti pozitivan broj"
+      ]
       
     }
     },
@@ -68,6 +74,7 @@ export default {
             axios
             .post('tip',this.tip)
             .then(() => {
+                this.$store.commit("setSnackbar", {text:"Tip je uspešno dodat", color: "success"});
                 router.push("/tipoviPoseta");
             })
             .catch(function (error) { console.log(error); });

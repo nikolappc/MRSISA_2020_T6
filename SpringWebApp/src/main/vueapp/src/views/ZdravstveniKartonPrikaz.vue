@@ -38,7 +38,8 @@ export default {
 	this.ulogovani = this.$store.state.ulogovan;
 	if (this.ulogovani == "") {
 		router.push("/");
-	}
+  }
+  
 	axios
       .get('api/pacijent/karton/' + this.$route.params.id)
       .then(response => {

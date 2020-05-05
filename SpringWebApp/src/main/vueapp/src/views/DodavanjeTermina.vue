@@ -39,6 +39,7 @@
       :items="lekari"
       label="Lekar"
       dense
+      :rules="rule"
       outlined
       required
       return-object
@@ -60,6 +61,7 @@
       label="Sala"
       outlined
       dense
+      :rules="rule"
       required
       item-text="naziv"
       return-object
@@ -72,6 +74,7 @@
       label="Tip"
       outlined
       dense
+      :rules="rule"
       required
       return-object
     >
@@ -100,6 +103,7 @@
 
 <script>
 import axios from "axios";
+import router from "../router/index.js"
 export default {
     name: 'AddTermin',
     data: function() { return {
@@ -116,8 +120,8 @@ export default {
 
       valid: true,
 
-      nazivRules: [
-        v => !!v || 'Naziv je obavezno polje'
+      rule: [
+        v => !!v || 'Obavezno polje'
       ]
     }
     },
@@ -152,7 +156,8 @@ export default {
             axios
             .post('poseta',this.pregled)
             .then(() => {
-                alert("Uspesno")
+                this.$store.commit("setSnackbar", {text:"Uspešno ste dodali slobodan termin", color: "success"});
+                router.push("/sale");
             })
             .catch(function (error) { console.log(error); });
         },

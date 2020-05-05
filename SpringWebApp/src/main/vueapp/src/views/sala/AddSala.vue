@@ -46,6 +46,7 @@ export default {
             axios
             .post('sala',this.sala)
             .then(() => {
+                this.$store.commit("setSnackbar", {text:"Sala je uspešno dodata", color: "success"});
                 router.push("/sale");
             })
             .catch(function (error) { console.log(error); });

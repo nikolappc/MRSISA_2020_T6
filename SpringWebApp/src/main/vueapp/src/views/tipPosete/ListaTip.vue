@@ -1,6 +1,11 @@
 <template>
     <div>
         <h2>Lista tipova</h2>
+        <v-text-field
+            v-model="search"
+            label="Pretraga"
+            append-icon="mdi-magnify"
+        ></v-text-field>
         <v-simple-table border="1">
             <thead>
                 <th>Naziv</th>
@@ -9,7 +14,7 @@
                 <th></th>
             </thead>
             <tbody>
-                <Tip v-for="tip in tipovi" v-bind:key="tip.id" v-bind:tip="tip" v-on:del-tip="deleteTip"
+                <Tip v-for="tip in filterTip" v-bind:key="tip.id" v-bind:tip="tip" v-on:del-tip="deleteTip"
                 v-on:otvori="otvoriDialog"/>
                 
             </tbody>
@@ -24,7 +29,7 @@
                 <v-card>
                     <v-card-title class="headline">Izmeni tip</v-card-title>
 
-                        <IzmenaTipa  v-bind:tip="dialogTip" />
+                        <IzmenaTipa  v-bind:tip="dialogTip" v-on:zatvori="dialog = false"/>
 
                     
                 </v-card>
@@ -38,9 +43,10 @@ import IzmenaTipa from "./IzmenaTip.vue"
 import axios from "axios"
 export default {
     data: () => ({
-        tipovi : null,
+        tipovi : [],
         dialog : false,
-        dialogTip: null
+        dialogTip: null,
+        search: '',
     }),
     mounted () {
         axios
@@ -62,11 +68,24 @@ export default {
         otvoriDialog: function(id){
             this.dialogTip = {...this.tipovi.filter(tip => tip.id === id)[0]};
             this.dialog = true;
-        },
-        promeniTipa: function(id){
-            id;
-        },
+        }
 
+    },
+    computed:{
+        filterTip: function(){
+            return this.tipovi.filter(tip => {
+                if(tip.naziv.match(this.search)){
+                    return true;
+                }
+                else if(tip.tip.match(this.search)){
+                    return true;
+                }
+                else if((tip.stavkaCenovnika.cena + "").match(this.search)){
+                    return true;
+                }
+                return false;
+            })
+        } 
     }
 }
 </script>

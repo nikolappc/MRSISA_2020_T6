@@ -20,7 +20,7 @@
 
     <v-text-field
       v-model="tip.stavkaCenovnika.cena"
-      :rules="imeRules"
+      :rules="cenaRules"
       label="Cena"
       required
     ></v-text-field>
@@ -49,6 +49,10 @@ export default {
       imeRules: [
         v => !!v || 'Ime je obavezno polje'
       ],
+      cenaRules: [
+        v => !!v || 'Obavezno polje',
+        v => parseFloat(v) > 0 || "Polje mora biti pozitivan broj"
+      ]
     }
     },
     methods: {
@@ -57,9 +61,13 @@ export default {
             axios
             .put('tip/'+this.tip.id,this.tip)
             .then(() => {
+                this.$store.commit("setSnackbar", {text:"Tip je uspešno izmenjen", color: "success"});
                 router.go();
             })
-            .catch(function (error) { console.log(error); });
+            .catch((error) => { console.log(error); 
+              this.$store.commit("setSnackbar", {text:"Tip se koristi na pregledu", color: "error"});
+              this.$emit("zatvori");
+            });
         }
 
     }

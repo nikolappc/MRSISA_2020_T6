@@ -1,6 +1,11 @@
 <template>
     <div>
         <h2>Lista lekara</h2>
+        <v-text-field
+            v-model="search"
+            label="Pretraga"
+            append-icon="mdi-magnify"
+        ></v-text-field>
         <v-simple-table border="1">
             <thead>
                 <th>Ime</th>
@@ -10,7 +15,7 @@
                 <th></th>
             </thead>
             <tbody>
-                <Lekar v-for="lekar in lekari" v-bind:key="lekar.id" v-bind:lekar="lekar" v-on:del-lekar="deleteLekar"
+                <Lekar v-for="lekar in filterLekari" v-bind:key="lekar.id" v-bind:lekar="lekar" v-on:del-lekar="deleteLekar"
                 v-on:otvori="otvoriDialog"/>
                 
             </tbody>
@@ -25,7 +30,7 @@
                 <v-card>
                     <v-card-title class="headline">Izmeni lekara</v-card-title>
 
-                        <IzmenaLekara  v-bind:lekar="dialogLekar" />
+                        <IzmenaLekara  v-bind:lekar="dialogLekar" v-on:zatvori="dialog = false"/>
 
                     
                 </v-card>
@@ -39,9 +44,10 @@ import IzmenaLekara from "./IzmenaLekar.vue"
 import axios from "axios"
 export default {
     data: () => ({
-        lekari : null,
+        lekari : [],
         dialog : false,
-        dialogLekar: null
+        dialogLekar: null,
+        search: ''
     }),
     mounted () {
         axios
@@ -63,11 +69,21 @@ export default {
         otvoriDialog: function(id){
             this.dialogLekar = {...this.lekari.filter(lekar => lekar.id === id)[0]};
             this.dialog = true;
-        },
-        promeniLekara: function(id){
-            id;
-        },
+        }
 
-    }
+    },
+    computed:{
+        filterLekari: function(){
+            return this.lekari.filter(lekar => {
+                if(lekar.ime.match(this.search)){
+                    return true;
+                }
+                else if(lekar.prezime == this.search){
+                    return true;
+                }
+                return false;
+            })
+        } 
+    },
 }
 </script>

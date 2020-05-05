@@ -42,7 +42,7 @@ export default {
                 this.pacijenti = response.data;
                 console.log(response);
             })
-            .catch(() => { this.pacijenti = [{ime: 'pera',prezime: ''}]; });
+            .catch(() => { this.pacijenti = [{ime: 'pera',prezime: '', id: 0}]; });
     },
     methods: {
         posaljiNaPacijenta: function(value){

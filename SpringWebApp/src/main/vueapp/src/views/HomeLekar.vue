@@ -2,6 +2,7 @@
   <div class="home">
     <v-container>
       <h1>Lekar</h1>
+      <v-btn :to="{path: 'listaPacijenata'}" dark medium left class="blue" slot="action">Lista pacijenata</v-btn>
     </v-container>
   </div>
 </template>

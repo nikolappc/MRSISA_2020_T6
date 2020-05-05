@@ -26,7 +26,7 @@ public class StavkaCenovnika {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(name = "cena", unique = true, nullable = false)
+	@Column(name = "cena", nullable = false)
 	private Double cena;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

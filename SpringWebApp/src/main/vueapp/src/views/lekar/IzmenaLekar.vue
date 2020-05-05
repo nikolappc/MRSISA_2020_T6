@@ -5,44 +5,59 @@
   >
     <v-text-field
       v-model="lekar.ime"
-      :rules="imeRules"
+      :rules="rule"
       label="Ime"
       required
     ></v-text-field>
 
     <v-text-field
       v-model="lekar.email"
-      :rules="emailRules"
+      :rules="rule"
       label="E-mail"
       required
     ></v-text-field>
 
     <v-text-field
       v-model="lekar.prezime"
-      :rules="prezimeRules"
+      :rules="rule"
       label="Prezime"
       required
     ></v-text-field>
     <v-text-field
       :type="'password'"
       v-model="lekar.password"
-      :rules="passwordRules"
+      :rules="rule"
       label="Password"
       required
     ></v-text-field>
     <v-text-field
       v-model="lekar.brojTelefona"
       label="Broj Telefona"
+      :rules="rule"
       required
     ></v-text-field>
     <v-text-field
       v-model="lekar.adresa"
       label="Adresa"
-      :rules="prezimeRules"
+      :rules="rule"
+      required
+    ></v-text-field>
+    <v-text-field
+      v-model="grad"
+      label="Grad"
+      :rules="rule"
+      required
+    ></v-text-field>
+    <v-text-field
+      v-model="drzava"
+      label="Država"
+      :rules="rule"
+      required
     ></v-text-field>
     <v-text-field
       v-model="lekar.jbo"
       label="Jedinstveni broj osiguranika"
+      :rules="rule"
       required
     ></v-text-field>
     <v-btn
@@ -65,31 +80,34 @@ export default {
     props: ["lekar"],
     data: function() { return {
       valid: true,
-
-      imeRules: [
-        v => !!v || 'Ime je obavezno polje'
+      grad: '',
+      drzava: '',
+      rule: [
+        v => !!v || 'Obavezno polje'
       ],
       emailRules: [
         v => !!v || 'E-mail je obavezan',
-        //v => /.+@.+\..+/.test(v) || 'Nije dobra forma',
-      ],
-      prezimeRules: [
-        v => !!v || 'Prezime je obavezno polje'
+        v => /.+@.+\..+/.test(v) || 'E-mail mora biti u formi pera@domen.com',
       ],
       passwordRules: [
         v => !!v || 'Password je obavezno polje'
-      ],
+      ]
     }
     },
     methods: {
         izmeniLekara: function(event) {
             event.preventDefault();
+            this.lekar.adresa = this.lekar.adresa + ", " + this.grad + ", " + this.drzava;
+
             axios
             .put('lekar/'+this.lekar.id,this.lekar)
             .then(() => {
+                this.$store.commit("setSnackbar", {text:"Lekar je uspešno izmenjen", color: "success"});
                 router.go();
+                
             })
-            .catch(function (error) { console.log(error); });
+            .catch( () => { this.$store.commit("setSnackbar", {text:"Lekar ima zakazan termin. Nije moguća izmena", color: "error"});
+            this.$emit("zatvori"); });
         }
 
     }
