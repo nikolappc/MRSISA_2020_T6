@@ -129,7 +129,7 @@
 
                 ],
                 dijagnoza:"",
-                dialog:false
+                dialog:false,
             }
         },
         components:{
