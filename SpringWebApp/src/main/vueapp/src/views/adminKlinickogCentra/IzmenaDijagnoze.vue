@@ -19,12 +19,14 @@
             >
             </v-text-field>
             <v-row>
-                <v-spacer>
-
-                </v-spacer>
-                <v-btn @click="izmena" color="success">
-                    Izmena dijagnoze
-                </v-btn>
+                <v-col
+                    cols="3"
+                    class="ml-auto"
+                >
+                    <v-btn @click="izmena" color="success">
+                        Izmena dijagnoze
+                    </v-btn>
+                </v-col>
             </v-row>
             </v-form>
         </v-container>
