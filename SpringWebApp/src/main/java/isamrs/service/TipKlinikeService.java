@@ -38,6 +38,12 @@ public class TipKlinikeService implements Service<TipKlinike, Long>{
 
 	@Override
 	public TipKlinike update(Long id, TipKlinike t) {
+
+
+		if(!tipRepo.findById(id).isPresent()){
+			throw new NotFoundException();
+		}
+		t.setId(id);
 		return tipRepo.save(t);
 	}
 

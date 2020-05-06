@@ -1,7 +1,11 @@
 package isamrs.controller;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
+import isamrs.domain.Recepti;
+import isamrs.dto.LekDTO;
+import isamrs.service.ReceptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,19 +30,22 @@ public class LekController {
 
 	@Autowired
 	private LekService service;
+
+	@Autowired
+	private ReceptService recService;
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Lek>> getLekovi(){
+	public ResponseEntity<Collection<LekDTO>> getLekovi(){
 		Collection<Lek> lekovi = service.findAll();
-		
-		return new ResponseEntity<Collection<Lek>>(lekovi, HttpStatus.OK);
+		Collection<LekDTO> lekDTOS = lekovi.stream().map(this::LektoDTO).collect(Collectors.toList());
+		return new ResponseEntity<Collection<LekDTO>>(lekDTOS, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Lek> getLek(@PathVariable("id") Long id){
+	public ResponseEntity<LekDTO> getLek(@PathVariable("id") Long id){
 		try {			
 			Lek l = service.findOne(id);
-			return new ResponseEntity<Lek>(l, HttpStatus.OK);
+			return new ResponseEntity<LekDTO>(LektoDTO(l), HttpStatus.OK);
 		}catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lek sa id-jem: "+id+" nije pronadjen", e);
 		}
@@ -46,22 +53,25 @@ public class LekController {
 	}
 	
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Lek> createLek(@RequestBody Lek l){
+	public ResponseEntity<LekDTO> createLek(@RequestBody Lek l){
 		Lek l2 = service.create(l);
-		return new ResponseEntity<Lek>(l2, HttpStatus.CREATED);
+		return new ResponseEntity<LekDTO>(LektoDTO(l2), HttpStatus.CREATED);
 	}
 
 	@PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Lek> updateLek(@RequestBody Lek l, @PathVariable("id") Long id){
+	public ResponseEntity<LekDTO> updateLek(@RequestBody Lek l, @PathVariable("id") Long id){
 		Lek l2 = service.update(id, l);
-		return new ResponseEntity<Lek>(l2, HttpStatus.OK);
+		return new ResponseEntity<LekDTO>(LektoDTO(l2), HttpStatus.OK);
 	}
 	
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Lek> deleteLek(@PathVariable("id") Long id){
+	public ResponseEntity<LekDTO> deleteLek(@PathVariable("id") Long id){
 		service.delete(id);
-		return new ResponseEntity<Lek>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<LekDTO>(HttpStatus.NO_CONTENT);
 	}
 
-	
+	public LekDTO LektoDTO(Lek l){
+		Collection<Recepti> rec = recService.getReceptsWithLek(l.getSifraLeka());
+		return new LekDTO(l.getSifraLeka(),l.getNazivLeka(),l.getOpisLeka(),!rec.isEmpty());
+	}
 }

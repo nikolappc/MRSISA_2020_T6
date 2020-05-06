@@ -154,10 +154,13 @@
             deleteKlinika:function (id) {
                 axios.delete("/klinika/"+id)
                     .then(res=>{
-                        alert(res.data)
+                        this.$store.commit("setSnackbar", {text:"Uspešno ste obrisali kliniku.", color: "success"});
                         this.$router.go();
+                        console.log(res.data);
+
                     })
                     .catch(error=>{
+                        this.$store.commit("setSnackbar", {text:"Izvinjavamo se došlo je do greške.", color: "error"});
                         console.log(error);
                     })
             }

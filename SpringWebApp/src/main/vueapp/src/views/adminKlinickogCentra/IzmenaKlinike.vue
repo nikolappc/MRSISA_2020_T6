@@ -120,11 +120,16 @@
                 this.klinika.adresa = this.grad+" "+this.ulica+" "+this.broj;
                 axios.put("/klinika/"+this.klinika.id, this.klinika)
                     .then(res=>{
-                        alert(res.data);
+                        console.log(res.data);
+                        
+                        this.$store.commit("setSnackbar", {text:"Uspešno ste izmenili kliniku.", color: "success"});
                         this.$router.go();
                     })
                     .catch(error=>{
+                        this.$store.commit("setSnackbar", {text:"Izvinjavamo se došlo je do greške.", color: "error"});
                         console.log(error);
+                        this.$router.go();
+
                     })
             },
             otkazi:function () {

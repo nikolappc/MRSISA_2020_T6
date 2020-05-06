@@ -50,7 +50,7 @@
                                         <tbody v-for="(l,i) in lekovi" :key="i">
                                             <tr>
                                                 <td>
-                                                    <v-btn icon @click="deleteLek(l.sifraLeka)">
+                                                    <v-btn v-if="!l.koristen" icon @click="deleteLek(l.sifraLeka)">
                                                         <v-icon>mdi-delete</v-icon>
                                                     </v-btn>
                                                 </td>
@@ -143,11 +143,13 @@
             deleteLek:function (sifra) {
                 axios.delete("/lek/"+sifra)
                     .then(res=>{
-                        alert(res.data)
+                        this.$store.commit("setSnackbar", {text:"Uspešno ste obrisali lek.", color: "success"});
                         this.$router.go();
+                        console.log(res.data);
                     })
                     .catch(error=>{
                         console.log(error);
+                        this.$store.commit("setSnackbar", {text:"Izvinjavamo se došlo je do greške.", color: "error"});
                     })
             },
             izmena:function(lek){

@@ -38,6 +38,9 @@ public class DijagnozaService implements Service<Dijagnoza, Long>{
 
 	@Override
 	public Dijagnoza update(Long id, Dijagnoza t) {
+		if(!repo.findById(id).isPresent()){
+			throw new NotFoundException();
+		}
 		t.setSifraDijagnoze(id);
 		return repo.save(t);
 	}

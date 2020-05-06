@@ -38,6 +38,10 @@ public class KlinikaServiceImpl implements Service<Klinika, Integer>{
 
 	@Override
 	public Klinika update(Integer id, Klinika t) {
+		if(!repo.findById(id).isPresent()){
+			throw new NotFoundException();
+		}
+		t.setId(id);
 		return repo.save(t);
 	}
 

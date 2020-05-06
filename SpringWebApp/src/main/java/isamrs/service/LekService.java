@@ -35,6 +35,9 @@ public class LekService implements Service<Lek, Long>{
 
 	@Override
 	public Lek update(Long id, Lek t) {
+		if(!repo.findById(id).isPresent()){
+			throw new NotFoundException();
+		}
 		t.setSifraLeka(id);
 		return repo.save(t);
 	}

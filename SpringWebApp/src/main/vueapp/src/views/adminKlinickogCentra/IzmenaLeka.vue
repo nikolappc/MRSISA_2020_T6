@@ -6,6 +6,7 @@
             >
                 <v-text-field
                     label="Šifra leka"
+                    disabled
                     :rules="rules"
                     type="number"
                     required
@@ -31,7 +32,7 @@
                         cols="3"
                         class="ml-auto"
                     >
-                        <v-btn @click="izmeni" color="success">
+                        <v-btn @click="izmena" color="success">
                             Izmena leka
                         </v-btn>
                     </v-col>
@@ -66,11 +67,15 @@
             izmena(){
                 axios.put("/lek/"+this.lek.sifraLeka, this.lek)
                     .then(res=>{
-                        alert(res.data);
+                        this.$store.commit("setSnackbar", {text:"Uspešno ste izmenili lek.", color: "success"});
+                        console.log(res.data);
                         this.$router.go();
                     })
                     .catch(error=>{
+                        this.$store.commit("setSnackbar", {text:"Izvinjavamo se došlo je do greške.", color: "error"});
                         console.log(error);
+                        this.$router.go();
+
                     })
             },
             otkazi:function () {

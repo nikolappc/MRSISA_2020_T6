@@ -7,7 +7,7 @@
             <v-text-field
                 label="Šifra dijagnoze"
                 :rules="rules"
-                required
+                disabled
                 v-model="dijagnoza.sifraDijagnoze"
             >
             </v-text-field>
@@ -58,11 +58,16 @@
             izmena(){
                 axios.put("/dijagnoza/"+this.dijagnoza.sifraDijagnoze, this.dijagnoza)
                     .then(res=>{
-                        alert(res.data);
+                        this.$store.commit("setSnackbar", {text:"Uspešno ste izmenili dijagnozu.", color: "success"});
+
+                        console.log(res.data);
                         this.$router.go();
                     })
                     .catch(error=>{
                         console.log(error);
+                        this.$store.commit("setSnackbar", {text:"Izvinjavamo se došlo je do greške.", color: "error"});
+                        this.$router.go();
+
                     })
             },
             otkazi:function () {
