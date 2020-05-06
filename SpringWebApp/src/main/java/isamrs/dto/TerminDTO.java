@@ -28,7 +28,7 @@ public class TerminDTO {
 		}
 		else if(poseta instanceof Operacija){
 			Operacija operacija = (Operacija) poseta;
-			this.name = operacija.getLekar().iterator().next().getIme() + " " + operacija.getLekar().iterator().next().getPrezime();
+			this.name = "Operacija";
 		}
 		this.details = poseta.getOpis();
 	}

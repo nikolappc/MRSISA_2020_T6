@@ -127,18 +127,25 @@ export default {
     posaljiZahtjev: function(event) {
 		this.reg.password = this.novaSifra;
         event.preventDefault();
-        axios
-        .post('api/registracija',this.reg)
-        .then(() => {
-            alert("Poslali ste zahtev za registraciju. Biće Vam poslat email na adresu \n" + this.reg.email + ", gde možete verifikovati Vaš nalog.")
-            router.push("/");
-        })
-        .catch(function (error) { 
-            console.log(error); 
-            if (error.response) {
-                alert(error.response.data);
-            }
-        });
+        if (this.novaSifra == this.novaSifraPotvrda) {
+			axios
+			.post('api/registracija',this.reg)
+			.then(() => {
+			this.$store.commit("setSnackbar", {text:"Poslali ste zahtev za registraciju. Biće Vam poslat email na adresu \n" + this.reg.email + ", gde možete verifikovati Vaš nalog.", color: "success"});
+				//alert("Poslali ste zahtev za registraciju. Biće Vam poslat email na adresu \n" + this.reg.email + ", gde možete verifikovati Vaš nalog.")
+				router.push("/");
+			})
+			.catch(error => { 
+				console.log(error); 
+				if (error.response) {
+					//alert(error.response.data);
+					this.$store.commit("setSnackbar", {text:error.response.data, color: "error"});
+				}
+			});
+		} else {
+			this.$store.commit("setSnackbar", {text:"Lozinke se ne poklapaju.", color: "error"});
+		}
+        
     },
   },
   watch: {

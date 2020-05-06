@@ -43,18 +43,6 @@
       required
     ></v-text-field>
     <v-text-field
-      v-model="grad"
-      label="Grad"
-      :rules="rule"
-      required
-    ></v-text-field>
-    <v-text-field
-      v-model="drzava"
-      label="Država"
-      :rules="rule"
-      required
-    ></v-text-field>
-    <v-text-field
       v-model="lekar.jbo"
       label="Jedinstveni broj osiguranika"
       :rules="rule"
@@ -80,8 +68,6 @@ export default {
     props: ["lekar"],
     data: function() { return {
       valid: true,
-      grad: '',
-      drzava: '',
       rule: [
         v => !!v || 'Obavezno polje'
       ],
@@ -97,7 +83,6 @@ export default {
     methods: {
         izmeniLekara: function(event) {
             event.preventDefault();
-            this.lekar.adresa = this.lekar.adresa + ", " + this.grad + ", " + this.drzava;
 
             axios
             .put('lekar/'+this.lekar.id,this.lekar)
