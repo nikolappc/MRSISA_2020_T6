@@ -115,6 +115,7 @@
             >
             </IzmenaKlinike>
         </v-dialog>
+
     </div>
 </template>
 
@@ -126,27 +127,29 @@
         data:function () {
             return {
                 klinike:[
-
-
                 ],
                 klinika:"",
-                dialog:false
+                dialog:false,
             }
         },
         components:{
             IzmenaKlinike
         },  
         mounted:function () {
-            axios.get("/klinika")
-                .then(res=>{
-                    this.klinike = res.data;
-                    console.log(this.klinike);
-                })
-                .catch(error=>{
-                    alert(error);
-                });
+            this.refresh();
         },
         methods:{
+            refresh:function () {
+                axios.get("/klinika")
+                    .then(res=>{
+                        this.klinike = res.data;
+                        console.log(this.klinike);
+                    })
+                    .catch(error=>{
+                        this.$store.commit("setSnackbar", {text:"Izvinjavamo se došlo je do greške.", color: "error"});
+                        console.log(error);
+                    });
+            },
             izmena(klinika){
                 this.klinika = klinika;
                 this.dialog = true;
@@ -155,9 +158,8 @@
                 axios.delete("/klinika/"+id)
                     .then(res=>{
                         this.$store.commit("setSnackbar", {text:"Uspešno ste obrisali kliniku.", color: "success"});
-                        this.$router.go();
+                        this.refresh();
                         console.log(res.data);
-
                     })
                     .catch(error=>{
                         this.$store.commit("setSnackbar", {text:"Izvinjavamo se došlo je do greške.", color: "error"});
