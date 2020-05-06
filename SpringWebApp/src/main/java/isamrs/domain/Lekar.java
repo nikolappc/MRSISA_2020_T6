@@ -22,6 +22,7 @@ import javax.persistence.Transient;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -32,6 +33,7 @@ public class Lekar extends Osoba {
 	@JoinColumn(name = "id_lekara")
 	public java.util.Collection<Ocena> ocena;
 	
+	@JsonIgnore
 	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY, mappedBy = "lekar")
 	@JsonManagedReference(value = "lekarRefer")
 	public Collection<Pregled> pregled;
@@ -44,6 +46,7 @@ public class Lekar extends Osoba {
 	@JoinColumn(name = "id_lekara")
 	public Collection<RadnoVreme> radnoVreme;
 
+	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "lekari_operacije", joinColumns = { @JoinColumn(name = "lekar_id") }, inverseJoinColumns = {
 	@JoinColumn(name = "operacija_id") })

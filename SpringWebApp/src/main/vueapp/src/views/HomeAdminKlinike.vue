@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <v-container>
-      <h1>AdministratorKlinike</h1>
+      <h1>Administrator klinike</h1>
       <v-col
       >
         <v-container>
