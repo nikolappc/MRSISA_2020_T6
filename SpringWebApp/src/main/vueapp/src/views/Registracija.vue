@@ -7,64 +7,65 @@
             ref="form"
             v-model="valid"
           >
-            <v-text-field
+			<v-simple-table>
+            <tr><td colspan="3"><v-text-field
               v-model="reg.email"
               :rules="emailRules"
               label="E-mail"
               required
-            ></v-text-field>
-            <v-text-field
+            ></v-text-field></td></tr>
+            <tr><td colspan="3"><v-text-field
               v-model="novaSifra"
               :rules="passwordRules"
               label="Lozinka"
               required
-            ></v-text-field>
-            <v-text-field
+            ></v-text-field></td></tr>
+            <tr><td colspan="3"><v-text-field
               v-model="novaSifraPotvrda"
               :rules="password2Rules"
               label="Potvrda lozinke"
               required
-            ></v-text-field>
-            <v-text-field
+            ></v-text-field></td></tr>
+            <tr><td colspan="3"><v-text-field
               v-model="reg.ime"
               :rules="Rules"
               label="Ime"
               required
-            ></v-text-field>
-            <v-text-field
+            ></v-text-field></td></tr>
+            <tr><td colspan="3"><v-text-field
               v-model="reg.prezime"
               :rules="Rules"
               label="Prezime"
               required
-            ></v-text-field>
-            <v-text-field
+            ></v-text-field></td></tr>
+            <tr><td><v-text-field
               v-model="reg.adresa"
               :rules="Rules"
               label="Adresa prebivalista"
               required
-            ></v-text-field>
-            <v-text-field
+            ></v-text-field></td>
+            <td><v-text-field
               v-model="reg.grad"
               :rules="Rules"
               label="Grad"
               required
-            ></v-text-field>
-            <v-text-field
+            ></v-text-field></td>
+			<td><v-text-field
               v-model="reg.drzava"
               :rules="Rules"
               label="Država"
               required
-            ></v-text-field>
-            <v-text-field
+            ></v-text-field></td></tr>
+            <tr><td colspan="3"><v-text-field
               v-model="reg.brojTelefona"
               :rules="Rules"
               label="Broj telefona"
-            ></v-text-field>
-            <v-text-field
+            ></v-text-field></td></tr>
+            <tr><td colspan="3"><v-text-field
               v-model="reg.jbo"
               :rules="Rules"
               label="Jedinstveni broj osiguranika"
-            ></v-text-field>
+            ></v-text-field></td></tr>
             <v-btn
               :disabled="!valid"
               color="success"
