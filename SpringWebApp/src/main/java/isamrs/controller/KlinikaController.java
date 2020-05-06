@@ -22,6 +22,7 @@ import isamrs.domain.Klinika;
 import isamrs.domain.Operacija;
 import isamrs.domain.Pacijent;
 import isamrs.domain.Pregled;
+import isamrs.domain.Sala;
 import isamrs.dto.KlinikaDTO;
 import isamrs.dto.KlinikaZaPacijentaDTO;
 import isamrs.dto.OperacijaDTO;
@@ -67,7 +68,12 @@ public class KlinikaController {
 	
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<KlinikaDTO> deleteKlinika(@PathVariable Integer id){
-		klinikaService.delete(id);
+		try {
+
+			klinikaService.delete(id);
+		} catch (Exception e) {
+			return new ResponseEntity<KlinikaDTO>(HttpStatus.FORBIDDEN);
+		}
 		return new ResponseEntity<KlinikaDTO>(HttpStatus.NO_CONTENT);
 	}
 	

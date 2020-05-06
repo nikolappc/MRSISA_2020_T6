@@ -74,7 +74,7 @@ public class Klinika {
 	@JsonManagedReference
 	public java.util.Collection<Pacijent> pacijent;
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_klinike")
 //	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	@JsonManagedReference
