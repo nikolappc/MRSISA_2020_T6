@@ -5,12 +5,12 @@
         ref="form"
         v-model="valid"
       >
-        <v-text-field
+		<v-text-field
           v-model="izmijenjen.ime"
           :rules="imeRules"
           label="Ime"
           required
-        ></v-text-field>
+		></v-text-field>
         <v-text-field
           v-model="izmijenjen.prezime"
           :rules="prezimeRules"
@@ -91,7 +91,8 @@ export default {
         v => !!v || 'Broj telefona je obavezno polje'
       ],
       adresaRules: [
-        v => !!v || 'Adresa je obavezno polje'
+        v => !!v || 'Adresa je obavezno polje',
+		v => v.split(", ").length == 3 || 'Neispravan format adrese.'
       ],
       jboRules: [
         v => !!v || 'Jedinstveni broj osiguranika je obavezno polje'
