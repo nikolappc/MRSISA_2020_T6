@@ -44,7 +44,7 @@ public class Lekar extends Osoba {
 	@JoinColumn(name = "id_lekara")
 	public Collection<RadnoVreme> radnoVreme;
 
-	@ManyToMany(cascade = CascadeType.DETACH)
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "lekari_operacije", joinColumns = { @JoinColumn(name = "lekar_id") }, inverseJoinColumns = {
 	@JoinColumn(name = "operacija_id") })
 	@JsonManagedReference(value = "operacijeReference")

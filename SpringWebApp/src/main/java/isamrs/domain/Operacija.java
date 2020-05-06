@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Table(name = "operacije")
 public class Operacija extends Poseta {
 
-	@ManyToMany(mappedBy = "operacije")
+	@ManyToMany(mappedBy = "operacije", cascade = CascadeType.ALL)
 	public java.util.Collection<Lekar> lekari;
 
 	public Operacija() {
