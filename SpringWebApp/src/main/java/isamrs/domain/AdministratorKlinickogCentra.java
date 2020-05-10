@@ -23,7 +23,7 @@ public class AdministratorKlinickogCentra extends Osoba {
 		this.setTip("ADMIN_KC");
 	}
 
-	public AdministratorKlinickogCentra(String ime, String prezime, String password, String brojTelefona, String jbo, String adresa,
+	public AdministratorKlinickogCentra(String ime, String prezime, String password, String brojTelefona, String jbo, Adresa adresa,
 			String email, Integer id) {
 		super(ime, prezime, password, brojTelefona, jbo, adresa, email, id);
 		this.setTip("ADMIN_KC");

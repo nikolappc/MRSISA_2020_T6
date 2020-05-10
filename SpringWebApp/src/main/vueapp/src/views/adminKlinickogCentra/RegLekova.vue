@@ -1,6 +1,11 @@
 <template>
     <div>
         <v-container>
+            <v-container>
+                <label class="display-1">
+                    Registrovanje lekova
+                </label>
+            </v-container>
             <v-row
                 align="center"
                 justify-content="center"

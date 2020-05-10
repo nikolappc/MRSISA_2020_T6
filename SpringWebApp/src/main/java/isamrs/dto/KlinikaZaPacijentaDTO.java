@@ -1,5 +1,6 @@
 package isamrs.dto;
 
+import isamrs.domain.Adresa;
 import isamrs.domain.Klinika;
 
 public class KlinikaZaPacijentaDTO {
@@ -7,9 +8,7 @@ public class KlinikaZaPacijentaDTO {
 	private String naziv;
 	private String tip;
 	private String opis;
-	private String adresa;
-	private String grad;
-	private String drzava;
+	private Adresa adresa;
 	public int getId() {
 		return id;
 	}
@@ -34,34 +33,19 @@ public class KlinikaZaPacijentaDTO {
 	public void setOpis(String opis) {
 		this.opis = opis;
 	}
-	public String getAdresa() {
+	public Adresa getAdresa() {
 		return adresa;
 	}
-	public void setAdresa(String adresa) {
+	public void setAdresa(Adresa adresa) {
 		this.adresa = adresa;
 	}
-	public String getGrad() {
-		return grad;
-	}
-	public void setGrad(String grad) {
-		this.grad = grad;
-	}
-	public String getDrzava() {
-		return drzava;
-	}
-	public void setDrzava(String drzava) {
-		this.drzava = drzava;
-	}
-	public KlinikaZaPacijentaDTO(int id, String naziv, String tip, String opis, String adresa, String grad,
-			String drzava) {
+	public KlinikaZaPacijentaDTO(int id, String naziv, String tip, String opis, Adresa adresa) {
 		super();
 		this.id = id;
 		this.naziv = naziv;
 		this.tip = tip;
 		this.opis = opis;
 		this.adresa = adresa;
-		this.grad = grad;
-		this.drzava = drzava;
 	}
 	
 	public KlinikaZaPacijentaDTO() {}
@@ -71,9 +55,7 @@ public class KlinikaZaPacijentaDTO {
 		this.naziv = k.getNaziv();
 		this.tip = k.getTipKlinike().getTip();
 		this.opis = k.getOpis();
-		this.adresa = k.getAdresa().split(", ")[0];
-		this.grad = k.getAdresa().split(", ")[1];
-		this.drzava = k.getAdresa().split(", ")[2];
+		this.adresa = k.getAdresa();
 
 	}
 }

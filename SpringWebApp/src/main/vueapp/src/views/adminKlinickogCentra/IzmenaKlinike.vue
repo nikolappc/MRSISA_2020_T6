@@ -15,6 +15,7 @@
                 <v-select
                     :items="tipoviKlinika"
                     item-text="tip"
+                    return-object
                     label="Tip klinike"
                     required
                     :rules="rules"
@@ -25,31 +26,30 @@
                 <v-row>
                     <v-col>
                         <v-text-field
-                            label="Mesto"
+                            label="Adresa"
                         :rules="rules"
                         required
-                        v-model="grad"
+                        v-model="klinika.adresa.adresa"
                         >
     
                         </v-text-field>
                     </v-col>
                     <v-col>
                         <v-text-field
-                        label="Ulica"
+                        label="Grad"
                         :rules="rules"
                         required
-                        v-model="ulica"
+                        v-model="klinika.adresa.grad"
                         >
     
                         </v-text-field>
                     </v-col>
                     <v-col>
                         <v-text-field
-                            label="Broj"
+                            label="Država"
                             :rules="rules"
                             required
-                            type="number"
-                            v-model="broj"
+                            v-model="klinika.adresa.drzava"
                         >
     
                         </v-text-field>
@@ -91,17 +91,16 @@
         name:"IzmenaKlinike",
         data(){
             return {
-                ulica:"",
-                broj:"",
-                mesto:"",
                 tipoviKlinika:[],
                 rules:[v=>!!v||"Ovo polje je obavezno!"],
+                klinika:""
             }
         },
         props:[
-            "klinika"
+            "klinikaZaIzmenu"
         ],
         mounted(){
+            this.klinika = JSON.parse(JSON.stringify(this.klinikaZaIzmenu));
             axios.get("/tipKlinike")
                 .then(res=>{
                     this.tipoviKlinika = res.data;
@@ -110,30 +109,27 @@
                 .catch(error=>{
                     console.log(error);
                 });
-            let data = this.klinika.adresa.split(" ");
-            this.grad = data[0];
-            this.ulica = data[1];
-            this.broj = data[2];
         },
         methods:{
             izmenaKlinike(){
-                this.klinika.adresa = this.grad+" "+this.ulica+" "+this.broj;
+                console.log(this.klinika);
+                
                 axios.put("/klinika/"+this.klinika.id, this.klinika)
                     .then(res=>{
                         console.log(res.data);
                         
                         this.$store.commit("setSnackbar", {text:"Uspešno ste izmenili kliniku.", color: "success"});
-                        this.$router.go();
+                        // this.$router.go();
+                        this.$emit("done");
                     })
                     .catch(error=>{
                         this.$store.commit("setSnackbar", {text:"Izvinjavamo se došlo je do greške.", color: "error"});
                         console.log(error);
-                        this.$router.go();
-
                     })
             },
             otkazi:function () {
-                this.$router.go();
+                // this.$router.go();
+                this.$emit("done");
             }
         }
 

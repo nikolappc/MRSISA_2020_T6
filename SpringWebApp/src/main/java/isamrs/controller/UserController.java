@@ -186,9 +186,7 @@ public class UserController {
 		pac.setBrojTelefona(reg.getBrojTelefona());
 		pac.setEnabled(false);
 		pac.setJbo(reg.getJbo());
-		pac.setAdresa(reg.getAdresa().toUpperCase() + ", " + reg.getGrad().toUpperCase() + ", "
-				+ reg.getDrzava().toUpperCase());
-
+		pac.setAdresa(reg.getAdresa());
 		pacijentService.create(pac);
 
 		return new ResponseEntity<String>("Uspjesno poslat zahtjev.", HttpStatus.OK);

@@ -76,7 +76,7 @@
                 axios.get(address+"/"+this.username)
                     .then(res=>{
                         alert(res.data);
-                        this.$emit("resolved", this.email);
+                        this.$emit("resolved");
                     })
                     .catch(error=>{
                         console.log(error);

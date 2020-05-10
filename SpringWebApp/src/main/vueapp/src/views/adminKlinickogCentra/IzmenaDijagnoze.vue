@@ -47,12 +47,14 @@
         data(){
             return {
                 rules:[v=>!!v||"Ovo polje je obavezno!"],
+                dijagnoza:"",
             }
         },
         props:[
-            "dijagnoza"
+            "dijagnozaZaIzmenu"
         ],
         mounted(){
+            this.dijagnoza = this.dijagnozaZaIzmenu;
         },
         methods:{
             izmena(){
@@ -61,17 +63,16 @@
                         this.$store.commit("setSnackbar", {text:"Uspešno ste izmenili dijagnozu.", color: "success"});
 
                         console.log(res.data);
-                        this.$router.go();
+                        this.$emit("done");
                     })
                     .catch(error=>{
                         console.log(error);
                         this.$store.commit("setSnackbar", {text:"Izvinjavamo se došlo je do greške.", color: "error"});
-                        this.$router.go();
 
                     })
             },
             otkazi:function () {
-                this.$router.go();
+                this.$emit("done");
             }
         }
 

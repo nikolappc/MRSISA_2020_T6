@@ -35,7 +35,7 @@
           label="Broj Telefona"
         ></v-text-field>
         <v-text-field
-          v-model="izmijenjen.adresa"
+          v-model="izmijenjen.adresa.adresa"
           :rules="adresaRules"
           label="Adresa"
         ></v-text-field>

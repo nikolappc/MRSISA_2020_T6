@@ -4,14 +4,7 @@ import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 
 import java.util.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 
 //@Entity
@@ -37,22 +30,36 @@ public abstract class Osoba{
 
 	@Column(name = "jbo", unique = false, nullable = false)
 	private String jbo;
-
-	@Column(name = "adresa", unique = false, nullable = false)
-	private String adresa;
+//
+//	@Column(name = "adresa", unique = false, nullable = false)
+//	private String adresa;
 
 	@Column(name = "email", unique = true, nullable = false)
 	private String email;
 	
 	@Transient
 	private String tip;
-	
+
+
+	@OneToOne
+	@JoinColumn(name = "id_adrese", referencedColumnName = "id")
+	private Adresa adresa;
+
 	
 	public Osoba() {
 	}
 
-	public Osoba(String ime, String prezime, String password, String brojTelefona, String jbo, String adresa,
-			String email, Integer id) {
+
+	public Adresa getAdresa() {
+		return adresa;
+	}
+
+	public void setAdresa(Adresa adresa) {
+		this.adresa = adresa;
+	}
+
+	public Osoba(String ime, String prezime, String password, String brojTelefona, String jbo, Adresa adresa,
+				 String email, Integer id) {
 		super();
 		this.ime = ime;
 		this.prezime = prezime;
@@ -110,14 +117,6 @@ public abstract class Osoba{
 
 	public void setJbo(String jbo) {
 		this.jbo = jbo;
-	}
-
-	public String getAdresa() {
-		return adresa;
-	}
-
-	public void setAdresa(String adresa) {
-		this.adresa = adresa;
 	}
 
 	public String getEmail() {
@@ -178,7 +177,13 @@ public abstract class Osoba{
 		return "Osoba [id=" + id + ", ime=" + ime + ", prezime=" + prezime + ", password=" + password
 				+ ", brojTelefona=" + brojTelefona + ", jbo=" + jbo + ", adresa=" + adresa + ", email=" + email + "]";
 	}
-	
 
-	
+
+	public Adresa getAdresa1() {
+		return adresa;
+	}
+
+	public void setAdresa1(Adresa adresa) {
+		this.adresa = adresa;
+	}
 }

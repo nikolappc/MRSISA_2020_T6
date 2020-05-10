@@ -56,12 +56,14 @@
         data(){
             return {
                 rules:[v=>!!v||"Ovo polje je obavezno!"],
+                lek:"",
             }
         },
         props:[
-            "lek"
+            "lekZaIzmenu"
         ],
         mounted(){
+            this.lek = this.lekZaIzmenu;
         },
         methods:{
             izmena(){
@@ -69,17 +71,15 @@
                     .then(res=>{
                         this.$store.commit("setSnackbar", {text:"Uspešno ste izmenili lek.", color: "success"});
                         console.log(res.data);
-                        this.$router.go();
+                        this.$emit("done");
                     })
                     .catch(error=>{
                         this.$store.commit("setSnackbar", {text:"Izvinjavamo se došlo je do greške.", color: "error"});
                         console.log(error);
-                        this.$router.go();
-
                     })
             },
             otkazi:function () {
-                this.$router.go();
+                this.$emit("done");
             }
         }
 
