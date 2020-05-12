@@ -34,6 +34,13 @@ public class StavkaCenovnika {
 	@JsonIgnore
 	private Cenovnik cenovnik;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_tip")
+	@JsonIgnore
+	private TipPosete tipPosete;
+	
+	
+	
 	
 //	@OneToOne(mappedBy = "stavkaCenovnika",fetch = FetchType.LAZY)
 //	private TipPosete tip;
@@ -57,6 +64,22 @@ public class StavkaCenovnika {
 //        }
 //        this.tip = tip;
 //	}
+
+	public Cenovnik getCenovnik() {
+		return cenovnik;
+	}
+
+	public void setCenovnik(Cenovnik cenovnik) {
+		this.cenovnik = cenovnik;
+	}
+
+	public TipPosete getTipPosete() {
+		return tipPosete;
+	}
+
+	public void setTipPosete(TipPosete tipPosete) {
+		this.tipPosete = tipPosete;
+	}
 
 	public Integer getId() {
 		return id;

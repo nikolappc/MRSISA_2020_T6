@@ -49,6 +49,10 @@ public class LekarService {
 	public Lekar findByEmail(String email) {
 		return lekarRepo.findByEmail(email);
 	}
-
 	
+	/*public ArrayList<Lekar> findLekariKlinike(int idKlinike){
+		return lekarRepo.findLekariKlinike(idKlinike);
+	}
+*/
+
 }

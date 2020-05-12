@@ -65,6 +65,20 @@
             </LinkCard>
           </router-link>
           </v-col>
+          <v-col
+            lg="4"
+            md="12"
+            sm="12"
+            xs="12"
+          >
+          <router-link to="/pretragaKlinika">
+            <LinkCard
+              :img="scheduleappointment"
+              title="Zakaži pregled"
+            >
+            </LinkCard>
+          </router-link>
+          </v-col>
           
           
         </v-row>
@@ -87,6 +101,7 @@ export default {
 	profile:require("../assets/profile.png"),
 	appointments:require("../assets/appointments.jpg"),
 	medicalrecord:require("../assets/medicalrecord.jpg"),
+	scheduleappointment:require("../assets/scheduleappointment.jpg"),
   }),
   components:{
     LinkCard

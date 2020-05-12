@@ -541,6 +541,17 @@ public class Klinika {
 		this.operacije = operacije;
 	}
 	
+	public double getProsjek() {
+		double sum = 0.0;
+		int count = 0;
+		for (Ocena o : this.ocena)
+		{
+			sum += o.getVrednost();
+			count += 1;
+		}
+		return sum/count;
+	}
+	
 	
 
 }

@@ -1,5 +1,6 @@
 package isamrs.repository;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,4 +11,7 @@ import isamrs.domain.Pacijent;
 public interface LekarRepository extends JpaRepository<Lekar, Integer>{
 	@Query("SELECT l FROM Lekar l WHERE l.email = ?1")
 	public Lekar findByEmail(String email);
+	
+	/*@Query("SELECT l FROM Lekar l WHERE l.email = ?1")
+	public ArrayList<Lekar> findLekariKlinike(int idKlinike);*/
 }

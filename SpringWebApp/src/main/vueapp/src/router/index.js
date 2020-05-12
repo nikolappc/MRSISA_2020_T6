@@ -20,6 +20,8 @@ import ZdravstveniKartonPrikaz from '../views/ZdravstveniKartonPrikaz.vue';
 import Registracija from '../views/Registracija.vue';
 import PosjetePacijenta from '../views/PosjetePacijenta.vue';
 import KlinikeZaPacijenta from '../views/KlinikeZaPacijenta.vue';
+import PretragaKlinika from '../views/PretragaKlinika.vue';
+import PretragaLjekara from '../views/PretragaLjekara.vue';
 
 
 
@@ -178,6 +180,18 @@ Vue.use(VueRouter, VueAxios, axios)
     path:"/klinikeZaPacijenta",
     name:"KlinikeZaPacijenta",
     component:KlinikeZaPacijenta
+  },
+  {
+    path:"/pretragaKlinika",
+    name:"PretragaKlinika",
+    component:PretragaKlinika
+  },
+  {
+    //path:"/pretragaLjekara/:id/:cenaPregleda/:nazivTipa/:datum",
+	path:"/pretragaLjekara",
+    name:"PretragaLjekara",
+    props:true,
+    component:PretragaLjekara
   },
   
 ]

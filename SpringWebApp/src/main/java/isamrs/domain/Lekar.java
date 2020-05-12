@@ -52,6 +52,12 @@ public class Lekar extends Osoba {
 	@JoinColumn(name = "operacija_id") })
 	public Collection<Operacija> operacije;
 	
+	@JsonIgnore
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "lekari_specijalnosti", joinColumns = { @JoinColumn(name = "lekar_id") }, inverseJoinColumns = {
+	@JoinColumn(name = "tip_id") })
+	public Collection<TipPosete> tipoviPoseta;
+	
 	@Transient
 	public String tip = "LEKAR";
 
@@ -59,6 +65,32 @@ public class Lekar extends Osoba {
 		super();
 		this.setTip("LEKAR");
 	}
+
+	
+	public Collection<TipPosete> getTipoviPoseta() {
+		return tipoviPoseta;
+	}
+
+
+	public void setTipoviPoseta(Collection<TipPosete> tipoviPoseta) {
+		this.tipoviPoseta = tipoviPoseta;
+	}
+
+
+	public String getTip() {
+		return tip;
+	}
+
+
+	public void setTip(String tip) {
+		this.tip = tip;
+	}
+
+
+	public void setOperacije(Collection<Operacija> operacije) {
+		this.operacije = operacije;
+	}
+
 
 	/** @pdGenerated default getter */
 	public java.util.Collection<Ocena> getOcena() {
@@ -118,6 +150,10 @@ public class Lekar extends Osoba {
 	/** @pdGenerated default getter */
 	public Collection<Pregled> getPregled() {
 		return pregled;
+	}
+	
+	public Collection<Operacija> getOperacije() {
+		return operacije;
 	}
 
 	/**
@@ -196,6 +232,16 @@ public class Lekar extends Osoba {
 		this.radnoVreme = newRadnoVreme;
 	}
 
+	public double getProsjek() {
+		double sum = 0.0;
+		int count = 0;
+		for (Ocena o : this.ocena)
+		{
+			sum += o.getVrednost();
+			count += 1;
+		}
+		return sum/count;
+	}
 	
 
 

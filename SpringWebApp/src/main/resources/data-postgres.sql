@@ -6,16 +6,19 @@ insert into zdravstveni_kartoni (visina, tezina, krvna_grupa) values (1.6, 60, '
 insert into zdravstveni_kartoni (visina, tezina, krvna_grupa) values (1.7, 70, 'B-');
 insert into zdravstveni_kartoni (visina, tezina, krvna_grupa) values (1.8, 80, '0+');
 
-insert into stavke_cenovnika (cena, id_cenovnik) values (10.5, 1);
-insert into stavke_cenovnika (cena, id_cenovnik) values (20, 1);
-insert into stavke_cenovnika (cena, id_cenovnik) values (30, 1);
-insert into stavke_cenovnika (cena, id_cenovnik) values (40, 1);
-insert into stavke_cenovnika (cena, id_cenovnik) values (50, 1);
-
 insert into tipovi_klinike (tip) values ('tip 1');
 insert into klinike (adresa, naziv, opis, cenovnik_id, tip_klinike_id) values ('Diagon Alley, London, UK', 'Saint Mungos', 'Bolnica za magijske bolesti i povrede', 1, 1);
 
-insert into administratori_klinike (adresa, broj_telefona, email, ime, jbo, password, prezime, id_klinike) values ('Godrics Hollow, London, UK', '066/125-112', 'dumbledore@gmail.com', 'Albus', '0221', 'albus12345', 'Dumbledore', 1);
+insert into tipovi_posete (tip, id_klinike, naziv) values (1, 1,'Super specijalni pregled');
+insert into tipovi_posete (tip, id_klinike,naziv) values (0, 1,'Super specijalna operacija');
+
+insert into stavke_cenovnika (cena, id_cenovnik, id_tip) values (10.5, 1, 1);
+insert into stavke_cenovnika (cena, id_cenovnik, id_tip) values (20, 1, 2);
+/*insert into stavke_cenovnika (cena, id_cenovnik, id_tip) values (30, 1);
+insert into stavke_cenovnika (cena, id_cenovnik, id_tip) values (40, 1);
+insert into stavke_cenovnika (cena, id_cenovnik, id_tip) values (50, 1);
+*/
+insert into administratori_klinike (adresa, broj_telefona, email, ime, jbo, password, prezime, id_klinike) values ('Godrics Hollow, London, UK', '066/125-112', 'verakovacevic98@gmail.com', 'Albus', '0221', 'albus12345', 'Dumbledore', 1);
 
 insert into lekari (adresa, broj_telefona, email, ime, jbo, password, prezime, id_klinike) values ('Godrics Hollow, London, UK', '066/123-113', 'lupin@gmail.com', 'Remus', '000', 'remus12345', 'Lupin', 1);
 insert into lekari (adresa, broj_telefona, email, ime, jbo, password, prezime, id_klinike) values ('Grimmauld Place 12, Finchley, UK', '066/123-163', 'black@gmail.com', 'Sirius', '000', 'sirius12345', 'Black', 1);
@@ -26,10 +29,10 @@ insert into lekovi (sifra_leka, naziv_leka) values (1, 'Bromazepam');
 insert into lekovi (sifra_leka, naziv_leka) values (2, 'Bensedin');
 insert into lekovi (sifra_leka, naziv_leka) values (3, 'Brufen');
 
-insert into termini (kraj, pocetak) values (to_timestamp('2020-03-20 08:00', 'YYYY-MM-DD HH:MI'), to_timestamp('2020-03-20 09:00', 'YYYY-MM-DD HH:MI'));
-insert into termini (kraj, pocetak) values (to_timestamp('2020-03-20 09:00', 'YYYY-MM-DD HH:MI'), to_timestamp('2020-03-20 10:00', 'YYYY-MM-DD HH:MI'));
-insert into termini (kraj, pocetak) values (to_timestamp('2020-03-20 08:00', 'YYYY-MM-DD HH:MI'), to_timestamp('2020-03-20 10:00', 'YYYY-MM-DD HH:MI'));
-insert into termini (kraj, pocetak) values (to_timestamp('2020-03-20 10:00', 'YYYY-MM-DD HH:MI'), to_timestamp('2020-03-20 11:00', 'YYYY-MM-DD HH:MI'));
+insert into termini (kraj, pocetak) values (to_timestamp('2020-03-20 08:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-03-20 09:00', 'YYYY-MM-DD HH24:MI'));
+insert into termini (kraj, pocetak) values (to_timestamp('2020-03-20 09:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-03-20 10:00', 'YYYY-MM-DD HH24:MI'));
+insert into termini (kraj, pocetak) values (to_timestamp('2020-03-20 08:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-03-20 10:00', 'YYYY-MM-DD HH24:MI'));
+insert into termini (kraj, pocetak) values (to_timestamp('2020-03-20 10:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-03-20 11:00', 'YYYY-MM-DD HH24:MI'));
 
 insert into medicinske_sestre (adresa, broj_telefona, email, ime, jbo, password, prezime, id_klinike) values ('Godrics Hollow, London, UK', '064/123-114', 'evans@gmail.com', 'Lily', '000', 'lily12345', 'Evans', 1);
 
@@ -41,14 +44,14 @@ insert into pacijent (adresa, broj_telefona, email, ime, jbo, password, prezime,
 insert into pacijent (adresa, broj_telefona, email, ime, jbo, password, prezime, id_kartona, id_klinike, enabled) values ('Hogwarts, Ottery St Catchpole, UK', '065/823-115', 'harry@gmail.com', 'Harry', '000', 'harry12345', 'Potter', 2, 1, true);
 insert into pacijent (adresa, broj_telefona, email, ime, jbo, password, prezime, id_kartona, id_klinike, enabled) values ('Hogwarts, Ottery St Catchpole, UK', '065/923-115', 'ron@gmail.com', 'Ron', '000', 'ron12345', 'Weasley', 3, 1, true);
 
-insert into radna_vremena (kraj, pocetak, id_lekara) values (to_timestamp('08:00', 'HH:MI'), to_timestamp('11:00', 'HH:MI'), 1);
+insert into radna_vremena (kraj, pocetak, id_lekara) values (to_timestamp('15:00', 'HH24:MI'), to_timestamp('08:00', 'HH24:MI'), 1);
 
 insert into sale (naziv, id_klinike) values ('sala 1', 1);
 insert into sale (naziv, id_klinike) values ('operaciona', 1);
 
-insert into tipovi_posete (tip, id_klinike, id_stavke, naziv) values (1, 1, 2,'Super specijalni pregled');
+/*insert into tipovi_posete (tip, id_klinike, id_stavke, naziv) values (1, 1, 2,'Super specijalni pregled');
 insert into tipovi_posete (tip, id_klinike, id_stavke,naziv) values (0, 1, 1,'Super specijalna operacija');
-
+*/
 insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike) values ('korona test', 1, 1, 1, 1, 2, 1);
 insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike) values ('terapija', 1, 2, 1, 2, 2, 1);
 insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike) values ('previjanje', 1, 4, 1, 2, 2, 1);
@@ -74,3 +77,8 @@ insert into lekari_operacije (operacija_id, lekar_id) values (2, 2);
 
 insert into dijagnoze_pregled (dijagnoza_sifra, pregled_id) values (1, 1);
 insert into dijagnoze_pregled (dijagnoza_sifra, pregled_id) values (2, 2);
+
+insert into lekari_specijalnosti (lekar_id, tip_id) values (1, 1);
+insert into lekari_specijalnosti (lekar_id, tip_id) values (1, 2);
+insert into lekari_specijalnosti (lekar_id, tip_id) values (2, 1);
+insert into lekari_specijalnosti (lekar_id, tip_id) values (2, 2);

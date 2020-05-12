@@ -1,0 +1,218 @@
+<template>
+  <div class="pretragaKlinika">
+    <v-container>
+			<h2 style="text-align:center">Zakazivanje pregleda</h2>
+			<h4 style="text-align:center">Izaberite datum i tip pregleda.</h4>
+		<v-form ref="form" v-model="valid">
+		<v-simple-table>
+			<tr><td colspan="3"><div style="min-height: 300px">
+				<v-date-picker 
+				label="*Datum"
+				v-model="datum"
+				dateFormat= 'dd.MM.yyyy'
+				required
+				:rules="rule"
+				:min="minDate"
+				>
+				<template slot="dateIcon">
+					<v-icon>mdi-calendar</v-icon>	
+				</template>
+				</v-date-picker>
+            </div></td>
+            <td colspan="3" valign="middle"><v-select
+				v-model="tip"
+				:items="tipovi"
+				label="*Tip pregleda"
+				dense
+				:rules="rule"
+				required
+				return-object
+			>
+				<template slot="selection" slot-scope="data">
+				{{ data.item.naziv }} 
+				</template>
+				<template slot="item" slot-scope="data">
+				{{ data.item.naziv }}
+				</template>
+            </v-select></td></tr>
+            <tr><td colspan="2"><v-text-field
+              v-model="grad"
+              label="Grad"
+            ></v-text-field></td>
+            <td colspan="2"><v-text-field
+              v-model="drzava"
+              label="Država"
+            ></v-text-field></td>
+            <td colspan="2"><v-text-field
+              v-model="ocjena"
+              label="Minimalna ocena"
+            ></v-text-field></td></tr></v-simple-table>
+			<v-btn
+			:disabled="!valid"
+			color="success"
+			class="mr-4"
+			@click="pretraziKlinike"
+			>
+				Pretraži klinike
+			</v-btn>
+		</v-form>
+	<v-card-title>
+		
+		<v-spacer></v-spacer>
+		<v-text-field
+		v-model="search"
+		append-icon="mdi-magnify"
+		label="Pretraga"
+		single-line
+		hide-details
+		></v-text-field>
+	</v-card-title>
+      <v-data-table
+        :headers="headers"
+        :items="klinike"
+        :items-per-page="10"
+        class="elevation-1"
+        :search="search"
+		@click:row="posaljiNaListuLjekara"
+        :custom-sort="customSort">
+        <template v-slot:item.cenaPregleda="{ item }">{{ item.cenaPregleda }} din</template>
+      </v-data-table>
+    </v-container>
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+import router from "../router/index.js"
+
+export default {
+  name: 'PretragaKlinika',
+  data: () => ({
+    ulogovani : {},
+    search : '',
+    datum : '',
+    tip: null,
+    grad: "",
+    drzava: "",
+    ocjena: '',
+    ocjenaRules: [
+		v => (v <= 10) && (v >= 1) || 'Ocena mora biti u opsegu od 1 do 10.',
+	],
+	rule: [
+		v => !!v || 'Obavezno polje',
+	],
+    tipovi: [],
+    klinike : [],
+    headers: [
+        {
+          text: 'Ime', 
+          value: 'naziv', 
+          sortable: true, 
+        },
+        {
+          text: 'Tip', 
+          value: 'tip', 
+          sortable: true, 
+        },
+        {
+          text: 'Opis', 
+          value: 'opis', 
+          sortable: true, 
+        },
+        {
+          text: 'Adresa', 
+          value: 'adresa', 
+          sortable: true, 
+        },
+        {
+          text: 'Grad', 
+          value: 'grad', 
+          sortable: true, 
+        },
+        {
+          text: 'Država', 
+          value: 'drzava', 
+          sortable: true, 
+        },
+        {
+          text: 'Prosečna ocena', 
+          value: 'prosjek', 
+          sortable: true, 
+        },
+        {
+          text: 'Cena izabranog pregleda', 
+          value: 'cenaPregleda', 
+          sortable: true, 
+        },
+      ]
+  }),
+  mounted () {
+	this.ulogovani = this.$store.state.ulogovan;
+	if (this.ulogovani == "") {
+		router.push("/");
+	}
+	axios
+	.get('tip/tipoviPregleda')
+	.then(response => {
+		this.tipovi = response.data;
+	})
+	.catch(function (error) { console.log(error); router.push("/"); });
+	},
+	computed: {
+	minDate() {
+		const today = new Date();
+		// const dd = today.getUTCDate();
+		return this.formatDate(today);
+	},	
+	},
+	methods: {
+    customSort: function(items, index, isDesc) {
+      items.sort((a, b) => {
+				console.log(index[0]);
+				if (!isDesc[0]) {
+					console.log(a[index]);
+					return a[index] < b[index] ? -1 : 1;
+				} else {
+					return b[index] < a[index] ? -1 : 1;
+				}   
+      });
+      return items;
+    },
+	posaljiNaListuLjekara(value) {
+		router.push({name:'PretragaLjekara', params: {pretraga: {idKlinike: value.id, cena: value.cenaPregleda, naziv: this.tip.naziv, datum: this.datum}}});
+		//router.push("/pretragaLjekara/" + value.id + "/" + value.cenaPregleda + "/" + this.tip.naziv + "/" + this.datum);
+		//<router-link :to="{name: 'pretragaLjekara', params: {pretraga: {idKlinike: value.id, cena: value.cenaPregleda, naziv: this.tip.naziv, datum: this.datum}}}"
+	}, 
+	formatDate(date) {
+		let month = `${date.getMonth() + 1}`;
+		let day = `${date.getDate()}`;
+		const year = date.getFullYear();
+
+		if (month.length < 2) month = `0${month}`;
+		if (day.length < 2) day = `0${day}`;
+
+		return [year, month, day].join('-');
+	},
+	pretraziKlinike () {
+		console.log(this.datum);
+		if (this.datum != '' && this.tip != null) {
+			let oc = 0;
+			if ((this.ocjena != '') && (typeof this.ocjena == 'number')) {
+				oc = this.ocjena;
+			}
+			axios		
+			.post('klinika/pretragaKlinikaZakazivanje', { datum: this.datum, nazivTipa: this.tip.naziv, grad: this.grad, drzava: this.drzava, ocjena: oc})
+			.then(response => {
+				this.klinike = response.data;
+				for (let i = 0; i < this.klinike.length; i++){
+					console.log(this.klinike[i].cenaPregleda);
+				}
+			})
+			.catch(function (error) { console.log(error); router.push("/"); });
+			//:disabled="!valid"
+		}
+		
+	}
+  },
+}
+</script>

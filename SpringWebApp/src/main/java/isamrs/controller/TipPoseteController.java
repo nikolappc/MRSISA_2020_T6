@@ -39,6 +39,12 @@ public class TipPoseteController {
 		return new ResponseEntity<Collection<TipPosete>>(tipovi, HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/tipoviPregleda", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<TipPosete>> getTipoviPregleda() {
+		Collection<TipPosete> tipovi = tipService.findPregledi();
+		return new ResponseEntity<Collection<TipPosete>>(tipovi, HttpStatus.OK);
+	}
+	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TipPosete> getTip(@PathVariable("id") Integer id) {
 		TipPosete tip = tipService.findOne(id);

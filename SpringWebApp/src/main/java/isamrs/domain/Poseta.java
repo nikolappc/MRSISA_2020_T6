@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @MappedSuperclass
 public class Poseta {
 
-	@Column(name = "ime", unique = false, nullable = false)
+	@Column(name = "ime", unique = false, nullable = true)
 	private String opis;
 
 	@Id

@@ -32,9 +32,11 @@ public class PregledServiceImpl implements PregledService {
 
 	@Override
 	public Pregled create(Pregled t) {
-
-		return null;
+		return pregledRepository.save(t);
 	}
+
+	
+
 
 	@Override
 	public Pregled update(Integer id, Pregled t) {

@@ -29,9 +29,17 @@ public class TipPoseteService {
 	public Collection<TipPosete> findAll() {
 		return tipRepo.findAll();
 	}
+	
+	public Collection<TipPosete> findPregledi() {
+		return tipRepo.findPregledi();
+	}
 
 	public TipPosete findOne(Integer id) {
 		return tipRepo.findById(id).orElseGet(null);
+	}
+	
+	public TipPosete findByNaziv(String naziv) {
+		return tipRepo.findByNaziv(naziv);
 	}
 
 	public TipPosete create(TipPosete t) throws Exception{
