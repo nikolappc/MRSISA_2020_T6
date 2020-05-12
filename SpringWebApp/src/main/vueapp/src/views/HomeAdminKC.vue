@@ -1,5 +1,14 @@
 <template>
   <div class="home">
+    <v-container>
+      <label class="display-1">
+        Administrator kliničkog centra
+      </label>
+      <br>
+      <label  class="subtitle-1">
+        Dobrodošli, {{ulogovan.ime}}
+      </label>
+    </v-container>
     <v-row>
       <v-col
         lg="9"
@@ -8,7 +17,6 @@
       >
         <v-container>
           <v-card class="main-card">
-    
             <v-row
               justify="center"
               align-content="stretch"
@@ -118,6 +126,11 @@ import LinkCard from "../components/LinkCard.vue";
 import RegConf from "../components/RegistrationConfirmation.vue";
 export default {
   name: 'HomeAdminKC',
+  computed:{
+    ulogovan:function () {
+      return this.$store.state.ulogovan;
+    }
+  },
   components:{
     LinkCard,
     RegConf
@@ -128,20 +141,23 @@ export default {
       dijagnoze:require("../assets/dijagnoze.jpg"),
       nepotvrdjeniKorisnici:[
       ]
-  }),
-  mounted () {
-      axios
-      .get('api/nepotvrdjeni')
-      .then(response => {
-          this.nepotvrdjeniKorisnici = response.data;
-      })
-      .catch(function (error) { console.log(error); });
-  },
-  methods: {
-    onResolved:function (email) {
-      this.nepotvrdjeniKorisnici = this.nepotvrdjeniKorisnici.filter(k=>k.email!=email);
+    }),
+    mounted () {
+        this.refresh();
+    },
+    methods: {
+      refresh:function(){
+        axios
+        .get('api/nepotvrdjeni')
+        .then(response => {
+            this.nepotvrdjeniKorisnici = response.data;
+        })
+        .catch(function (error) { console.log(error); });
+      },
+      onResolved:function () {
+        this.refresh();
+      }
     }
-  }
   
 }
 </script>

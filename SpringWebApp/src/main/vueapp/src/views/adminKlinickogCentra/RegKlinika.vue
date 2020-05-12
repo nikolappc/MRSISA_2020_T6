@@ -1,6 +1,11 @@
 <template>
     <div>
         <v-container>
+            <v-container>
+                <label class="display-1">
+                    Registrovanje klinika
+                </label>
+            </v-container>
             <v-row
                 align="center"
                 justify-content="center"
@@ -31,7 +36,17 @@
                                 <v-row>
                                     <v-col>
                                         <v-text-field
-                                            label="Mesto"
+                                            label="Adresa"
+                                            :rules="rules"
+                                            required
+                                            v-model="adresa"
+                                        >
+                    
+                                        </v-text-field>
+                                    </v-col>
+                                    <v-col>
+                                        <v-text-field
+                                        label="Grad"
                                         :rules="rules"
                                         required
                                         v-model="grad"
@@ -41,21 +56,10 @@
                                     </v-col>
                                     <v-col>
                                         <v-text-field
-                                        label="Ulica"
-                                        :rules="rules"
-                                        required
-                                        v-model="ulica"
-                                        >
-                    
-                                        </v-text-field>
-                                    </v-col>
-                                    <v-col>
-                                        <v-text-field
-                                            label="Broj"
+                                            label="Država"
                                             :rules="rules"
                                             required
-                                            type="number"
-                                            v-model="broj"
+                                            v-model="drzava"
                                         >
                     
                                         </v-text-field>
@@ -118,9 +122,9 @@
             return {
                 rules:[v=>!!v||"Ovo polje je obavezno!"],
                 naziv:"",
-                ulica:"",
-                broj:"",
+                adresa:"",
                 grad:"",
+                drzava:"",
                 opis:"",
                 tipKlinike:"",
                 tipoviKlinika:[],
@@ -145,7 +149,17 @@
                 axios.get("/tipKlinike/"+this.tipKlinike)
                     .then(res=>{
 
-                        axios.post("/klinika", {naziv:this.naziv, adresa:this.grad+" "+this.ulica+" "+this.broj, opis:this.opis, tipKlinike:res.data})
+                        axios.post("/klinika",
+                            {
+                                naziv:this.naziv,
+                                adresa:{
+                                    grad:this.grad,
+                                    drzava:this.drzava,
+                                    adresa:this.adresa
+                                },
+                                opis:this.opis, 
+                                tipKlinike:res.data
+                            })
                             .then(()=>{
                                 this.$store.commit("setSnackbar", {text:"Uspešno registrovana klinika.", color: "success"});
                                 this.$router.push("/pregledKlinika");

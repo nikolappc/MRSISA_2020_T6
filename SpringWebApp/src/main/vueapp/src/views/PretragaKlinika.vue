@@ -121,17 +121,17 @@ export default {
         },
         {
           text: 'Adresa', 
-          value: 'adresa', 
+          value: 'adresa.adresa', 
           sortable: true, 
         },
         {
           text: 'Grad', 
-          value: 'grad', 
+          value: 'adresa.grad', 
           sortable: true, 
         },
         {
           text: 'Država', 
-          value: 'drzava', 
+          value: 'adresa.drzava', 
           sortable: true, 
         },
         {

@@ -1,6 +1,11 @@
 <template>
     <div>
         <v-container>
+            <v-container>
+                <label class="display-1">
+                    Pregled dijagnoza
+                </label>
+            </v-container>
             <v-row
                 align="center"
                 justify-content="center"
@@ -104,7 +109,8 @@
             v-model="dialog"
         >
             <IzmenaDijagnoze
-                :dijagnoza="dijagnoza"
+                @done="onIzmenaDone"
+                :dijagnozaZaIzmenu="dijagnoza"
             >
 
             </IzmenaDijagnoze>
@@ -137,26 +143,33 @@
             IzmenaDijagnoze
         },
         mounted:function () {
-            axios.get("/dijagnoza")
+            this.refresh();
+        },
+        methods:{
+            refresh:function(){
+                axios.get("/dijagnoza")
                 .then(res=>{
                     this.dijagnoze = res.data;
                 })
                 .catch(error=>{
-                    alert(error);
+                    this.$store.commit("setSnackbar", {text:"Izvinjavamo se došlo je do greške.", color: "error"});
+                    console.log(error);
                 });
-        },
-        methods:{
+            },
             deleteDijagnoza:function (sifraDijagnoze) {
                 axios.delete("/dijagnoza/"+sifraDijagnoze)
                     .then(res=>{
                         this.$store.commit("setSnackbar", {text:"Uspešno ste obrisali dijagnozu.", color: "success"});
-                        this.$router.go();
+                        this.refresh();
                         console.log(res.data);
                     })
                     .catch(error=>{
                         this.$store.commit("setSnackbar", {text:"Izvinjavamo se došlo je do greške.", color: "error"});
                         console.log(error);
                     })
+            },
+            onIzmenaDone:function(){
+                this.dialog = false;
             },
             prikaziDialog:function(dijagnoza){
                 this.dijagnoza = dijagnoza;

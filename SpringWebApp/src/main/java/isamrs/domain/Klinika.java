@@ -37,15 +37,17 @@ public class Klinika {
 	
 	@Column(name = "naziv", unique = true, nullable = false)
 	private String naziv;
-	
-	@Column(name = "adresa", unique = false, nullable = false)
-	private String adresa;
+
 	
 	@Column(name = "opis", unique = false, nullable = false)
 	private String opis;
 	
 	@OneToOne
 	public Cenovnik cenovnik ;
+
+	@OneToOne
+	@JoinColumn(name = "id_adrese", referencedColumnName = "id")
+	private Adresa adresa;
 	
 	@OneToOne
 	@JoinColumn(name = "tip_klinike_id", referencedColumnName = "id")
@@ -145,7 +147,7 @@ public class Klinika {
 	 * medicniskoOsoblje.clear(); }
 	 */
 
-	public Klinika(String naziv, String adresa, String opis, TipKlinike tipKlinike) {
+	public Klinika(String naziv, Adresa adresa, String opis, TipKlinike tipKlinike) {
 		// TODO Auto-generated constructor stub
 		this.naziv = naziv;
 		this.adresa = adresa;
@@ -493,11 +495,11 @@ public class Klinika {
 		this.naziv = naziv;
 	}
 
-	public String getAdresa() {
+	public Adresa getAdresa() {
 		return adresa;
 	}
 
-	public void setAdresa(String adresa) {
+	public void setAdresa(Adresa adresa) {
 		this.adresa = adresa;
 	}
 

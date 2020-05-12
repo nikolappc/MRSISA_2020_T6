@@ -1,6 +1,11 @@
 <template>
     <div>
         <v-container>
+            <v-container>
+                <label class="display-1">
+                    Pregled lekova
+                </label>
+            </v-container>
             <v-row
                 align="center"
                 justify-content="center"
@@ -108,7 +113,8 @@
             v-model="dialog"
         >
             <IzmenaLeka
-                :lek = "lek"
+                :lekZaIzmenu = "lek"
+                @done="onIzmenaDone()"
             >
             </IzmenaLeka>
         </v-dialog>
@@ -131,20 +137,24 @@
             IzmenaLeka
         },
         mounted:function () {
-            axios.get("/lek")
-                .then(res=>{
-                    this.lekovi = res.data;
-                })
-                .catch(error=>{
-                    alert(error);
-                });
+            this.refresh();
         },
         methods:{
+            refresh:function () {
+                axios.get("/lek")
+                    .then(res=>{
+                        this.lekovi = res.data;
+                    })
+                    .catch(error=>{
+                        this.$store.commit("setSnackbar", {text:"Izvinjavamo se došlo je do greške.", color: "error"});
+                        console.log(error);
+                    });
+            },
             deleteLek:function (sifra) {
                 axios.delete("/lek/"+sifra)
                     .then(res=>{
                         this.$store.commit("setSnackbar", {text:"Uspešno ste obrisali lek.", color: "success"});
-                        this.$router.go();
+                        this.refresh();
                         console.log(res.data);
                     })
                     .catch(error=>{
@@ -156,6 +166,10 @@
                 this.lek = lek;
                 this.dialog = true;
             },
+            onIzmenaDone:function () {
+                this.dialog = false;
+                this.refresh();
+            }
         }
     }
 </script>

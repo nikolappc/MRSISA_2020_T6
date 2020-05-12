@@ -128,8 +128,8 @@ public class KlinikaController {
 					break;
 				}
 			}
-			String grad = kk.getAdresa().split(", ")[1];
-			String drzava = kk.getAdresa().split(", ")[2];
+			String grad = kk.getAdresa().getGrad();
+			String drzava = kk.getAdresa().getDrzava();
 			
 			if (datumOk && grad.contains(pretraga.getGrad()) && drzava.contains(pretraga.getDrzava()) && kk.getProsjek() >= pretraga.getOcjena()) {
 				klinike.add(kk);

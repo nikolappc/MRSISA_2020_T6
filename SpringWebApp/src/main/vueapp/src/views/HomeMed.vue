@@ -1,7 +1,16 @@
 <template>
   <div class="home">
     <v-container>
-      Dobrodošli, {{ulogovani.ime}}
+      <label class="display-1">
+        Medicinska sestra
+      </label>
+      <br>
+      <label class="subtitle-1">
+
+        Dobrodošli, {{ulogovan.ime}}
+      </label>
+    </v-container>
+    <v-container>
       <v-card class="main-card">
 
         <v-row
@@ -73,7 +82,7 @@ export default {
     }
   },
   computed:{
-    ulogovani(){
+    ulogovan(){
       return this.$store.state.ulogovan;
     }
   },

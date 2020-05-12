@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import isamrs.domain.Adresa;
 import isamrs.domain.Operacija;
 import isamrs.domain.Osoba;
 import isamrs.domain.Pacijent;

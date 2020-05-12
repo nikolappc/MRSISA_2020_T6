@@ -39,19 +39,19 @@
               required
             ></v-text-field></td></tr>
             <tr><td><v-text-field
-              v-model="reg.adresa"
+              v-model="reg.adresa.adresa"
               :rules="Rules"
               label="Adresa prebivalista"
               required
             ></v-text-field></td>
             <td><v-text-field
-              v-model="reg.grad"
+              v-model="reg.adresa.grad"
               :rules="Rules"
               label="Grad"
               required
             ></v-text-field></td>
 			<td><v-text-field
-              v-model="reg.drzava"
+              v-model="reg.adresa.drzava"
               :rules="Rules"
               label="Država"
               required
@@ -91,7 +91,13 @@ export default {
   data: function () {
     return {
       ulogovan : {},
-      reg : {},
+      reg : {
+        adresa:{
+          grad:"",
+          adresa:"",
+          drzava:""
+        }
+      },
       novaSifra : "",
       novaSifraPotvrda : "",
       valid: true,

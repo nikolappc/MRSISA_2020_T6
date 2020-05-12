@@ -21,7 +21,7 @@
           </tr>
           <tr>
             <td>Adresa:</td>
-            <td>{{ ulogovani.adresa }}</td>
+            <td>{{ toStringAdresa(ulogovani) }}</td>
           </tr>
           <tr>
             <td>Telefon:</td>
@@ -46,11 +46,16 @@ export default {
   data: () => ({
     ulogovani : {},
   }),
+  methods:{
+    toStringAdresa:function(p){
+        return p.adresa.adresa+ ", " + p.adresa.grad + ", " + p.adresa.drzava;
+    },
+  },
   mounted () {
-	this.ulogovani = this.$store.state.ulogovan;
-	if (this.ulogovani=="") {
-		router.push("/");
-	} 
+    this.ulogovani = this.$store.state.ulogovan;
+    if (this.ulogovani=="") {
+      router.push("/");
+    }
 	
 	/*axios
       .get('api/ulogovan')

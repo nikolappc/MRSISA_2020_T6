@@ -35,9 +35,19 @@
           label="Broj Telefona"
         ></v-text-field>
         <v-text-field
-          v-model="izmijenjen.adresa"
+          v-model="izmijenjen.adresa.adresa"
           :rules="adresaRules"
           label="Adresa"
+        ></v-text-field>
+        <v-text-field
+          v-model="izmijenjen.adresa.grad"
+          :rules="adresaRules"
+          label="Grad"
+        ></v-text-field>
+        <v-text-field
+          v-model="izmijenjen.adresa.drzava"
+          :rules="adresaRules"
+          label="Država"
         ></v-text-field>
         <v-text-field
           v-model="izmijenjen.jbo"
@@ -72,7 +82,11 @@ export default {
         password : "",
         ime : "",
         prezime : "",
-        adresa : "",
+        adresa : {
+			adresa : "",
+			grad : "",
+			drzava : ""
+        },
         brojTelefona : "",
         jbo : ""
       },
@@ -92,7 +106,7 @@ export default {
       ],
       adresaRules: [
         v => !!v || 'Adresa je obavezno polje',
-		v => v.split(", ").length == 3 || 'Neispravan format adrese.'
+		//v => v.split(", ").length == 3 || 'Neispravan format adrese.'
       ],
       jboRules: [
         v => !!v || 'Jedinstveni broj osiguranika je obavezno polje'

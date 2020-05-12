@@ -2,6 +2,7 @@ package isamrs.dto;
 
 import javax.persistence.Column;
 
+import isamrs.domain.Adresa;
 import isamrs.domain.Osoba;
 
 public class OsobaDTO {
@@ -12,7 +13,7 @@ public class OsobaDTO {
 	private String password;
 	private String brojTelefona;
 	private String jbo;
-	private String adresa;
+	private Adresa adresa;
 	private String email;
 	private String tip;
 	
@@ -72,10 +73,10 @@ public class OsobaDTO {
 	public void setJbo(String jbo) {
 		this.jbo = jbo;
 	}
-	public String getAdresa() {
+	public Adresa getAdresa() {
 		return adresa;
 	}
-	public void setAdresa(String adresa) {
+	public void setAdresa(Adresa adresa) {
 		this.adresa = adresa;
 	}
 	public String getEmail() {

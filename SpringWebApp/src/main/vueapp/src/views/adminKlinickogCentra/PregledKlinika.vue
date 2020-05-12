@@ -1,6 +1,11 @@
 <template>
     <div>
         <v-container>
+            <v-container>
+                <label class="display-1">
+                    Pregled klinika
+                </label>
+            </v-container>
             <v-row
                 align="center"
                 justify-content="center"
@@ -33,7 +38,7 @@
                                                     {{k.naziv}}
                                                 </td>
                                                 <td>
-                                                    {{k.adresa}}
+                                                    {{toStringAdresa(k)}}
                                                 </td>
                                                 <td>
                                                     {{k.tipKlinike.tip}}
@@ -70,12 +75,23 @@
                             align="center"
                             justify-content="center">
                                 <v-col
-                                    cols="4"
+                                    cols="12"
+                                    lg="4"
                                     class="ml-auto"
                                 >
                                     <router-link to="/regKlinika">
                                         <v-btn color="success">
                                             Registrovanje klinika
+                                        </v-btn>
+                                    </router-link>
+                                </v-col>
+                                <v-col
+                                    cols="12"
+                                    lg="4"
+                                >
+                                    <router-link to="/regTipKlinike">
+                                        <v-btn color="success">
+                                            Registrovanje tipa klinika
                                         </v-btn>
                                     </router-link>
                                 </v-col>
@@ -111,7 +127,8 @@
             v-model="dialog"
         >
             <IzmenaKlinike
-                :klinika="klinika"
+                @done="onIzmenaDone()"
+                :klinikaZaIzmenu="klinika"
             >
             </IzmenaKlinike>
         </v-dialog>
@@ -139,6 +156,9 @@
             this.refresh();
         },
         methods:{
+            toStringAdresa:function(k){
+                return k.adresa.adresa+ ", " + k.adresa.grad + ", " + k.adresa.drzava;
+            },
             refresh:function () {
                 axios.get("/klinika")
                     .then(res=>{
@@ -153,6 +173,10 @@
             izmena(klinika){
                 this.klinika = klinika;
                 this.dialog = true;
+            },
+            onIzmenaDone:function () {
+                this.dialog = false;
+                this.refresh();
             },
             deleteKlinika:function (id) {
                 axios.delete("/klinika/"+id)

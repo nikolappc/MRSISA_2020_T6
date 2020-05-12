@@ -36,14 +36,14 @@ public class Pacijent extends Osoba {
 		this.setTip("PACIJENT");
 	}
 
-	public Pacijent(String ime, String prezime, String password, String brojTelefona, String jbo, String adresa,
+	public Pacijent(String ime, String prezime, String password, String brojTelefona, String jbo, Adresa adresa,
 			String email, Integer id, ZdravstveniKarton zdravstveniKarton) {
 		super(ime, prezime, password, brojTelefona, jbo, adresa, email, id);
 		this.zdravstveniKarton = zdravstveniKarton;
 		this.setTip("PACIJENT");
 	}
 
-	public Pacijent(String ime, String prezime, String password, String brojTelefona, String jbo, String adresa,
+	public Pacijent(String ime, String prezime, String password, String brojTelefona, String jbo, Adresa adresa,
 			String email, Integer id) {
 		super(ime, prezime, password, brojTelefona, jbo, adresa, email, id);
 		this.setTip("PACIJENT");

@@ -1,13 +1,13 @@
 package isamrs.dto;
 
+import isamrs.domain.Adresa;
+
 public class RegDTO {
 	private String email;
 	private String password;
 	private String ime;
 	private String prezime;
-	private String adresa;
-	private String grad;
-	private String drzava;
+	private Adresa adresa;
 	private String brojTelefona;
 	private String jbo;
 	public String getEmail() {
@@ -34,23 +34,11 @@ public class RegDTO {
 	public void setPrezime(String prezime) {
 		this.prezime = prezime;
 	}
-	public String getAdresa() {
+	public Adresa getAdresa() {
 		return adresa;
 	}
-	public void setAdresa(String adresa) {
+	public void setAdresa(Adresa adresa) {
 		this.adresa = adresa;
-	}
-	public String getGrad() {
-		return grad;
-	}
-	public void setGrad(String grad) {
-		this.grad = grad;
-	}
-	public String getDrzava() {
-		return drzava;
-	}
-	public void setDrzava(String drzava) {
-		this.drzava = drzava;
 	}
 	public String getBrojTelefona() {
 		return brojTelefona;
@@ -64,7 +52,7 @@ public class RegDTO {
 	public void setJbo(String jbo) {
 		this.jbo = jbo;
 	}
-	public RegDTO(String email, String password, String ime, String prezime, String adresa, String grad, String drzava,
+	public RegDTO(String email, String password, String ime, String prezime, Adresa adresa,
 			String brojTelefona, String jbo) {
 		super();
 		this.email = email;
@@ -72,8 +60,6 @@ public class RegDTO {
 		this.ime = ime;
 		this.prezime = prezime;
 		this.adresa = adresa;
-		this.grad = grad;
-		this.drzava = drzava;
 		this.brojTelefona = brojTelefona;
 		this.jbo = jbo;
 	}
