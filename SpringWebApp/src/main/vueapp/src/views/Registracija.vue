@@ -74,7 +74,7 @@
             >
               Posalji zahtjev za registraciju
             </v-btn>
-
+            </v-simple-table>
           </v-form>
         </v-container>
       </v-card>

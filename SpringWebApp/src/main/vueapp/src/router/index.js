@@ -122,6 +122,12 @@ Vue.use(VueRouter, VueAxios, axios)
 
   },
   {
+    path: '/sale/:id',
+    name: 'SalePotvrda',
+    component: () => import('../views/sala/ListaSala.vue')
+
+  },
+  {
     path: '/sala/add',
     name: 'AddSala',
     component: () => import('../views/sala/AddSala.vue')

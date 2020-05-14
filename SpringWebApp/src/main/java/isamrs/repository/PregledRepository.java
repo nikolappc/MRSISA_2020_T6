@@ -20,4 +20,11 @@ public interface PregledRepository extends JpaRepository<Pregled, Integer> {
 
 	@Query("SELECT p FROM Pregled p WHERE p.tipPosete = ?1")
 	public List<Pregled> findByTip(TipPosete tp);
+
+	@Query("SELECT p FROM Pregled p WHERE p.sala = null")
+	public List<Pregled> findZahteve();
+	
+	
+	@Query("SELECT p FROM Pregled p WHERE p.sala = null")
+	public boolean checkSala(Sala sala);
 }

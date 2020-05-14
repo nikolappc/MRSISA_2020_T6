@@ -72,7 +72,51 @@
           </v-card>
         </v-container>
       </v-col>
-
+      <v-col
+        lg="3"
+        md="6"
+        sm="12"
+      >
+      <v-container>
+        <v-card
+              color="primary"
+            >
+          <v-container>
+            <v-row>
+              <v-col
+                cols="12"
+              >
+                <v-card>
+                  <v-card-title
+                  >
+                    Zahtevi za pregled
+                  </v-card-title>
+                </v-card>
+              </v-col>
+              <v-col
+                cols="12"
+                v-if="zahtevi.length==0"
+              >
+                <v-card>
+                  <v-container>
+                    Trenutno nema zahteva za pregled.
+                  </v-container>
+                </v-card>
+              </v-col>
+              <v-col
+                v-else
+                cols="12"
+                v-for="idPregleda in zahtevi"
+                :key="idPregleda"
+              >
+                <PregledConf :idPregleda="idPregleda">
+                </PregledConf>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card>
+      </v-container>
+      </v-col>
     </v-container>
 
   </div>
@@ -86,16 +130,20 @@
 import axios from 'axios';
 //import router from "../router/index.js"
 import LinkCard from "../components/LinkCard.vue";
+import PregledConf from "../components/PregledConfirmation.vue"
 export default {
   name: 'HomeAdminKlinike',
   components:{
-    LinkCard
+    LinkCard,
+    PregledConf
+
   },
    data: () => ({
       lekari:require("../assets/lekar.jpg"),
       sale:require("../assets/sale.jpg"),
       tipPregleda:require("../assets/tipPregleda.jpg"),
-      dodavanje:require("../assets/dodavanje.jpg")
+      dodavanje:require("../assets/dodavanje.jpg"),
+      zahtevi: []
   }),
   mounted () {
       axios
@@ -105,6 +153,16 @@ export default {
       })
       .catch(function (error) { console.log(error); //router.push("/loginPage"); 
       });
+
+      axios
+      .get('admin/zahtevi')
+      .then(response => {
+          this.zahtevi = response.data;
+      })
+      .catch(function (error) { console.log(error); //router.push("/loginPage"); 
+      });
+
+
   },
   
   
