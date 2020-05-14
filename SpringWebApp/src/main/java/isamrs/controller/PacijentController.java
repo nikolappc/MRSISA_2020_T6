@@ -1,7 +1,9 @@
 package isamrs.controller;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -93,7 +95,9 @@ public class PacijentController {
 
 		List<PosetaDTO> preglediDTO = new ArrayList<>();
 		for (Pregled pregled : pregledi) {
-			preglediDTO.add(new PregledDTO(pregled));
+			if (pregled.getSala() != null && pregled.getTermin().getPocetak().before(new Date())) {
+				preglediDTO.add(new PregledDTO(pregled));
+			}
 			//System.out.println("pacijent kontroler" + pregled.getTermin().getPocetak().toString());
 		}
 		for (Operacija operacija : operacije) {
