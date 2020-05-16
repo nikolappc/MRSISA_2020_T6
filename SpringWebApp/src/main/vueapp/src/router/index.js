@@ -26,6 +26,8 @@ import PosjetePacijenta from '../views/PosjetePacijenta.vue';
 import KlinikeZaPacijenta from '../views/KlinikeZaPacijenta.vue';
 import PretragaKlinika from '../views/PretragaKlinika.vue';
 import PretragaLjekara from '../views/PretragaLjekara.vue';
+import PredefinisaniPregledi from '../views/PredefinisaniPregledi.vue';
+
 
 
 
@@ -224,6 +226,11 @@ Vue.use(VueRouter, VueAxios, axios)
     name:"PretragaLjekara",
     props:true,
     component:PretragaLjekara
+  },
+  {
+    path:"/predefinisaniPregledi/:idKlinike",
+    name:"PredefinisaniPregledi",
+    component:PredefinisaniPregledi
   },
   
 ]

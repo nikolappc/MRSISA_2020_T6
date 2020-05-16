@@ -3,7 +3,9 @@ package isamrs.dto;
 import java.util.ArrayList;
 import java.util.Date;
 
+import isamrs.domain.Klinika;
 import isamrs.domain.Lekar;
+import isamrs.domain.StavkaCenovnika;
 
 public class LekarZaPacijentaDTO {
 	private int id;
@@ -11,6 +13,15 @@ public class LekarZaPacijentaDTO {
 	private String prezime;
 	private double prosjek;
 	private ArrayList<String> listaVremena;
+	private double cijenaTipaOpciono;
+	
+	
+	public double getCijenaTipaOpciono() {
+		return cijenaTipaOpciono;
+	}
+	public void setCijenaTipaOpciono(double cijenaTipaOpciono) {
+		this.cijenaTipaOpciono = cijenaTipaOpciono;
+	}
 	public int getId() {
 		return id;
 	}
@@ -57,5 +68,13 @@ public class LekarZaPacijentaDTO {
 		this.ime = l.getIme();
 		this.prezime = l.getPrezime();
 		this.prosjek = l.getProsjek();
+	}
+	
+	public void setCijena(String nazivTipa, Klinika k) {
+		for (StavkaCenovnika sc : k.getCenovnik().getStavkaCenovnika()) {
+			if (sc.getTipPosete().getNaziv().equals(nazivTipa)) {
+				this.cijenaTipaOpciono = sc.getCena();
+			}
+		}
 	}
 }

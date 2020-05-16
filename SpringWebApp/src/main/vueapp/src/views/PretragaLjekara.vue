@@ -3,8 +3,55 @@
     <v-container>
 			<h2 style="text-align:center">Zakazivanje pregleda</h2>
 			<h4 style="text-align:center">Izaberite ljekara i termin pregleda.</h4>
-			<h4 style="text-align:center">Datum pregleda: <b>{{ formatDateStr(this.datum) }}</b></h4>
-			<h4 style="text-align:center">Tip pregleda: <b>{{ this.nazivTipa }}</b></h4>
+			
+			<router-link :to="'/predefinsianiPregledi/' + this.idKlinike">
+			<!--<v-btn :to="{path: 'predefinsianiPregledi'}" dark medium left class="blue" slot="action">Predefinisani pregledi</v-btn>-->
+			
+			<div v-if="nijeIzabran">
+			<v-form ref="form" v-model="valid">
+				<v-date-picker 
+				label="*Datum"
+				v-model="datum"
+				dateFormat= 'dd.MM.yyyy'
+				required
+				:rules="rule"
+				:min="minDate"
+				>
+				<template slot="dateIcon">
+					<v-icon>mdi-calendar</v-icon>	
+				</template>
+				</v-date-picker>
+				<v-select
+				v-model="tip"
+				:items="tipovi"
+				label="*Tip pregleda"
+				dense
+				:rules="rule"
+				required
+				return-object
+			>
+				<template slot="selection" slot-scope="data">
+				{{ data.item.naziv }} 
+				</template>
+				<template slot="item" slot-scope="data">
+				{{ data.item.naziv }}
+				</template>
+			</v-select>
+			<v-btn
+			:disabled="!valid"
+			color="success"
+			class="mr-4"
+			@click="pretrazi"
+			>
+				Pretraži
+			</v-btn>
+			</v-form>
+			</div>
+			<div v-else>
+				<h4 style="text-align:center">Datum pregleda: <b>{{ formatDateStr(this.datum) }}</b></h4>
+				<h4 style="text-align:center">Tip pregleda: <b>{{ this.nazivTipa }}</b></h4>
+			</div>
+			
 	<v-card-title>
 		<v-spacer></v-spacer>
 		<v-text-field
@@ -49,6 +96,7 @@ export default {
   props: ["pretraga"],
   data: () => ({
     ulogovani : {},
+    nijeIzabran : false,
     dialogZahtjev: null,
     dialog : false,
     search : '',
@@ -56,8 +104,13 @@ export default {
     datum : "",
     cena : "",
     nazivTipa: "",
+    tip: null,
     idKlinike: 0,
     ljekari : [],
+    tipovi:[],
+	rule: [
+		v => !!v || 'Obavezno polje',
+	],
     headers: [
         {
           text: 'Ime', 
@@ -86,28 +139,33 @@ export default {
 	if (this.ulogovani == "") {
 		router.push("/");
 	}
-	/*this.idKlinike = this.$route.params.id;
-	let naziv = this.$route.params.nazivTipa;
-	this.nazivTipa = naziv.replace("%20", " ");
-	this.datum = this.$route.params.datum;
-	this.cena = this.$route.params.cenaPregleda;*/
 	this.idKlinike = this.pretraga.idKlinike;
-	let naziv = this.pretraga.naziv;
-	this.nazivTipa = naziv.replace("%20", " ");
-	this.datum = this.pretraga.datum;
-	this.cena = this.pretraga.cena;
-	axios
-	.post('klinika/getSlobodniLekariKlinike', {idKlinike: this.idKlinike, datum: this.datum, nazivTipa: this.nazivTipa})
-	.then(response => {
-		this.ljekari = response.data;
-		for (let i = 0; i < this.ljekari.length; i++) {
-			for (let j = 0; j < this.ljekari[i].listaVremena.length; j++) {
-				console.log("********");
-				console.log(this.ljekari[i].listaVremena[j]);
+	if (this.pretraga.naziv == "") {
+		this.nijeIzabran = true;
+		axios
+		.get('tip/tipoviPregleda')
+		.then(response => {
+		this.tipovi = response.data;
+		})
+		.catch(function (error) { console.log(error); router.push("/"); });
+	} else {
+		let naziv = this.pretraga.naziv;
+		this.nazivTipa = naziv.replace("%20", " ");
+		this.datum = this.pretraga.datum;
+		this.cena = this.pretraga.cena;
+		axios
+		.post('klinika/getSlobodniLekariKlinike', {idKlinike: this.idKlinike, datum: this.datum, nazivTipa: this.nazivTipa})
+		.then(response => {
+			this.ljekari = response.data;
+			for (let i = 0; i < this.ljekari.length; i++) {
+				for (let j = 0; j < this.ljekari[i].listaVremena.length; j++) {
+					console.log("********");
+					console.log(this.ljekari[i].listaVremena[j]);
+				}
 			}
-		}
-	})
-	.catch(function (error) { console.log(error); router.go(-1); });
+		})
+		.catch(function (error) { console.log(error); router.go(-1); });
+	}
 	},
 	components: {
 		PotvrdaZakazivanja
@@ -149,6 +207,24 @@ export default {
 		console.log(value.listaVremena);*/
 		this.dialogZahtjev = {idKlinike: this.idKlinike, idPacijenta: this.ulogovani.id, idLekara: value.id, imeLekara: value.ime, prezimeLekara: value.prezime, nazivTipa: this.nazivTipa, listaVremena: value.listaVremena, datum: this.datum, cenaPregleda: this.cena};
 		this.dialog = true;
+	},
+	pretrazi() {
+		this.nazivTipa = this.tip.naziv;
+		//this.datum
+		//this.cena = 0;
+		axios
+		.post('klinika/getSlobodniLekariKlinike', {idKlinike: this.idKlinike, datum: this.datum, nazivTipa: this.nazivTipa})
+		.then(response => {
+			this.ljekari = response.data;
+			this.cena = this.ljekari[0].cijenaTipaOpciono;
+			for (let i = 0; i < this.ljekari.length; i++) {
+				for (let j = 0; j < this.ljekari[i].listaVremena.length; j++) {
+					console.log("----------");
+					console.log(this.ljekari[i].listaVremena[j]);
+				}
+			}
+		})
+		.catch(function (error) { console.log(error); router.go(-1); });
 	},
   },
 }

@@ -60,4 +60,9 @@ public class PregledServiceImpl implements PregledService {
 	public Collection<Pregled> findPreglediKlinike(Integer idKlinike) {
 		return pregledRepository.getPreglediKlinike(idKlinike);
 	}
+	
+	@Override
+	public Collection<Pregled> findPredefinisaniPreglediKlinike(Integer idKlinike) {
+		return pregledRepository.getPredefinisaniPreglediKlinike(idKlinike);
+	}
 }

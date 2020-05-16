@@ -158,6 +158,7 @@ public class KlinikaController {
 			if (lekarImaSlobodanTermin(l, cal1) && ljekarImaTip(l, slk.getNazivTipa())) {
 				LekarZaPacijentaDTO lzp = new LekarZaPacijentaDTO(l);
 				lzp.setListaVremena(KlinikaController.getSlobodniTermini(l, cal1));
+				lzp.setCijena(slk.getNazivTipa(), k);
 				lekari.add(lzp);
 			}
 		}
@@ -307,5 +308,6 @@ public class KlinikaController {
 		
 		return vremenaStr;
 	}
+	
 	
 }

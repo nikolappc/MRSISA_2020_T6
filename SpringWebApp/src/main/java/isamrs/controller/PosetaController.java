@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import isamrs.domain.*;
 import isamrs.dto.PosetaDTO;
+import isamrs.dto.PredefinisaniPregledDTO;
 import isamrs.dto.PregledDTO;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,9 +134,21 @@ public class PosetaController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	@GetMapping(value = "/predefinisaniPregledi", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<PredefinisaniPregledDTO>> getPredefinisaniPregledi(HttpServletRequest request, @RequestBody int idKlinike){
+		Collection<Pregled> pregledi = pregledService.findPredefinisaniPreglediKlinike(idKlinike);
+		Collection<PredefinisaniPregledDTO> posete = new ArrayList<PredefinisaniPregledDTO>();
+		Klinika k = klinikaService.findOne(idKlinike);
+		for (Pregled p : pregledi) {
+			posete.add(new PredefinisaniPregledDTO(p, k));
+		}
+		return new ResponseEntity<>(posete, HttpStatus.OK);
+	}
 
 	PregledDTO pregledToPregledDTO(Pregled p){
 		return new PregledDTO(p);
 	}
+
 
 }

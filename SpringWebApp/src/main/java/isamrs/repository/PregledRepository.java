@@ -30,5 +30,8 @@ public interface PregledRepository extends JpaRepository<Pregled, Integer> {
 
 	@Query("SELECT p FROM Klinika k JOIN k.pregledi p WHERE k.id = :id")
 	public Collection<Pregled> getPreglediKlinike(@Param("id") Integer id);
+	
+	@Query("SELECT p FROM Klinika k JOIN k.pregledi p WHERE k.id = :id AND p.zdravstveniKarton = null")
+	public Collection<Pregled> getPredefinisaniPreglediKlinike(@Param("id") Integer id);
 
 }

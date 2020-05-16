@@ -7,6 +7,7 @@
         :items="klinike"
         :items-per-page="10"
         class="elevation-1"
+        @click:row="posaljiNaStranicuKlinike"
         :custom-sort="customSort">
       </v-data-table>
     </v-container>
@@ -79,7 +80,10 @@ export default {
 				}   
       });
       return items;
-    }
+    },
+	posaljiNaListuLjekara(value) {
+		router.push({name:'PretragaLjekara', params: {pretraga: {idKlinike: value.id, cena: "", naziv: "", datum: ""}}});
+	}, 
   },
 }
 </script>
