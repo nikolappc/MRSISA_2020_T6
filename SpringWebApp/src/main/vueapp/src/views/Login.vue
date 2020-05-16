@@ -1,48 +1,47 @@
 <template >
-  <v-container class="blue lighten-1"
+  <v-container class="blue lighten-1 fill-height"
   fluid
-  height="100%">
-  <v-row justify="center">
-    <v-col cols="6">
-      <v-card
-        outlined
-      >
-
-      <v-form 
-        ref="form"
-        v-model="valid"
-      >
-      <v-text-field
-          v-model="username"
-          :rules="usernameRules"
-          label="Username"
-          required
-        ></v-text-field>
-
-        <v-text-field
-          :type="'password'"
-          v-model="password"
-          :rules="passwordRules"
-          label="Password"
-          required
-        ></v-text-field>
-        <v-btn
-          :disabled="!valid"
-          color="success"
-          class="mr-4"
-          @click="login"
+  >
+    <v-row justify="center">
+      <v-col cols="6">
+        <v-card
+          outlined
         >
-          Login
-        </v-btn>
-      </v-form>
-      </v-card>
-    </v-col>
-  </v-row>
-  <v-row>
-    <v-col>
-      <router-link :to="{path: 'registracija'}" slot="action">Registruj se</router-link>
-    </v-col>
-  </v-row>
+
+          <v-form 
+            ref="form"
+            v-model="valid"
+          >
+            <v-container>
+              
+              <v-text-field
+                  v-model="username"
+                  :rules="usernameRules"
+                  label="Username"
+                  required
+                ></v-text-field>
+    
+                <v-text-field
+                  :type="'password'"
+                  v-model="password"
+                  :rules="passwordRules"
+                  label="Password"
+                  required
+                ></v-text-field>
+                <v-btn
+                  :disabled="!valid"
+                  color="success"
+                  class="mr-4"
+                  @click="login"
+                >
+                  Login
+                </v-btn>
+                <v-btn small depressed :to="{path: 'registracija'}" slot="action">Registruj se</v-btn>
+            </v-container>
+          </v-form>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

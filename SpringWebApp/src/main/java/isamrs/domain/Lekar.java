@@ -27,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "lekari")
-public class Lekar extends Osoba {
+public class Lekar extends MedicinskoOsoblje {
 	
 	@OneToMany
 	@JoinColumn(name = "id_lekara")

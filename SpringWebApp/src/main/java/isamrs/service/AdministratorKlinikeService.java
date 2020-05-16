@@ -1,11 +1,13 @@
 package isamrs.service;
 
+import isamrs.domain.AdministratorKlinickogCentra;
 import isamrs.domain.AdministratorKlinike;
 import isamrs.domain.Lekar;
 import isamrs.domain.Operacija;
 import isamrs.domain.Pregled;
 import isamrs.domain.Sala;
 import isamrs.domain.Termin;
+import isamrs.exceptions.NotFoundException;
 import isamrs.repository.AdministratorKlinikeRepository;
 import isamrs.repository.LekarRepository;
 import isamrs.repository.OperacijaRepository;
@@ -18,26 +20,54 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+
 @Service
-public class AdministratorKlinikeService {
+public class AdministratorKlinikeService implements isamrs.service.Service<AdministratorKlinike, Integer> {
 	
 	@Autowired
 	private AdministratorKlinikeRepository adminklinikeRepository;
 	
 	@Autowired
 	private PregledRepository pregledRepo;
-	
+
 	@Autowired
 	private SalaRepository salaRepo;
-	
+
 	@Autowired
 	private OperacijaRepository operacijaRepo;
-	
+
 	@Autowired
 	private LekarRepository lekarRepo;
-	
+
 	public AdministratorKlinike findByEmail(String email) {
 		return adminklinikeRepository.findByEmail(email);
+	}
+
+	@Override
+	public Collection<AdministratorKlinike> findAll() {
+		return adminklinikeRepository.findAll();
+	}
+
+	@Override
+	public AdministratorKlinike findOne(Integer integer) {
+		return adminklinikeRepository.findById(integer).orElseThrow(NotFoundException::new);
+	}
+
+	@Override
+	public AdministratorKlinike create(AdministratorKlinike administratorKlinickogCentra) {
+		return adminklinikeRepository.save(administratorKlinickogCentra);
+	}
+
+	@Override
+	public AdministratorKlinike update(Integer integer, AdministratorKlinike administratorKlinickogCentra) {
+		administratorKlinickogCentra.setId(integer);
+		return adminklinikeRepository.save(administratorKlinickogCentra);
+	}
+
+	@Override
+	public void delete(Integer integer) {
+		adminklinikeRepository.deleteById(integer);
 	}
 
 	public Pregled findPregled(Integer id) {
@@ -57,33 +87,33 @@ public class AdministratorKlinikeService {
 		Pregled pregledBaza = pregledRepo.findById(id).orElseGet(null);
 		if (pregledBaza != null) {
 			Sala s = salaRepo.findById(pregled.getSala().getId()).orElseGet(null);
-			
+
 			if(!proveriTerminSala(s,pregled.getTermin())) {
 				throw new Exception();
 			}
-			
+
 			if(!proveriTerminLekara(pregled.getLekar().getId(), pregled.getTermin())) {
 				throw new Exception();
 			}
-			
+
 			pregledBaza.setSala(s);
-			
+
 			pregledBaza.setLekar(pregled.getLekar());
 		}
 		pregledRepo.save(pregledBaza);
 		//Dodaj pacijenta u klinici
-		
+
 		return pregledBaza;
 	}
 
 	private boolean proveriTerminLekara(Integer id, Termin termin) {
 		Lekar lekar = lekarRepo.findById(id).orElseGet(null);
-		
+
 		for(Pregled p: lekar.getPregled()) {
 			//Ako je termin posle kraja nekog pregleda to je ok
 			if(p.getSala() == null)
 				continue;
-			
+
 			if(p.getTermin().getKraj().before(termin.getPocetak())) {
 				continue;
 			}
@@ -91,16 +121,16 @@ public class AdministratorKlinikeService {
 			if(p.getTermin().getPocetak().after(termin.getKraj())) {
 				continue;
 			}
-			
+
 			//Ako je bilo koji drugi slucaj onda je zauzeta sala
 			return false;
 		}
-		
+
 		for(Operacija p: lekar.getOperacije() ) {
-			
+
 			if(p.getSala() == null)
 				continue;
-			
+
 			//Ako je termin posle kraja nekog pregleda to je ok
 			if(p.getTermin().getKraj().before(termin.getPocetak())) {
 				continue;
@@ -109,12 +139,12 @@ public class AdministratorKlinikeService {
 			if(p.getTermin().getPocetak().after(termin.getKraj())) {
 				continue;
 			}
-			
+
 			//Ako je bilo koji drugi slucaj onda je zauzeta sala
 			return false;
 		}
-		
-		
+
+
 		return true;
 	}
 
@@ -128,11 +158,11 @@ public class AdministratorKlinikeService {
 			if(p.getTermin().getPocetak().after(termin.getKraj())) {
 				continue;
 			}
-			
+
 			//Ako je bilo koji drugi slucaj onda je zauzeta sala
 			return false;
 		}
-		
+
 		for(Operacija p: operacijaRepo.findBySala(s) ) {
 			//Ako je termin posle kraja nekog pregleda to je ok
 			if(p.getTermin().getKraj().before(termin.getPocetak())) {
@@ -142,18 +172,18 @@ public class AdministratorKlinikeService {
 			if(p.getTermin().getPocetak().after(termin.getKraj())) {
 				continue;
 			}
-			
+
 			//Ako je bilo koji drugi slucaj onda je zauzeta sala
 			return false;
 		}
-		
+
 		//Vrati true ako je sve ok
 		return true;
 	}
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 }

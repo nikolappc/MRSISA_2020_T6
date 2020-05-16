@@ -64,6 +64,34 @@
                   </LinkCard>
                 </router-link>
               </v-col>
+              <v-col
+                lg="4"
+                md="12"
+                sm="12"
+                xs="12"
+              >
+                <router-link to="/pregledAdminaKlinika">
+                  <LinkCard
+                    :img="adminKlinike"
+                    title="Upravljanje administratorima klinika"
+                  >
+                  </LinkCard>
+                </router-link>
+              </v-col>
+              <v-col
+                lg="4"
+                md="12"
+                sm="12"
+                xs="12"
+              >
+                <router-link to="/pregledAdminaKC">
+                  <LinkCard
+                    :img="adminKC"
+                    title="Upravljanje administratorima kliničkog centra"
+                  >
+                  </LinkCard>
+                </router-link>
+              </v-col>
             </v-row>
           </v-card>
         </v-container>
@@ -139,6 +167,8 @@ export default {
       klinike:require("../assets/klinike.jpg"),
       lekovi:require("../assets/lekovi.jpg"),
       dijagnoze:require("../assets/dijagnoze.jpg"),
+      adminKlinike:require("../assets/adminKlinike.jpg"),
+      adminKC:require("../assets/adminKC.jpg"),
       nepotvrdjeniKorisnici:[
       ]
     }),

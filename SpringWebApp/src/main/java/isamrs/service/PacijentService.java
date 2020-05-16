@@ -21,4 +21,5 @@ public interface PacijentService {
 	
 	Collection<Pacijent> findNotConfirmed();
 	Collection<Pacijent> findAll();
+
 }

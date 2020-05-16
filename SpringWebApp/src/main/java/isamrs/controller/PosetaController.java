@@ -3,27 +3,22 @@ package isamrs.controller;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
+import isamrs.domain.*;
+import isamrs.dto.PosetaDTO;
+import isamrs.dto.PregledDTO;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import isamrs.domain.AdministratorKlinike;
-import isamrs.domain.Dijagnoza;
-import isamrs.domain.Klinika;
-import isamrs.domain.Lekar;
-import isamrs.domain.Pacijent;
-import isamrs.domain.Pregled;
-import isamrs.domain.Recepti;
-import isamrs.domain.Termin;
-import isamrs.domain.TipPosete;
 import isamrs.dto.SlobodniTerminiDTO;
 import isamrs.dto.ZakazivanjePregledaDTO;
 import isamrs.service.KlinikaServiceImpl;
@@ -33,6 +28,11 @@ import isamrs.service.PosetaService;
 import isamrs.service.PregledService;
 import isamrs.service.TerminService;
 import isamrs.service.TipPoseteService;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
+
+@Transactional
 @RestController
 @RequestMapping("/poseta")
 public class PosetaController {
@@ -61,6 +61,11 @@ public class PosetaController {
 	@Autowired
 	private MailSender mailSender;
 	
+//
+//	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+//	public ResponseEntity<Poseta> getPosete(HttpServletRequest req){
+//
+//	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Pregled> createSlobodniTerminiDTO(@RequestBody SlobodniTerminiDTO poseta) throws Exception {
@@ -114,5 +119,22 @@ public class PosetaController {
 		return new ResponseEntity<String>("Uspesno!", HttpStatus.OK);
 	}
 
-	
+
+	@GetMapping(value = "/pregledi", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<PregledDTO>> getPregledi(HttpServletRequest request){
+		try{
+			MedicinskoOsoblje medicinskoOsoblje = (MedicinskoOsoblje) request.getSession().getAttribute("user");
+			Collection<Pregled> pregledi = pregledService.findPreglediKlinike(medicinskoOsoblje.getKlinika().getId());
+			Collection<PregledDTO> posete = pregledi.stream().map(this::pregledToPregledDTO).collect(Collectors.toList());
+			return new ResponseEntity<>(posete, HttpStatus.OK);
+		}catch (ClassCastException c){
+			c.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	PregledDTO pregledToPregledDTO(Pregled p){
+		return new PregledDTO(p);
+	}
+
 }

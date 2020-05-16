@@ -6,6 +6,7 @@
 
 package isamrs.domain;
 
+import java.awt.*;
 import java.util.*;
 
 import javax.persistence.Column;
@@ -18,7 +19,7 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name = "medicinske_sestre")
-public class MedicinskaSestra extends Osoba {
+public class MedicinskaSestra extends MedicinskoOsoblje {
 	@OneToMany
 	@Column(name = "id_sestre")
 	public java.util.Collection<Recepti> overeniRecepti;
