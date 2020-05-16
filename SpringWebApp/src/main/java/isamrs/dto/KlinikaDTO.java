@@ -1,7 +1,10 @@
 package isamrs.dto;
 
+import isamrs.domain.AdministratorKlinike;
 import isamrs.domain.Adresa;
 import isamrs.domain.TipKlinike;
+
+import java.util.Collection;
 
 public class KlinikaDTO {
 	private Integer id;
@@ -9,7 +12,16 @@ public class KlinikaDTO {
 	private Adresa adresa;
 	private String opis;
 	public TipKlinike tipKlinike;
-	
+
+	public Collection<AdministratorKlinike> getAdministratori() {
+		return administratori;
+	}
+
+	public void setAdministratori(Collection<AdministratorKlinike> administratori) {
+		this.administratori = administratori;
+	}
+
+	public Collection<AdministratorKlinike> administratori;
 	
 	
 	public KlinikaDTO(Integer id,String naziv, Adresa adresa, String opis, TipKlinike tipKlinike) {
@@ -20,8 +32,8 @@ public class KlinikaDTO {
 		this.opis = opis;
 		this.tipKlinike = tipKlinike;
 	}
-	
-	
+
+
 	public Integer getId() {
 		return id;
 	}

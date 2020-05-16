@@ -70,9 +70,9 @@ public class Klinika {
 //	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	public java.util.Collection<Sala> sala;
 	
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_klinike")
-//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "klinika_pacijent", joinColumns = @JoinColumn(name = "id_klinike"), inverseJoinColumns = @JoinColumn(name = "id_pacijenta"))
+//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@JsonManagedReference
 	public java.util.Collection<Pacijent> pacijent;
 	
@@ -99,15 +99,14 @@ public class Klinika {
 //	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	@JsonManagedReference
 	public java.util.Collection<Ocena> ocena;
-	
+
 	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_klinike")
-//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
+//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@JsonManagedReference
 	public java.util.Collection<AdministratorKlinike> administratorKlinike;
 	/*
 	 * @OneToOne
-	 * 
+	 *
 	 * @JoinColumn(name = "id") public TipKlinike tipKlinike;
 	 */
 

@@ -11,29 +11,81 @@
       </label>
     </v-container>
     <v-container>
-      <v-card class="main-card">
-
-        <v-row
-          justify="center"
-          align-content="stretch"
-          align="stretch"
+      <v-row>
+        <v-col
+          cols="12"
+          lg="8"
         >
-          <v-col 
-            v-for="(link, i) in linkovi"
-            :key="i"
-            lg="4"
-            md="6"
-            sm="12"
-            xs="12"
-          >
-            <LinkCard
-              :img="link.img"
-              :title="link.title"
+          <v-card>
+            <RadniKalendar
+              :events="events"
+              @selected="selektovanEvent"
             >
-            </LinkCard>
-          </v-col>
-        </v-row>
-      </v-card>
+            </RadniKalendar>
+            <v-menu
+              v-model="opened"
+              :close-on-content-click="false"
+              :activator="activator"
+              offset-x
+              v-if="selected!=null"
+            >
+              <v-card>
+                <v-toolbar color="blue">
+                  <v-row>
+                    <v-col>
+                      {{selected.tip.naziv}}
+                    </v-col>
+                    <v-col>
+                      <v-icon>
+                        mdi-doctor
+                      </v-icon>
+                      {{selected.lekar}}
+                    </v-col>
+                  </v-row>
+                </v-toolbar>
+                <v-container>
+                    {{selected.opis}}
+                    <v-row>
+                      <v-btn collor="success" to="/overiRecepat" class="ml-auto">
+                        Overi recepte
+                      </v-btn>
+                    </v-row>
+                </v-container>
+              </v-card>
+            </v-menu>
+          </v-card>
+        </v-col>
+        <v-col
+          cols="12"
+          lg="4"
+        >
+          <v-card class="main-card">
+            Linkovi
+            <v-row
+              justify="center"
+              align-content="stretch"
+              align="stretch"
+            >
+              <v-col
+                v-for="(link, i) in linkovi"
+                :key="i"
+                cols="12"
+                lg="12"
+                md="6"
+                sm="6"
+              >
+                <router-link :to="link.link">
+                  <LinkCard
+                    :img="link.img"
+                    :title="link.title"
+                  >
+                  </LinkCard>
+                </router-link>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+      </v-row>
 
     </v-container>
 </div>
@@ -45,10 +97,13 @@
 // import axios from 'axios';
 
 import LinkCard from "../components/LinkCard.vue";
+import RadniKalendar from "./RadniKalendar.vue";
+const axios = require("axios");
 export default {
   name: 'HomeMed',
   components:{
-    LinkCard
+    LinkCard,
+    RadniKalendar
   },
   data:function(){
     return {
@@ -60,25 +115,32 @@ export default {
       linkovi:[
         {
           title:"Pregled pacijenata",
-          img:require("../assets/patients.jpg")
-        },
-        {
-          title:"Radni kalendar",
-          img:require("../assets/kalendar.jpg")
+          img:require("../assets/patients.jpg"),
+          link:"/listaPacijenata"
         },
         {
           title:"Zahtevi za odmor ili odsustvo",
-          img:require("../assets/vacation.jpg")
+          img:require("../assets/vacation.jpg"),
+          link:"/homeMed"
         },
         {
           title:"Profil",
-          img:require("../assets/profile.jpg")
+          img:require("../assets/profile.jpg"),
+          link:"/profilPacijenta"
+
         },
         {
           title:"Overavanje recepata",
-          img:require("../assets/recepti.jpg")
+          img:require("../assets/recepti.jpg"),
+          link:"/homeMed"
         },
       ],
+      pregledi : [],
+      events:[],
+      selected:null,
+      activator:null,
+      opened:false,
+
     }
   },
   computed:{
@@ -87,10 +149,49 @@ export default {
     }
   },
   mounted () {
-      
+      axios.get("/poseta/pregledi")
+        .then(res=>{
+            this.pregledi = res.data;
+            for (const p of this.pregledi) {
+              console.log(p);
+              let start = new Date(p.termin.pocetak);
+              let end = new Date(p.termin.kraj);
+              console.log(start);
+              console.log(end);
+              this.events.push({
+                id:p.id,
+                name : p.tip.naziv,
+                start : this.formatDate(start),
+                end : this.formatDate(end),
+                color:"blue"
+              });
+            }
+        })
+        .catch(error=>{
+          console.log(error);
+        })
   },
   methods: {
+    selektovanEvent(e){
+      let nativeEvent = e.nativeEvent;
+      let event = e.event;
+      
+      if(!this.selected || this.selected.id != event.id){
+        this.selected = this.pregledi.find(function(pregled) {
+            return pregled.id == event.id;
+        });
+        this.activator = nativeEvent.target;
+        this.opened = true;
+      }else{
+        this.opened = false;
+        this.activator = null;
+        this.selected = null;
+      }
 
+    },
+    formatDate (a) {
+      return `${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()} ${a.getHours()}:${a.getMinutes()}`;
+    },
   }
 }
 </script>

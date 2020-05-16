@@ -107,7 +107,7 @@ public class UserController {
 		}
 		Pacijent p = pacijentService.findByEmail(user.getUsername());
 		if (p != null) {
-			if (p.getPassword().equals(user.getPassword()) && p.isEnabled()) {
+			if (p.getPassword().equals(user.getPassword()) && p.isAllowed()) {
 				req.getSession().setAttribute("user", p);
 				return new ResponseEntity<Osoba>(p, HttpStatus.OK);
 			}
@@ -184,7 +184,6 @@ public class UserController {
 		pac.setIme(reg.getIme());
 		pac.setPrezime(reg.getPrezime());
 		pac.setBrojTelefona(reg.getBrojTelefona());
-		pac.setEnabled(false);
 		pac.setJbo(reg.getJbo());
 		pac.setAdresa(reg.getAdresa());
 		pacijentService.create(pac);
@@ -209,7 +208,9 @@ public class UserController {
 		try {
 			Pacijent pacijent = pacijentService.findByEmail(email);
 			eventPublisher.publishEvent(new OnRegistrationFailEvent(pacijent, request.getContextPath()));
-
+			pacijent.setResponded(true);
+			pacijent.setAllowed(false);
+			pacijentService.save(pacijent);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -227,7 +228,8 @@ public class UserController {
 		if ((verificationToken.getExpiryDate().getTime() - calendar.getTime().getTime()) <= 0) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Isteklo je vrijeme za potvrdu registracije.");
 		}
-		user.setEnabled(true);
+		user.setResponded(true);
+		user.setAllowed(true);
 		pacijentService.save(user);
 		return new ResponseEntity<String>("Uspešna registracija!", HttpStatus.OK);
 	}

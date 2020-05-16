@@ -87,8 +87,8 @@ public class KlinikaController {
 		}
 		return new ResponseEntity<KlinikaDTO>(HttpStatus.NO_CONTENT);
 	}
-	
-	
+
+
 	private KlinikaDTO mapToDTO(Klinika k) {
 		return new KlinikaDTO(k.getId(), k.getNaziv(), k.getAdresa(), k.getOpis(), k.getTipKlinike());
 	}

@@ -55,6 +55,9 @@ public class PregledServiceImpl implements PregledService {
 		return pregledRepository.findByIdKarton(id);
 	}
 
-	
 
+	@Override
+	public Collection<Pregled> findPreglediKlinike(Integer idKlinike) {
+		return pregledRepository.getPreglediKlinike(idKlinike);
+	}
 }

@@ -30,7 +30,7 @@ public class OsobaDTO {
 		this.jbo = o.getJbo();
 		this.adresa = o.getAdresa();
 		this.email = o.getEmail();
-		this.id = new Integer(o.getId());
+		this.id = o.getId();
 		this.tip = o.getTip();
 	}
 	

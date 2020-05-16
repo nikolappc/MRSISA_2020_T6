@@ -42,6 +42,7 @@
 		@click="otkazi">
 		Otkaži</v-btn>
 		</td></tr>
+		</v-simple-table>
 	</v-form>
 </v-container>
 </template>

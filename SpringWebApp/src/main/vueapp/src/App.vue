@@ -13,7 +13,6 @@ export default {
   components:{
     Header
   },
-  
   data: () => ({
     header:require("./assets/header.jpg")
   }),

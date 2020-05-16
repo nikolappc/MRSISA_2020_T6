@@ -64,4 +64,5 @@ public class PacijentServiceImpl implements PacijentService {
 	public Collection<Pacijent> findAll() {
 		return pacijentRepository.findAll();
 	}
+
 }

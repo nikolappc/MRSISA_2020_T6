@@ -18,16 +18,19 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @Table(name = "pacijent")
 public class Pacijent extends Osoba {
-	
-	@Column(name = "enabled", unique = false, nullable = false)
-	private boolean enabled;
-	
+
+	@Column(name = "allowed")
+	private Boolean allowed;
+
+	@Column(name = "responded")
+	private Boolean responded;
+
 	@JsonIgnore
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_kartona")
 	@JsonBackReference(value = "zdravstveniKartonReference")
 	private ZdravstveniKarton zdravstveniKarton;
-	
+
 	@Transient
 	public String tip = "PACIJENT";
 
@@ -53,6 +56,14 @@ public class Pacijent extends Osoba {
 		return zdravstveniKarton;
 	}
 
+	public boolean isAllowed() {
+		return allowed;
+	}
+
+	public void setAllowed(boolean allowed) {
+		this.allowed = allowed;
+	}
+
 	public void setZdravstveniKarton(ZdravstveniKarton newZdravstveniKarton) {
 		if (this.zdravstveniKarton == null || !this.zdravstveniKarton.equals(newZdravstveniKarton)) {
 			if (this.zdravstveniKarton != null)
@@ -63,15 +74,11 @@ public class Pacijent extends Osoba {
 		}
 	}
 
-	public boolean isEnabled() {
-		return enabled;
+	public Boolean getResponded() {
+		return responded;
 	}
 
-	public void setEnabled(boolean isEnabled) {
-		this.enabled = isEnabled;
+	public void setResponded(Boolean responded) {
+		this.responded = responded;
 	}
-	
-	
-
-	
 }

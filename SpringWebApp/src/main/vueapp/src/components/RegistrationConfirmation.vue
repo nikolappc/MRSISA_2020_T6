@@ -75,7 +75,7 @@
             notifyServer:function(address){
                 axios.get(address+"/"+this.username)
                     .then(res=>{
-                        alert(res.data);
+                        this.$store.commit("setSnackBar", {text:res.data, color:"success"});
                         this.$emit("resolved");
                     })
                     .catch(error=>{

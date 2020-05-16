@@ -15,6 +15,7 @@ public interface PacijentRepository extends JpaRepository<Pacijent, Integer>{
 	@Query("SELECT p FROM Pacijent p WHERE p.email = ?1")
 	public Pacijent findByEmail(String email);
 	
-	@Query("SELECT p from Pacijent p WHERE p.id NOT IN (SELECT v.user.id FROM VerificationToken v) and p.enabled = false")
+	@Query("SELECT p from Pacijent p WHERE p.responded = false")
 	public Collection<Pacijent> findNotConfirmed();
+
 }

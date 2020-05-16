@@ -25,7 +25,6 @@ public class Pregled extends Poseta {
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name="id_lekara")
-	@JsonBackReference(value = "lekarRefer")
 	public Lekar lekar;
 
 	@ManyToMany(mappedBy = "pregled", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

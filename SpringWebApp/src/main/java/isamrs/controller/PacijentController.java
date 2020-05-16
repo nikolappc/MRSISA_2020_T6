@@ -6,10 +6,15 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import isamrs.domain.*;
+import isamrs.dto.*;
+import isamrs.service.*;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
@@ -26,23 +31,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import isamrs.domain.Adresa;
-import isamrs.domain.Operacija;
-import isamrs.domain.Osoba;
-import isamrs.domain.Pacijent;
-import isamrs.domain.Pregled;
-import isamrs.domain.Sala;
-import isamrs.domain.ZdravstveniKarton;
-import isamrs.dto.OperacijaDTO;
-import isamrs.dto.PosetaDTO;
-import isamrs.dto.PregledDTO;
-import isamrs.dto.UserDTO;
-import isamrs.dto.ZdravstveniKartonDTO;
-import isamrs.service.OperacijaService;
-import isamrs.service.PacijentService;
-import isamrs.service.PregledService;
-import isamrs.service.ZdravstveniKartonServiceImpl;
-
 @RestController
 @RequestMapping("/api/pacijent")
 public class PacijentController {
@@ -56,9 +44,21 @@ public class PacijentController {
 	@Autowired
 	private OperacijaService operacijaService;
 
+	@Autowired
+	KlinikaServiceImpl klinikaService;
+
 	/*
 	 * @Autowired private ZdravstveniKartonServiceImpl kartonService;
 	 */
+
+	@GetMapping(value ="/klinike", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<OsobaDTO>> getPacijents(HttpServletRequest req){
+		MedicinskoOsoblje o = (MedicinskoOsoblje)req.getSession().getAttribute("user");
+		Klinika k = o.getKlinika();
+////		Hibernate.initialize(k.getPacijent());
+		Collection<OsobaDTO> finalni = k.getPacijent().stream().map(this::pacijentToOsobaDTO).collect(Collectors.toList());
+		return new ResponseEntity<>(finalni, HttpStatus.OK);
+	}
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Pacijent>> getPacijents() {
@@ -121,5 +121,9 @@ public class PacijentController {
 
 		ZdravstveniKartonDTO zk_dto = new ZdravstveniKartonDTO(zk);
 		return new ResponseEntity<ZdravstveniKartonDTO>(zk_dto, HttpStatus.OK);
+	}
+
+	OsobaDTO pacijentToOsobaDTO(Pacijent p){
+		return new OsobaDTO(p);
 	}
 }

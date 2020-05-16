@@ -41,7 +41,7 @@ public abstract class Osoba{
 	private String tip;
 
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_adrese", referencedColumnName = "id")
 	private Adresa adresa;
 
@@ -49,6 +49,15 @@ public abstract class Osoba{
 	public Osoba() {
 	}
 
+	public Osoba(String ime, String prezime, String password, String brojTelefona, String jbo, String email, Adresa adresa) {
+		this.ime = ime;
+		this.prezime = prezime;
+		this.password = password;
+		this.brojTelefona = brojTelefona;
+		this.jbo = jbo;
+		this.email = email;
+		this.adresa = adresa;
+	}
 
 	public Adresa getAdresa() {
 		return adresa;
@@ -178,12 +187,4 @@ public abstract class Osoba{
 				+ ", brojTelefona=" + brojTelefona + ", jbo=" + jbo + ", adresa=" + adresa + ", email=" + email + "]";
 	}
 
-
-	public Adresa getAdresa1() {
-		return adresa;
-	}
-
-	public void setAdresa1(Adresa adresa) {
-		this.adresa = adresa;
-	}
 }
