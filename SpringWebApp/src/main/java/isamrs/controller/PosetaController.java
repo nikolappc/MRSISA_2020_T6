@@ -82,6 +82,7 @@ public class PosetaController {
 		Termin termin = new Termin();
 		termin.setPocetak(zahtjev.getTerminPocetak());
 		Calendar c = Calendar.getInstance();
+		c.setTime(zahtjev.getTerminPocetak());
 		c.add(Calendar.MINUTE, 30);
 		termin.setKraj(c.getTime());
 		Termin ter = terminService.create(termin);
@@ -91,8 +92,8 @@ public class PosetaController {
 		k.getPregledi().add(pregled);
 		l.getPregled().add(pregled);
 		p.getZdravstveniKarton().getPregledi().add(pregled);
-		Klinika kl = klinikaService.update(zahtjev.getIdKlinike(), k);
-		Lekar le = lekarService.update(zahtjev.getIdLekara(), l);
+		//Klinika kl = klinikaService.update(zahtjev.getIdKlinike(), k);
+		//Lekar le = lekarService.update(zahtjev.getIdLekara(), l);
 		Pregled pr = pregledService.create(pregled);
 		
 		System.out.println("ZAKAZANOOOOOOO " + pr.getId() + " " + pr.getZdravstveniKarton().getPacijent().getIme());
