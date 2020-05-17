@@ -81,7 +81,7 @@ export default {
       });
       return items;
     },
-	posaljiNaListuLjekara(value) {
+	posaljiNaStranicuKlinike(value) {
 		router.push({name:'PretragaLjekara', params: {pretraga: {idKlinike: value.id, cena: "", naziv: "", datum: ""}}});
 	}, 
   },

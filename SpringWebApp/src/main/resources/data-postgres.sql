@@ -44,6 +44,7 @@ insert into termini (pocetak, kraj) values (to_timestamp('2020-03-20 09:00', 'YY
 insert into termini (pocetak, kraj) values (to_timestamp('2020-03-20 08:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-03-20 10:00', 'YYYY-MM-DD HH24:MI'));
 insert into termini (pocetak, kraj) values (to_timestamp('2020-03-20 10:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-03-20 11:00', 'YYYY-MM-DD HH24:MI'));
 insert into termini (pocetak, kraj) values (to_timestamp('2020-05-20 10:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-05-20 11:00', 'YYYY-MM-DD HH24:MI'));
+insert into termini (pocetak, kraj) values (to_timestamp('2020-05-20 10:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-05-20 11:00', 'YYYY-MM-DD HH24:MI'));
 
 insert into medicinske_sestre (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike) values (2, '064/123-114', 'evans@gmail.com', 'Lily', '000', 'lily12345', 'Evans', 1);
 
@@ -68,7 +69,7 @@ insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_le
 insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike) values ('korona test', null, 5, 1, 1, 2, 1);
 insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike) values ('terapija', 1, 2, 1, 2, 2, 1);
 insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike) values ('previjanje', 1, 4, 1, 2, 2, 1);
-insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike) values ('previjanjeee', 1, 4, 1, null, 2, 1);
+insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike) values ('previjanjeee', 1, 6, 1, null, 2, 1);
 
 insert into operacije (id, ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike) values (1, 'slijepo crijevo', 2, 3, 2, 3, 1);
 insert into operacije (id, ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike) values (2, 'slijepo crijevo', 2, 3, 2, 2, 1);

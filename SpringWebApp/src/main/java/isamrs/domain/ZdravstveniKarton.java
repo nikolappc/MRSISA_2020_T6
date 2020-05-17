@@ -35,7 +35,7 @@ public class ZdravstveniKarton {
 	@Column(name = "krvna_grupa", unique = false)
 	private String krvnaGrupa;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	@JoinColumn(name="id_kartona")
 	@JsonBackReference
 	public Collection<Pregled> pregledi;

@@ -4,6 +4,7 @@ package isamrs.controller;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 import isamrs.domain.*;
@@ -76,47 +77,70 @@ public class PosetaController {
 	}
 	
 	@PostMapping(value = "/zakaziPregled", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> zakaziPregled(@RequestBody ZakazivanjePregledaDTO zahtjev) throws Exception {
-		Lekar l = lekarService.findOne(zahtjev.getIdLekara());
-		Klinika k = klinikaService.findOne(zahtjev.getIdKlinike());
-		Pacijent p = pacijentService.findOne(zahtjev.getIdPacijenta());
+	public ResponseEntity<String> zakaziPregled(@RequestBody ZakazivanjePregledaDTO zahtjev, HttpServletRequest req) throws Exception {
 		Pregled pregled = new Pregled();
-		pregled.setZdravstveniKarton(p.getZdravstveniKarton());
-		pregled.setLekar(l);
-		TipPosete tp = tipService.findByNaziv(zahtjev.getNazivTipa());
-		pregled.setTipPosete(tp);   //falice sala i opis
-		Termin termin = new Termin();
-		termin.setPocetak(zahtjev.getTerminPocetak());
-		Calendar c = Calendar.getInstance();
-		c.setTime(zahtjev.getTerminPocetak());
-		c.add(Calendar.MINUTE, 30);
-		termin.setKraj(c.getTime());
-		Termin ter = terminService.create(termin);
-		pregled.setTermin(termin);
-		pregled.setRecepti(new ArrayList<Recepti>());
-		pregled.setDijagnoza(new ArrayList<Dijagnoza>());
-		k.getPregledi().add(pregled);
-		l.getPregled().add(pregled);
-		p.getZdravstveniKarton().getPregledi().add(pregled);
-		//Klinika kl = klinikaService.update(zahtjev.getIdKlinike(), k);
-		//Lekar le = lekarService.update(zahtjev.getIdLekara(), l);
-		Pregled pr = pregledService.create(pregled);
+		Klinika k = klinikaService.findOne(zahtjev.getIdKlinike());
 		
-		System.out.println("ZAKAZANOOOOOOO " + pr.getId() + " " + pr.getZdravstveniKarton().getPacijent().getIme());
 		
-		//send mail
-		String subject = "Zahtjev za zakazivanje pregleda";
-		String message = "Dobili ste zahtjev za zakazivanje pregleda od strane pacijenta.";
-		
-		SimpleMailMessage email = new SimpleMailMessage();
-		email.setSubject(subject);
-		email.setText(message);
-		for (AdministratorKlinike ak : k.getAdministratorKlinike()) {
-			String recipient = ak.getEmail();
-			email.setTo(recipient);
-			mailSender.send(email);
-
+		if (zahtjev.getIdPredefinisanogTermina() == 0) {
+			Termin termin = new Termin();
+			pregled.setRecepti(new ArrayList<Recepti>());
+			pregled.setDijagnoza(new ArrayList<Dijagnoza>());
+			Lekar l = lekarService.findOne(zahtjev.getIdLekara());
+			Pacijent p = pacijentService.findOne(zahtjev.getIdPacijenta());
+			pregled.setZdravstveniKarton(p.getZdravstveniKarton());
+			pregled.setLekar(l);
+			TipPosete tp = tipService.findByNaziv(zahtjev.getNazivTipa());
+			pregled.setTipPosete(tp);   //falice sala
+			termin.setPocetak(zahtjev.getTerminPocetak());
+			Calendar c = Calendar.getInstance();
+			c.setTime(zahtjev.getTerminPocetak());
+			c.add(Calendar.MINUTE, 30);
+			termin.setKraj(c.getTime());
+			Termin ter = terminService.create(termin);
+			pregled.setTermin(termin);
+			k.getPregledi().add(pregled);
+			l.getPregled().add(pregled);
+			p.getZdravstveniKarton().getPregledi().add(pregled);
+			//Klinika kl = klinikaService.update(zahtjev.getIdKlinike(), k);
+			//Lekar le = lekarService.update(zahtjev.getIdLekara(), l);
+			Pregled pr = pregledService.create(pregled);
+			System.out.println("ZAKAZANOOOOOOO " + pr.getId() + " " + pr.getZdravstveniKarton().getPacijent().getIme());
+			
+			//send mail
+			String subject = "Zahtjev za zakazivanje pregleda";
+			String message = "Dobili ste zahtjev za zakazivanje pregleda od strane pacijenta.";
+			
+			SimpleMailMessage email = new SimpleMailMessage();
+			email.setSubject(subject);
+			email.setText(message);
+			for (AdministratorKlinike ak : k.getAdministratorKlinike()) {
+				String recipient = ak.getEmail();
+				email.setTo(recipient);
+				mailSender.send(email);
+			}
+		} else {
+			Pregled prDef = pregledService.findOne(zahtjev.getIdPredefinisanogTermina());
+			System.out.println(zahtjev.getIdPredefinisanogTermina());
+			System.out.println(prDef);
+			prDef.setZdravstveniKarton(((Pacijent)req.getSession().getAttribute("user")).getZdravstveniKarton());
+			Pregled prDef1 = pregledService.update(zahtjev.getIdPredefinisanogTermina(), prDef);
+			
+			//send mail
+			String subject1 = "Potvrda o zakazivanju pregleda";
+			String message1 = "Vas pregled je zakazan.";
+			
+			SimpleMailMessage email1 = new SimpleMailMessage();
+			email1.setSubject(subject1);
+			email1.setText(message1);
+			String recipient1 = ((Pacijent)req.getSession().getAttribute("user")).getEmail();
+			email1.setTo(recipient1);
+			mailSender.send(email1);
 		}
+		
+		
+		
+		
 
 		return new ResponseEntity<String>("Uspesno!", HttpStatus.OK);
 	}
@@ -135,13 +159,21 @@ public class PosetaController {
 		}
 	}
 	
-	@GetMapping(value = "/predefinisaniPregledi", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<PredefinisaniPregledDTO>> getPredefinisaniPregledi(HttpServletRequest request, @RequestBody int idKlinike){
+	@GetMapping(value = "/getPredefinisaniPregledi/{idKlinike}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<PredefinisaniPregledDTO>> getPredefinisaniPregledi(HttpServletRequest request, @PathVariable("idKlinike") Integer idKlinike){
 		Collection<Pregled> pregledi = pregledService.findPredefinisaniPreglediKlinike(idKlinike);
 		Collection<PredefinisaniPregledDTO> posete = new ArrayList<PredefinisaniPregledDTO>();
 		Klinika k = klinikaService.findOne(idKlinike);
+		Calendar c1 = Calendar.getInstance();
+		Calendar c2 = Calendar.getInstance();
+		c2.setTime(new Date());
+		c2.set(Calendar.HOUR_OF_DAY, 0); c2.set(Calendar.MINUTE, 0); c2.set(Calendar.SECOND, 0); c2.set(Calendar.MILLISECOND, 0);
 		for (Pregled p : pregledi) {
-			posete.add(new PredefinisaniPregledDTO(p, k));
+			c1.setTime(p.getTermin().getPocetak());
+			c1.set(Calendar.HOUR_OF_DAY, 0); c1.set(Calendar.MINUTE, 0); c1.set(Calendar.SECOND, 0); c1.set(Calendar.MILLISECOND, 0);
+			if (c1.getTime().after(c2.getTime())) {
+				posete.add(new PredefinisaniPregledDTO(p, k));
+			}
 		}
 		return new ResponseEntity<>(posete, HttpStatus.OK);
 	}

@@ -3,12 +3,14 @@ package isamrs.service;
 import java.util.Collection;
 import java.util.List;
 
+import isamrs.domain.Lekar;
 import isamrs.domain.Pregled;
 import isamrs.domain.Sala;
 import isamrs.repository.PacijentRepository;
 import isamrs.repository.PregledRepository;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -26,8 +28,7 @@ public class PregledServiceImpl implements PregledService {
 
 	@Override
 	public Pregled findOne(Integer id) {
-
-		return null;
+		return pregledRepository.findById(id).orElseGet(null);
 	}
 
 	@Override
@@ -40,8 +41,8 @@ public class PregledServiceImpl implements PregledService {
 
 	@Override
 	public Pregled update(Integer id, Pregled t) {
-
-		return null;
+		Pregled pregledForUpdate = pregledRepository.findById(id).orElseGet(null);
+		return pregledRepository.save(t);
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import isamrs.domain.StavkaCenovnika;
 public class PredefinisaniPregledDTO {
 	private int id;
 	private int idSale;
+	private String ime;
 	private double cena;
 	private String nazivTipa;
 	private String imeLjekara;
@@ -16,6 +17,15 @@ public class PredefinisaniPregledDTO {
 	private String pocetak;
 	private String kraj;
 	private String datum;
+	
+	
+	
+	public String getIme() {
+		return ime;
+	}
+	public void setIme(String ime) {
+		this.ime = ime;
+	}
 	public int getId() {
 		return id;
 	}
@@ -71,7 +81,7 @@ public class PredefinisaniPregledDTO {
 		this.datum = datum;
 	}
 	public PredefinisaniPregledDTO(int id, int idSale, double cena, String nazivTipa, String imeLjekara, String prezimeLjekara,
-			String pocetak, String kraj) {
+			String pocetak, String kraj, String ime) {
 		super();
 		this.id = id;
 		this.idSale = idSale;
@@ -79,6 +89,7 @@ public class PredefinisaniPregledDTO {
 		this.nazivTipa = nazivTipa;
 		this.imeLjekara = imeLjekara;
 		this.prezimeLjekara = prezimeLjekara;
+		this.ime = ime;
 		this.pocetak = pocetak;
 		this.kraj = kraj;
 	}
@@ -100,5 +111,10 @@ public class PredefinisaniPregledDTO {
 		this.pocetak = sdf.format(p.getTermin().getPocetak());
 		this.kraj = sdf.format(p.getTermin().getKraj());
 		this.datum = sdf.format(p.getTermin().getPocetak());
+		if (p.getOpis() != null) {
+			this.ime = p.getOpis();
+		} else {
+			this.ime = "";
+		}
 	}
 }

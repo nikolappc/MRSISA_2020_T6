@@ -4,7 +4,7 @@
 			<h2 style="text-align:center">Zakazivanje pregleda</h2>
 			<h4 style="text-align:center">Izaberite ljekara i termin pregleda.</h4>
 			
-			<router-link :to="'/predefinsianiPregledi/' + this.idKlinike">
+			<router-link :to="'/predefinisaniPregledi/' + this.idKlinike">Predefinisani pregledi</router-link>
 			<!--<v-btn :to="{path: 'predefinsianiPregledi'}" dark medium left class="blue" slot="action">Predefinisani pregledi</v-btn>-->
 			
 			<div v-if="nijeIzabran">
@@ -137,6 +137,9 @@ export default {
   mounted () {
 	this.ulogovani = this.$store.state.ulogovan;
 	if (this.ulogovani == "") {
+		router.push("/");
+	}
+	if (this.pretraga == undefined || this.pretraga == null) {
 		router.push("/");
 	}
 	this.idKlinike = this.pretraga.idKlinike;

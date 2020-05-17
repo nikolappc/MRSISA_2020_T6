@@ -8,7 +8,16 @@ public class ZakazivanjePregledaDTO {
 	private int idPacijenta;
 	private String nazivTipa;
 	private Date terminPocetak;
+	private int idPredefinisanogTermina;
 	
+	
+	
+	public int getIdPredefinisanogTermina() {
+		return idPredefinisanogTermina;
+	}
+	public void setIdPredefinisanogTermina(int idPredefinisanogTermina) {
+		this.idPredefinisanogTermina = idPredefinisanogTermina;
+	}
 	public int getIdKlinike() {
 		return idKlinike;
 	}
@@ -39,13 +48,14 @@ public class ZakazivanjePregledaDTO {
 	public void setTerminPocetak(Date terminPocetak) {
 		this.terminPocetak = terminPocetak;
 	}
-	public ZakazivanjePregledaDTO(int idKlinike, int idLekara, int idPacijenta, String nazivTipa, Date terminPocetak) {
+	public ZakazivanjePregledaDTO(int idKlinike, int idLekara, int idPacijenta, String nazivTipa, Date terminPocetak, int idPredefinisanogTermina) {
 		super();
 		this.idKlinike = idKlinike;
 		this.idLekara = idLekara;
 		this.idPacijenta = idPacijenta;
 		this.nazivTipa = nazivTipa;
 		this.terminPocetak = terminPocetak;
+		this.idPredefinisanogTermina = idPredefinisanogTermina;
 	}
 	
 	public ZakazivanjePregledaDTO() {}

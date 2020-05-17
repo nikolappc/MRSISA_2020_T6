@@ -79,7 +79,7 @@ export default {
 			} else {
 				this.$emit("zatvori");
 				axios
-				.post('poseta/zakaziPregled', {idKlinike: this.dialogZahtjev.idKlinike, idPacijenta: this.dialogZahtjev.idPacijenta, idLekara: this.dialogZahtjev.idLekara, nazivTipa: this.dialogZahtjev.nazivTipa, terminPocetak: new Date(this.terminPocetak)})
+				.post('poseta/zakaziPregled', {idPredefinisanogTermina: 0, idKlinike: this.dialogZahtjev.idKlinike, idPacijenta: this.dialogZahtjev.idPacijenta, idLekara: this.dialogZahtjev.idLekara, nazivTipa: this.dialogZahtjev.nazivTipa, terminPocetak: new Date(this.terminPocetak)})
 				.then(() => {
 					this.$store.commit("setSnackbar", {text:"Zahtev za zakazivanje pregleda je poslat!", color: "success"});
 					router.push("/");   

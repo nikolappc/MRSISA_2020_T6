@@ -40,7 +40,7 @@ public class Poseta {
 	@JoinColumn(name = "id_tipa_posete")
 	public TipPosete tipPosete;
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn(name="id_kartona")
 	@JsonBackReference
 	public ZdravstveniKarton zdravstveniKarton;
