@@ -1,31 +1,62 @@
 <template>
   <div class="pretragaKlinika">
-    <v-container>
-			<h2 style="text-align:center">Zakazivanje pregleda</h2>
-			<h4 style="text-align:center">Izaberite datum i tip pregleda.</h4>
-		<v-form ref="form" v-model="valid">
+    <v-container grid-list-md>
+			<v-card><h2 style="text-align:center">Zakazivanje pregleda</h2>
+			<h4 style="text-align:center">Izaberite datum i tip pregleda.</h4></v-card>
+		<v-card><v-form ref="form" v-model="valid">
 		<v-simple-table>
-			<tr><td colspan="3"><div style="min-height: 300px">
-				<v-date-picker 
+			<tr><td colspan="3">
+			
+	<v-menu
+		v-model="fromDateMenu"
+		:close-on-content-click="false"
+		:nudge-right="40"
+		lazy
+		transition="scale-transition"
+		offset-y
+		full-width
+		max-width="290px"
+		min-width="290px"
+	>
+	<template v-slot:activator="{ on }">
+		<v-text-field
+		label="*Datum"
+		readonly
+		:value="fromDateDisp"
+		v-on="on"
+	></v-text-field>
+	</template>
+	<v-date-picker
+		locale="en-in"
+		:min="minDate"
+		v-model="datum"
+		dateFormat= 'dd.MM.yyyy'
+		:rules="rule"
+		no-title
+		@input="fromDateMenu = false"
+	></v-date-picker>
+	</v-menu>
+    
+    
+				<!--<v-date-picker 
 				label="*Datum"
 				v-model="datum"
 				dateFormat= 'dd.MM.yyyy'
-				required
 				:rules="rule"
 				:min="minDate"
 				>
 				<template slot="dateIcon">
 					<v-icon>mdi-calendar</v-icon>	
 				</template>
-				</v-date-picker>
-            </div></td>
+				</v-date-picker>-->
+            
+            </td>
             <td colspan="3" valign="middle"><v-select
 				v-model="tip"
 				:items="tipovi"
 				label="*Tip pregleda"
 				dense
 				:rules="rule"
-				required
 				return-object
 			>
 				<template slot="selection" slot-scope="data">
@@ -55,7 +86,7 @@
 			>
 				Pretraži klinike
 			</v-btn>
-		</v-form>
+		</v-form></v-card>
 	<v-card-title>
 		
 		<v-spacer></v-spacer>
@@ -91,6 +122,7 @@ export default {
     ulogovani : {},
     search : '',
     datum : '',
+    fromDateMenu : false,
     tip: null,
     grad: "",
     drzava: "",
@@ -161,9 +193,13 @@ export default {
 	computed: {
 	minDate() {
 		const today = new Date();
-		// const dd = today.getUTCDate();
 		return this.formatDate(today);
 	},	
+	fromDateDisp() {
+		return this.datum;
+	// format date, apply validations, etc. Example below.
+	// return this.fromDateVal ? this.formatDate(this.fromDateVal) : "";
+	}
 	},
 	methods: {
     customSort: function(items, index, isDesc) {
@@ -180,8 +216,6 @@ export default {
     },
 	posaljiNaListuLjekara(value) {
 		router.push({name:'PretragaLjekara', params: {pretraga: {idKlinike: value.id, cena: value.cenaPregleda, naziv: this.tip.naziv, datum: this.datum}}});
-		//router.push("/pretragaLjekara/" + value.id + "/" + value.cenaPregleda + "/" + this.tip.naziv + "/" + this.datum);
-		//<router-link :to="{name: 'pretragaLjekara', params: {pretraga: {idKlinike: value.id, cena: value.cenaPregleda, naziv: this.tip.naziv, datum: this.datum}}}"
 	}, 
 	formatDate(date) {
 		let month = `${date.getMonth() + 1}`;
@@ -209,7 +243,6 @@ export default {
 				}
 			})
 			.catch(function (error) { console.log(error); router.push("/"); });
-			//:disabled="!valid"
 		}
 		
 	}

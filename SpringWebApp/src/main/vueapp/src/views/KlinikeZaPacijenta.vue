@@ -1,7 +1,7 @@
 <template>
   <div class="klinikeZaPacijenta">
-    <v-container>
-			<h2 style="text-align:center">Lista klinika u sistemu</h2>
+    <v-container grid-list-md>
+			<v-card><h2 style="text-align:center">Klinike</h2></v-card>
       <v-data-table
         :headers="headers"
         :items="klinike"
@@ -52,7 +52,7 @@ export default {
         {
           text: 'Država', 
           value: 'adresa.drzava', 
-          sortable: false, 
+          sortable: true, 
         },
       ]
   }),

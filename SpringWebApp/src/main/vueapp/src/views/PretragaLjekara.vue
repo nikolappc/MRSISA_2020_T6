@@ -1,15 +1,53 @@
 <template>
   <div class="pretragaLjekara">
     <v-container>
+			<v-card><div v-if="nijeIzabran">
+			<h2 style="text-align:center">{{ this.nazivKlinike }}</h2>
+			<h4 style="text-align:center">{{ this.adresaKlinike.adresa }}, {{ this.adresaKlinike.grad }}, {{ this.adresaKlinike.drzava }}</h4>
+			</div><div v-else>
 			<h2 style="text-align:center">Zakazivanje pregleda</h2>
 			<h4 style="text-align:center">Izaberite ljekara i termin pregleda.</h4>
+			</div></v-card>
 			
-			<router-link :to="'/predefinisaniPregledi/' + this.idKlinike">Predefinisani pregledi</router-link>
+			<router-link :to="'/predefinisaniPregledi/' + this.idKlinike" style="text-decoration:none;"><v-btn dark medium left class="blue">Predefinisani pregledi</v-btn></router-link>
 			<!--<v-btn :to="{path: 'predefinsianiPregledi'}" dark medium left class="blue" slot="action">Predefinisani pregledi</v-btn>-->
 			
 			<div v-if="nijeIzabran">
-			<v-form ref="form" v-model="valid">
-				<v-date-picker 
+			<v-card><v-form ref="form" v-model="valid">
+	<v-simple-table>
+	<tr><td>
+	<v-menu
+		v-model="fromDateMenu"
+		:close-on-content-click="false"
+		:nudge-right="40"
+		lazy
+		transition="scale-transition"
+		offset-y
+		full-width
+		max-width="290px"
+		min-width="290px"
+	>
+	<template v-slot:activator="{ on }">
+		<v-text-field
+		label="*Datum"
+		readonly
+		:value="fromDateDisp"
+		v-on="on"
+	></v-text-field>
+	</template>
+	<v-date-picker
+		locale="en-in"
+		:min="minDate"
+		v-model="datum"
+		dateFormat= 'dd.MM.yyyy'
+		:rules="rule"
+		no-title
+		@input="fromDateMenu = false"
+	></v-date-picker>
+	</v-menu>
+	</td>
+				
+				<!--<v-date-picker 
 				label="*Datum"
 				v-model="datum"
 				dateFormat= 'dd.MM.yyyy'
@@ -20,7 +58,9 @@
 				<template slot="dateIcon">
 					<v-icon>mdi-calendar</v-icon>	
 				</template>
-				</v-date-picker>
+				</v-date-picker>-->
+				
+				<td>
 				<v-select
 				v-model="tip"
 				:items="tipovi"
@@ -37,6 +77,7 @@
 				{{ data.item.naziv }}
 				</template>
 			</v-select>
+			</td></tr>
 			<v-btn
 			:disabled="!valid"
 			color="success"
@@ -45,11 +86,11 @@
 			>
 				Pretraži
 			</v-btn>
-			</v-form>
+			</v-form></v-card>
 			</div>
 			<div v-else>
-				<h4 style="text-align:center">Datum pregleda: <b>{{ formatDateStr(this.datum) }}</b></h4>
-				<h4 style="text-align:center">Tip pregleda: <b>{{ this.nazivTipa }}</b></h4>
+				<v-card><h4 style="text-align:center">Datum pregleda: <b>{{ formatDateStr(this.datum) }}</b></h4>
+				<h4 style="text-align:center">Tip pregleda: <b>{{ this.nazivTipa }}</b></h4></v-card>
 			</div>
 			
 	<v-card-title>
@@ -96,11 +137,12 @@ export default {
   props: ["pretraga"],
   data: () => ({
     ulogovani : {},
+    adresaKlinike : null,
+    nazivKlinike : '',
     nijeIzabran : false,
     dialogZahtjev: null,
     dialog : false,
     search : '',
-    //terminPocetak: '',
     datum : "",
     cena : "",
     nazivTipa: "",
@@ -108,6 +150,7 @@ export default {
     idKlinike: 0,
     ljekari : [],
     tipovi:[],
+    fromDateMenu : false,
 	rule: [
 		v => !!v || 'Obavezno polje',
 	],
@@ -127,11 +170,6 @@ export default {
           value: 'prosjek', 
           sortable: true, 
         },
-        /*{
-          text: 'Slobodna vremena', 
-          value: 'listaVremena', 
-          sortable: false, 
-        },*/
       ]
   }),
   mounted () {
@@ -143,8 +181,18 @@ export default {
 		router.push("/");
 	}
 	this.idKlinike = this.pretraga.idKlinike;
+	console.log(this.idKlinike);
+	axios
+	.get('klinika/' + this.idKlinike)
+	.then(response => {
+	this.nazivKlinike = response.data.naziv;
+	this.adresaKlinike = response.data.adresa;
+	})
+	.catch(function (error) { console.log(error); router.push("/"); });
 	if (this.pretraga.naziv == "") {
 		this.nijeIzabran = true;
+		console.log(this.pretraga.naziv);
+		console.log(this.nijeIzabran);
 		axios
 		.get('tip/tipoviPregleda')
 		.then(response => {
@@ -172,6 +220,17 @@ export default {
 	},
 	components: {
 		PotvrdaZakazivanja
+	},
+	computed: {
+	minDate() {
+		const today = new Date();
+		return this.formatDate(today);
+	},	
+	fromDateDisp() {
+		return this.datum;
+	// format date, apply validations, etc. Example below.
+	// return this.fromDateVal ? this.formatDate(this.fromDateVal) : "";
+	}
 	},
 	methods: {
     customSort: function(items, index, isDesc) {
@@ -208,7 +267,8 @@ export default {
 			value.listaVremena[i] = value.listaVremena[i].substr(1);
 		}
 		console.log(value.listaVremena);*/
-		this.dialogZahtjev = {idKlinike: this.idKlinike, idPacijenta: this.ulogovani.id, idLekara: value.id, imeLekara: value.ime, prezimeLekara: value.prezime, nazivTipa: this.nazivTipa, listaVremena: value.listaVremena, datum: this.datum, cenaPregleda: this.cena};
+		let adr = this.adresaKlinike.adresa + ", " + this.adresaKlinike.grad + ", " + this.adresaKlinike.drzava;
+		this.dialogZahtjev = {idKlinike: this.idKlinike, nazivKlinike: this.nazivKlinike, adresaKlinike: adr, idPacijenta: this.ulogovani.id, idLekara: value.id, imeLekara: value.ime, prezimeLekara: value.prezime, nazivTipa: this.nazivTipa, listaVremena: value.listaVremena, datum: this.datum, cenaPregleda: this.cena};
 		this.dialog = true;
 	},
 	pretrazi() {
@@ -228,6 +288,7 @@ export default {
 			}
 		})
 		.catch(function (error) { console.log(error); router.go(-1); });
+		//		<!--prepend-icon="event"-->
 	},
   },
 }

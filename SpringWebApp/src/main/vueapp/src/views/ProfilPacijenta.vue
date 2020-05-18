@@ -1,7 +1,7 @@
 <template>
   <div class="profilPacijenta">
     <v-container>
-      <v-simple-table>
+      <v-card><v-simple-table>
         <thead>
           <th>Moj profil</th>
           <th>{{ ulogovani.email }}</th>
@@ -33,7 +33,7 @@
           </tr>
         </tbody>
       </v-simple-table>
-      <v-btn :to="{path: 'profilPacijentaIzmjena'}" dark medium left class="blue" slot="action">Izmjena profila</v-btn>
+      <v-btn :to="{path: 'profilPacijentaIzmjena'}" dark medium left class="blue" slot="action">Izmjena profila</v-btn></v-card>
     </v-container>
   </div>
 </template>
@@ -56,13 +56,6 @@ export default {
     if (this.ulogovani=="") {
       router.push("/");
     }
-	
-	/*axios
-      .get('api/ulogovan')
-      .then(response => {
-          this.ulogovan = response.data;
-      })
-      .catch(function (error) { console.log(error); router.push("/"); });*/
   }
 }
 </script>
