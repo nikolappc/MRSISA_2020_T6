@@ -1,7 +1,7 @@
 <template>
   <div class="profilPacijentaIzmjena">
     <v-container>
-      <v-form
+      <v-card><v-form
         ref="form"
         v-model="valid"
       >
@@ -63,7 +63,7 @@
           Izmeni profil
         </v-btn>
 
-      </v-form>
+      </v-form></v-card>
     </v-container>
   </div>
 </template>
@@ -136,22 +136,6 @@ export default {
 		this.novaSifra = this.ulogovani.password;
 		this.novaSifraPotvrda = this.ulogovani.password;
 	}
-      /*axios
-      .get('api/ulogovan')
-      .then(response => {
-          this.ulogovan = response.data;
-          this.izmijenjen.id = response.data.id;
-          this.izmijenjen.ime = response.data.ime;
-          this.izmijenjen.prezime = response.data.prezime;
-          this.izmijenjen.adresa = response.data.adresa;
-          this.izmijenjen.brojTelefona=response.data.brojTelefona;
-          this.izmijenjen.jbo = response.data.jbo;
-          this.novaSifra = response.data.password;
-          this.novaSifraPotvrda = response.data.password;
-      })
-      .catch(function (error) { console.log(error); router.push("/"); });*/
-      
-
   },
   methods: {
     izmijeniProfil: function(event) {

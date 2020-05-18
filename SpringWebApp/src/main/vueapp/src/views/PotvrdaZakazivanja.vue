@@ -2,6 +2,8 @@
 <v-container>
 	<v-form ref="form" v-model="valid">
 	<v-simple-table>
+		<tr><td>Klinika: </td><td><b>{{ this.dialogZahtjev.nazivKlinike }}</b></td></tr>
+		<tr><td>Adresa: </td><td><b>{{ this.dialogZahtjev.adresaKlinike }}</b></td></tr>
 		<tr><td>Lekar: </td><td><b>{{ this.dialogZahtjev.imeLekara }} {{ this.dialogZahtjev.prezimeLekara }}</b></td></tr>
 		<tr><td>Tip pregleda: </td><td><b>{{ this.dialogZahtjev.nazivTipa }}</b></td></tr>
 		<tr><td>Datum: </td><td><b>{{ formatDate(this.dialogZahtjev.datum) }}</b></td></tr>
@@ -62,12 +64,6 @@ export default {
 			v => !!v || 'Obavezno polje'
 		]
 	}),
-	/*mounted () {
-		for (let i = 0; i < this.dialogZahtjev.listaVremena.length; i++) {
-			this.vremena[i] = new Date(this.dialogZahtjev.listaVremena[i]);
-			console.log(this.vremena[i]);
-		}
-	},*/
     methods: {
 		otkazi() {
 			this.$emit("zatvori");
@@ -91,7 +87,6 @@ export default {
         },
 		formatDateStr(value) {
 			console.log(value);
-			//console.log(String(value));
 			console.log(moment(String(value)).format('DD.MM.YYYY. HH:mm'));
 			return moment(String(value)).format('HH:mm');
 		},

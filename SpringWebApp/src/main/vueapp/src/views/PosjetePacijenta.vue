@@ -1,61 +1,8 @@
 <template>
   <div class="posjetePacijenta">
     <v-container>
-			<h2 style="text-align:center">Istorija pregleda i operacija</h2>
-			<h4>{{ ulogovani.ime }} {{ ulogovani.prezime }}</h4>
-      <!--<v-simple-table>
-        <thead>
-					<th>Id pregleda</th>
-					<th>Opis</th>
-					<th>Sala</th>
-					<th>Pocetak</th>
-					<th>Kraj</th>
-					<th>Tip</th>
-          <th>Dijagnoze</th>
-          <th>Recepti</th>
-          <th>Lekari</th>
-        </thead>
-        <tbody>
-					<tr v-for="p in this.pregledi" v-bind:key="p.id">
-							<td>{{ p.id }}</td>
-							<td>{{ p.opis }}</td>
-							<td>{{ p.sala.id }}</td>
-							<td>{{ formatDate(p.termin.pocetak) }}</td>
-							<td>{{ formatDate(p.termin.kraj) }}</td>
-							<td>{{ p.tip.tip }}</td>
-              <td>
-                <div v-if="p.hasOwnProperty('dijagnoze')">
-                  <ul v-for="d in p.dijagnoze" v-bind:key="d.sifraDijagnoze">
-                    <li>{{ d.nazivDijagnoze }}</li>
-                  </ul>
-                </div>
-                <div v-else>
-                  -
-                </div>
-              </td>
-              <td>
-                <div v-if="p.hasOwnProperty('recepti')">
-                  <ul v-for="r in p.recepti" v-bind:key="r.id">
-                    <li>{{ r.lek.nazivLeka }} {{ overenRecept(r.overen) }}</li>
-                  </ul>
-                </div>
-                <div v-else>
-                  -
-                </div>
-              </td>
-              <td>
-                <div v-if="p.hasOwnProperty('lekar')">
-                  {{ p.lekar }}
-                </div>
-                <div v-else>
-                  <ul v-for="r in p.lekari" v-bind:key="r">        
-                    <li>{{ r }}</li>
-                  </ul>
-                </div>
-              </td>
-          </tr>
-        </tbody>
-      </v-simple-table>-->
+			<v-card><h2 style="text-align:center">Istorija pregleda i operacija</h2>
+			<h4>{{ ulogovani.ime }} {{ ulogovani.prezime }}</h4></v-card>
       <v-data-table
         :headers="headers"
         :items="pregledi"
@@ -168,22 +115,9 @@ export default {
 			this.pregledi = response.data;
 		});
 	}
-      /*axios
-      .get('api/ulogovan')
-      .then(response => {
-          this.ulogovan = response.data;
-          axios
-          .get('api/pacijent/listaPregleda/' + this.ulogovan.id)
-          .then(response => {
-              this.pregledi = response.data;
-          });
-      })
-      .catch(function (error) { console.log(error); router.push("/"); });*/
 	},
 	methods: {
     formatDate(value) {
-      //console.log(value);
-      //console.log(String(value));
 			return moment(String(value)).format('DD.MM.YYYY. HH:mm');
 		},
     overenRecept(value) {
@@ -205,14 +139,10 @@ export default {
             //var d1 = moment(this.formatDate(a[index]), 'DD.MM.YYYY. HH:mm');
             //var d2 = moment(this.formatDate(b[index]), 'DD.MM.YYYY. HH:mm');
             if (!isDesc[0]) {
-                //return new Date(b[index]) - new Date(a[index]);
-                //return d1 < d2 ? -1 : 1;
                 console.log("desc uslo");
                 console.log(d1.getTime());
                 return d1.getTime() < d2.getTime() ? -1 : 1;
             } else {
-                //return new Date(a[index]) - new Date(b[index]);
-                //return d2 < d1 ? -1 : 1;
                 return d2.getTime() < d1.getTime() ? -1 : 1;
             }
           } else if (index[0]=='termin.kraj') {
@@ -253,16 +183,6 @@ export default {
               return b[index] < a[index] ? -1 : 1;
             }
           }
-          /*else {
-            if(typeof a[index] !== 'undefined'){
-              if (!isDesc) {
-                return a[index].toLowerCase().localeCompare(b[index].toLowerCase());
-              }
-              else {
-                return b[index].toLowerCase().localeCompare(a[index].toLowerCase());
-              }
-            }
-          }*/
       });
       return items;
     }

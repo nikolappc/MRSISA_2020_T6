@@ -3,7 +3,7 @@
     <v-container>
       <v-card outlined>
         <v-container>
-          <v-form
+          <v-card><v-form
             ref="form"
             v-model="valid"
           >
@@ -75,7 +75,7 @@
               Posalji zahtjev za registraciju
             </v-btn>
             </v-simple-table>
-          </v-form>
+          </v-form></v-card>
         </v-container>
       </v-card>
     </v-container>
@@ -139,13 +139,11 @@ export default {
 			.post('api/registracija',this.reg)
 			.then(() => {
 			this.$store.commit("setSnackbar", {text:"Poslali ste zahtev za registraciju. Biće Vam poslat email na adresu \n" + this.reg.email + ", gde možete verifikovati Vaš nalog.", color: "success"});
-				//alert("Poslali ste zahtev za registraciju. Biće Vam poslat email na adresu \n" + this.reg.email + ", gde možete verifikovati Vaš nalog.")
 				router.push("/");
 			})
 			.catch(error => { 
 				console.log(error); 
 				if (error.response) {
-					//alert(error.response.data);
 					this.$store.commit("setSnackbar", {text:error.response.data, color: "error"});
 				}
 			});
@@ -155,20 +153,20 @@ export default {
         
     },
   },
-  watch: {
+  /*watch: {
     novaSifra: function() {
       this.$nextTick(() => {
-        //this.$refs.form.validate();
+        this.$refs.form.validate();
         this.novaSifraPotvrda += "";
       });
     },
     novaSifraPotvrda: function() {
       this.$nextTick(() => {
-        //this.$refs.form.validate();
+        this.$refs.form.validate();
         this.novaSifra += "";
       });
     }
-  },
+  },*/
     
 }
 </script>

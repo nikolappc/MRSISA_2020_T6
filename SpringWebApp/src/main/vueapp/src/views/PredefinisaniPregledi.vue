@@ -1,7 +1,7 @@
 <template>
   <div class="predefinisaniPregledi">
     <v-container>
-			<h2 style="text-align:center">Zakažite predefinisani pregled</h2>
+			<v-card><h2 style="text-align:center">Zakažite predefinisani pregled</h2></v-card>
       <v-data-table
         :headers="headers"
         :items="pregledi"
