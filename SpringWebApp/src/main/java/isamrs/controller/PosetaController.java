@@ -34,7 +34,6 @@ import isamrs.service.TipPoseteService;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-@Transactional
 @RestController
 @RequestMapping("/poseta")
 public class PosetaController {

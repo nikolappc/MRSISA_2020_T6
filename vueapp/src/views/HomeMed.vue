@@ -46,9 +46,9 @@
                 <v-container>
                     {{selected.opis}}
                     <v-row>
-                      <v-btn collor="success" to="/overiRecepat" class="ml-auto">
-                        Overi recepte
-                      </v-btn>
+                        <v-btn :disabled="selected.recepti.length==0" collor="success" :to="{ name: 'OveriRecepte', params: { pregled: selected }}" class="ml-auto">
+                          Overi recepte
+                        </v-btn>
                     </v-row>
                 </v-container>
               </v-card>
@@ -152,8 +152,8 @@ export default {
       axios.get("/poseta/pregledi")
         .then(res=>{
             this.pregledi = res.data;
+            console.log(res.data);
             for (const p of this.pregledi) {
-              console.log(p);
               let start = new Date(p.termin.pocetak);
               let end = new Date(p.termin.kraj);
               console.log(start);

@@ -23,7 +23,7 @@ public class Recepti {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(name = "overen", unique = true, nullable = false)
+	@Column(name = "overen", nullable = false)
 	private boolean overen;
 	
 	@OneToOne

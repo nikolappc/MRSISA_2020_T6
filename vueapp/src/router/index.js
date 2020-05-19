@@ -102,6 +102,15 @@ Vue.use(VueRouter, VueAxios, axios)
     component:RegTipKlinike
   },
   {
+    path: '/overiRecepte',
+    name: 'OveriRecepte',
+    props:true,
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/OveriRecepte.vue')
+  },
+  {
     path: '/about',
     name: 'About',
     component: () => import('../views/About.vue')
