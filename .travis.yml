@@ -15,5 +15,5 @@ dist: trusty
 
 deploy:
   provider: heroku
-  api_key: $HEROKU_API_KEY
+  api_key: e9fbcc1f-11fe-4048-9eee-fe1e1d0e5865
   app: mrsisa-tim06
