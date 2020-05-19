@@ -21,7 +21,7 @@
           </tr>
           <tr>
             <td>Adresa:</td>
-            <td>{{ pacijent.adresa }}</td>
+            <td>{{ toStringAdresa(pacijent)}}</td>
           </tr>
           <tr>
             <td>Telefon:</td>
@@ -106,6 +106,9 @@ export default {
       ]
   }),
   methods:{
+    toStringAdresa:function(p){
+        return p.adresa.adresa+ ", " + p.adresa.grad + ", " + p.adresa.drzava;
+      },
     checkStart: function(pregled){
         let trenutno = new Date(Date.now() + 5 * 60000);
         if(new Date(pregled.termin.pocetak) <= trenutno){
