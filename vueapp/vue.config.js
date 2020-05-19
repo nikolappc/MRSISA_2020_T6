@@ -5,6 +5,6 @@ module.exports = {
     "vuetify"
   ],
 
-  outputDir: path.resolve(__dirname,'..\\resources\\static'),
+  outputDir: path.resolve(__dirname,'..\\src\\main\\resources\\static'),
   publicPath:""
 }
