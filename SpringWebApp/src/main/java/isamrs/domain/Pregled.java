@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class Pregled extends Poseta {
 
 	@OneToMany(mappedBy = "pregled", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JsonBackReference(value = "receptiReference")
+	@JsonManagedReference(value = "pregledReference")
 	public Collection<Recepti> recepti;
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -38,11 +38,7 @@ public class Pregled extends Poseta {
 		return recepti;
 	}
 
-	public java.util.Iterator getIteratorRecepti() {
-		if (recepti == null)
-			recepti = new ArrayList<Recepti>();
-		return recepti.iterator();
-	}
+
 
 	public void setRecepti(Collection<Recepti> newRecepti) {
 		removeAllRecepti();
@@ -86,11 +82,6 @@ public class Pregled extends Poseta {
 		return dijagnoza;
 	}
 
-	public java.util.Iterator getIteratorDijagnoza() {
-		if (dijagnoza == null)
-			dijagnoza = new ArrayList<Dijagnoza>();
-		return dijagnoza.iterator();
-	}
 
 	public void setDijagnoza(Collection<Dijagnoza> newDijagnoza) {
 		removeAllDijagnoza();

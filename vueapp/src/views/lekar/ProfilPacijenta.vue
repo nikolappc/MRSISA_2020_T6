@@ -34,7 +34,7 @@
         </tbody>
       </v-simple-table>
       </v-card>
-      <div class="posjetePacijenta">
+      <div>
         <v-container>
           <v-card><h2 style="text-align:center">Istorija pregleda i operacija</h2>
           <h4>{{ pacijent.ime }} {{ pacijent.prezime }}</h4></v-card>
@@ -116,7 +116,7 @@ export default {
     pocniPregled: function(idPregleda){
         console.log(this.$store.state.ulogovan);
         axios
-          .get('lekar/pocetak/' + idPregleda, this.$store.state.ulogovan)
+          .post('lekar/pocetak/' + idPregleda, this.$store.state.ulogovan)
           .then(response => {
               console.log(response.data);
               var provera = response.data;
@@ -125,12 +125,12 @@ export default {
               }
           })    
           .catch((err) => { 
+            this.$store.commit("setSnackbar", {text:"Započinjanje pregleda nije dostupno", color: "error"});
             console.log(err);
           });
     },
-    toStringAdresa:function(p){
-        return p.adresa.adresa+ ", " + p.adresa.grad + ", " + p.adresa.drzava;
-    },
+    
+    
     formatDate(value) {
 			return moment(String(value)).format('DD.MM.YYYY. HH:mm');
 		},

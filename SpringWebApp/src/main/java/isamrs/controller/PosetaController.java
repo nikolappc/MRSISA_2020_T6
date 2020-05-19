@@ -159,6 +159,17 @@ public class PosetaController {
 		}
 	}
 	
+	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Pregled> getPregled(@PathVariable("id") Integer id) {
+		Pregled pregled = pregledService.findOne(id);
+
+		if (pregled == null) {
+			return new ResponseEntity<Pregled>(HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<Pregled>(pregled, HttpStatus.OK);
+	}
+	
 	@GetMapping(value = "/predstojeciPregledi/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<PosetaDTO>> getBuduciPregledi(@PathVariable("id") Integer idPacijent){
 		Collection<PosetaDTO> posete = pacijentService.findBuduciPregled(idPacijent);
