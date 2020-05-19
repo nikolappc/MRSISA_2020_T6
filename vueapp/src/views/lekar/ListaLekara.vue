@@ -63,6 +63,7 @@ export default {
         IzmenaLekara
     },
     methods: {
+        
         deleteLekar: function(id){
             this.lekari = this.lekari.filter(lekar => lekar.id !== id);
         },

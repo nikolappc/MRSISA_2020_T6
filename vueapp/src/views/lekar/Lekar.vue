@@ -2,7 +2,7 @@
   <tr>
       <td @click="otvoriDialog">{{lekar.ime}}</td>
       <td @click="otvoriDialog">{{lekar.prezime}}</td>
-      <td @click="otvoriDialog">{{lekar.adresa}}</td>
+      <td @click="otvoriDialog">{{toStringAdresa(lekar)}}</td>
       <td @click="otvoriDialog">{{lekar.brojTelefona}}</td>
       <td><v-btn icon @click="deleteLekar"><v-icon>mdi-delete</v-icon></v-btn></td>
   </tr>
@@ -14,6 +14,9 @@ import axios from "axios";
 export default {
     props: ["lekar"],
     methods: {
+      toStringAdresa:function(p){
+        return p.adresa.adresa+ ", " + p.adresa.grad + ", " + p.adresa.drzava;
+      },
       deleteLekar: function(){
         axios
             .delete('lekar/'+this.lekar.id)
