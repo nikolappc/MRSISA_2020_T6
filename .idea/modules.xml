@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/project.iml" filepath="$PROJECT_DIR$/project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SpringWebApp/SpringWebApp.iml" filepath="$PROJECT_DIR$/SpringWebApp/SpringWebApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/projekat.iml" filepath="$PROJECT_DIR$/projekat.iml" />
     </modules>
   </component>
 </project>

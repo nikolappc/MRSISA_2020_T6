@@ -3,7 +3,7 @@
   <artifactId>vueapp</artifactId>
   <parent>
     <groupId>isamrs</groupId>
-    <artifactId>SpringWebApp</artifactId>
+    <artifactId>MRSISA</artifactId>
     <version>1.0</version>
   </parent>
   <build>
