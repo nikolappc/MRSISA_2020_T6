@@ -155,7 +155,7 @@ export default {
       });
 
       axios
-      .get('admin/zahtevi')
+      .get('adminKlinike/pregled')
       .then(response => {
           this.zahtevi = response.data;
       })

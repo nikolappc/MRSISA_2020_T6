@@ -4,6 +4,8 @@ import java.util.Collection;
 
 import isamrs.domain.Lekar;
 import isamrs.domain.Pacijent;
+import isamrs.domain.Pregled;
+import isamrs.dto.PosetaDTO;
 import isamrs.registracija.VerificationToken;
 
 
@@ -21,5 +23,6 @@ public interface PacijentService {
 	
 	Collection<Pacijent> findNotConfirmed();
 	Collection<Pacijent> findAll();
+	Collection<PosetaDTO> findBuduciPregled(Integer id);
 
 }

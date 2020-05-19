@@ -3,6 +3,7 @@ package isamrs.controller;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,6 +48,18 @@ public class LekarController {
 		}
 		
 		return new ResponseEntity<Lekar>(lekar, HttpStatus.OK);
+	}
+	
+	
+	
+	@PostMapping(value = "/pocetak/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<HashMap<String, Boolean>> checkStart(@RequestBody Lekar lekar, @PathVariable Integer id)
+			throws Exception {
+		
+		boolean check = lekarService.checkStart(id,lekar);
+		HashMap<String, Boolean> mapa = new HashMap<String, Boolean>();	
+		mapa.put("zapocni", check);
+		return new ResponseEntity<HashMap<String,Boolean>>(mapa, HttpStatus.OK);
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

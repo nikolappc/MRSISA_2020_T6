@@ -38,19 +38,19 @@
       required
     ></v-text-field>
     <v-text-field
-      v-model="lekar.adresa"
+      v-model="lekar.adresa.adresa"
       label="Adresa"
       :rules="rule"
       required
     ></v-text-field>
     <v-text-field
-      v-model="grad"
+      v-model="lekar.adresa.grad"
       label="Grad"
       :rules="rule"
       required
     ></v-text-field>
     <v-text-field
-      v-model="drzava"
+      v-model="lekar.adresa.drzava"
       label="Država"
       :rules="rule"
       required
@@ -145,14 +145,12 @@ export default {
           email: '',
           jbo: '',
           id: null,
-          adresa: "",
+          adresa: {adresa: '', grad: '', drzava: ''},
           password: '',
           brojTelefona: "",
           radnoVreme: [{pocetak: '', kraj:''}]
           },
       valid: true,
-      grad: '',
-      drzava: '',
       pocetak: '',
       kraj: '',
       menu: false,
@@ -174,7 +172,6 @@ export default {
         dodajLekara: function(event) {
             event.preventDefault();
             
-            this.lekar.adresa = this.lekar.adresa + ", " + this.grad + ", " + this.drzava;
             this.lekar.radnoVreme[0].pocetak =  new Date("0000-01-1 " + this.pocetak);
             this.lekar.radnoVreme[0].kraj =  new Date("0000-01-1 " + this.kraj);
             axios

@@ -159,6 +159,14 @@ public class PosetaController {
 		}
 	}
 	
+	@GetMapping(value = "/predstojeciPregledi/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<PosetaDTO>> getBuduciPregledi(@PathVariable("id") Integer idPacijent){
+		Collection<PosetaDTO> posete = pacijentService.findBuduciPregled(idPacijent);
+		
+		return new ResponseEntity<Collection<PosetaDTO>>(posete, HttpStatus.OK);
+	}
+	
+	
 	@GetMapping(value = "/getPredefinisaniPregledi/{idKlinike}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<PredefinisaniPregledDTO>> getPredefinisaniPregledi(HttpServletRequest request, @PathVariable("idKlinike") Integer idKlinike){
 		Collection<Pregled> pregledi = pregledService.findPredefinisaniPreglediKlinike(idKlinike);

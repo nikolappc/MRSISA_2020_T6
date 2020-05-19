@@ -15,6 +15,7 @@
 			<div v-if="nijeIzabran">
 			<v-card><v-form ref="form" v-model="valid">
 	<v-simple-table>
+	
 	<tr><td>
 	<v-menu
 		v-model="fromDateMenu"
@@ -86,13 +87,14 @@
 			>
 				Pretraži
 			</v-btn>
+			</v-simple-table>
 			</v-form></v-card>
 			</div>
 			<div v-else>
 				<v-card><h4 style="text-align:center">Datum pregleda: <b>{{ formatDateStr(this.datum) }}</b></h4>
 				<h4 style="text-align:center">Tip pregleda: <b>{{ this.nazivTipa }}</b></h4></v-card>
 			</div>
-			
+		
 	<v-card-title>
 		<v-spacer></v-spacer>
 		<v-text-field

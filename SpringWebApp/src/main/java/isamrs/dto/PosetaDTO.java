@@ -5,7 +5,7 @@ import isamrs.domain.Sala;
 import isamrs.domain.Termin;
 import isamrs.domain.TipPosete;
 
-public abstract class PosetaDTO {
+public class PosetaDTO {
 	private Integer id;
 	private String opis;
 	private Termin termin;

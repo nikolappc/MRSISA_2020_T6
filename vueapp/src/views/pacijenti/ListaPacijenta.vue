@@ -58,7 +58,7 @@ export default {
     },
     methods: {
         posaljiNaPacijenta: function(value){
-            router.push("/zdravstveniKartonPrikaz/"+value.id);
+            router.push("/pacijent/"+value.id);
         },
         toStringAdresa:function(adresa){
             return adresa.adresa+ ", " + adresa.grad + ", " + adresa.drzava;

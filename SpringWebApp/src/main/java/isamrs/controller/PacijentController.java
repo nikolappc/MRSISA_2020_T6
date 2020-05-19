@@ -59,6 +59,20 @@ public class PacijentController {
 		Collection<OsobaDTO> finalni = k.getPacijent().stream().map(this::pacijentToOsobaDTO).collect(Collectors.toList());
 		return new ResponseEntity<>(finalni, HttpStatus.OK);
 	}
+	
+	
+	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Pacijent> getPacijet(@PathVariable("id") Integer id) {
+		Pacijent pacijent = pacijentService.findOne(id);
+
+		if (pacijent == null) {
+			return new ResponseEntity<Pacijent>(HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<Pacijent>(pacijent, HttpStatus.OK);
+	}
+	
+	
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Pacijent>> getPacijents() {

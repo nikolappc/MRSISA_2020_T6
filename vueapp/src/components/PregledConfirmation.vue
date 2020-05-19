@@ -55,7 +55,7 @@
         ],
         methods:{
             predjiNaDodeluSale:function () {
-                this.$router.push("/sale/"+this.idPregleda);
+                this.$router.push("/potvrdaPregleda/"+this.idPregleda);
             }
         }
     }

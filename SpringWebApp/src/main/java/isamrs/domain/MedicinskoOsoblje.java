@@ -1,6 +1,7 @@
 package isamrs.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
@@ -12,7 +13,7 @@ public class MedicinskoOsoblje extends Osoba {
 
     @ManyToOne
     @JoinColumn(name = "id_klinike", referencedColumnName = "id")
-    @JsonBackReference
+    @JsonIgnore
     Klinika klinika;
 
 
