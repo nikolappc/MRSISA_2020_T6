@@ -11,6 +11,7 @@ public class TerminDTO {
 	private Date end;
 	private String name;
 	private String details;
+	private String imeSale;
 	
 	public TerminDTO() {
 		super();
@@ -30,6 +31,11 @@ public class TerminDTO {
 			Operacija operacija = (Operacija) poseta;
 			this.name = "Operacija";
 		}
+		if(poseta.getSala() != null)
+			this.imeSale = poseta.getSala().getNaziv();
+		else
+			this.imeSale = "Sala nije dodeljena";
+		
 		this.details = poseta.getOpis();
 	}
 	

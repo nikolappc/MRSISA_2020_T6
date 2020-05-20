@@ -37,7 +37,6 @@ import isamrs.service.ZdravstveniKartonServiceImpl;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-@Transactional
 @RestController
 @RequestMapping("/poseta")
 public class PosetaController {
@@ -68,6 +67,12 @@ public class PosetaController {
 //	public ResponseEntity<Poseta> getPosete(HttpServletRequest req){
 //
 //	}
+
+	@PutMapping(value = "pregled/{id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<PregledDTO> zavrsiPregled(@PathVariable("id") Integer id, @RequestBody Pregled p){
+		Pregled updated = pregledService.update(id, p);
+		return new ResponseEntity<>(pregledToPregledDTO(updated), HttpStatus.OK);
+	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Pregled> createSlobodniTerminiDTO(@RequestBody SlobodniTerminiDTO poseta) throws Exception {

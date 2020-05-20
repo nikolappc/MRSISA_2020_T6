@@ -19,17 +19,29 @@ import javax.persistence.Table;
 @Table(name = "lekovi")
 public class Lek {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(unique = true, nullable = false, name = "id")
+	Long id;
+
 	@Column(name = "sifra_leka", unique = true, nullable = false)
 	private Long sifraLeka;
-	
+
 	@Column(name = "naziv_leka", unique = true, nullable = false)
 	private String nazivLeka;
-	
+
 	@Column(name = "opis_leka", unique=false, nullable=true)
 	private String opisLeka;
 
 	public Lek() {
 		super();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public Long getSifraLeka() {

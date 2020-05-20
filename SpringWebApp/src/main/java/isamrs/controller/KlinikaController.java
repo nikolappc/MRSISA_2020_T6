@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import isamrs.domain.AdministratorKlinike;
 import isamrs.domain.GodisnjiOdmor;
 import isamrs.domain.Klinika;
 import isamrs.domain.Lekar;
@@ -56,12 +57,25 @@ public class KlinikaController {
 		return new ResponseEntity<Collection<KlinikaDTO>>(kdto, HttpStatus.OK);
 	}
 	
+	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<KlinikaDTO> getKlinika(@PathVariable("id") Integer id){
 		Klinika k = klinikaService.findOne(id);
 		if(k==null) {
 			return new ResponseEntity<KlinikaDTO>(HttpStatus.NOT_FOUND);
 		}
+		return new ResponseEntity<KlinikaDTO>(mapToDTO(k), HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/admin", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<KlinikaDTO> getKlinikaAdmin(HttpServletRequest req){
+		AdministratorKlinike ak = (AdministratorKlinike) req.getSession().getAttribute("user");
+		
+		Klinika k = klinikaService.findOne(ak.getKlinika().getId());
+		if(k==null) {
+			return new ResponseEntity<KlinikaDTO>(HttpStatus.NOT_FOUND);
+		}
+		
 		return new ResponseEntity<KlinikaDTO>(mapToDTO(k), HttpStatus.OK);
 	}
 	

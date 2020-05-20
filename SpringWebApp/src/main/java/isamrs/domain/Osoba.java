@@ -6,9 +6,22 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-//@Entity
-//@Inheritance(strategy = TABLE_PER_CLASS)
+
+@JsonTypeInfo(
+  use = JsonTypeInfo.Id.NAME, 
+  include = JsonTypeInfo.As.PROPERTY, 
+  property = "tip")
+@JsonSubTypes({ 
+  @Type(value = AdministratorKlinickogCentra.class, name = "ADMIN_KC"), 
+  @Type(value = AdministratorKlinike.class, name = "ADMIN_K"),
+  @Type(value = MedicinskaSestra.class, name = "SESTRA"),
+  @Type(value = Lekar.class, name = "LEKAR"),
+  @Type(value = Pacijent.class, name = "PACIJENT"), 
+})
 @MappedSuperclass
 public abstract class Osoba{
 

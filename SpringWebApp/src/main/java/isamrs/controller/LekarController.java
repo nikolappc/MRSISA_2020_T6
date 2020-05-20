@@ -23,6 +23,7 @@ import isamrs.domain.Lekar;
 import isamrs.dto.LekarZaPacijentaDTO;
 import isamrs.dto.OsobaDTO;
 import isamrs.dto.SlobodniLekariKlinikeDTO;
+import isamrs.dto.TerminDTO;
 import isamrs.service.KlinikaServiceImpl;
 import isamrs.service.LekarService;
 @RestController
@@ -50,7 +51,16 @@ public class LekarController {
 		return new ResponseEntity<Lekar>(lekar, HttpStatus.OK);
 	}
 	
-	
+	@GetMapping(value = "/pregledi/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<TerminDTO>> getPreglediLekar(@PathVariable("id") Integer id) {
+		Collection<TerminDTO> termini = lekarService.findTermini(id);
+
+		if (termini == null) {
+			return new ResponseEntity<Collection<TerminDTO>>(HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<Collection<TerminDTO>>(termini, HttpStatus.OK);
+	}
 	
 	@PostMapping(value = "/pocetak/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<HashMap<String, Boolean>> checkStart(@RequestBody Lekar lekar, @PathVariable Integer id)

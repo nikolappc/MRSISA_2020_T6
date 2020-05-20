@@ -46,11 +46,16 @@ public class KlinikaServiceImpl implements Service<Klinika, Integer>{
 
 	@Override
 	public Klinika update(Integer id, Klinika t) {
-		if(!repo.findById(id).isPresent()){
+		Klinika k = repo.findById(id).orElseGet(null);
+		if(k == null){
 			throw new NotFoundException();
 		}
-		t.setId(id);
-		return repo.save(t);
+		k.setAdresa(t.getAdresa());
+		k.setTipKlinike(t.getTipKlinike());
+		k.setOpis(t.getOpis());
+		k.setNaziv(t.getNaziv());
+		
+		return repo.save(k);
 	}
 
 	@Override

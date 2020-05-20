@@ -2,6 +2,8 @@ package isamrs.dto;
 
 
 public class LekDTO {
+    private Long id;
+
     private Long sifraLeka;
 
     private String nazivLeka;
@@ -11,7 +13,8 @@ public class LekDTO {
     private boolean koristen;
 
 
-    public LekDTO(Long sifraLeka, String nazivLeka, String opisLeka, boolean koristen) {
+    public LekDTO(Long id, Long sifraLeka, String nazivLeka, String opisLeka, boolean koristen) {
+        this.id = id;
         this.sifraLeka = sifraLeka;
         this.nazivLeka = nazivLeka;
         this.opisLeka = opisLeka;
@@ -48,5 +51,13 @@ public class LekDTO {
 
     public void setKoristen(boolean koristen) {
         this.koristen = koristen;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

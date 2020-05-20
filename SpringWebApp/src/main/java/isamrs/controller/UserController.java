@@ -37,6 +37,7 @@ import isamrs.domain.MedicinskaSestra;
 import isamrs.domain.Osoba;
 import isamrs.domain.Pacijent;
 import isamrs.domain.Pregled;
+import isamrs.domain.Sala;
 import isamrs.domain.ZdravstveniKarton;
 import isamrs.dto.PregledDTO;
 import isamrs.dto.RegDTO;
@@ -240,4 +241,36 @@ public class UserController {
 		Collection<Pacijent> pac = pacijentService.findNotConfirmed();
 		return new ResponseEntity<Collection<Pacijent>>(pac, HttpStatus.OK);
 	}
+	
+	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Osoba> updateUser(HttpServletRequest req,@RequestBody Osoba osoba, @PathVariable Integer id){
+		
+		
+		Osoba updatedOsoba = null;
+		try {
+			switch (osoba.getTip()) {
+			case "ADMIN_KC":
+				updatedOsoba = adminKCService.update(id, (AdministratorKlinickogCentra)osoba);
+				break;
+			case "ADMIN_K":
+				updatedOsoba = adminKlinikeService.update(id, (AdministratorKlinike)osoba);
+				break;
+			case "LEKAR":
+				updatedOsoba = lekarService.update(id, (Lekar)osoba);
+				break;
+			case "SESTRA":
+				updatedOsoba = sestraService.update(id, (MedicinskaSestra)osoba);
+				break;
+
+			default:
+				return new ResponseEntity<Osoba>(HttpStatus.NOT_FOUND);
+			}
+		} catch (Exception e) {
+			return new ResponseEntity<Osoba>(HttpStatus.FORBIDDEN);
+		}
+		req.getSession().setAttribute("user", updatedOsoba);
+		return new ResponseEntity<Osoba>(updatedOsoba, HttpStatus.OK);
+	}
+	
+	
 }

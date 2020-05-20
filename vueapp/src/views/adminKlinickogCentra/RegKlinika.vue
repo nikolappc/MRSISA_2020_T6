@@ -138,7 +138,9 @@
                     
                 })
                 .catch(error=>{
-                    alert(error);
+                    console.log(error);
+                    
+                    this.$store.commit("setSnackbar", {text:"Izvinjavamo se došlo je do greške.", color: "error"});
                 });
         },
         methods:{
