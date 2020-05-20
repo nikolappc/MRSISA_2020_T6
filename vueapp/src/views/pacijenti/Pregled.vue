@@ -28,28 +28,47 @@
               </v-chip>
           </v-row>
           <v-row>
-                <v-tabs
-                    fixed-tabs
-                    background-color="primary"
-                >
-                    <v-tab>
-                    Dijagnoze
-                    </v-tab>
-                    <v-tab>
-                    Lekovi
-                    </v-tab>
-                    <v-tab-item>
-                        <v-card flat>
-
-                        </v-card>
-                    </v-tab-item>
-
-                    <v-tab-item>
-                        <v-card flat>
-                            
-                        </v-card>
-                    </v-tab-item>
-                </v-tabs>
+              <v-container class="pa-5">
+                  <v-tabs
+                      background-color="primary"
+                  >
+                      <v-tab>
+                        Dijagnoze
+                      </v-tab>
+                      <v-tab>
+                        Lekovi
+                      </v-tab>
+                      <v-tab-item>
+                          <v-container>
+                              <v-card flat>
+                                  <Pretrazivac
+                                      @odabrani="promenaDijagnoza"
+                                      id="sifraDijagnoze"
+                                      atribut="nazivDijagnoze"
+                                      color="dijagnoza"
+                                      :elementi="dijagnoze"
+                                  >
+                                  </Pretrazivac>
+                              </v-card>
+                          </v-container>
+                      </v-tab-item>
+  
+                      <v-tab-item>
+                          <v-container>
+                              <v-card flat>
+                                  <Pretrazivac
+                                      @odabrani="promenaLekova"
+                                      id="sifraLeka"
+                                      atribut="nazivLeka"
+                                      color="lek"
+                                      :elementi="lekovi"
+                                  >
+                                  </Pretrazivac>
+                              </v-card>
+                          </v-container>
+                      </v-tab-item>
+                  </v-tabs>
+              </v-container>
           </v-row>
           <v-row >
               <v-spacer></v-spacer>
@@ -60,6 +79,7 @@
                       Zakaži pregled
                   </v-btn>
                   <v-btn
+                  @click="end"
                   color="success">
                       Završi pregled
                   </v-btn>
@@ -72,36 +92,83 @@
 
 <script>
 import axios from "axios";
+import Pretrazivac from "../../components/Pretrazivac.vue";
 export default {
 name: 'Pregled  ',
   data: () => ({
     pregled: {},
+    lekovi:[],
+    dijagnoze:[],
     time: 2000,
   }),
-
+  components:{
+    Pretrazivac
+  },
   mounted () {
-      axios
-      .get('poseta/' + this.$route.params.id)
-      .then(response => {
-          this.pregled = response.data;
-          this.time = Math.floor((Date.parse(this.pregled.termin.kraj)- new Date())/1000);
-          
-      })    
-      .catch((err) => { 
-        console.log(err);
+        axios.get("/lek")
+            .then(res=>{
+                this.lekovi = res.data;
+            }).catch(error=>{
+                console.log(error);
+                
+            });
+        axios.get("/dijagnoza")
+            .then(res=>{
+                this.dijagnoze = res.data;
+            }).catch(error=>{
+                console.log(error);
+                
+            });
+        axios
+            .get('poseta/' + this.$route.params.id)
+            .then(response => {
+                this.pregled = response.data;
+                this.time = Math.floor((Date.parse(this.pregled.termin.kraj)- new Date())/1000);
+                
+            })    
+            .catch((err) => { 
+                console.log(err);
 
-        });
-      this.countDownTimer();
+            });
+        this.countDownTimer();
   },
   methods:{
+    
     countDownTimer: function(){
-                if(this.time > 0) {
-                    setTimeout(() => {
-                        this.time -= 1
-                        this.countDownTimer()
-                    }, 1000)
-                }
+            if(this.time > 0) {
+                setTimeout(() => {
+                    this.time -= 1
+                    this.countDownTimer()
+                }, 1000)
             }
+        },
+    promenaLekova(lekovi){
+        this.lekovi = lekovi;
+    },
+    promenaDijagnoza(dijagnoze){
+        this.dijagnoze = dijagnoze;
+    },
+    end(){
+        let recepti = [];
+        for (const lek of this.lekovi) {
+            recepti.push({
+                overen:false,
+                lek:lek
+            });
+        }
+        this.pregled.recepti = recepti;
+        this.pregled.lekovi = this.lekovi;
+        axios.put("/poseta/pregled/"+this.pregled.id, this.pregled)
+            .then(res=>{
+                console.log(res);
+                this.$router.push("/");
+            })
+            .catch(error=>{
+                console.log(error);
+                this.$store.commit("setSnackbar", {text:"Izvinjavamo se došlo je do greške.", color: "error"});
+            })
+    }
+
   }
 }
 

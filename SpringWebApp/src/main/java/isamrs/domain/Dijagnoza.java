@@ -27,6 +27,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class Dijagnoza {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
+	Long id;
+
 	@Column(name = "sifra", unique = true, nullable = false)
 	private Long sifraDijagnoze;
 
@@ -40,6 +44,22 @@ public class Dijagnoza {
 
 	public Dijagnoza() {
 		super();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Collection<Pregled> getPregled() {
+		return pregled;
+	}
+
+	public void setPregled(Collection<Pregled> pregled) {
+		this.pregled = pregled;
 	}
 
 	public Long getSifraDijagnoze() {

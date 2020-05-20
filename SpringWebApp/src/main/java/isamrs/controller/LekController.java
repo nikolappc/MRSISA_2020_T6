@@ -72,6 +72,6 @@ public class LekController {
 
 	public LekDTO LektoDTO(Lek l){
 		Collection<Recepti> rec = recService.getReceptsWithLek(l.getSifraLeka());
-		return new LekDTO(l.getSifraLeka(),l.getNazivLeka(),l.getOpisLeka(),!rec.isEmpty());
+		return new LekDTO(l.getId(), l.getSifraLeka(),l.getNazivLeka(),l.getOpisLeka(),!rec.isEmpty());
 	}
 }

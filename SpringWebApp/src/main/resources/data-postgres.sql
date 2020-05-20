@@ -38,6 +38,8 @@ insert into godisnji_odmori (kraj, pocetak, id_lekara) values (to_timestamp('202
 insert into lekovi (sifra_leka, naziv_leka) values (1, 'Bromazepam');
 insert into lekovi (sifra_leka, naziv_leka) values (2, 'Bensedin');
 insert into lekovi (sifra_leka, naziv_leka) values (3, 'Brufen');
+insert into lekovi (sifra_leka, naziv_leka) values (4, 'Sirup za kašalj');
+insert into lekovi (sifra_leka, naziv_leka) values (5, 'Diklofen');
 
 insert into termini (pocetak, kraj) values (to_timestamp('2020-03-20 08:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-03-20 09:00', 'YYYY-MM-DD HH24:MI'));
 insert into termini (pocetak, kraj) values (to_timestamp('2020-03-20 09:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-03-20 10:00', 'YYYY-MM-DD HH24:MI'));
@@ -77,9 +79,14 @@ insert into operacije (id, ime, id_sale, id_termina, id_tipa_posete, id_kartona,
 
 insert into recepti (overen, id_recepta, id_pregleda) values (false, 1, 1);
 insert into recepti (overen, id_recepta, id_pregleda) values (true, 2, 2);
+insert into recepti (overen, id_recepta, id_pregleda) values (false, 3, 2);
+insert into recepti (overen, id_recepta, id_pregleda) values (true, 4, 2);
+insert into recepti (overen, id_recepta, id_pregleda) values (false, 5, 2);
 
 insert into dijagnoze (sifra, naziv, id_kartona) values (1, 'Covid-19', 1);
 insert into dijagnoze (sifra, naziv, id_kartona) values (2, 'Depresija', 2);
+insert into dijagnoze (sifra, naziv, id_kartona) values (3, 'Bipolarni poremećaj', 1);
+insert into dijagnoze (sifra, naziv, id_kartona) values (4, 'Epilepsija', 3);
 
 /*insert into stavke_cenovnika (id, cena, id_cenovnik, id_tipa_posete) values (1, 10.5, 1, 1);*/
 
@@ -94,8 +101,8 @@ insert into klinika_pacijent (id_klinike, id_pacijenta) values (1,4);
 
 insert into lekari_operacije (operacija_id, lekar_id) values (1, 1);
 
-insert into dijagnoze_pregled (dijagnoza_sifra, pregled_id) values (1, 1);
-insert into dijagnoze_pregled (dijagnoza_sifra, pregled_id) values (2, 2);
+insert into dijagnoze_pregled (dijagnoza_id, pregled_id) values (1, 1);
+insert into dijagnoze_pregled (dijagnoza_id, pregled_id) values (2, 2);
 
 insert into lekari_specijalnosti (lekar_id, tip_id) values (1, 1);
 insert into lekari_specijalnosti (lekar_id, tip_id) values (1, 2);

@@ -68,6 +68,12 @@ public class PosetaController {
 //
 //	}
 
+	@PutMapping(value = "pregled/{id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<PregledDTO> zavrsiPregled(@PathVariable("id") Integer id, @RequestBody Pregled p){
+		Pregled updated = pregledService.update(id, p);
+		return new ResponseEntity<>(pregledToPregledDTO(updated), HttpStatus.OK);
+	}
+
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Pregled> createSlobodniTerminiDTO(@RequestBody SlobodniTerminiDTO poseta) throws Exception {
 		
