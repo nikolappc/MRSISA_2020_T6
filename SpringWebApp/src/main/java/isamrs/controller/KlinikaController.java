@@ -71,7 +71,7 @@ public class KlinikaController {
 	public ResponseEntity<KlinikaDTO> getKlinikaAdmin(HttpServletRequest req){
 		AdministratorKlinike ak = (AdministratorKlinike) req.getSession().getAttribute("user");
 		
-		Klinika k = ak.getKlinika();
+		Klinika k = klinikaService.findOne(ak.getKlinika().getId());
 		if(k==null) {
 			return new ResponseEntity<KlinikaDTO>(HttpStatus.NOT_FOUND);
 		}

@@ -21,6 +21,14 @@ public class MedicinskaSestraService {
 	public Osoba update(Integer id, MedicinskaSestra osoba) {
 		MedicinskaSestra ms = sestraRepository.findById(id).orElseGet(null);
 		
-		return sestraRepository.save(osoba);
+		ms.setAdresa(osoba.getAdresa());
+		ms.setBrojTelefona(osoba.getBrojTelefona());
+		ms.setEmail(osoba.getEmail());
+		ms.setIme(osoba.getIme());
+		ms.setPrezime(osoba.getPrezime());
+		ms.setJbo(osoba.getJbo());
+		ms.setPassword(osoba.getPassword());
+		
+		return sestraRepository.save(ms);
 	}
 }

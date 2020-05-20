@@ -43,7 +43,7 @@ insert into termini (pocetak, kraj) values (to_timestamp('2020-03-20 08:00', 'YY
 insert into termini (pocetak, kraj) values (to_timestamp('2020-03-20 09:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-03-20 10:00', 'YYYY-MM-DD HH24:MI'));
 insert into termini (pocetak, kraj) values (to_timestamp('2020-03-20 08:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-03-20 10:00', 'YYYY-MM-DD HH24:MI'));
 insert into termini (pocetak, kraj) values (to_timestamp('2020-03-20 10:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-03-20 11:00', 'YYYY-MM-DD HH24:MI'));
-insert into termini (pocetak, kraj) values (to_timestamp('2020-05-20 10:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-05-20 11:00', 'YYYY-MM-DD HH24:MI'));
+insert into termini (pocetak, kraj) values (to_timestamp('2020-05-21 10:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-05-21 11:00', 'YYYY-MM-DD HH24:MI'));
 insert into termini (pocetak, kraj) values (current_timestamp,current_timestamp + interval '10 minutes');
 
 insert into medicinske_sestre (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike) values (2, '064/123-114', 'evans@gmail.com', 'Lily', '000', 'lily12345', 'Evans', 1);

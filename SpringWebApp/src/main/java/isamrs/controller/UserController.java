@@ -243,7 +243,7 @@ public class UserController {
 	}
 	
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Osoba> updateUser(@RequestBody Osoba osoba, @PathVariable Integer id){
+	public ResponseEntity<Osoba> updateUser(HttpServletRequest req,@RequestBody Osoba osoba, @PathVariable Integer id){
 		
 		
 		Osoba updatedOsoba = null;
@@ -268,7 +268,7 @@ public class UserController {
 		} catch (Exception e) {
 			return new ResponseEntity<Osoba>(HttpStatus.FORBIDDEN);
 		}
-		
+		req.getSession().setAttribute("user", updatedOsoba);
 		return new ResponseEntity<Osoba>(updatedOsoba, HttpStatus.OK);
 	}
 	

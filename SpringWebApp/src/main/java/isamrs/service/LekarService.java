@@ -52,7 +52,16 @@ public class LekarService {
 
 	public Lekar update(Integer id,Lekar lekar) {
 		Lekar lekarForUpdate = lekarRepo.findById(id).orElseGet(null);
-		return lekarRepo.save(lekar);
+		
+		lekarForUpdate.setAdresa(lekar.getAdresa());
+		lekarForUpdate.setBrojTelefona(lekar.getBrojTelefona());
+		lekarForUpdate.setEmail(lekar.getEmail());
+		lekarForUpdate.setIme(lekar.getIme());
+		lekarForUpdate.setPrezime(lekar.getPrezime());
+		lekarForUpdate.setJbo(lekar.getJbo());
+		lekarForUpdate.setPassword(lekar.getPassword());
+		
+		return lekarRepo.save(lekarForUpdate);
 	}
 
 	public void delete(Integer id) throws Exception {
