@@ -9,16 +9,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.fasterxml.jackson.annotation.OptBoolean;
 
 import isamrs.domain.Klinika;
+import isamrs.domain.Lekar;
 import isamrs.dto.KlinikaZaPacijentaDTO;
 import isamrs.dto.PretragaKlinikeDTO;
 import isamrs.exceptions.NotFoundException;
 import isamrs.repository.KlinikaRepository;
+import isamrs.repository.LekarRepository;
 
 @org.springframework.stereotype.Service
 public class KlinikaServiceImpl implements Service<Klinika, Integer>{
 
 	@Autowired
 	private KlinikaRepository repo;
+	
+	@Autowired
+	private LekarRepository repoLekar;
 	
 	@Override
 	public Collection<Klinika> findAll() {
@@ -54,7 +59,10 @@ public class KlinikaServiceImpl implements Service<Klinika, Integer>{
 	}
 	
 	public List<Klinika> pretragaZakazivanje(PretragaKlinikeDTO pretraga) {
-		return repo.pretragaZakazivanje(pretraga.getDatum(), pretraga.getNazivTipa(), pretraga.getOcjena(), pretraga.getGrad(), pretraga.getDrzava());
+		return repo.pretragaZakazivanje(pretraga.getGrad(), pretraga.getDrzava(), pretraga.getOcjena(), pretraga.getNazivTipa());
 	}
 	
+	public List<Lekar> lekariKlinikeTipa(int idKlinike, String nazivTipa) {
+		return repoLekar.lekariKlinikeTipa(idKlinike, nazivTipa);
+	}
 }

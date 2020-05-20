@@ -113,6 +113,7 @@ export default {
 		.get('api/pacijent/listaPregleda/' + this.ulogovani.id)
 		.then(response => {
 			this.pregledi = response.data;
+			console.log(this.pregledi);
 		});
 	}
 	},

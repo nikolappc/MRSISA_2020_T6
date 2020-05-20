@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import isamrs.dto.SlobodniTerminiDTO;
 import isamrs.dto.ZakazivanjePregledaDTO;
+import isamrs.dto.ZdravstveniKartonDTO;
 import isamrs.service.KlinikaServiceImpl;
 import isamrs.service.LekarService;
 import isamrs.service.PacijentService;
@@ -30,6 +31,8 @@ import isamrs.service.PosetaService;
 import isamrs.service.PregledService;
 import isamrs.service.TerminService;
 import isamrs.service.TipPoseteService;
+import isamrs.service.ZdravstveniKartonServiceImpl;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
@@ -43,12 +46,6 @@ public class PosetaController {
 	private PosetaService posetaService;
 	
 	@Autowired
-	private TipPoseteService tipService;
-	
-	@Autowired
-	private LekarService lekarService;
-	
-	@Autowired
 	private PacijentService pacijentService;
 	
 	@Autowired
@@ -59,6 +56,9 @@ public class PosetaController {
 	
 	@Autowired
 	private KlinikaServiceImpl klinikaService;
+	
+	@Autowired
+	private ZdravstveniKartonServiceImpl kartonService;
 	
 	@Autowired
 	private MailSender mailSender;
@@ -78,19 +78,21 @@ public class PosetaController {
 	
 	@PostMapping(value = "/zakaziPregled", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> zakaziPregled(@RequestBody ZakazivanjePregledaDTO zahtjev, HttpServletRequest req) throws Exception {
+		if (req.getSession().getAttribute("user") == null || (req.getSession().getAttribute("user") instanceof Pacijent && ((Pacijent)req.getSession().getAttribute("user")).getId() != zahtjev.getIdPacijenta())) {
+			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
+		}
 		Pregled pregled = new Pregled();
 		Klinika k = klinikaService.findOne(zahtjev.getIdKlinike());
-		
 		
 		if (zahtjev.getIdPredefinisanogTermina() == 0) {
 			Termin termin = new Termin();
 			pregled.setRecepti(new ArrayList<Recepti>());
 			pregled.setDijagnoza(new ArrayList<Dijagnoza>());
-			Lekar l = lekarService.findOne(zahtjev.getIdLekara());
+			Lekar l = posetaService.findOneLekar(zahtjev.getIdLekara());
 			Pacijent p = pacijentService.findOne(zahtjev.getIdPacijenta());
 			pregled.setZdravstveniKarton(p.getZdravstveniKarton());
 			pregled.setLekar(l);
-			TipPosete tp = tipService.findByNaziv(zahtjev.getNazivTipa());
+			TipPosete tp = posetaService.findTipByNaziv(zahtjev.getNazivTipa());
 			pregled.setTipPosete(tp);   //falice sala
 			termin.setPocetak(zahtjev.getTerminPocetak());
 			Calendar c = Calendar.getInstance();
@@ -102,10 +104,8 @@ public class PosetaController {
 			k.getPregledi().add(pregled);
 			l.getPregled().add(pregled);
 			p.getZdravstveniKarton().getPregledi().add(pregled);
-			//Klinika kl = klinikaService.update(zahtjev.getIdKlinike(), k);
-			//Lekar le = lekarService.update(zahtjev.getIdLekara(), l);
 			Pregled pr = pregledService.create(pregled);
-			System.out.println("ZAKAZANOOOOOOO " + pr.getId() + " " + pr.getZdravstveniKarton().getPacijent().getIme());
+			//System.out.println("ZAKAZANOOOOOOO " + pr.getId() + " " + pr.getZdravstveniKarton().getPacijent().getIme());
 			
 			//send mail
 			String subject = "Zahtjev za zakazivanje pregleda";
@@ -123,7 +123,9 @@ public class PosetaController {
 			Pregled prDef = pregledService.findOne(zahtjev.getIdPredefinisanogTermina());
 			System.out.println(zahtjev.getIdPredefinisanogTermina());
 			System.out.println(prDef);
-			prDef.setZdravstveniKarton(((Pacijent)req.getSession().getAttribute("user")).getZdravstveniKarton());
+			int idZk = ((Pacijent)req.getSession().getAttribute("user")).getZdravstveniKarton().getId();
+			ZdravstveniKarton zk = kartonService.findOne(idZk);
+			prDef.setZdravstveniKarton(zk);
 			Pregled prDef1 = pregledService.update(zahtjev.getIdPredefinisanogTermina(), prDef);
 			
 			//send mail
@@ -179,7 +181,10 @@ public class PosetaController {
 	
 	
 	@GetMapping(value = "/getPredefinisaniPregledi/{idKlinike}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<PredefinisaniPregledDTO>> getPredefinisaniPregledi(HttpServletRequest request, @PathVariable("idKlinike") Integer idKlinike){
+	public ResponseEntity<Collection<PredefinisaniPregledDTO>> getPredefinisaniPregledi(HttpServletRequest req, @PathVariable("idKlinike") Integer idKlinike){
+		if (req.getSession().getAttribute("user") == null) {
+			return new ResponseEntity<Collection<PredefinisaniPregledDTO>>(HttpStatus.FORBIDDEN);
+		}
 		Collection<Pregled> pregledi = pregledService.findPredefinisaniPreglediKlinike(idKlinike);
 		Collection<PredefinisaniPregledDTO> posete = new ArrayList<PredefinisaniPregledDTO>();
 		Klinika k = klinikaService.findOne(idKlinike);

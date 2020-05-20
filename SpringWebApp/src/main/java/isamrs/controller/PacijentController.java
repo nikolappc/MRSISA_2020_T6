@@ -44,13 +44,6 @@ public class PacijentController {
 	@Autowired
 	private OperacijaService operacijaService;
 
-	@Autowired
-	KlinikaServiceImpl klinikaService;
-
-	/*
-	 * @Autowired private ZdravstveniKartonServiceImpl kartonService;
-	 */
-
 	@GetMapping(value ="/klinike", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<OsobaDTO>> getPacijents(HttpServletRequest req){
 		MedicinskoOsoblje o = (MedicinskoOsoblje)req.getSession().getAttribute("user");
@@ -62,9 +55,11 @@ public class PacijentController {
 	
 	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Pacijent> getPacijet(@PathVariable("id") Integer id) {
+	public ResponseEntity<Pacijent> getPacijet(@PathVariable("id") Integer id, HttpServletRequest req) {
+		if (req.getSession().getAttribute("user") == null || (req.getSession().getAttribute("user") instanceof Pacijent && ((Pacijent)req.getSession().getAttribute("user")).getId() != id)) {
+			return new ResponseEntity<Pacijent>(HttpStatus.FORBIDDEN);
+		}
 		Pacijent pacijent = pacijentService.findOne(id);
-
 		if (pacijent == null) {
 			return new ResponseEntity<Pacijent>(HttpStatus.NOT_FOUND);
 		}
@@ -72,16 +67,21 @@ public class PacijentController {
 		return new ResponseEntity<Pacijent>(pacijent, HttpStatus.OK);
 	}
 	
-	
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Pacijent>> getPacijents() {
+	public ResponseEntity<Collection<Pacijent>> getPacijentss(HttpServletRequest req) {
+		if (req.getSession().getAttribute("user") == null || (req.getSession().getAttribute("user") instanceof Pacijent)) {
+			return new ResponseEntity<Collection<Pacijent>>(HttpStatus.FORBIDDEN);
+		}
 		Collection<Pacijent> pacijenti = pacijentService.findAll();
 		return new ResponseEntity<Collection<Pacijent>>(pacijenti, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/izmjena", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Pacijent> updatePacijent(@RequestBody Pacijent pacijent, HttpServletRequest req) {
+		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
+			return new ResponseEntity<Pacijent>(HttpStatus.FORBIDDEN);
+		}
 		Pacijent p = pacijentService.findOne(pacijent.getId());
 
 		if (p == null) {
@@ -102,7 +102,10 @@ public class PacijentController {
 	}
 
 	@GetMapping(value = "/listaPregleda/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<PosetaDTO>> getPregledi(@PathVariable("id") Integer id) {
+	public ResponseEntity<List<PosetaDTO>> getPregledi(@PathVariable("id") Integer id, HttpServletRequest req) {
+		if (req.getSession().getAttribute("user") == null || (req.getSession().getAttribute("user") instanceof Pacijent && ((Pacijent)req.getSession().getAttribute("user")).getId() != id)) {
+			return new ResponseEntity<List<PosetaDTO>>(HttpStatus.FORBIDDEN);
+		}
 		Pacijent p = pacijentService.findOne(id);
 		List<Pregled> pregledi = pregledService.findByKartonId(p.getZdravstveniKarton().getId());
 		List<Operacija> operacije = operacijaService.findByKartonId(p.getZdravstveniKarton().getId());
@@ -123,6 +126,9 @@ public class PacijentController {
 
 	@GetMapping(value = "/karton/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ZdravstveniKartonDTO> getKarton(@PathVariable("id") Integer id, HttpServletRequest req) {
+		if (req.getSession().getAttribute("user") == null || (req.getSession().getAttribute("user") instanceof Pacijent && ((Pacijent)req.getSession().getAttribute("user")).getId() != id)) {
+			return new ResponseEntity<ZdravstveniKartonDTO>(HttpStatus.FORBIDDEN);
+		}
 		Pacijent p = pacijentService.findOne(id);
 		//System.out.println("KARTON");
 		//System.out.println(id);

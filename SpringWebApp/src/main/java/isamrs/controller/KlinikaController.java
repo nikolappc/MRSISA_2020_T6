@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -106,34 +108,34 @@ public class KlinikaController {
 		}
 		return new ResponseEntity<List<KlinikaZaPacijentaDTO>>(klinikeDTO, HttpStatus.OK);
 	}
-	
-	
-	
+
 	@PostMapping(value = "/pretragaKlinikaZakazivanje",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<KlinikaZaPacijentaDTO>> pretragaKlinikaZakazivanje(@RequestBody PretragaKlinikeDTO pretraga){
-		Collection<Klinika> kliniks = klinikaService.findAll();
-		System.out.println(pretraga.getDatum().toString());
-		Calendar cal1 = Calendar.getInstance();
-		cal1.setTime(pretraga.getDatum());
+	public ResponseEntity<List<KlinikaZaPacijentaDTO>> pretragaKlinikaZakazivanje(@RequestBody PretragaKlinikeDTO pretraga, HttpServletRequest req){
+		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
+			return new ResponseEntity<List<KlinikaZaPacijentaDTO>>(HttpStatus.FORBIDDEN);
+		}
+		//Collection<Klinika> kliniks = klinikaService.findAll();
+		Collection<Klinika> kliniks = klinikaService.pretragaZakazivanje(pretraga);
+		//System.out.println(pretraga.getDatum().toString());
 		List<Klinika> klinike = new ArrayList<Klinika>();
 		for (Klinika kk : kliniks) {
-			if (!klinikaImaTip(kk, pretraga.getNazivTipa())) {
+			/*if (!klinikaImaTip(kk, pretraga.getNazivTipa())) {
 				continue;
-			}
+			}*/
 			boolean datumOk = false;
 			for (Lekar l : kk.getLekari()) {
-				if (lekarImaSlobodanTermin(l, cal1)) {
-					System.out.println("SLOBODAN " + l.getIme());
+				if (lekarImaSlobodanTermin(l, pretraga.getDatum())) {
+					//System.out.println("SLOBODAN " + l.getIme());
 					datumOk = true;
 					break;
 				}
 			}
-			String grad = kk.getAdresa().getGrad();
+			klinike.add(kk);
+			/*String grad = kk.getAdresa().getGrad();
 			String drzava = kk.getAdresa().getDrzava();
-			
 			if (datumOk && grad.contains(pretraga.getGrad()) && drzava.contains(pretraga.getDrzava()) && kk.getProsjek() >= pretraga.getOcjena()) {
 				klinike.add(kk);
-			}
+			}*/
 		}
 		
 		List<KlinikaZaPacijentaDTO> klinikeDTO = new ArrayList<>();
@@ -146,71 +148,75 @@ public class KlinikaController {
 	}
 	
 	@PostMapping(value = "/getSlobodniLekariKlinike", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ArrayList<LekarZaPacijentaDTO>> getSlobodniLekariKlinike(@RequestBody SlobodniLekariKlinikeDTO slk) throws Exception {
+	public ResponseEntity<ArrayList<LekarZaPacijentaDTO>> getSlobodniLekariKlinike(@RequestBody SlobodniLekariKlinikeDTO slk, HttpServletRequest req) throws Exception {
+		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
+			return new ResponseEntity<ArrayList<LekarZaPacijentaDTO>>(HttpStatus.FORBIDDEN);
+		}
 		//ArrayList<Lekar> lekars = lekarService.findLekariKlinike(slk.getIdKlinike());
 		Klinika k = klinikaService.findOne(slk.getIdKlinike());
-		Collection<Lekar> lekars = k.getLekari();
+		/*Collection<Lekar> lekars = k.getLekari();*/
+		List<Lekar> lekars = klinikaService.lekariKlinikeTipa(slk.getIdKlinike(), slk.getNazivTipa());
 		ArrayList<LekarZaPacijentaDTO> lekari = new ArrayList<LekarZaPacijentaDTO>();
-		Calendar cal1 = Calendar.getInstance();
-		System.out.println(slk.getDatum().toString() + "***");
-		cal1.setTime(slk.getDatum());
+		//System.out.println(slk.getDatum().toString() + "***");
 		for (Lekar l : lekars) {
-			if (lekarImaSlobodanTermin(l, cal1) && ljekarImaTip(l, slk.getNazivTipa())) {
+			if (lekarImaSlobodanTermin(l, slk.getDatum())/* && ljekarImaTip(l, slk.getNazivTipa())*/) {
 				LekarZaPacijentaDTO lzp = new LekarZaPacijentaDTO(l);
-				lzp.setListaVremena(KlinikaController.getSlobodniTermini(l, cal1));
+				lzp.setListaVremena(KlinikaController.getSlobodniTermini(l, slk.getDatum()));
 				lzp.setCijena(slk.getNazivTipa(), k);
 				lekari.add(lzp);
 			}
 		}
-		System.out.println("OVOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-		for (LekarZaPacijentaDTO ll : lekari) {
+		//System.out.println("OVOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+		/*for (LekarZaPacijentaDTO ll : lekari) {
 			for (String dd : ll.getListaVremena()) {
 				System.out.println(dd);
 			}
-		}
+		}*/
 		return new ResponseEntity<ArrayList<LekarZaPacijentaDTO>>(lekari, HttpStatus.OK);
 	}
 	
 	
-	public static boolean klinikaImaTip(Klinika k, String naziv) {
+	/*public static boolean klinikaImaTip(Klinika k, String naziv) {
 		for (StavkaCenovnika sc : k.getCenovnik().getStavkaCenovnika()) {
 			if (sc.getTipPosete().getNaziv().equals(naziv)) {
 				return true;
 			}
 		}
 		return false;
-	}
+	}*/
 	
-	public static boolean ljekarImaTip(Lekar l, String naziv) {
+	/*public static boolean ljekarImaTip(Lekar l, String naziv) {
 		for (TipPosete tp : l.getTipoviPoseta()) {
 			if (tp.getNaziv().equals(naziv)) {
 				return true;
 			}
 		}
 		return false;
-	}
+	}*/
 	
 	public static boolean terminZauzetF(Lekar l, Calendar cal1 /*datum iz pretrage*/, Calendar c /*termin koji se provjerava*/) {
 		Calendar cal2 = Calendar.getInstance();
 		for (Pregled p : l.getPregled()) {
-			System.out.println("pregled " + p.getTermin().getPocetak());
-			System.out.println("datum za koji se trazi " + cal1.getTime());
-			System.out.println("termin koji se provjerava " + c.getTime());
+			//System.out.println("pregled " + p.getTermin().getPocetak());
+			//System.out.println("datum za koji se trazi " + cal1.getTime());
+			//System.out.println("termin koji se provjerava " + c.getTime());
 			cal2.setTime(p.getTermin().getPocetak());
-			if ((cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)) && (cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR))) { //pregled je tog datuma
-				System.out.println("jednaki godina i dan");
+			if ((cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)) && 
+					(cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR))) { //pregled je tog datuma
+				//System.out.println("jednaki godina i dan");
 				//if (cal2.getTime() == c.getTime()) {
-				if ((cal2.get(Calendar.HOUR_OF_DAY) == c.get(Calendar.HOUR_OF_DAY)) && (cal2.get(Calendar.MINUTE) == c.get(Calendar.MINUTE))) {
-					System.out.println("zauzet");
+				if ((cal2.get(Calendar.HOUR_OF_DAY) == c.get(Calendar.HOUR_OF_DAY)) && 
+						(cal2.get(Calendar.MINUTE) == c.get(Calendar.MINUTE))) {
+					//System.out.println("zauzet");
 					return true;
 				}
-				System.out.println("nije zauzet");
+				//System.out.println("nije zauzet");
 			}
 		}
 		for (Operacija o : l.getOperacije()) {
-			System.out.println("operacija " + o.getTermin().getPocetak());
-			System.out.println("datum za koji se trazi " + cal1.getTime());
-			System.out.println("termin koji se provjerava " + c.getTime());
+			//System.out.println("operacija " + o.getTermin().getPocetak());
+			//System.out.println("datum za koji se trazi " + cal1.getTime());
+			//System.out.println("termin koji se provjerava " + c.getTime());
 			cal2.setTime(o.getTermin().getPocetak());
 			if ((cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)) && (cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR))) { //pregled je tog datuma
 				Calendar cckraj = Calendar.getInstance();
@@ -218,10 +224,10 @@ public class KlinikaController {
 				cckraj.add(Calendar.MINUTE, 30);
 				if (!(o.getTermin().getPocetak().after(cckraj.getTime()) || o.getTermin().getKraj().before(c.getTime()) || o.getTermin().getPocetak().equals(cckraj.getTime()) || o.getTermin().getKraj().equals(c.getTime()))) {
 					//ovdje <=
-					System.out.println("zauzet");
+					//System.out.println("zauzet");
 					return true;
 				}
-				System.out.println("nije zauzet");
+				//System.out.println("nije zauzet");
 			}
 		}
 		return false;
@@ -236,18 +242,20 @@ public class KlinikaController {
 		return false;
 	}
 	
-	public static boolean lekarImaSlobodanTermin(Lekar l, Calendar cal1 /*datum iz pretrage*/) {
+	public static boolean lekarImaSlobodanTermin(Lekar l, Date date1 /*datum iz pretrage*/) {
 		//ima isto radno vrijeme 5 dana i ne radi vikendom?
+		Calendar cal1 = Calendar.getInstance();
+		cal1.setTime(date1);
 		if (lekarNaGodisnjem(l, cal1.getTime())) {
-			System.out.println("NA GODISNJEM " + l.getIme());
+			//System.out.println("NA GODISNJEM " + l.getIme());
 			return false;
 		}
-		if (cal1.get(Calendar.DAY_OF_WEEK)==0 || cal1.get(Calendar.DAY_OF_WEEK)==6) {
-			System.out.println("VIKEND " + l.getIme());
+		if (cal1.get(Calendar.DAY_OF_WEEK)==0 || cal1.get(Calendar.DAY_OF_WEEK)==1) {
+			//System.out.println("VIKEND " + l.getIme());
 			return false;
 		}
 		if (l.getRadnoVreme() == null || l.getRadnoVreme().isEmpty()) {
-			System.out.println("NEMA RADNO VRIJEME " + l.getIme());
+			//System.out.println("NEMA RADNO VRIJEME " + l.getIme());
 			return false;
 		}
 		ArrayList<RadnoVreme> radnaVremena = new ArrayList<RadnoVreme>(l.getRadnoVreme());
@@ -255,14 +263,14 @@ public class KlinikaController {
 		Calendar cal4 = Calendar.getInstance();
 		Date pocetak = radnaVremena.get(l.getRadnoVreme().size()-1).getPocetak();
 		Date kraj = radnaVremena.get(l.getRadnoVreme().size()-1).getKraj();
-		System.out.println(l.getIme() + " radno vrijeme: " + pocetak + "  -  " + kraj);
+		//System.out.println(l.getIme() + " radno vrijeme: " + pocetak + "  -  " + kraj);
 		cal3.setTime(pocetak);
 		cal4.setTime(kraj);
 		Calendar c = Calendar.getInstance();
 		for (c = cal3; c.before(cal4); c.add(Calendar.MINUTE, 30)) {
-			System.out.println("TERMIN" + c.getTime());
+			//System.out.println("TERMIN" + c.getTime());
 			boolean terminZauzet = terminZauzetF(l, cal1, c);
-			System.out.println("zauzet " + terminZauzet);
+			//System.out.println("zauzet " + terminZauzet);
 			if (!terminZauzet) {
 				return true;
 			}
@@ -273,7 +281,9 @@ public class KlinikaController {
 		}*/
 	}
 	
-	public static ArrayList<String> getSlobodniTermini(Lekar l, Calendar cal1){
+	public static ArrayList<String> getSlobodniTermini(Lekar l, Date date1){
+		Calendar cal1 = Calendar.getInstance();
+		cal1.setTime(date1);
 		ArrayList<Date> vremena = new ArrayList<Date>();
 		ArrayList<RadnoVreme> radnaVremena = new ArrayList<RadnoVreme>(l.getRadnoVreme());
 		Calendar cal3 = Calendar.getInstance();
@@ -296,9 +306,9 @@ public class KlinikaController {
 				vremena.add(c.getTime());
 			}
 		}
-		for (Date v : vremena) {
+		/*for (Date v : vremena) {
 			System.out.println(v);
-		}
+		}*/
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		ArrayList<String> vremenaStr = new ArrayList<String>();

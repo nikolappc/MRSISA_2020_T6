@@ -85,7 +85,7 @@
 			class="mr-4"
 			@click="pretrazi"
 			>
-				Pretraži
+				PretraÅ¾i
 			</v-btn>
 			</v-simple-table>
 			</v-form></v-card>
@@ -168,7 +168,7 @@ export default {
           sortable: true, 
         },
         {
-          text: 'Prosečna ocena', 
+          text: 'ProseÄ�na ocena', 
           value: 'prosjek', 
           sortable: true, 
         },
@@ -281,13 +281,16 @@ export default {
 		.post('klinika/getSlobodniLekariKlinike', {idKlinike: this.idKlinike, datum: this.datum, nazivTipa: this.nazivTipa})
 		.then(response => {
 			this.ljekari = response.data;
-			this.cena = this.ljekari[0].cijenaTipaOpciono;
-			for (let i = 0; i < this.ljekari.length; i++) {
-				for (let j = 0; j < this.ljekari[i].listaVremena.length; j++) {
-					console.log("----------");
-					console.log(this.ljekari[i].listaVremena[j]);
+			if (this.ljekari != []) {
+				this.cena = this.ljekari[0].cijenaTipaOpciono;
+				for (let i = 0; i < this.ljekari.length; i++) {
+					for (let j = 0; j < this.ljekari[i].listaVremena.length; j++) {
+						console.log("----------");
+						console.log(this.ljekari[i].listaVremena[j]);
+					}
 				}
 			}
+			
 		})
 		.catch(function (error) { console.log(error); router.go(-1); });
 		//		<!--prepend-icon="event"-->

@@ -20,10 +20,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class Recepti {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
 	
-	@Column(name = "overen", unique = true, nullable = false)
+	@Column(name = "overen", nullable = false)
 	private boolean overen;
 	
 	@OneToOne
