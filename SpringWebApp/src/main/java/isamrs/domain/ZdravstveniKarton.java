@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "zdravstveni_kartoni")
@@ -37,7 +38,7 @@ public class ZdravstveniKarton {
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	@JoinColumn(name="id_kartona")
-	@JsonBackReference
+	@JsonManagedReference
 	public Collection<Pregled> pregledi;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -45,7 +46,7 @@ public class ZdravstveniKarton {
 	public Collection<Dijagnoza> dijagnoza;
 
 	@OneToOne(mappedBy = "zdravstveniKarton", fetch = FetchType.LAZY)
-	@JsonBackReference(value = "pacijentReference")
+	@JsonBackReference(value = "zdravstveniKartonReference")
 	public Pacijent pacijent;
 
 	

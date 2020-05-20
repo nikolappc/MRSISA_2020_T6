@@ -6,7 +6,39 @@
             label="Pretraga"
             append-icon="mdi-magnify"
         ></v-text-field>
-        <v-simple-table border="1">
+
+        <v-datetime-picker 
+        label="Početak slobodnog termina"
+        v-model="pocetak"
+        dateFormat= 'dd.MM.yyyy'
+        >
+            <template slot="dateIcon">
+                <v-icon>mdi-calendar</v-icon>
+            </template>
+
+            <template slot="timeIcon">
+                <v-icon>mdi-clock-outline</v-icon>
+            </template>
+        </v-datetime-picker>
+
+
+        <v-datetime-picker 
+        label="Kraj slobodnog termina"
+        v-model="kraj"
+        dateFormat= 'dd.MM.yyyy'
+        >
+            <template slot="dateIcon">
+                <v-icon>mdi-calendar</v-icon>
+            </template>
+
+            <template slot="timeIcon">
+                <v-icon>mdi-clock-outline</v-icon>
+            </template>
+        </v-datetime-picker>
+
+
+        <v-simple-table border="1"
+        >
             <thead>
                 <th>ID</th>
                 <th>Naziv</th>
@@ -28,6 +60,7 @@
             </tr>
         </v-simple-table>
 
+        
 
         <v-select
         v-if="pregled.lekar != null"
@@ -48,7 +81,7 @@
             </template>
         </v-select>
 
-
+        
         <v-dialog
             v-model="dialog"
             max-width="500"
@@ -83,8 +116,7 @@ import Sala from "./Sala.vue"
 import axios from "axios"
 import IzmenaSale from "./IzmenaSale.vue"
 export default {
-    data: () => {
-        return {
+    data: () => ({
         sale : [],
         dialog : false,
         dialogSala: null,
@@ -92,8 +124,8 @@ export default {
         pregled: {lekar: null},
         lekari: [],
         pocetak: null,
-        kraj: null,}
-    },
+        kraj: null,
+    }),
     mounted () {
 
         let pregledID = this.$route.params.id;
@@ -104,7 +136,16 @@ export default {
             this.sale = preurediDatum(response.data);
             console.log(response);
         })
-        .catch(() => { this.sale = [{posete: [], sala: {id: '1',naziv: 'Neka klinika'}}]; });
+        .catch(() => { this.sale =  preurediDatum(
+            [
+                {"sala":{"id":1,"naziv":"sala 1"},
+                    "posete":[{"start":"2020-03-20T07:00:00.000+0000","end":"2020-03-20T08:00:00.000+0000","name":"Sirius Black","details":"korona test"},{"start":"2020-03-20T08:00:00.000+0000","end":"2020-03-20T09:00:00.000+0000","name":"Sirius Black","details":"terapija"},{"start":"2020-03-20T09:00:00.000+0000","end":"2020-03-20T10:00:00.000+0000","name":"Sirius Black","details":"previjanje"}]},
+            
+                {"sala":{"id":2,"naziv":"operaciona"},
+                    "posete":[{"start":"2020-03-20T07:00:00.000+0000","end":"2020-03-20T09:00:00.000+0000","name":"Operacija","details":"slijepo crijevo"},{"start":"2020-03-20T07:00:00.000+0000","end":"2020-03-20T09:00:00.000+0000","name":"Operacija","details":"slijepo crijevo"}]}]
+        )
+        
+        });
 
         if(pregledID !== undefined){
             axios
@@ -112,8 +153,10 @@ export default {
                 .then(response => {
                     this.pregled = response.data;
                     console.log(response);
-
-
+                    //this.pregled.termin.pocetak = formatirajDatum(this.pregled.termin.pocetak);
+                    this.pocetak = new Date(this.pregled.termin.pocetak);
+                    //this.pregled.termin.kraj = formatirajDatum(this.pregled.termin.kraj);
+                    this.kraj = new Date(this.pregled.termin.kraj);
                     axios
                         .get('lekar')
                         .then(response => {
@@ -143,13 +186,29 @@ export default {
     computed:{
         filterSale: function(){
             return this.sale.filter(sala => {
+                let uslov1 = false;
                 if(sala.sala.naziv.match(this.search)){
-                    return true;
+                    uslov1 = true;
                 }
                 else if(sala.sala.id == this.search){
-                    return true;
+                    uslov1 = true;
                 }
-                return false;
+
+                let uslov2 = false;
+                if(this.pocetak != null && this.kraj != null){
+                    if(sala.posete.filter( poseta => {
+                        return !(new Date(poseta.start) > new Date(this.kraj)
+                        || new Date(poseta.end) < new Date(this.pocetak))
+                        ;
+                    }).length == 0){
+                        uslov2 = true;
+                    }
+                }
+                else
+                    uslov2 = true;
+
+
+                return uslov1 && uslov2;
             })
         } 
     },
@@ -167,13 +226,15 @@ export default {
                 console.log(sala);
                 this.pregled.sala = sala.sala;
 
+                this.pregled.termin.pocetak = this.pocetak;
+                this.pregled.termin.kraj = this.kraj;
                 let pregledID = this.$route.params.id;
                 axios
                 .put('adminKlinike/pregled/'+ pregledID,this.pregled)
                 .then((response) => {
                     console.log(response);
                     this.$store.commit("setSnackbar", {text:"Termin je uspesno zakazan", color: "success"});
-                    this.$router.go("/sale");
+                    this.$router.push("/homeAdminKlinike");
                 })
                 .catch((err) => { 
                     console.log(err);
@@ -182,6 +243,10 @@ export default {
                 });
             }
         }
+
+
+
+        
         
     }
 }

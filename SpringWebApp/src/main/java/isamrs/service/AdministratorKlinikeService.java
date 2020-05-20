@@ -61,8 +61,20 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
 
 	@Override
 	public AdministratorKlinike update(Integer integer, AdministratorKlinike administratorKlinickogCentra) {
-		administratorKlinickogCentra.setId(integer);
-		return adminklinikeRepository.save(administratorKlinickogCentra);
+		
+		AdministratorKlinike ak = adminklinikeRepository.findById(integer).orElseGet(null);
+		
+		ak.setAdresa(administratorKlinickogCentra.getAdresa());
+		ak.setBrojTelefona(administratorKlinickogCentra.getBrojTelefona());
+		ak.setEmail(administratorKlinickogCentra.getEmail());
+		ak.setIme(administratorKlinickogCentra.getIme());
+		ak.setPrezime(administratorKlinickogCentra.getPrezime());
+		ak.setJbo(administratorKlinickogCentra.getJbo());
+		ak.setPassword(administratorKlinickogCentra.getPassword());
+		if(administratorKlinickogCentra.getKlinika() != null)
+			ak.setKlinika(administratorKlinickogCentra.getKlinika());
+		
+		return adminklinikeRepository.save(ak);
 	}
 
 	@Override
