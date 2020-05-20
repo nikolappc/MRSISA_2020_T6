@@ -102,20 +102,23 @@ Vue.use(VueRouter, VueAxios, axios)
     component:RegTipKlinike
   },
   {
-    path: '/about',
-    name: 'About',
+    path: '/overiRecepte',
+    name: 'OveriRecepte',
+    props:true,
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/OveriRecepte.vue')
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: () => import('../views/About.vue')
   },
   {
     path: '/profilPacijenta',
     name: 'profilPacijenta',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about1" */ '../views/ProfilPacijenta.vue')
+    component: () => import('../views/ProfilPacijenta.vue')
   },
   {
     path: '/profilPacijentaIzmjena',
@@ -150,9 +153,15 @@ Vue.use(VueRouter, VueAxios, axios)
 
   },
   {
-    path: '/sale/:id',
+    path: '/potvrdaPregleda/:id',
     name: 'SalePotvrda',
-    component: () => import('../views/sala/ListaSala.vue')
+    component: () => import('../views/sala/DodelaSala.vue')
+
+  },
+  {
+    path: '/pacijent/:id',
+    name: 'RNG',
+    component: () => import('../views/lekar/ProfilPacijenta.vue')
 
   },
   {
@@ -179,6 +188,21 @@ Vue.use(VueRouter, VueAxios, axios)
     path: '/listaPacijenata',
     name: 'ListaPacijenata',
     component: () => import('../views/pacijenti/ListaPacijenta.vue')
+  },
+  {
+    path: '/pregled/:id',
+    name: 'PregledPacijenta',
+    component: () => import('../views/pacijenti/Pregled.vue')
+  },
+  {
+    path: '/izmenaNaloga',
+    name: 'IzmenaProfila',
+    component: () => import('../views/IzmenaProfila.vue')
+  },
+  {
+    path: '/izmenaKlinike',
+    name: 'IzmenaKlinike',
+    component: () => import('../views/adminKlinike/IzmenaKlinike.vue')
   },
   {
     path:"/homePacijent",
