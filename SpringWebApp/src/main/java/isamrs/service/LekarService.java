@@ -8,11 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import isamrs.domain.Lekar;
+import isamrs.domain.Operacija;
 import isamrs.domain.Osoba;
 import isamrs.domain.Pacijent;
 import isamrs.domain.Pregled;
 import isamrs.dto.OsobaDTO;
+import isamrs.dto.SalaTerminiDTO;
+import isamrs.dto.TerminDTO;
 import isamrs.repository.LekarRepository;
+import isamrs.repository.OperacijaRepository;
 import isamrs.repository.PregledRepository;
 
 @Service
@@ -23,6 +27,9 @@ public class LekarService {
 	
 	@Autowired
 	private PregledRepository pregledRepo;
+	
+	@Autowired
+	private OperacijaRepository operacijaRepo;
 	
 	
 	public Collection<OsobaDTO> findAll() {
@@ -71,6 +78,22 @@ public class LekarService {
 		}
 		
 		return false;
+	}
+
+	public Collection<TerminDTO> findTermini(Integer id) {
+		ArrayList<TerminDTO> pregledi = new ArrayList<TerminDTO>();
+		
+		Lekar l = lekarRepo.findById(id).orElseGet(null);
+		
+		for(Pregled p : pregledRepo.findByLekar(l)) {
+			pregledi.add(new TerminDTO(p)); 
+		}
+		
+		for(Operacija o : operacijaRepo.findByLekar(l)) {
+			pregledi.add(new TerminDTO(o));
+		}
+		
+		return pregledi;
 	}
 	
 	/*public ArrayList<Lekar> findLekariKlinike(int idKlinike){

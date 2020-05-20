@@ -195,6 +195,16 @@ Vue.use(VueRouter, VueAxios, axios)
     component: () => import('../views/pacijenti/Pregled.vue')
   },
   {
+    path: '/izmenaNaloga',
+    name: 'IzmenaProfila',
+    component: () => import('../views/IzmenaProfila.vue')
+  },
+  {
+    path: '/izmenaKlinike',
+    name: 'IzmenaKlinike',
+    component: () => import('../views/adminKlinike/IzmenaKlinike.vue')
+  },
+  {
     path:"/homePacijent",
     name:"HomePacijent",
     component:HomePacijent

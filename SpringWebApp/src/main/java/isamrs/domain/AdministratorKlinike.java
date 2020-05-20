@@ -16,7 +16,7 @@ public class AdministratorKlinike extends Osoba {
 
 	@ManyToOne
 	@JoinColumn(name = "id_klinike", referencedColumnName = "id")
-	@JsonBackReference
+	@JsonBackReference("adminRefer")
 	Klinika klinika;
 
 

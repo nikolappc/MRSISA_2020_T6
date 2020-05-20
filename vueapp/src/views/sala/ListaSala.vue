@@ -71,9 +71,9 @@
             for(let termin of sala.posete){
                 termin.start = formatirajDatum(termin.start);
                 termin.end = formatirajDatum(termin.end);
+            }
         }
-    }
-    return sale;
+        return sale;
     }
     function formatirajDatum(datum){
         return datum.substring(0, 10) + " " + datum.substring(11,16); 

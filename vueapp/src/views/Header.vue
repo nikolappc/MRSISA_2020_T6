@@ -6,13 +6,16 @@
     >
         Klinički centar
         <v-spacer></v-spacer>
-
+        <router-link to="/izmenaNaloga">
+            <v-btn icon><v-icon color="white">mdi-account</v-icon></v-btn>
+        </router-link>
         <router-link to="/">
             <v-btn icon><v-icon color="white">mdi-home</v-icon></v-btn>
         </router-link>
         <router-link v-if="!ulogovan"  to="/loginPage">
             <v-btn icon><v-icon color="white">mdi-login</v-icon></v-btn>
         </router-link>
+        
         <v-btn v-if="ulogovan" @click="logoutFunc" icon><v-icon color="white">mdi-logout</v-icon></v-btn>
         <v-snackbar
             v-model="snackbarSH"

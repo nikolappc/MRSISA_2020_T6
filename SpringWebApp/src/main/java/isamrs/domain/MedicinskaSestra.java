@@ -38,34 +38,20 @@ public class MedicinskaSestra extends MedicinskoOsoblje {
 		this.setTip("SESTRA");
 	}
 
-	/** @pdGenerated default getter */
 	public java.util.Collection<Recepti> getOvereniRecepti() {
 		if (overeniRecepti == null)
 			overeniRecepti = new java.util.HashSet<Recepti>();
 		return overeniRecepti;
 	}
 
-	/** @pdGenerated default iterator getter */
-	public java.util.Iterator getIteratorOvereniRecepti() {
-		if (overeniRecepti == null)
-			overeniRecepti = new java.util.HashSet<Recepti>();
-		return overeniRecepti.iterator();
-	}
 
-	/**
-	 * @pdGenerated default setter
-	 * @param newOvereniRecepti
-	 */
 	public void setOvereniRecepti(java.util.Collection<Recepti> newOvereniRecepti) {
 		removeAllOvereniRecepti();
 		for (java.util.Iterator iter = newOvereniRecepti.iterator(); iter.hasNext();)
 			addOvereniRecepti((Recepti) iter.next());
 	}
 
-	/**
-	 * @pdGenerated default add
-	 * @param newRecepti
-	 */
+
 	public void addOvereniRecepti(Recepti newRecepti) {
 		if (newRecepti == null)
 			return;
@@ -75,10 +61,7 @@ public class MedicinskaSestra extends MedicinskoOsoblje {
 			this.overeniRecepti.add(newRecepti);
 	}
 
-	/**
-	 * @pdGenerated default remove
-	 * @param oldRecepti
-	 */
+
 	public void removeOvereniRecepti(Recepti oldRecepti) {
 		if (oldRecepti == null)
 			return;
@@ -87,40 +70,27 @@ public class MedicinskaSestra extends MedicinskoOsoblje {
 				this.overeniRecepti.remove(oldRecepti);
 	}
 
-	/** @pdGenerated default removeAll */
+
 	public void removeAllOvereniRecepti() {
 		if (overeniRecepti != null)
 			overeniRecepti.clear();
 	}
 
-	/** @pdGenerated default getter */
+
 	public java.util.Collection<GodisnjiOdmor> getGodisnjiOdmor() {
 		if (godisnjiOdmor == null)
 			godisnjiOdmor = new java.util.HashSet<GodisnjiOdmor>();
 		return godisnjiOdmor;
 	}
 
-	/** @pdGenerated default iterator getter */
-	public java.util.Iterator getIteratorGodisnjiOdmor() {
-		if (godisnjiOdmor == null)
-			godisnjiOdmor = new java.util.HashSet<GodisnjiOdmor>();
-		return godisnjiOdmor.iterator();
-	}
 
-	/**
-	 * @pdGenerated default setter
-	 * @param newGodisnjiOdmor
-	 */
+
 	public void setGodisnjiOdmor(java.util.Collection<GodisnjiOdmor> newGodisnjiOdmor) {
 		removeAllGodisnjiOdmor();
 		for (java.util.Iterator iter = newGodisnjiOdmor.iterator(); iter.hasNext();)
 			addGodisnjiOdmor((GodisnjiOdmor) iter.next());
 	}
 
-	/**
-	 * @pdGenerated default add
-	 * @param newGodisnjiOdmor
-	 */
 	public void addGodisnjiOdmor(GodisnjiOdmor newGodisnjiOdmor) {
 		if (newGodisnjiOdmor == null)
 			return;
@@ -130,10 +100,7 @@ public class MedicinskaSestra extends MedicinskoOsoblje {
 			this.godisnjiOdmor.add(newGodisnjiOdmor);
 	}
 
-	/**
-	 * @pdGenerated default remove
-	 * @param oldGodisnjiOdmor
-	 */
+
 	public void removeGodisnjiOdmor(GodisnjiOdmor oldGodisnjiOdmor) {
 		if (oldGodisnjiOdmor == null)
 			return;
@@ -142,21 +109,17 @@ public class MedicinskaSestra extends MedicinskoOsoblje {
 				this.godisnjiOdmor.remove(oldGodisnjiOdmor);
 	}
 
-	/** @pdGenerated default removeAll */
+
 	public void removeAllGodisnjiOdmor() {
 		if (godisnjiOdmor != null)
 			godisnjiOdmor.clear();
 	}
 
-	/** @pdGenerated default getter */
+
 	public Collection<RadnoVreme> getRadnoVreme() {
 		return radnoVreme;
 	}
 
-	/**
-	 * @pdGenerated default setter
-	 * @param newRadnoVreme
-	 */
 	public void setRadnoVreme(Collection<RadnoVreme> newRadnoVreme) {
 		this.radnoVreme = newRadnoVreme;
 	}

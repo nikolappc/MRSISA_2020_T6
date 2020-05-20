@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import isamrs.domain.AdministratorKlinike;
 import isamrs.domain.GodisnjiOdmor;
 import isamrs.domain.Klinika;
 import isamrs.domain.Lekar;
@@ -54,12 +57,25 @@ public class KlinikaController {
 		return new ResponseEntity<Collection<KlinikaDTO>>(kdto, HttpStatus.OK);
 	}
 	
+	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<KlinikaDTO> getKlinika(@PathVariable("id") Integer id){
 		Klinika k = klinikaService.findOne(id);
 		if(k==null) {
 			return new ResponseEntity<KlinikaDTO>(HttpStatus.NOT_FOUND);
 		}
+		return new ResponseEntity<KlinikaDTO>(mapToDTO(k), HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/admin", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<KlinikaDTO> getKlinikaAdmin(HttpServletRequest req){
+		AdministratorKlinike ak = (AdministratorKlinike) req.getSession().getAttribute("user");
+		
+		Klinika k = ak.getKlinika();
+		if(k==null) {
+			return new ResponseEntity<KlinikaDTO>(HttpStatus.NOT_FOUND);
+		}
+		
 		return new ResponseEntity<KlinikaDTO>(mapToDTO(k), HttpStatus.OK);
 	}
 	
