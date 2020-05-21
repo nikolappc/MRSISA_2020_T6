@@ -1,3 +1,2 @@
-worker: npm run install --prefix vueapp
-worker: npm run build --prefix vueapp
+release: ./mvnw -DskipTests clean dependency:list install
 web: java -jar SpringWebApp/target/SpringWebApp-1.0.jar
