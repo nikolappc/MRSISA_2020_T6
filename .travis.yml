@@ -8,7 +8,15 @@ services:
 before_install:
   - chmod +x mvnw
 
+addons:
+  sonarcloud:
+    organization: "nikolappc"
+    token:
+      secure: "J+FMpMxdg6wFforlCLpAAx2nRnxubMIW2HkoxqijhfaHIBOLWSCoIU+vAqLwvvD5/9+BtlqAYp+DBQADufSX0u2gvUskPZgqtO/fmZ5es8nuFNEtI9DefUdbdM6roYXN+lBdQAO3/MJoH279IFvDLZSKL/vZoTbvxfK/9fQwgsRqSlRi3eW1/aUO5OvwAQNh8X7kLtz1aXpHhkV6eYRBHnpZMFCVQjXnumX+uxl3/8ybGCZbN25VknUVc4OC+MbKzIdKvAh4svRyZtHOMkp6pomhuedots1HgTngs6NjwZYW7MojIwBBlZHC6iSusYjmu1CWkhJFI8eZuA6192OdD5Pnc8Hj/c/04fPy5I+n2YPQThpxSH2gOAwyazB8bHc4GODOVhQGE4oU5sKP2KSVsGgaoRtJEfZeKjH83wwA69pJNKxU0/9K9cZqdtfcEzfNgl8k8HjAVyN5AeptvvstA2BJkVcO3QWc2/oNaGqMwIFABZo8VbiBw5Edx3W8xDiuxUJWRI1yWAjYRq+M7NPwRSNyaw8jQp7CGXb8QckZ4AcMBJnuWKCLvYIbj11Cft/aqF1p2pVI0/Vy1u/DEDVW1vNU9azf9zA2RnZASQk0VbK7d4e67Mu0OHYTSEIYE3guRNpskQ+tCTxTZKgwFFavK3N1eeW+3tZBE3ChgoN4OpY=" # encrypted value of your token
+
 script:
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
   - ./mvnw clean install -DskipTests=false -B
 
 dist: trusty
