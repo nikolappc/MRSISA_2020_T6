@@ -7,6 +7,6 @@ module.exports = {
   devServer: {
     proxy: 'https://mrsisa-tim06.herokuapp.com/'
   },
-  outputDir: "build",
+  outputDir: '../SpringWebApp/src/main/resources/static',
   publicPath:""
 }
