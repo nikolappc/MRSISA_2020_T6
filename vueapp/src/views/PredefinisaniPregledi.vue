@@ -135,7 +135,7 @@ export default {
 	zakazi(item) {
 		console.log(item);
 		axios
-		.post('poseta/zakaziPregled', {idPredefinisanogTermina: item.id, idKlinike: this.$route.params.idKlinike, idPacijenta: null, idLekara: null, nazivTipa: null, terminPocetak: null})
+		.post('poseta/zakaziPregled', {idPredefinisanogTermina: item.id, idKlinike: this.$route.params.idKlinike, idPacijenta: this.ulogovani.id, idLekara: null, nazivTipa: null, terminPocetak: null})
 		.then(() => {
 			this.$store.commit("setSnackbar", {text:"Uspešno ste poslali zahtev za zakazivanje pregleda!", color: "success"});
 				router.push("/");   

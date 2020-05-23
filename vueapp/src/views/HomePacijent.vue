@@ -79,6 +79,20 @@
             </LinkCard>
           </router-link>
           </v-col>
+          <v-col
+            lg="4"
+            md="12"
+            sm="12"
+            xs="12"
+          >
+          <router-link to="/zakazaniPregledi">
+            <LinkCard
+              :img="zakazani"
+              title="ZakazaniPregledi"
+            >
+            </LinkCard>
+          </router-link>
+          </v-col>
           
           
         </v-row>
@@ -102,6 +116,7 @@ export default {
 	appointments:require("../assets/appointments.jpg"),
 	medicalrecord:require("../assets/medicalrecord.jpg"),
 	scheduleappointment:require("../assets/scheduleappointment.jpg"),
+	zakazani:require("../assets/zakazani.jpg"),
   }),
   components:{
     LinkCard

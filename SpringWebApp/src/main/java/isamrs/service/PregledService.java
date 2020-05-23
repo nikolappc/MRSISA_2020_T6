@@ -13,5 +13,7 @@ public interface PregledService extends Service<Pregled, Integer> {
 	public Collection<Pregled> findPreglediKlinike(Integer idKlinike);
 	
 	public Collection<Pregled> findPredefinisaniPreglediKlinike(Integer idKlinike);
+	
+	public List<Pregled> getBuduciPotvrdjeniPregledi(Integer id);
 
 }

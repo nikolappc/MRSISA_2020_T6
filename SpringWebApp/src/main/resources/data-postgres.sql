@@ -47,6 +47,8 @@ insert into termini (pocetak, kraj) values (to_timestamp('2020-03-20 08:00', 'YY
 insert into termini (pocetak, kraj) values (to_timestamp('2020-03-20 10:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-03-20 11:00', 'YYYY-MM-DD HH24:MI'));
 insert into termini (pocetak, kraj) values (to_timestamp('2020-05-21 10:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-05-21 11:00', 'YYYY-MM-DD HH24:MI'));
 insert into termini (pocetak, kraj) values (current_timestamp,current_timestamp + interval '10 minutes');
+insert into termini (pocetak, kraj) values (to_timestamp('2020-05-23 10:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-05-23 11:00', 'YYYY-MM-DD HH24:MI'));
+insert into termini (pocetak, kraj) values (to_timestamp('2020-05-25 10:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-05-25 11:00', 'YYYY-MM-DD HH24:MI'));
 
 insert into medicinske_sestre (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike) values (2, '064/123-114', 'evans@gmail.com', 'Lily', '000', 'lily12345', 'Evans', 1);
 
@@ -66,13 +68,16 @@ insert into radna_vremena (kraj, pocetak, id_lekara) values (to_timestamp('1000-
 insert into sale (naziv, id_klinike) values ('sala 1', 1);
 insert into sale (naziv, id_klinike) values ('operaciona', 1);
 
-insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike) values ('korona test', 1, 1, 1, 1, 2, 1);
-insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike) values ('korona2 test', null, 5, 1, 1, 2, 1);
-insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike) values ('terapija', 1, 2, 1, 2, 2, 1);
-insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike) values ('previjanje', 1, 4, 1, 2, 2, 1);
-insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike) values ('Bad dream', 1, 5, 1, 2, 1, 1);
-insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike) values ('Krvarenje desni', 2, 6, 1, 2, 1, 1);
-insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike) values ('previjanjeee', 1, 5, 1, null, 2, 1);
+insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen) values ('korona test', 1, 1, 1, 1, 2, 1, true);
+insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen) values ('korona2 test', null, 5, 1, 1, 2, 1, false);
+insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen) values ('terapija', 1, 2, 1, 2, 2, 1, true);
+insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen) values ('previjanje', 1, 4, 1, 2, 2, 1, true);
+insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen) values ('Bad dream', 1, 5, 1, 2, 1, 1, true);
+insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen) values ('Krvarenje desni', 2, 6, 1, 2, 1, 1, true);
+insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen) values ('previjanjeee', 1, 5, 1, null, 2, 1, false);
+insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen) values ('zakazani1', 1, 7, 1, 2, 2, 1, true);
+insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen) values ('zakazani2', 1, 8, 1, 2, 2, 1, true);
+insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen) values ('zakazani3', null, 8, 1, 2, 2, 1, false);
 
 insert into operacije (id, ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike) values (1, 'slijepo crijevo', 2, 3, 2, 3, 1);
 insert into operacije (id, ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike) values (2, 'slijepo crijevo', 2, 3, 2, 2, 1);

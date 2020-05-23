@@ -1,5 +1,6 @@
 package isamrs.repository;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import isamrs.domain.*;
@@ -38,4 +39,6 @@ public interface PregledRepository extends JpaRepository<Pregled, Integer> {
 	@Query("SELECT p FROM Pregled p WHERE p.lekar = ?1")
 	public Collection<Pregled> findByLekar(Lekar l);
 
+	@Query("SELECT p FROM Pregled p WHERE p.zdravstveniKarton.pacijent.id = ?1 AND p.termin.pocetak > ?2 AND p.potvrdjen = true")
+	public List<Pregled> getBuduciPotvrdjeniPregledi(Integer id, Date now);
 }

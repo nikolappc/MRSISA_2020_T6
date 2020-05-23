@@ -1,6 +1,7 @@
 package isamrs.service;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import isamrs.domain.Lekar;
@@ -47,7 +48,7 @@ public class PregledServiceImpl implements PregledService {
 
 	@Override
 	public void delete(Integer id) {
-
+		pregledRepository.deleteById(id);
 		
 	}
 
@@ -65,5 +66,12 @@ public class PregledServiceImpl implements PregledService {
 	@Override
 	public Collection<Pregled> findPredefinisaniPreglediKlinike(Integer idKlinike) {
 		return pregledRepository.getPredefinisaniPreglediKlinike(idKlinike);
+	}
+	
+	@Override
+	public List<Pregled> getBuduciPotvrdjeniPregledi(Integer id){
+		Date now = new Date();
+		System.out.println(id + "********");
+		return pregledRepository.getBuduciPotvrdjeniPregledi(id, now);
 	}
 }

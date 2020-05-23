@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import isamrs.domain.*;
@@ -22,6 +23,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.web.bind.annotation.*;
 
 import isamrs.dto.SlobodniTerminiDTO;
+import isamrs.dto.ZakazaniPregledDTO;
 import isamrs.dto.ZakazivanjePregledaDTO;
 import isamrs.dto.ZdravstveniKartonDTO;
 import isamrs.service.KlinikaServiceImpl;
@@ -81,6 +83,56 @@ public class PosetaController {
 		return new ResponseEntity<Pregled>(savedSlobodniTerminiDTO, HttpStatus.CREATED);
 	}
 	
+	@GetMapping(value = "zakazani/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ArrayList<ZakazaniPregledDTO>> getZakazaniPregledi(@PathVariable("id") Integer id, HttpServletRequest req){
+		System.out.println(((Pacijent)req.getSession().getAttribute("user")).getId());
+		if (req.getSession().getAttribute("user") == null || (req.getSession().getAttribute("user") instanceof Pacijent && ((Pacijent)req.getSession().getAttribute("user")).getId() != id)) {
+			System.out.println("mrs");
+			return new ResponseEntity<ArrayList<ZakazaniPregledDTO>>(HttpStatus.FORBIDDEN);
+		}
+		List<Pregled> buduciPotvrdjeni = pregledService.getBuduciPotvrdjeniPregledi(id);
+		System.out.println("proslo servis");
+		ArrayList<ZakazaniPregledDTO> zakazani = new ArrayList<ZakazaniPregledDTO>();
+		for (Pregled p : buduciPotvrdjeni) {
+			zakazani.add(new ZakazaniPregledDTO(p));
+		}
+		return new ResponseEntity<ArrayList<ZakazaniPregledDTO>>(zakazani, HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "otkazi/{idPregleda}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> otkaziPregled(@PathVariable("idPregleda") Integer idPregleda, HttpServletRequest req){
+		if (req.getSession().getAttribute("user") == null) {
+			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
+		}
+		Pregled p = pregledService.findOne(idPregleda);
+		if (req.getSession().getAttribute("user") instanceof Pacijent && ((Pacijent)req.getSession().getAttribute("user")).getId() != p.getZdravstveniKarton().getPacijent().getId()){
+			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
+		}
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+		c.add(Calendar.DATE, 1);
+		if (c.getTime().after(p.getTermin().getPocetak())) {
+			return new ResponseEntity<String>("Ne možete otkazati pregled koji počinje u naredna 24 sata.", HttpStatus.BAD_REQUEST);
+		}
+		p.setPotvrdjen(false);  //nije vise potvrdjen jer svi nezakazani su nepotvrdjeni
+		p.setZdravstveniKarton(null);   //uklanja se pacijent
+		//ako je sala rezervisana ne uklanja se, nego pregled postaje predefinisani
+		if (p.getSala() != null) {
+			Pregled pr = pregledService.update(idPregleda, p);
+		} else {
+			//ako sala nije rezervisana
+			//OVO NE MOZE?? JER JE POTVRDJEN=FALSE
+			/*p.setTermin(null);
+			p.setTipPosete(null);
+			p.setRecepti(null);
+			p.setDijagnoza(null);
+			p.setLekar(null);
+			Pregled pr = pregledService.update(idPregleda, p);
+			pregledService.delete(idPregleda);*/
+		}
+		return new ResponseEntity<String>("Uspešno otkazan pregled.", HttpStatus.OK);
+	}
+	
 	@PostMapping(value = "/zakaziPregled", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> zakaziPregled(@RequestBody ZakazivanjePregledaDTO zahtjev, HttpServletRequest req) throws Exception {
 		if (req.getSession().getAttribute("user") == null || (req.getSession().getAttribute("user") instanceof Pacijent && ((Pacijent)req.getSession().getAttribute("user")).getId() != zahtjev.getIdPacijenta())) {
@@ -90,6 +142,7 @@ public class PosetaController {
 		Klinika k = klinikaService.findOne(zahtjev.getIdKlinike());
 		
 		if (zahtjev.getIdPredefinisanogTermina() == 0) {
+			pregled.setPotvrdjen(false);
 			Termin termin = new Termin();
 			pregled.setRecepti(new ArrayList<Recepti>());
 			pregled.setDijagnoza(new ArrayList<Dijagnoza>());
@@ -131,6 +184,7 @@ public class PosetaController {
 			int idZk = ((Pacijent)req.getSession().getAttribute("user")).getZdravstveniKarton().getId();
 			ZdravstveniKarton zk = kartonService.findOne(idZk);
 			prDef.setZdravstveniKarton(zk);
+			prDef.setPotvrdjen(true);
 			Pregled prDef1 = pregledService.update(zahtjev.getIdPredefinisanogTermina(), prDef);
 			
 			//send mail
