@@ -10,11 +10,13 @@ import com.fasterxml.jackson.annotation.OptBoolean;
 
 import isamrs.domain.Klinika;
 import isamrs.domain.Lekar;
+import isamrs.domain.Ocena;
 import isamrs.dto.KlinikaZaPacijentaDTO;
 import isamrs.dto.PretragaKlinikeDTO;
 import isamrs.exceptions.NotFoundException;
 import isamrs.repository.KlinikaRepository;
 import isamrs.repository.LekarRepository;
+import isamrs.repository.OcenaRepository;
 
 @org.springframework.stereotype.Service
 public class KlinikaServiceImpl implements Service<Klinika, Integer>{
@@ -24,6 +26,9 @@ public class KlinikaServiceImpl implements Service<Klinika, Integer>{
 	
 	@Autowired
 	private LekarRepository repoLekar;
+	
+	@Autowired
+	private OcenaRepository repoOcena;
 	
 	@Override
 	public Collection<Klinika> findAll() {
@@ -69,5 +74,39 @@ public class KlinikaServiceImpl implements Service<Klinika, Integer>{
 	
 	public List<Lekar> lekariKlinikeTipa(int idKlinike, String nazivTipa) {
 		return repoLekar.lekariKlinikeTipa(idKlinike, nazivTipa);
+	}
+	
+	public List<Lekar> lekariKlinike(Integer idKlinike) {
+		return repoLekar.lekariKlinike(idKlinike);
+	}
+	
+	public Boolean pacijentOcijenioKliniku(int idPacijenta, int idKlinike) {
+		if (repo.pacijentOcijenioKliniku(idPacijenta, idKlinike) == 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	public Boolean pacijentPosjetioKliniku(int idPacijenta, int idKlinike) {
+		if (repo.pacijentPosjetioKliniku(idPacijenta, idKlinike) == 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	public Ocena getOcenaPacijenta(int idKlinike, int idPacijenta) {
+		return repo.getOcenaPacijenta(idKlinike, idPacijenta);
+	}
+	
+	public Ocena updateOcena(Integer id, Ocena o) {
+		Ocena ocenaForUpdate = repoOcena.findById(id).orElseGet(null);
+		ocenaForUpdate.setVrednost(o.getVrednost());
+		return repoOcena.save(ocenaForUpdate);
+	}
+	
+	public Ocena createOcena(Ocena o) {
+		return repoOcena.save(o);
 	}
 }

@@ -27,6 +27,7 @@ import isamrs.domain.AdministratorKlinike;
 import isamrs.domain.GodisnjiOdmor;
 import isamrs.domain.Klinika;
 import isamrs.domain.Lekar;
+import isamrs.domain.Ocena;
 import isamrs.domain.Operacija;
 import isamrs.domain.Pacijent;
 import isamrs.domain.Pregled;
@@ -34,6 +35,8 @@ import isamrs.domain.RadnoVreme;
 import isamrs.domain.Sala;
 import isamrs.domain.StavkaCenovnika;
 import isamrs.domain.TipPosete;
+import isamrs.dto.GetOcenaDTO;
+import isamrs.dto.SetOcenaDTO;
 import isamrs.dto.KlinikaDTO;
 import isamrs.dto.KlinikaZaPacijentaDTO;
 import isamrs.dto.LekarZaPacijentaDTO;
@@ -41,14 +44,19 @@ import isamrs.dto.OperacijaDTO;
 import isamrs.dto.PosetaDTO;
 import isamrs.dto.PregledDTO;
 import isamrs.dto.PretragaKlinikeDTO;
+import isamrs.dto.ProveraLekarSlobodanDTO;
 import isamrs.dto.SlobodniLekariKlinikeDTO;
 import isamrs.service.KlinikaServiceImpl;
+import isamrs.service.PacijentServiceImpl;
 
 @RestController
 @RequestMapping("/klinika")
 public class KlinikaController {
 	@Autowired
 	private KlinikaServiceImpl klinikaService;
+	
+	@Autowired
+	private PacijentServiceImpl pacijentService;
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<KlinikaDTO>> getKlinike(){
@@ -161,6 +169,64 @@ public class KlinikaController {
 		return new ResponseEntity<List<KlinikaZaPacijentaDTO>>(klinikeDTO, HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/getSviLekariKlinike/{idKlinike}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ArrayList<LekarZaPacijentaDTO>> getSviLekariKlinike(@PathVariable("idKlinike") Integer idKlinike, HttpServletRequest req) throws Exception {
+		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
+			return new ResponseEntity<ArrayList<LekarZaPacijentaDTO>>(HttpStatus.FORBIDDEN);
+		}
+		List<Lekar> lekari = klinikaService.lekariKlinike(idKlinike);
+		ArrayList<LekarZaPacijentaDTO> sviLekari = new ArrayList<LekarZaPacijentaDTO>();
+		for (Lekar l : lekari) {
+			sviLekari.add(new LekarZaPacijentaDTO(l));
+		}
+		return new ResponseEntity<ArrayList<LekarZaPacijentaDTO>>(sviLekari, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/pacijentPosjetio/{idPacijenta}/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<GetOcenaDTO> pacijentPosjetioKliniku(@PathVariable("idPacijenta") Integer idPcijenta, @PathVariable("id") Integer id, HttpServletRequest req) throws Exception {
+		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
+			return new ResponseEntity<GetOcenaDTO>(HttpStatus.FORBIDDEN);
+		}
+		Boolean ocijenio = klinikaService.pacijentOcijenioKliniku(idPcijenta, id);
+		Boolean posjetio = klinikaService.pacijentPosjetioKliniku(idPcijenta, id);
+		GetOcenaDTO getOcena = new GetOcenaDTO();
+		if (posjetio && ocijenio) {
+			getOcena.setMozeOcjenjivati(true);
+			getOcena.setOcjena(klinikaService.getOcenaPacijenta(id, idPcijenta).getVrednost());
+		} else if (posjetio) {
+			getOcena.setMozeOcjenjivati(true);
+			getOcena.setOcjena(0);
+		} else {
+			getOcena.setMozeOcjenjivati(false);
+			getOcena.setOcjena(0);
+		}
+		return new ResponseEntity<GetOcenaDTO>(getOcena, HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/ocijeni", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Boolean> ocijeniKliniku(@RequestBody SetOcenaDTO novaOcena, HttpServletRequest req) throws Exception {
+		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
+		if (klinikaService.pacijentOcijenioKliniku(novaOcena.getIdPacijenta(), novaOcena.getId())) {
+			Ocena stara = klinikaService.getOcenaPacijenta(novaOcena.getId(), novaOcena.getIdPacijenta());
+			stara.setVrednost(novaOcena.getOcjena());
+			Ocena updated = klinikaService.updateOcena(stara.getId(), stara);
+		} else {
+			Ocena nova = new Ocena();
+			nova.setVrednost(novaOcena.getOcjena());
+			Pacijent p = pacijentService.findOne(novaOcena.getIdPacijenta());
+			Klinika k = klinikaService.findOne(novaOcena.getId());
+			nova.setPacijent(p);
+			k.getOcena().add(nova);
+			
+			Ocena created = klinikaService.createOcena(nova);
+			//Klinika kk = klinikaService.update(novaOcena.getId(), k);
+		}
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	
 	@PostMapping(value = "/getSlobodniLekariKlinike", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ArrayList<LekarZaPacijentaDTO>> getSlobodniLekariKlinike(@RequestBody SlobodniLekariKlinikeDTO slk, HttpServletRequest req) throws Exception {
 		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
@@ -188,6 +254,8 @@ public class KlinikaController {
 		}*/
 		return new ResponseEntity<ArrayList<LekarZaPacijentaDTO>>(lekari, HttpStatus.OK);
 	}
+	
+	
 	
 	
 	/*public static boolean klinikaImaTip(Klinika k, String naziv) {

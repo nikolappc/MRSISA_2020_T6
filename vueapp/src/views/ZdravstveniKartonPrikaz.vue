@@ -1,9 +1,9 @@
 <template>
   <div class="zdravstveniKartonPrikaz">
     <v-container>
-			<v-card><h2 style="text-align:center">Zdravstveni karton</h2>
-			<h4 style="text-align:center">{{ karton.email }}, {{ karton.ime }} {{ karton.prezime }}</h4></v-card>
-      <v-card><v-simple-table>
+			<v-card><v-card-title>Zdravstveni karton</v-card-title>
+			<v-card-subtitle>{{ karton.email }}, {{ karton.ime }} {{ karton.prezime }}</v-card-subtitle>
+      <v-simple-table>
         <tbody>
           <tr>
             <td>Visina:</td>

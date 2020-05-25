@@ -1,9 +1,10 @@
 <template>
   <div class="pretragaKlinika">
-    <v-container grid-list-md>
-			<v-card><h2 style="text-align:center">Zakazivanje pregleda</h2>
-			<h4 style="text-align:center">Izaberite datum i tip pregleda.</h4></v-card>
-		<v-card><v-form ref="form" v-model="valid">
+    <v-container grid-list-md><v-card>
+    <v-form ref="form" v-model="valid">
+			<v-card-title>Zakazivanje pregleda</v-card-title>
+			<v-card-subtitle>Izaberite datum i tip pregleda.</v-card-subtitle>
+		<v-card-text>
 		<v-simple-table>
 			<tr><td colspan="3">
 			
@@ -24,6 +25,8 @@
 		readonly
 		:value="fromDateDisp"
 		v-on="on"
+		prepend-inner-icon="mdi-calendar-range"
+		outlined
 	></v-text-field>
 	</template>
 	<v-date-picker
@@ -57,6 +60,7 @@
 				label="*Tip pregleda"
 				dense
 				:rules="rule"
+				outlined
 				return-object
 			>
 				<template slot="selection" slot-scope="data">
@@ -69,23 +73,29 @@
             <tr><td colspan="2"><v-text-field
               v-model="grad"
               label="Grad"
+              append-icon='mdi-map-marker'
+              outlined
             ></v-text-field></td>
             <td colspan="2"><v-text-field
               v-model="drzava"
-              label="Država"
+              label="DrÅ¾ava"
+              append-icon='mdi-map-marker'
+              outlined
             ></v-text-field></td>
             <td colspan="2"><v-text-field
               v-model="ocjena"
               label="Minimalna ocena"
-            ></v-text-field></td></tr></v-simple-table>
-			<v-btn
+              prepend-inner-icon="mdi-file-chart"
+              outlined
+            ></v-text-field></td></tr></v-simple-table></v-card-text>
+			<v-card-actions><v-spacer></v-spacer><v-btn
 			:disabled="!valid"
 			color="success"
 			class="mr-4"
 			@click="pretraziKlinike"
 			>
-				Pretraži klinike
-			</v-btn>
+				PretraÅ¾i klinike
+			</v-btn></v-card-actions>
 		</v-form></v-card>
 	<v-card-title>
 		
@@ -162,12 +172,12 @@ export default {
           sortable: true, 
         },
         {
-          text: 'Država', 
+          text: 'DrÅ¾ava', 
           value: 'adresa.drzava', 
           sortable: true, 
         },
         {
-          text: 'Prosečna ocena', 
+          text: 'ProseÄ�na ocena', 
           value: 'prosjek', 
           sortable: true, 
         },

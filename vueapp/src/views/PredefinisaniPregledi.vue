@@ -1,7 +1,8 @@
 <template>
   <div class="predefinisaniPregledi">
-    <v-container>
-			<v-card><h2 style="text-align:center">Zakažite predefinisani pregled</h2></v-card>
+    <v-container><v-card>
+			<v-card-title>Zakažite predefinisani pregled</v-card-title>
+		<v-card-text>
       <v-data-table
         :headers="headers"
         :items="pregledi"
@@ -15,7 +16,7 @@
         <template v-slot:item.cena="{ item }">{{ item.cena }} din</template>
         <template v-slot:item.data-table-expand="{ item }"><v-btn @click="zakazi(item)">Zakaži</v-btn></template>
         <!--<template><v-btn @click="zakazi(row.item)">Zakaži</v-btn></template>-->
-      </v-data-table>
+      </v-data-table></v-card-text></v-card>
     </v-container>
   </div>
 </template>

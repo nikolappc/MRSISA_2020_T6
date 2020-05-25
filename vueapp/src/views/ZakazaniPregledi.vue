@@ -1,7 +1,7 @@
 <template>
   <div class="zakazaniPregledi">
     <v-container>
-			<v-card><h2 style="text-align:center">Zakazani pregledi</h2></v-card>
+			<v-card><v-card-title>Zakazani pregledi</v-card-title>
       <v-data-table
         :headers="headers"
         :items="pregledi"
@@ -11,7 +11,7 @@
         <template v-slot:item.cena="{ item }">{{ item.cena }} din</template>
         <template v-slot:item.data-table-expand="{ item }"><v-btn @click="otkazi(item)">Otkazi</v-btn></template>
         <!--<template><v-btn @click="zakazi(row.item)">Zakaži</v-btn></template>-->
-      </v-data-table>
+      </v-data-table></v-card>
     </v-container>
   </div>
 </template>

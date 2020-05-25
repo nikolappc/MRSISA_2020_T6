@@ -1,7 +1,9 @@
 <template>
   <div class="klinikeZaPacijenta">
     <v-container grid-list-md>
-			<v-card><h2 style="text-align:center">Klinike</h2></v-card>
+    <v-card>
+			<v-card-title>Klinike</v-card-title>
+	<v-card-text>
       <v-data-table
         :headers="headers"
         :items="klinike"
@@ -10,6 +12,7 @@
         @click:row="posaljiNaStranicuKlinike"
         :custom-sort="customSort">
       </v-data-table>
+	</v-card-text></v-card>
     </v-container>
   </div>
 </template>
@@ -82,7 +85,7 @@ export default {
       return items;
     },
 	posaljiNaStranicuKlinike(value) {
-		router.push({name:'PretragaLjekara', params: {pretraga: {idKlinike: value.id, cena: "", naziv: "", datum: ""}}});
+		router.push("/stranicaKlinike/" + value.id);
 	}, 
   },
 }

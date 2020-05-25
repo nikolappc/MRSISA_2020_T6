@@ -1,17 +1,30 @@
 <template>
 <v-container>
-	<v-form ref="form" v-model="valid">
+	<v-card-title class="headline" v-if="dialogZahtjev.zakazivanje">Zakazivanje pregleda</v-card-title>
+	<div v-if="mozeOcjenjivati">
+		<h1 v-if="dialogZahtjev.zakazivanje == false"><b>{{ this.dialogZahtjev.imeLekara }} {{ this.dialogZahtjev.prezimeLekara }}</b></h1>
+		<v-rating
+			v-model="ocjena"
+			color="yellow darken-3"
+			background-color="grey darken-1"
+			empty-icon="$ratingFull"
+			half-increments
+			hover
+			@input="ocijeniLjekara($event)"
+		></v-rating>
+	</div>
+	<v-form v-if="dialogZahtjev.zakazivanje" ref="form" v-model="valid">
 	<v-simple-table>
 		<tr><td>Klinika: </td><td><b>{{ this.dialogZahtjev.nazivKlinike }}</b></td></tr>
 		<tr><td>Adresa: </td><td><b>{{ this.dialogZahtjev.adresaKlinike }}</b></td></tr>
 		<tr><td>Lekar: </td><td><b>{{ this.dialogZahtjev.imeLekara }} {{ this.dialogZahtjev.prezimeLekara }}</b></td></tr>
 		<tr><td>Tip pregleda: </td><td><b>{{ this.dialogZahtjev.nazivTipa }}</b></td></tr>
 		<tr><td>Datum: </td><td><b>{{ formatDate(this.dialogZahtjev.datum) }}</b></td></tr>
-		<tr><td>Cena: </td><td><b>{{ this.dialogZahtjev.cenaPregleda }} din</b></td></tr>
+		<tr><td>Cena: </td><td><b>{{ this.cijena }} din</b></td></tr>
 		<tr><td>Termin pregleda: </td><td>
 			<v-select
 				v-model="terminPocetak"
-				:items="dialogZahtjev.listaVremena"
+				:items="vremena"
 				:rules="rule"
 				outlined
 				required
@@ -60,10 +73,42 @@ export default {
 	data: () => ({
 		terminPocetak: null,
 		vremena: [],
+		cijena: null,
+		mozeOcjenjivati : false,
+		ocjena: null,
 		rule: [
 			v => !!v || 'Obavezno polje'
 		]
 	}),
+	mounted() {
+		console.log(this.dialogZahtjev.idLekara);
+		axios
+		.get('lekar/pacijentPosjetio/' + this.dialogZahtjev.idPacijenta + '/' + this.dialogZahtjev.idLekara)
+		.then(response => {
+		var getOcena = response.data;
+		this.mozeOcjenjivati = getOcena.mozeOcjenjivati;
+		this.ocjena = getOcena.ocjena;
+		console.log(this.mozeOcjenjivati);
+		console.log(this.ocjena);
+		})
+		.catch(function (error) { console.log(error); router.push("/"); });
+		this.cijena = this.dialogZahtjev.cenaPregleda;
+		this.vremena = this.dialogZahtjev.listaVremena;
+		if (this.dialogZahtjev.zakazivanje == true && this.dialogZahtjev.listaVremena == null) {
+		axios
+		.get('lekar/vratiVremenaCijenu/' + this.dialogZahtjev.idLekara + '/' + this.dialogZahtjev.nazivTipa + '/' + this.formatDate(this.dialogZahtjev.datum))
+		.then(response => {
+		var podaci = response.data;
+		this.cijena = podaci.cijenaTipaOpciono;
+		this.vremena = podaci.listaVremena;
+		console.log(podaci.cijenaTipaOpciono);
+		console.log(podaci.listaVremena);
+		console.log(this.cijena);
+		console.log(this.vremena);
+		})
+		.catch(function (error) { console.log(error); router.push("/"); });
+		}
+	},
     methods: {
 		otkazi() {
 			this.$emit("zatvori");
@@ -92,6 +137,13 @@ export default {
 		},
 		formatDate(value) {
 			return moment(String(value)).format('DD.MM.YYYY.');
+		},
+		ocijeniLjekara(value) {
+			axios
+			.post('lekar/ocijeni', {idPacijenta: this.dialogZahtjev.idPacijenta, id: this.dialogZahtjev.idLekara, ocjena: value})
+			.then(() => {
+				console.log(value);
+			});
 		},
 
     }

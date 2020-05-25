@@ -17,7 +17,7 @@
               <v-text-field
                   v-model="username"
                   :rules="usernameRules"
-                  label="Username"
+                  label="Korisnicko ime"
                   required
                 ></v-text-field>
     
@@ -25,7 +25,7 @@
                   :type="'password'"
                   v-model="password"
                   :rules="passwordRules"
-                  label="Password"
+                  label="Lozinka"
                   required
                 ></v-text-field>
                 <v-btn

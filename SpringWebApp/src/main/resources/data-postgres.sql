@@ -52,16 +52,14 @@ insert into termini (pocetak, kraj) values (to_timestamp('2020-05-25 10:00', 'YY
 
 insert into medicinske_sestre (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike) values (2, '064/123-114', 'evans@gmail.com', 'Lily', '000', 'lily12345', 'Evans', 1);
 
-insert into ocene (vrednost, id_lekara) values (10, 1);
-insert into ocene (vrednost, id_lekara) values (10, 2);
-insert into ocene (vrednost, id_klinike) values (9, 1);
-
-
-
 insert into pacijent (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_kartona,  allowed, responded) values (1, '065/123-111', 'neekolapapic@gmail.com', 'nklppc', '0101', 'hermione12345', 'nklppc',  null, false, false);
 insert into pacijent (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_kartona,  allowed, responded) values (2, '065/123-111', 'hermione@gmail.com', 'Hermione', '0101', 'hermione12345', 'Granger', 1, true, true);
 insert into pacijent (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_kartona,  allowed, responded) values (3, '065/823-115', 'harry@gmail.com', 'Harry', '000', 'harry12345', 'Potter', 2, true, true);
 insert into pacijent (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_kartona,  allowed, responded) values (1, '065/923-115', 'ron@gmail.com', 'Ron', '000', 'ron12345', 'Weasley', 3, true, true);
+
+insert into ocene (vrednost, id_lekara, id_pacijenta) values (5, 1, 3);
+insert into ocene (vrednost, id_lekara, id_pacijenta) values (3, 2, 3);
+insert into ocene (vrednost, id_klinike, id_pacijenta) values (2, 1, 3);
 
 insert into radna_vremena (kraj, pocetak, id_lekara) values (to_timestamp('1000-01-01 17:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('1000-01-01 08:00', 'YYYY-MM-DD HH24:MI'), 1);
 

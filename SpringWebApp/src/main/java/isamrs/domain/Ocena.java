@@ -13,7 +13,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name = "ocene")
@@ -22,7 +27,21 @@ public class Ocena {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@Column(name = "vrednost", nullable = false, unique = false)
-	private int vrednost;
+	private double vrednost;
+	@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name = "id_pacijenta")
+	private Pacijent pacijent;
+	
+	
+
+	public Pacijent getPacijent() {
+		return pacijent;
+	}
+
+	public void setPacijent(Pacijent pacijent) {
+		this.pacijent = pacijent;
+	}
 
 	public Ocena() {
 		super();
@@ -36,11 +55,11 @@ public class Ocena {
 		this.id = id;
 	}
 
-	public int getVrednost() {
+	public double getVrednost() {
 		return vrednost;
 	}
 
-	public void setVrednost(int vrednost) {
+	public void setVrednost(double vrednost) {
 		this.vrednost = vrednost;
 	}
 

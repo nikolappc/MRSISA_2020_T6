@@ -1,11 +1,10 @@
 <template>
   <div class="profilPacijentaIzmjena">
     <v-container>
-      <v-card><v-form
+      <v-form
         ref="form"
         v-model="valid"
-      >
-		<v-text-field
+      ><v-text-field
           v-model="ulogovani.ime"
           :rules="imeRules"
           label="Ime"
@@ -65,7 +64,7 @@
           Izmeni profil
         </v-btn>
 
-      </v-form></v-card>
+      </v-form>
     </v-container>
   </div>
 </template>

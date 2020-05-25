@@ -1,8 +1,9 @@
 <template>
   <div class="posjetePacijenta">
-    <v-container>
-			<v-card><h2 style="text-align:center">Istorija pregleda i operacija</h2>
-			<h4>{{ ulogovani.ime }} {{ ulogovani.prezime }}</h4></v-card>
+    <v-container><v-card>
+		<v-card-title>Istorija pregleda i operacija</v-card-title>
+		<v-card-subtitle>{{ ulogovani.ime }} {{ ulogovani.prezime }}</v-card-subtitle>
+		<v-card-text>
       <v-data-table
         :headers="headers"
         :items="pregledi"
@@ -41,7 +42,7 @@
             </ul>
           </div>
         </template>
-      </v-data-table>
+      </v-data-table></v-card-text></v-card>
     </v-container>
   </div>
 </template>

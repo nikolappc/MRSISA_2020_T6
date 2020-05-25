@@ -1,69 +1,86 @@
 <template>
   <div class="profilPacijentaIzmjena">
     <v-container>
-      <v-card><v-form
+      <v-form
         ref="form"
         v-model="valid"
-      >
+      ><v-card><v-card-text>
 		<v-text-field
           v-model="izmijenjen.ime"
           :rules="imeRules"
           label="Ime"
+          prepend-inner-icon="mdi-account"
+          outlined
           required
 		></v-text-field>
         <v-text-field
           v-model="izmijenjen.prezime"
           :rules="prezimeRules"
           label="Prezime"
+          prepend-inner-icon="mdi-account"
+          outlined
           required
         ></v-text-field>
         <v-text-field
           v-model="novaSifra"
           :rules="passwordRules"
           label="Lozinka"
+          prepend-inner-icon="mdi-file-chart"
+          outlined
           required
         ></v-text-field>
         <v-text-field
           v-model="novaSifraPotvrda"
           :rules="password2Rules"
           label="Potvrda lozinke"
+          prepend-inner-icon="mdi-file-chart"
+          outlined
           required
         ></v-text-field>
         <v-text-field
           v-model="izmijenjen.brojTelefona"
           :rules="brojTelefonaRules"
           label="Broj Telefona"
+          outlined
         ></v-text-field>
         <v-text-field
           v-model="izmijenjen.adresa.adresa"
           :rules="adresaRules"
           label="Adresa"
+          append-icon='mdi-map-marker'
+          outlined
         ></v-text-field>
         <v-text-field
           v-model="izmijenjen.adresa.grad"
           :rules="adresaRules"
           label="Grad"
+          append-icon='mdi-map-marker'
+          outlined
         ></v-text-field>
         <v-text-field
           v-model="izmijenjen.adresa.drzava"
           :rules="adresaRules"
           label="Država"
+          append-icon='mdi-map-marker'
+          outlined
         ></v-text-field>
         <v-text-field
           v-model="izmijenjen.jbo"
           :rules="jboRules"
           label="Jedinstveni broj osiguranika"
-        ></v-text-field>
-        <v-btn
+          repend-inner-icon="mdi-file-chart"
+          outlined
+        ></v-text-field></v-card-text>
+        <v-card-actions><v-spacer></v-spacer><v-btn
           :disabled="!valid"
           color="success"
           class="mr-4"
           @click="izmijeniProfil"
         >
           Izmeni profil
-        </v-btn>
+        </v-btn></v-card-actions>
 
-      </v-form></v-card>
+      </v-card></v-form>
     </v-container>
   </div>
 </template>
