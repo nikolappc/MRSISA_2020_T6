@@ -3,11 +3,13 @@ package isamrs.service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import isamrs.domain.Lekar;
+import isamrs.domain.Ocena;
 import isamrs.domain.Operacija;
 import isamrs.domain.Osoba;
 import isamrs.domain.Pacijent;
@@ -16,6 +18,7 @@ import isamrs.dto.OsobaDTO;
 import isamrs.dto.SalaTerminiDTO;
 import isamrs.dto.TerminDTO;
 import isamrs.repository.LekarRepository;
+import isamrs.repository.OcenaRepository;
 import isamrs.repository.OperacijaRepository;
 import isamrs.repository.PregledRepository;
 
@@ -31,6 +34,9 @@ public class LekarService {
 	@Autowired
 	private OperacijaRepository operacijaRepo;
 	
+	@Autowired
+	private OcenaRepository repoOcena;
+	
 	
 	public Collection<OsobaDTO> findAll() {
 		ArrayList<OsobaDTO> lekari = new ArrayList<OsobaDTO>();
@@ -44,7 +50,7 @@ public class LekarService {
 	public Lekar findOne(Integer id) {
 		return lekarRepo.findById(id).orElseGet(null);
 	}
-
+	
 	public Lekar create(Lekar lekar) {
 		//lekar.setId((int)lekarRepo.count());
 		return lekarRepo.save(lekar);
@@ -104,10 +110,44 @@ public class LekarService {
 		
 		return pregledi;
 	}
+
 	
 	/*public ArrayList<Lekar> findLekariKlinike(int idKlinike){
 		return lekarRepo.findLekariKlinike(idKlinike);
 	}
 */
+	
+	public Boolean pacijentOcijenioLekara(int idPacijenta, int idLekara) {
+		//System.out.println(lekarRepo.pacijentOcijenioLekara(idPacijenta, idLekara));
+		System.out.println("hhhhhhhhhhhh"+idPacijenta + " " + idLekara);
+		if (lekarRepo.pacijentOcijenioLekara(idPacijenta, idLekara).isEmpty()) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	public Boolean pacijentPosjetioLekara(int idPacijenta, int idLekara) {
+		//System.out.println(lekarRepo.pacijentPosjetioLekara(idPacijenta, idLekara));
+		if (lekarRepo.pacijentPosjetioLekara(idPacijenta, idLekara).isEmpty()) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	public Ocena getOcenaPacijenta(int idLekara, int idPacijenta) {
+		return lekarRepo.getOcenaPacijenta(idLekara, idPacijenta);
+	}
+	
+	public Ocena updateOcena(Integer id, Ocena o) {
+		Ocena ocenaForUpdate = repoOcena.findById(id).orElseGet(null);
+		ocenaForUpdate.setVrednost(o.getVrednost());
+		return repoOcena.save(ocenaForUpdate);
+	}
+	
+	public Ocena createOcena(Ocena o) {
+		return repoOcena.save(o);
+	}
 
 }
