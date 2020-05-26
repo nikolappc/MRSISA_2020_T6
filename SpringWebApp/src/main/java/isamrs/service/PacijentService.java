@@ -24,5 +24,6 @@ public interface PacijentService {
 	Collection<Pacijent> findNotConfirmed();
 	Collection<Pacijent> findAll();
 	Collection<PosetaDTO> findBuduciPregled(Integer id);
+	Pacijent findByKarton(Integer idKartona);
 
 }

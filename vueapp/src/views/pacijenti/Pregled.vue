@@ -75,6 +75,7 @@
               <v-col cols="6">
                   <v-btn class="mx-10"
                     color="primary"
+                    @click="dialog = true"
                   >
                       Zakaži pregled
                   </v-btn>
@@ -86,6 +87,20 @@
               </v-col>
           </v-row>
       </v-card>
+      
+      <v-dialog
+            v-model="dialog"
+            max-width="500"
+            >
+                <v-card>
+                    <v-card-title class="headline mx-4">Zakaži pregled/operaciju</v-card-title>
+
+                        <NapraviPregled v-bind:pacijent="pacijent" v-bind:lekar="lekar" v-on:zatvori="dialog = false"/>
+
+                    
+                </v-card>
+      </v-dialog>
+
 
   </v-container>
 </template>
@@ -93,6 +108,7 @@
 <script>
 import axios from "axios";
 import Pretrazivac from "../../components/Pretrazivac.vue";
+import NapraviPregled from "./NapraviPregled.vue";
 export default {
 name: 'Pregled  ',
   data: () => ({
@@ -100,11 +116,17 @@ name: 'Pregled  ',
     lekovi:[],
     dijagnoze:[],
     time: 2000,
+    dialog: false,
+    lekar: {},
+    pacijent: {}
   }),
   components:{
-    Pretrazivac
+    Pretrazivac,
+    NapraviPregled
   },
   mounted () {
+        this.lekar = this.$store.state.ulogovan;
+        
         axios.get("/lek")
             .then(res=>{
                 this.lekovi = res.data;
@@ -124,12 +146,22 @@ name: 'Pregled  ',
             .then(response => {
                 this.pregled = response.data;
                 this.time = Math.floor((Date.parse(this.pregled.termin.kraj)- new Date())/1000);
+
+
+                axios.get("/poseta/pacijent/"+this.pregled.id)
+                    .then(res=>{
+                        this.pacijent = res.data;
+                    }).catch(error=>{
+                        console.log(error);
+                        
+                    });
                 
             })    
             .catch((err) => { 
                 console.log(err);
 
             });
+        
         this.countDownTimer();
   },
   methods:{

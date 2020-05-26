@@ -134,54 +134,54 @@ public class LekarController {
 		}
 		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
 	}
-	
-	@GetMapping(value = "/pacijentPosjetio/{idPacijenta}/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<GetOcenaDTO> pacijentPosjetioLekara(@PathVariable("idPacijenta") Integer idPcijenta, @PathVariable("id") Integer id, HttpServletRequest req) throws Exception {
-		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
-			return new ResponseEntity<GetOcenaDTO>(HttpStatus.FORBIDDEN);
-		}
-		Boolean ocijenio = lekarService.pacijentOcijenioLekara(idPcijenta, id);
-		Boolean posjetio = lekarService.pacijentPosjetioLekara(idPcijenta, id);
-		GetOcenaDTO getOcena = new GetOcenaDTO();
-		if (posjetio && ocijenio) {
-			getOcena.setMozeOcjenjivati(true);
-			getOcena.setOcjena(lekarService.getOcenaPacijenta(id, idPcijenta).getVrednost());
-		} else if (posjetio) {
-			getOcena.setMozeOcjenjivati(true);
-			getOcena.setOcjena(0);
-		} else {
-			getOcena.setMozeOcjenjivati(false);
-			getOcena.setOcjena(0);
-		}
-		return new ResponseEntity<GetOcenaDTO>(getOcena, HttpStatus.OK);
-	}
-	
-	@PostMapping(value = "/ocijeni", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Boolean> ocijeniLekara(@RequestBody SetOcenaDTO novaOcena, HttpServletRequest req) throws Exception {
-		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
-			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-		}
-		System.out.println(novaOcena.getIdPacijenta() + novaOcena.getId());
-		if (lekarService.pacijentOcijenioLekara(novaOcena.getIdPacijenta(), novaOcena.getId())) {
-			System.out.println("USLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-			Ocena stara = lekarService.getOcenaPacijenta(novaOcena.getId(), novaOcena.getIdPacijenta());
-			stara.setVrednost(novaOcena.getOcjena());
-			Ocena updated = lekarService.updateOcena(stara.getId(), stara);
-		} else {
-			System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-			Ocena nova = new Ocena();
-			nova.setVrednost(novaOcena.getOcjena());
-			Pacijent p = pacijentService.findOne(novaOcena.getIdPacijenta());
-			Lekar l = lekarService.findOne(novaOcena.getId());
-			nova.setPacijent(p);
-			l.getOcena().add(nova);
-			
-			Ocena created = lekarService.createOcena(nova);
-			//Lekar ll = lekarService.update(novaOcena.getId(), k);
-		}
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
-	
+//	
+//	@GetMapping(value = "/pacijentPosjetio/{idPacijenta}/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+//	public ResponseEntity<GetOcenaDTO> pacijentPosjetioLekara(@PathVariable("idPacijenta") Integer idPcijenta, @PathVariable("id") Integer id, HttpServletRequest req) throws Exception {
+//		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
+//			return new ResponseEntity<GetOcenaDTO>(HttpStatus.FORBIDDEN);
+//		}
+//		Boolean ocijenio = lekarService.pacijentOcijenioLekara(idPcijenta, id);
+//		Boolean posjetio = lekarService.pacijentPosjetioLekara(idPcijenta, id);
+//		GetOcenaDTO getOcena = new GetOcenaDTO();
+//		if (posjetio && ocijenio) {
+//			getOcena.setMozeOcjenjivati(true);
+//			getOcena.setOcjena(lekarService.getOcenaPacijenta(id, idPcijenta).getVrednost());
+//		} else if (posjetio) {
+//			getOcena.setMozeOcjenjivati(true);
+//			getOcena.setOcjena(0);
+//		} else {
+//			getOcena.setMozeOcjenjivati(false);
+//			getOcena.setOcjena(0);
+//		}
+//		return new ResponseEntity<GetOcenaDTO>(getOcena, HttpStatus.OK);
+//	}
+//	
+//	@PostMapping(value = "/ocijeni", produces = MediaType.APPLICATION_JSON_VALUE)
+//	public ResponseEntity<Boolean> ocijeniLekara(@RequestBody SetOcenaDTO novaOcena, HttpServletRequest req) throws Exception {
+//		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
+//			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+//		}
+//		System.out.println(novaOcena.getIdPacijenta() + novaOcena.getId());
+//		if (lekarService.pacijentOcijenioLekara(novaOcena.getIdPacijenta(), novaOcena.getId())) {
+//			System.out.println("USLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+//			Ocena stara = lekarService.getOcenaPacijenta(novaOcena.getId(), novaOcena.getIdPacijenta());
+//			stara.setVrednost(novaOcena.getOcjena());
+//			Ocena updated = lekarService.updateOcena(stara.getId(), stara);
+//		} else {
+//			System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+//			Ocena nova = new Ocena();
+//			nova.setVrednost(novaOcena.getOcjena());
+//			Pacijent p = pacijentService.findOne(novaOcena.getIdPacijenta());
+//			Lekar l = lekarService.findOne(novaOcena.getId());
+//			nova.setPacijent(p);
+//			l.getOcena().add(nova);
+//			
+//			Ocena created = lekarService.createOcena(nova);
+//			//Lekar ll = lekarService.update(novaOcena.getId(), k);
+//		}
+//		return new ResponseEntity<>(HttpStatus.OK);
+//	}
+//	
 	@GetMapping(value = "/vratiVremenaCijenu/{idLekara}/{nazivTipa}/{datum}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<LekarSlobodanDTO> vratiVremenaCijenu(@PathVariable("idLekara") Integer idLekara, @PathVariable("nazivTipa") String nazivTipa,@PathVariable("datum") String datum, HttpServletRequest req) throws Exception {
 		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {

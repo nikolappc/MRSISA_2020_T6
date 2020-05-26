@@ -86,6 +86,11 @@ public class PacijentServiceImpl implements PacijentService {
 		return pregledi;
 	}
 
+	@Override
+	public Pacijent findByKarton(Integer idKartona) {
+		return pacijentRepository.findByKarton(idKartona);
+	}
+
 	
 	
 

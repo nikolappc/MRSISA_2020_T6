@@ -17,5 +17,8 @@ public interface PacijentRepository extends JpaRepository<Pacijent, Integer>{
 	
 	@Query("SELECT p from Pacijent p WHERE p.responded = false")
 	public Collection<Pacijent> findNotConfirmed();
+	
+	@Query("SELECT p from Pacijent p WHERE p.zdravstveniKarton.id = ?1")
+	public Pacijent findByKarton(Integer idKartona);
 
 }

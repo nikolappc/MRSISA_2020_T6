@@ -31,22 +31,6 @@ public class Pregled extends Poseta {
 	@ManyToMany(mappedBy = "pregled", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	public Collection<Dijagnoza> dijagnoza;
 	
-	@Column(name = "potvrdjen", nullable = false)
-	public boolean potvrdjen;
-
-	
-	
-	public boolean isPotvrdjen() {
-		return potvrdjen;
-	}
-
-
-
-	public void setPotvrdjen(boolean potvrdjen) {
-		this.potvrdjen = potvrdjen;
-	}
-
-
 
 	public Collection<Recepti> getRecepti() {
 		if (recepti == null)

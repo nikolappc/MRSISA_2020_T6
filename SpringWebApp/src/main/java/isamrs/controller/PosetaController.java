@@ -28,6 +28,7 @@ import isamrs.dto.ZakazivanjePregledaDTO;
 import isamrs.dto.ZdravstveniKartonDTO;
 import isamrs.service.KlinikaServiceImpl;
 import isamrs.service.LekarService;
+import isamrs.service.OperacijaService;
 import isamrs.service.PacijentService;
 import isamrs.service.PosetaService;
 import isamrs.service.PregledService;
@@ -59,6 +60,12 @@ public class PosetaController {
 	private KlinikaServiceImpl klinikaService;
 	
 	@Autowired
+	private OperacijaService operacijaService;
+	
+	@Autowired
+	private LekarService lekarService;
+	
+	@Autowired
 	private ZdravstveniKartonServiceImpl kartonService;
 	
 	@Autowired
@@ -75,7 +82,33 @@ public class PosetaController {
 		Pregled updated = pregledService.update(id, p);
 		return new ResponseEntity<>(pregledToPregledDTO(updated), HttpStatus.OK);
 	}
+	
+	@PostMapping(value = "/pregled", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Pregled> createPregled(@RequestBody Pregled pregled, HttpServletRequest req) throws Exception {
+		Integer idLekar =  ((Lekar)req.getSession().getAttribute("user")).getId();
+		Lekar lekar = lekarService.findOne(idLekar);
+		pregled.setLekar(lekar);
+		Pregled savedPregled = pregledService.create(pregled);
+		return new ResponseEntity<Pregled>(savedPregled, HttpStatus.CREATED);
+	}
 
+	@PostMapping(value = "/operacija", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Operacija> createOperacija(@RequestBody Operacija operacija, HttpServletRequest req) throws Exception {
+		
+		Integer idLekar =  ((Lekar)req.getSession().getAttribute("user")).getId();
+		Lekar lekar = lekarService.findOne(idLekar);
+		operacija.addLekar(lekar);
+		Operacija savedOperacija = operacijaService.create(operacija);
+		return new ResponseEntity<Operacija>(savedOperacija, HttpStatus.CREATED);
+	}
+	
+	@GetMapping(value = "/pacijent/{idPregled}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Pacijent> getPacijentPregleda(@PathVariable("idPregled") Integer idPregled) throws Exception {
+		
+		Pacijent pacijent = posetaService.findPacijent(idPregled);
+		return new ResponseEntity<Pacijent>(pacijent, HttpStatus.CREATED);
+	}
+	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Pregled> createSlobodniTerminiDTO(@RequestBody SlobodniTerminiDTO poseta) throws Exception {
 		

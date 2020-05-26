@@ -49,7 +49,30 @@ public class Poseta {
 	@JoinColumn(name = "id_sale")
 	public Sala sala;
 	
+	@Column(name = "potvrdjen", nullable = false)
+	private boolean potvrdjen;
 	
+	@Column(name = "odradjen", nullable = false)
+	private boolean odradjen;
+
+	
+	
+	
+	public boolean isPotvrdjen() {
+		return potvrdjen;
+	}
+
+	public void setPotvrdjen(boolean potvrdjen) {
+		this.potvrdjen = potvrdjen;
+	}
+
+	public boolean isOdradjen() {
+		return odradjen;
+	}
+
+	public void setOdradjen(boolean odradjen) {
+		this.odradjen = odradjen;
+	}
 
 	public String getOpis() {
 		return opis;

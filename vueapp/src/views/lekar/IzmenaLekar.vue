@@ -64,7 +64,7 @@
 import axios from "axios";
 import router from "../../router/index.js"
 export default {
-    name: 'AddLekar',
+    name: 'IzmenaLekar',
     props: ["lekar"],
     data: function() { return {
       valid: true,

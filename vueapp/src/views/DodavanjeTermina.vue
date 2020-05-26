@@ -81,11 +81,11 @@
 
     <template slot="selection" slot-scope="data">
             <!-- HTML that describe how select should render selected items -->
-            Naziv: {{ data.item.naziv }} , Cena: {{ data.item.stavkaCenovnika.cena }}
+            Naziv: {{ data.item.naziv }} , Cena: {{ data.item.stavkeCenovnika.cena }}
         </template>
         <template slot="item" slot-scope="data">
             <!-- HTML that describe how select should render items when the select is open -->
-            Naziv: {{ data.item.naziv }} , Cena: {{ data.item.stavkaCenovnika.cena }}
+            Naziv: {{ data.item.naziv }} , Cena: {{ data.item.stavkeCenovnika.cena }}
         </template>
     </v-select>
 

@@ -66,20 +66,20 @@ insert into radna_vremena (kraj, pocetak, id_lekara) values (to_timestamp('1000-
 insert into sale (naziv, id_klinike) values ('sala 1', 1);
 insert into sale (naziv, id_klinike) values ('operaciona', 1);
 
-insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen) values ('korona test', 1, 1, 1, 1, 2, 1, true);
-insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen) values ('korona2 test', null, 5, 1, 1, 2, 1, false);
-insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen) values ('terapija', 1, 2, 1, 2, 2, 1, true);
-insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen) values ('previjanje', 1, 4, 1, 2, 2, 1, true);
-insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen) values ('Bad dream', 1, 5, 1, 2, 1, 1, true);
-insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen) values ('Krvarenje desni', 2, 6, 1, 2, 1, 1, true);
-insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen) values ('previjanjeee', 1, 5, 1, null, 2, 1, false);
-insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen) values ('zakazani1', 1, 7, 1, 2, 2, 1, true);
-insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen) values ('zakazani2', 1, 8, 1, 2, 2, 1, true);
-insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen) values ('zakazani3', null, 8, 1, 2, 2, 1, false);
+insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen) values ('korona test', 1, 1, 1, 1, 2, 1, true, true);
+insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen) values ('korona2 test', null, 5, 1, 1, 2, 1, false, false);
+insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen) values ('terapija', 1, 2, 1, 2, 2, 1, true, true);
+insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen) values ('previjanje', 1, 4, 1, 2, 2, 1, true, true);
+insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen) values ('Bad dream', 1, 5, 1, 2, 1, 1, true, false);
+insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen) values ('Krvarenje desni', 2, 6, 1, 2, 1, 1, true, false);
+insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen) values ('previjanjeee', 1, 5, 1, null, 2, 1, false, false);
+insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen) values ('zakazani1', 1, 7, 1, 2, 2, 1, true, false);
+insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen) values ('zakazani2', 1, 8, 1, 2, 2, 1, true, false);
+insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen) values ('zakazani3', null, 8, 1, 2, 2, 1, false, false);
 
-insert into operacije (id, ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike) values (1, 'slijepo crijevo', 2, 3, 2, 3, 1);
-insert into operacije (id, ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike) values (2, 'slijepo crijevo', 2, 3, 2, 2, 1);
-insert into operacije (id, ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike) values (3, 'slijepo crijevo', 2, 3, 2, 1, 1);
+insert into operacije (id, ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike, potvrdjen, odradjen) values (1, 'slijepo crijevo', 2, 3, 2, 3, 1, true, true);
+insert into operacije (id, ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike, potvrdjen, odradjen) values (2, 'slijepo crijevo', 2, 3, 2, 2, 1, true, true);
+insert into operacije (id, ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike, potvrdjen, odradjen) values (3, 'slijepo crijevo', 2, 3, 2, 1, 1, true, true);
 
 insert into recepti (overen, id_recepta, id_pregleda) values (false, 1, 1);
 insert into recepti (overen, id_recepta, id_pregleda) values (true, 2, 2);

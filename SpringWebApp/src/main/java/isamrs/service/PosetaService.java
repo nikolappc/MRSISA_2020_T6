@@ -2,6 +2,7 @@ package isamrs.service;
 
 import isamrs.domain.Lekar;
 import isamrs.domain.MedicinskoOsoblje;
+import isamrs.domain.Pacijent;
 import isamrs.domain.Pregled;
 import isamrs.domain.TipPosete;
 import isamrs.dto.PregledDTO;
@@ -36,6 +37,11 @@ public class PosetaService {
 	
 	public TipPosete findTipByNaziv(String naziv) {
 		return tipRepo.findByNaziv(naziv);
+	}
+
+	public Pacijent findPacijent(Integer idPregled) {
+		Pregled pregled = pregledRepo.findById(idPregled).orElseGet(null);
+		return pregled.getZdravstveniKarton().getPacijent();
 	}
 
 }
