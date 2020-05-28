@@ -203,6 +203,11 @@ Vue.use(VueRouter, VueAxios, axios)
     component: () => import('../views/pacijenti/ZakazivanjePregleda.vue')
   },
   {
+    path: '/zakaziOdmor',
+    name: 'ZakazivanjeOdmor',
+    component: () => import('../views/lekar/GodisnjiOdmor.vue')
+  },
+  {
     path: '/izmenaNaloga',
     name: 'IzmenaProfila',
     component: () => import('../views/IzmenaProfila.vue')

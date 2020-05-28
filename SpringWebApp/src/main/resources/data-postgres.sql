@@ -33,7 +33,7 @@ insert into administratori_klinike (id_adrese, broj_telefona, email, ime, jbo, p
 insert into lekari (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike) values (2, '066/123-113', 'lupin@gmail.com', 'Remus', '000', 'remus12345', 'Lupin', 1);
 insert into lekari (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike) values (3, '066/123-163', 'black@gmail.com', 'Sirius', '000', 'sirius12345', 'Black', 1);
 
-insert into godisnji_odmori (kraj, pocetak, id_lekara) values (to_timestamp('2020-03-10', 'YYYY-MM-DD'), to_timestamp('2020-03-03', 'YYYY-MM-DD'), 1);
+insert into godisnji_odmori (kraj, pocetak, odobren, id_lekara) values (to_timestamp('2020-03-10', 'YYYY-MM-DD'), to_timestamp('2020-03-03', 'YYYY-MM-DD'), true, 1);
 
 insert into lekovi (sifra_leka, naziv_leka) values (1, 'Bromazepam');
 insert into lekovi (sifra_leka, naziv_leka) values (2, 'Bensedin');

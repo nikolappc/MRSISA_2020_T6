@@ -26,6 +26,7 @@
                 </LinkCard>
               </router-link>
               </v-col>
+            
               <v-col
                 lg="6"
                 md="12"
@@ -36,6 +37,26 @@
                 <LinkCard
                   :img="pregled"
                   title="Zakaži pregled"
+                >
+                </LinkCard>
+              </router-link>
+              </v-col>
+              </v-row>
+              <v-row
+              justify="center"
+                align-content="stretch"
+                align="stretch"
+              >
+              <v-col
+                lg="6"
+                md="12"
+                sm="12"
+                xs="12"
+              >
+              <router-link to="/zakaziOdmor">
+                <LinkCard
+                  :img="odmor"
+                  title="Zakaži godišnji odmor"
                 >
                 </LinkCard>
               </router-link>
@@ -84,7 +105,8 @@ export default {
    data: () => ({
       termini: {},
       pacijent:require("../assets/pacijent.jpg"),
-      pregled:require("../assets/pregled.jpg")
+      pregled:require("../assets/pregled.jpg"),
+      odmor:require("../assets/odmor.jpg"),
   }),
   mounted () {
     axios

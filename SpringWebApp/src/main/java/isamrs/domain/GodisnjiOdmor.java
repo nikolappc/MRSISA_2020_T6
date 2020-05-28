@@ -26,10 +26,42 @@ public class GodisnjiOdmor {
 	private Date pocetak;
 	@Column(name = "kraj", unique = false, nullable = false)
 	private Date kraj;
+	
+	// Ukoliko nije odobren treba admin da pogleda,
+	// ukoliko jeste lekar je na godisnjem,
+	// ukoliko admin odbije objekat se brise
+	@Column(name = "odobren", unique = false, nullable = false)
+	private boolean odobren;
 
 	public GodisnjiOdmor() {
 		super();
 	}
+	
+	
+
+	public Integer getId() {
+		return id;
+	}
+
+
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+
+
+	public boolean isOdobren() {
+		return odobren;
+	}
+
+
+
+	public void setOdobren(boolean odobren) {
+		this.odobren = odobren;
+	}
+
+
 
 	public Date getPocetak() {
 		return pocetak;
