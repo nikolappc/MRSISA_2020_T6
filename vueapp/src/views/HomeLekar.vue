@@ -32,6 +32,20 @@
                 sm="12"
                 xs="12"
               >
+              <router-link to="/zakaziPregled">
+                <LinkCard
+                  :img="pregled"
+                  title="Zakaži pregled"
+                >
+                </LinkCard>
+              </router-link>
+              </v-col>
+              <v-col
+                lg="6"
+                md="12"
+                sm="12"
+                xs="12"
+              >
                 <Kalendar v-bind:events="termini"/>
               </v-col>
             </v-row>
@@ -69,7 +83,8 @@ export default {
   },
    data: () => ({
       termini: {},
-      pacijent:require("../assets/pacijent.jpg")
+      pacijent:require("../assets/pacijent.jpg"),
+      pregled:require("../assets/pregled.jpg")
   }),
   mounted () {
     axios

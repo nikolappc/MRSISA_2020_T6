@@ -198,6 +198,11 @@ Vue.use(VueRouter, VueAxios, axios)
     component: () => import('../views/pacijenti/Pregled.vue')
   },
   {
+    path: '/zakaziPregled',
+    name: 'ZakazivanjePregleda',
+    component: () => import('../views/pacijenti/ZakazivanjePregleda.vue')
+  },
+  {
     path: '/izmenaNaloga',
     name: 'IzmenaProfila',
     component: () => import('../views/IzmenaProfila.vue')
