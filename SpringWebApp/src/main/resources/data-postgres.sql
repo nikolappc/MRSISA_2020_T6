@@ -33,7 +33,12 @@ insert into administratori_klinike (id_adrese, broj_telefona, email, ime, jbo, p
 insert into lekari (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike) values (2, '066/123-113', 'lupin@gmail.com', 'Remus', '000', 'remus12345', 'Lupin', 1);
 insert into lekari (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike) values (3, '066/123-163', 'black@gmail.com', 'Sirius', '000', 'sirius12345', 'Black', 1);
 
+insert into medicinske_sestre (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike) values (2, '064/123-114', 'evans@gmail.com', 'Lily', '000', 'lily12345', 'Evans', 1);
+
 insert into godisnji_odmori (kraj, pocetak, odobren, id_lekara) values (to_timestamp('2020-03-10', 'YYYY-MM-DD'), to_timestamp('2020-03-03', 'YYYY-MM-DD'), true, 1);
+insert into godisnji_odmori (kraj, pocetak, odobren, id_sestre) values (to_timestamp('2020-03-10', 'YYYY-MM-DD'), to_timestamp('2020-03-03', 'YYYY-MM-DD'), true, 1);
+insert into godisnji_odmori (kraj, pocetak, odobren, id_lekara) values (to_timestamp('2020-03-10', 'YYYY-MM-DD'), to_timestamp('2020-03-03', 'YYYY-MM-DD'), false, 1);
+insert into godisnji_odmori (kraj, pocetak, odobren, id_sestre) values (to_timestamp('2020-03-10', 'YYYY-MM-DD'), to_timestamp('2020-03-03', 'YYYY-MM-DD'), false, 1);
 
 insert into lekovi (sifra_leka, naziv_leka) values (1, 'Bromazepam');
 insert into lekovi (sifra_leka, naziv_leka) values (2, 'Bensedin');
@@ -50,7 +55,6 @@ insert into termini (pocetak, kraj) values (current_timestamp,current_timestamp 
 insert into termini (pocetak, kraj) values (to_timestamp('2020-05-23 10:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-05-23 11:00', 'YYYY-MM-DD HH24:MI'));
 insert into termini (pocetak, kraj) values (to_timestamp('2020-05-25 10:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-05-25 11:00', 'YYYY-MM-DD HH24:MI'));
 
-insert into medicinske_sestre (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike) values (2, '064/123-114', 'evans@gmail.com', 'Lily', '000', 'lily12345', 'Evans', 1);
 
 insert into pacijent (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_kartona,  allowed, responded) values (1, '065/123-111', 'neekolapapic@gmail.com', 'nklppc', '0101', 'hermione12345', 'nklppc',  null, false, false);
 insert into pacijent (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_kartona,  allowed, responded) values (2, '065/123-111', 'hermione@gmail.com', 'Hermione', '0101', 'hermione12345', 'Granger', 1, true, true);

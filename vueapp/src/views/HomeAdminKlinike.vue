@@ -72,51 +72,90 @@
           </v-card>
         </v-container>
       </v-col>
-      <v-col
-        lg="3"
-        md="6"
-        sm="12"
-      >
-      <v-container>
-        <v-card
-              color="primary"
-            >
+      <v-row>
+        <v-col
+          lg="4"
+          md="6"
+          sm="12"
+        >
           <v-container>
-            <v-row>
-              <v-col
-                cols="12"
-              >
-                <v-card>
-                  <v-card-title
+            <v-card
+                  color="primary"
+                >
+              <v-container>
+                  <v-col
+                    cols="12"
                   >
-                    Zahtevi za pregled
-                  </v-card-title>
-                </v-card>
-              </v-col>
-              <v-col
-                cols="12"
-                v-if="zahtevi.length==0"
-              >
-                <v-card>
-                  <v-container>
-                    Trenutno nema zahteva za pregled.
-                  </v-container>
-                </v-card>
-              </v-col>
-              <v-col
-                v-else
-                cols="12"
-                v-for="idPregleda in zahtevi"
-                :key="idPregleda"
-              >
-                <PregledConf :idPregleda="idPregleda">
-                </PregledConf>
-              </v-col>
-            </v-row>
+                    <v-card>
+                      <v-card-title
+                      >
+                        Zahtevi za pregled
+                      </v-card-title>
+                    </v-card>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                  >
+                    <v-card>
+                      <v-container>
+                        Trenutno nema zahteva za pregled.
+                      </v-container>
+                    </v-card>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    v-for="idPregleda in pregledi"
+                    :key="idPregleda"
+                  >
+                    <PregledConf :idPregleda="idPregleda">
+                    </PregledConf>
+                  </v-col>
+              </v-container>
+            </v-card>
           </v-container>
-        </v-card>
-      </v-container>
-      </v-col>
+        </v-col>
+
+        <v-col
+          lg="4"
+          md="6"
+          sm="12"
+        >
+          <v-container>
+            <v-card
+                  color="primary"
+                >
+              <v-container>
+                    
+                    <v-col
+                      cols="12"
+                    >
+                      <v-card>
+                        <v-card-title
+                        >
+                          Zahtevi za odsustvo
+                        </v-card-title>
+                      </v-card>
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      v-if="odsustvo"
+                    >
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      v-for="odsustvo in odsustva"
+                      :key="odsustvo.odmor.id"
+                    >
+                      <OdmorCard :zahtev="odsustvo.odmor" :osoba="odsustvo.mo" v-on:zatvori="zatvori">
+                      </OdmorCard>
+                    </v-col>
+                </v-container>
+              </v-card>
+          </v-container>
+
+        </v-col>
+      
+      <v-row>
     </v-container>
 
   </div>
@@ -125,26 +164,29 @@
 
 
 </template>
-
 <script>
 import axios from 'axios';
 //import router from "../router/index.js"
 import LinkCard from "../components/LinkCard.vue";
 import PregledConf from "../components/PregledConfirmation.vue"
+import OdmorCard from "../components/OdmorCard.vue"
 export default {
   name: 'HomeAdminKlinike',
   components:{
     LinkCard,
-    PregledConf
+    PregledConf,
+    OdmorCard
 
   },
-   data: () => ({
+   data: function() { return {
       lekari:require("../assets/lekar.jpg"),
       sale:require("../assets/sale.jpg"),
       tipPregleda:require("../assets/tipPregleda.jpg"),
       dodavanje:require("../assets/dodavanje.jpg"),
-      zahtevi: []
-  }),
+      pregledi: [],
+      odsustva: [],
+    }
+  },
   mounted () {
       axios
       .get('api/ulogovan')
@@ -157,13 +199,28 @@ export default {
       axios
       .get('adminKlinike/pregled')
       .then(response => {
-          this.zahtevi = response.data;
+          this.pregledi = response.data;
+      })
+      .catch(function (error) { console.log(error); //router.push("/loginPage"); 
+      });
+
+      axios
+      .get('odmor')
+      .then(response => {
+          this.odsustva = response.data;
       })
       .catch(function (error) { console.log(error); //router.push("/loginPage"); 
       });
 
 
   },
+  methods:{
+    zatvori: function(id){
+      console.log(id);
+      console.log(this.odsustva);
+      this.odsustva = this.odsustva.filter(odsustvo => odsustvo.odmor.id !== id);
+    }
+  }
   
   
 }
