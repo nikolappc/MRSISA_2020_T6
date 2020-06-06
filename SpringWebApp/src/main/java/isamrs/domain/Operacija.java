@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class Operacija extends Poseta {
 
 	@ManyToMany(mappedBy = "operacije",cascade = CascadeType.ALL)
-	public java.util.Collection<Lekar> lekari;
+	private java.util.Collection<Lekar> lekari;
 
 	public Operacija() {
 		super();
@@ -34,7 +34,7 @@ public class Operacija extends Poseta {
 	}
 
 	/** @pdGenerated default getter */
-	public java.util.Collection<Lekar> getLekar() {
+	public java.util.Collection<Lekar> getLekari() {
 		if (lekari == null)
 			lekari = new java.util.HashSet<Lekar>();
 		return lekari;

@@ -54,7 +54,7 @@ public abstract class Osoba{
 	private String tip;
 
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = {CascadeType.PERSIST})
 	@JoinColumn(name = "id_adrese", referencedColumnName = "id")
 	private Adresa adresa;
 

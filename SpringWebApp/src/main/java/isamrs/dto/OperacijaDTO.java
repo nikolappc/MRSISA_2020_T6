@@ -2,11 +2,8 @@ package isamrs.dto;
 
 import java.util.ArrayList;
 
-import isamrs.domain.Dijagnoza;
 import isamrs.domain.Lekar;
 import isamrs.domain.Operacija;
-import isamrs.domain.Pregled;
-import isamrs.domain.Recepti;
 import isamrs.domain.Sala;
 import isamrs.domain.Termin;
 import isamrs.domain.TipPosete;
@@ -31,7 +28,7 @@ public class OperacijaDTO extends PosetaDTO {
 	public OperacijaDTO(Operacija p) {
 		this(p.getId(), p.getOpis(), p.getTermin(), p.getTipPosete(), p.getSala());
 		this.lekari = new ArrayList<String>();
-		for (Lekar r : p.getLekar()) {
+		for (Lekar r : p.getLekari()) {
 			this.lekari.add(r.getIme() + " " + r.getPrezime());
 		}
 	}

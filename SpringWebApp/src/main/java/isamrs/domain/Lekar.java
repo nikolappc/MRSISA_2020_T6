@@ -50,7 +50,7 @@ public class Lekar extends MedicinskoOsoblje {
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "lekari_operacije", joinColumns = { @JoinColumn(name = "lekar_id") }, inverseJoinColumns = {
 	@JoinColumn(name = "operacija_id") })
-	public Collection<Operacija> operacije;
+	public Collection<Operacija> operacije = new LinkedList<>();
 	
 	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.ALL)
