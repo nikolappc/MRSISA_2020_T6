@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import isamrs.domain.Recepti;
 import isamrs.dto.LekDTO;
+import isamrs.exceptions.NotFoundException;
 import isamrs.service.ReceptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,7 +47,7 @@ public class LekController {
 		try {			
 			Lek l = service.findOne(id);
 			return new ResponseEntity<LekDTO>(LektoDTO(l), HttpStatus.OK);
-		}catch (Exception e) {
+		}catch (Exception | NotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lek sa id-jem: "+id+" nije pronadjen", e);
 		}
 		
@@ -59,7 +60,7 @@ public class LekController {
 	}
 
 	@PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<LekDTO> updateLek(@RequestBody Lek l, @PathVariable("id") Long id){
+	public ResponseEntity<LekDTO> updateLek(@RequestBody Lek l, @PathVariable("id") Long id) throws NotFoundException {
 		Lek l2 = service.update(id, l);
 		return new ResponseEntity<LekDTO>(LektoDTO(l2), HttpStatus.OK);
 	}

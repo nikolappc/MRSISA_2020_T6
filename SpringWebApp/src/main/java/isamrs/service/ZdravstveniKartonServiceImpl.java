@@ -18,12 +18,11 @@ public class ZdravstveniKartonServiceImpl implements Service<ZdravstveniKarton, 
 	
 	@Override
 	public Collection<ZdravstveniKarton> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return zdravstveniKartonRepository.findAll();
 	}
 
 	@Override
-	public ZdravstveniKarton findOne(Integer id) {
+	public ZdravstveniKarton findOne(Integer id) throws NotFoundException {
 		Optional<ZdravstveniKarton> karton = zdravstveniKartonRepository.findById(id);
 		if(karton.isPresent()) {
 			return  karton.get();			
@@ -33,20 +32,22 @@ public class ZdravstveniKartonServiceImpl implements Service<ZdravstveniKarton, 
 
 	@Override
 	public ZdravstveniKarton create(ZdravstveniKarton t) {
-		// TODO Auto-generated method stub
-		return null;
+		return zdravstveniKartonRepository.save(t);
 	}
 
 	@Override
-	public ZdravstveniKarton update(Integer id, ZdravstveniKarton t) {
-		// TODO Auto-generated method stub
-		return null;
+	public ZdravstveniKarton update(Integer id, ZdravstveniKarton t) throws NotFoundException {
+		zdravstveniKartonRepository.findById(id).orElseThrow(NotFoundException::new);
+		return zdravstveniKartonRepository.save(t);
 	}
 
 	@Override
 	public void delete(Integer id) {
-		// TODO Auto-generated method stub
-		
+		zdravstveniKartonRepository.deleteById(id);
 	}
 
+	public ZdravstveniKarton findByPacijent(Integer pacijentId) {
+
+		return zdravstveniKartonRepository.findByPacijent(pacijentId);
+	}
 }

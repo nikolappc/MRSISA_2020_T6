@@ -20,7 +20,7 @@ public class LekService implements Service<Lek, Long>{
 	}
 
 	@Override
-	public Lek findOne(Long id) {
+	public Lek findOne(Long id) throws NotFoundException {
 		Optional<Lek> o = repo.findById((long)id);
 		if(o.isPresent()) {
 			return o.get();
@@ -34,7 +34,7 @@ public class LekService implements Service<Lek, Long>{
 	}
 
 	@Override
-	public Lek update(Long id, Lek t) {
+	public Lek update(Long id, Lek t) throws NotFoundException {
 		if(!repo.findById(id).isPresent()){
 			throw new NotFoundException();
 		}

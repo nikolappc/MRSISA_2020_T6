@@ -107,14 +107,54 @@
                     v-for="idPregleda in pregledi"
                     :key="idPregleda"
                   >
-                    <PregledConf :idPregleda="idPregleda">
-                    </PregledConf>
+                    <PosetaConf :id="idPregleda" :pregled="true">
+                    </PosetaConf>
                   </v-col>
               </v-container>
             </v-card>
           </v-container>
         </v-col>
-
+        <v-col
+        lg="4"
+        md="6"
+        sm="12"
+      >
+        <v-container>
+          <v-card
+                color="primary"
+              >
+            <v-container>
+                <v-col
+                  cols="12"
+                >
+                  <v-card>
+                    <v-card-title
+                    >
+                      Zahtevi za operaciju
+                    </v-card-title>
+                  </v-card>
+                </v-col>
+                <v-col
+                  cols="12"
+                >
+                  <v-card>
+                    <v-container>
+                      Trenutno nema zahteva za operaciju.
+                    </v-container>
+                  </v-card>
+                </v-col>
+                <v-col
+                  cols="12"
+                  v-for="o in operacije"
+                  :key="o"
+                >
+                  <PosetaConf :id="o" :pregled="false">
+                  </PosetaConf>
+                </v-col>
+            </v-container>
+          </v-card>
+        </v-container>
+      </v-col>
         <v-col
           lg="4"
           md="6"
@@ -168,13 +208,13 @@
 import axios from 'axios';
 //import router from "../router/index.js"
 import LinkCard from "../components/LinkCard.vue";
-import PregledConf from "../components/PregledConfirmation.vue"
+import PosetaConf from "../components/PosetaConfirmation.vue"
 import OdmorCard from "../components/OdmorCard.vue"
 export default {
   name: 'HomeAdminKlinike',
   components:{
     LinkCard,
-    PregledConf,
+    PosetaConf,
     OdmorCard
 
   },
@@ -184,6 +224,7 @@ export default {
       tipPregleda:require("../assets/tipPregleda.jpg"),
       dodavanje:require("../assets/dodavanje.jpg"),
       pregledi: [],
+      operacije: [],
       odsustva: [],
     }
   },
@@ -200,6 +241,14 @@ export default {
       .get('adminKlinike/pregled')
       .then(response => {
           this.pregledi = response.data;
+      })
+      .catch(function (error) { console.log(error); //router.push("/loginPage"); 
+      });
+
+      axios
+      .get('adminKlinike/operacija')
+      .then(response => {
+          this.operacije = response.data;
       })
       .catch(function (error) { console.log(error); //router.push("/loginPage"); 
       });

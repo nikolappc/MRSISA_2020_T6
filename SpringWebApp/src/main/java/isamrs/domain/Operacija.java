@@ -29,6 +29,10 @@ public class Operacija extends Poseta {
 		super();
 	}
 
+	public Operacija(String opis, Termin termin, TipPosete tipPosete) {
+		super(opis, termin, tipPosete);
+	}
+
 	/** @pdGenerated default getter */
 	public java.util.Collection<Lekar> getLekar() {
 		if (lekari == null)

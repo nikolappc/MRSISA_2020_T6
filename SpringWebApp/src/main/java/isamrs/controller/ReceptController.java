@@ -1,6 +1,7 @@
 package isamrs.controller;
 import isamrs.domain.Recepti;
 import isamrs.dto.ReceptiDTO;
+import isamrs.exceptions.NotFoundException;
 import isamrs.service.ReceptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,7 @@ public class ReceptController {
     ReceptService receptService;
 
     @PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ReceptiDTO> setRecept(@RequestBody ReceptiDTO receptiDTO, @PathVariable("id") Integer id){
+    public ResponseEntity<ReceptiDTO> setRecept(@RequestBody ReceptiDTO receptiDTO, @PathVariable("id") Integer id) throws NotFoundException {
         Recepti r = receptService.update(id, toEntity(receptiDTO));
         return new ResponseEntity<>(toDTO(r), HttpStatus.OK);
     }

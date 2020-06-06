@@ -156,9 +156,13 @@ Vue.use(VueRouter, VueAxios, axios)
 
   },
   {
-    path: '/potvrdaPregleda/:id',
+    path: '/potvrdaPosete/:id/:isPregled',
     name: 'SalePotvrda',
-    component: () => import('../views/sala/DodelaSala.vue')
+    component: () => import('../views/sala/DodelaSala.vue'),
+    props:(route)=>({
+      id:route.params.id,
+      isPregled:route.params.isPregled,
+    })
 
   },
   {

@@ -1,5 +1,8 @@
 package isamrs.domain;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 import javax.persistence.Column;
@@ -22,7 +25,12 @@ public class Termin {
 	@Column(name = "kraj", nullable = false)
 	private Date kraj;
 
-	public int getId() {
+	public Termin(LocalDateTime pocetak, LocalDateTime kraj) {
+		this.pocetak = Date.from(pocetak.atZone(ZoneId.systemDefault()).toInstant());
+		this.kraj = Date.from(kraj.atZone(ZoneId.systemDefault()).toInstant());
+	}
+
+    public int getId() {
 		return id;
 	}
 
@@ -53,8 +61,17 @@ public class Termin {
 		this.kraj = kraj;
 
 	}
-	
+
+	public Termin(Date pocetak, Date kraj) {
+		this.pocetak = pocetak;
+		this.kraj = kraj;
+	}
+
 	public Termin() {}
 
+
+	public Duration getDuration(){
+		return Duration.between(this.pocetak.toInstant(), this.kraj.toInstant());
+	}
 
 }

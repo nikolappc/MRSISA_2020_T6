@@ -30,9 +30,12 @@ public class Pregled extends Poseta {
 
 	@ManyToMany(mappedBy = "pregled", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	public Collection<Dijagnoza> dijagnoza;
-	
 
-	public Collection<Recepti> getRecepti() {
+	public Pregled(String opis, Termin termin, TipPosete tipPosete) {
+		super(opis,  termin, tipPosete);
+	}
+
+    public Collection<Recepti> getRecepti() {
 		if (recepti == null)
 			recepti = new ArrayList<Recepti>();
 		return recepti;

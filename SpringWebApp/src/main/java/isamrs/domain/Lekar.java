@@ -204,7 +204,14 @@ public class Lekar extends MedicinskoOsoblje {
 		}
 		return sum/count;
 	}
-	
 
 
+	public RadnoVreme lastRadnoVreme() {
+
+		return new LinkedList<>(radnoVreme).get(radnoVreme.size()-1);
+	}
+
+	public void addOperacija(Operacija operacija) {
+		this.operacije.add(operacija);
+	}
 }

@@ -5,15 +5,10 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Optional;
 
+import isamrs.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import isamrs.domain.Lekar;
-import isamrs.domain.Ocena;
-import isamrs.domain.Operacija;
-import isamrs.domain.Osoba;
-import isamrs.domain.Pacijent;
-import isamrs.domain.Pregled;
 import isamrs.dto.OsobaDTO;
 import isamrs.dto.SalaTerminiDTO;
 import isamrs.dto.TerminDTO;
@@ -76,6 +71,10 @@ public class LekarService {
 	
 	public Lekar findByEmail(String email) {
 		return lekarRepo.findByEmail(email);
+	}
+
+	public Collection<Lekar> findByKlinika(Klinika k){
+		return lekarRepo.findByKlinika(k.getId());
 	}
 
 	public boolean checkStart(Integer idPregleda, Lekar lekar) {

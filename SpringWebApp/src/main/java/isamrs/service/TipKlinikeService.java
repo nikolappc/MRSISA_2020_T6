@@ -23,7 +23,7 @@ public class TipKlinikeService implements Service<TipKlinike, Long>{
 	}
 
 	@Override
-	public TipKlinike findOne(Long id) {
+	public TipKlinike findOne(Long id) throws NotFoundException {
 		Optional<TipKlinike> tip = tipRepo.findById(id);
 		if(tip.isPresent()) {
 			return tip.get();
@@ -37,7 +37,7 @@ public class TipKlinikeService implements Service<TipKlinike, Long>{
 	}
 
 	@Override
-	public TipKlinike update(Long id, TipKlinike t) {
+	public TipKlinike update(Long id, TipKlinike t) throws NotFoundException {
 
 
 		if(!tipRepo.findById(id).isPresent()){

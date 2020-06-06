@@ -26,7 +26,7 @@
                 </LinkCard>
               </router-link>
               </v-col>
-            
+
               <v-col
                 lg="6"
                 md="12"
@@ -105,8 +105,7 @@ export default {
    data: () => ({
       termini: {},
       pacijent:require("../assets/pacijent.jpg"),
-      pregled:require("../assets/pregled.jpg"),
-      odmor:require("../assets/odmor.jpg"),
+      pregled:require("../assets/pregled.jpg")
   }),
   mounted () {
     axios

@@ -23,7 +23,7 @@ public class DijagnozaService implements Service<Dijagnoza, Long>{
 	}
 
 	@Override
-	public Dijagnoza findOne(Long id) {
+	public Dijagnoza findOne(Long id) throws NotFoundException {
 		Optional<Dijagnoza> o = repo.findById(id);
 		if(o.isPresent()) {
 			return o.get();
@@ -37,7 +37,7 @@ public class DijagnozaService implements Service<Dijagnoza, Long>{
 	}
 
 	@Override
-	public Dijagnoza update(Long id, Dijagnoza t) {
+	public Dijagnoza update(Long id, Dijagnoza t) throws NotFoundException {
 		if(!repo.findById(id).isPresent()){
 			throw new NotFoundException();
 		}

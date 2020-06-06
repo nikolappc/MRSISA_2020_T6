@@ -18,7 +18,7 @@ public class RadnoVreme {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 
 	@Column(name = "pocetak", nullable = false)
 	private Date pocetak;

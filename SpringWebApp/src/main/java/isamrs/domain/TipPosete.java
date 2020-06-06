@@ -46,7 +46,12 @@ public class TipPosete {
 	
 	@OneToMany(mappedBy = "tipPosete", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	public Collection<StavkaCenovnika> stavkeCenovnika;
-	
+
+	public TipPosete(int id, Tip tip, String naziv) {
+		this.id = id;
+		this.tip = tip;
+		this.naziv = naziv;
+	}
 
 	public java.util.Collection<Lekar> getLekari() {
 		return lekari;

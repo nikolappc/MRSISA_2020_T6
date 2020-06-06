@@ -2,6 +2,7 @@ package isamrs.controller;
 
 import java.util.Collection;
 
+import isamrs.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -40,7 +41,7 @@ public class DijagnozaController {
 		try {			
 			Dijagnoza d = service.findOne(id);
 			return new ResponseEntity<Dijagnoza>(d, HttpStatus.OK);
-		}catch (Exception e) {
+		}catch (Exception | NotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Dijagoza sa id-jem: "+id+" nije pronadjen", e);
 		}
 		
@@ -53,7 +54,7 @@ public class DijagnozaController {
 	}
 
 	@PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Dijagnoza> updateDijagnoza(@RequestBody Dijagnoza d, @PathVariable("id") Long id){
+	public ResponseEntity<Dijagnoza> updateDijagnoza(@RequestBody Dijagnoza d, @PathVariable("id") Long id) throws NotFoundException {
 		Dijagnoza d2 = service.update(id, d);
 		return new ResponseEntity<Dijagnoza>(d2, HttpStatus.OK);
 	}

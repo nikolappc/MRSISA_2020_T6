@@ -29,7 +29,7 @@ public class ReceptService implements Service<Recepti, Integer> {
     }
 
     @Override
-    public Recepti update(Integer aLong, Recepti recepti) {
+    public Recepti update(Integer aLong, Recepti recepti) throws NotFoundException {
         if(!repo.findById(aLong).isPresent()){
             throw new NotFoundException();
         }

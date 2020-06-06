@@ -48,16 +48,31 @@ public class Poseta {
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_sale")
 	public Sala sala;
-	
+
 	@Column(name = "potvrdjen", nullable = false)
 	private boolean potvrdjen;
-	
+
 	@Column(name = "odradjen", nullable = false)
 	private boolean odradjen;
 
-	
-	
-	
+	public Poseta(String opis, Termin termin, TipPosete tipPosete) {
+		this.opis = opis;
+		this.termin = termin;
+		this.tipPosete = tipPosete;
+	}
+
+	public Poseta(String opis, Integer id, Termin termin, TipPosete tipPosete, ZdravstveniKarton zdravstveniKarton,
+				  Sala sala) {
+		super();
+		this.opis = opis;
+		this.id = id;
+		this.termin = termin;
+		this.tipPosete = tipPosete;
+		this.zdravstveniKarton = zdravstveniKarton;
+		this.sala = sala;
+	}
+
+
 	public boolean isPotvrdjen() {
 		return potvrdjen;
 	}
@@ -130,17 +145,6 @@ public class Poseta {
 
 	public void setSala(Sala newSala) {
 		this.sala = newSala;
-	}
-
-	public Poseta(String opis, Integer id, Termin termin, TipPosete tipPosete, ZdravstveniKarton zdravstveniKarton,
-			Sala sala) {
-		super();
-		this.opis = opis;
-		this.id = id;
-		this.termin = termin;
-		this.tipPosete = tipPosete;
-		this.zdravstveniKarton = zdravstveniKarton;
-		this.sala = sala;
 	}
 
 	public Poseta() {

@@ -36,7 +36,7 @@ public class KlinikaServiceImpl implements Service<Klinika, Integer>{
 	}
 
 	@Override
-	public Klinika findOne(Integer id) {
+	public Klinika findOne(Integer id) throws NotFoundException {
 		Optional<Klinika> klinika = repo.findById(id);
 		if(klinika.isPresent()) {
 			return  klinika.get();			
@@ -50,7 +50,7 @@ public class KlinikaServiceImpl implements Service<Klinika, Integer>{
 	}
 
 	@Override
-	public Klinika update(Integer id, Klinika t) {
+	public Klinika update(Integer id, Klinika t) throws NotFoundException {
 		Klinika k = repo.findById(id).orElseGet(null);
 		if(k == null){
 			throw new NotFoundException();
@@ -108,5 +108,13 @@ public class KlinikaServiceImpl implements Service<Klinika, Integer>{
 	
 	public Ocena createOcena(Ocena o) {
 		return repoOcena.save(o);
+	}
+
+	public Klinika findByOperacija(Integer id) {
+		return repo.findByOperacija(id);
+	}
+
+	public Klinika findByLekar(Lekar lekar) {
+		return repo.findByLekar(lekar.getId());
 	}
 }

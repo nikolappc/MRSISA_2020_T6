@@ -197,6 +197,7 @@ public class UserController {
 		try {
 			System.out.println("email:" + email);
 			Pacijent pacijent = pacijentService.findByEmail(email);
+			pacijent.setResponded(true);
 			eventPublisher.publishEvent(new OnRegistrationSuccessEvent(pacijent, request.getContextPath()));
 		} catch (Exception e) {
 			e.printStackTrace();

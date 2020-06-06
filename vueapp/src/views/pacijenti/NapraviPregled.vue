@@ -1,82 +1,93 @@
 <template>
-  <v-form
-    ref="form"
-    v-model="valid"
+  <v-container>
+    <display-1>
+      Zakazivanje operacije/pregleda
+    </display-1>
+    <v-card
+      outlined="true"
     >
-
-    <v-datetime-picker 
-      label="Početak termina"
-      v-model="pregled.termin.pocetak"
-      dateFormat= 'dd.MM.yyyy'
-      >
-        <template slot="dateIcon">
-            <v-icon>mdi-calendar</v-icon>
-        </template>
-
-        <template slot="timeIcon">
-            <v-icon>mdi-clock-outline</v-icon>
-        </template>
-    </v-datetime-picker>
-
-
-    <v-datetime-picker 
-      label="Kraj termina"
-      v-model="pregled.termin.kraj"
-      dateFormat= 'dd.MM.yyyy'
-      >
-        <template slot="dateIcon">
-            <v-icon>mdi-calendar</v-icon>
-        </template>
-
-        <template slot="timeIcon">
-            <v-icon>mdi-clock-outline</v-icon>
-        </template>
-    </v-datetime-picker>
-
-
-    <v-select
-      v-model="pregled.tipPosete"
-      :items="tipovi"
-      label="Tip"
-      outlined
-      dense
-      :rules="rule"
-      required
-      return-object
-    >
-
-    <template slot="selection" slot-scope="data">
-            <!-- HTML that describe how select should render selected items -->
-            Naziv: {{ data.item.naziv }} , Cena: {{ data.item.stavkeCenovnika.cena }}
-        </template>
-        <template slot="item" slot-scope="data">
-            <!-- HTML that describe how select should render items when the select is open -->
-            Naziv: {{ data.item.naziv }} , Cena: {{ data.item.stavkeCenovnika.cena }}
-        </template>
-    </v-select>
-
-
-    <v-select
-      v-model="tipPregleda"
-      :items= '["Pregled", "Operacija"]'
-      label="Pregled/Operacija"
-      outlined
-      dense
-      :rules="rule"
-      required
-    >
-    </v-select>
-
-    <v-btn
-      :disabled="!valid"
-      color="success"
-      class="mr-4"
-      @click="dodajTermin"
-    >
-      Dodaj termin
-    </v-btn>
-
-  </v-form>
+      <v-container>
+        <v-form
+          ref="form"
+          v-model="valid"
+          >
+      
+          <v-datetime-picker 
+            label="Početak termina"
+            v-model="pregled.termin.pocetak"
+            dateFormat= 'dd.MM.yyyy'
+            >
+              <template slot="dateIcon">
+                  <v-icon>mdi-calendar</v-icon>
+              </template>
+      
+              <template slot="timeIcon">
+                  <v-icon>mdi-clock-outline</v-icon>
+              </template>
+          </v-datetime-picker>
+      
+      
+          <v-datetime-picker 
+            label="Kraj termina"
+            v-model="pregled.termin.kraj"
+            dateFormat= 'dd.MM.yyyy'
+            >
+              <template slot="dateIcon">
+                  <v-icon>mdi-calendar</v-icon>
+              </template>
+      
+              <template slot="timeIcon">
+                  <v-icon>mdi-clock-outline</v-icon>
+              </template>
+          </v-datetime-picker>
+      
+      
+          <v-select
+            v-model="pregled.tipPosete"
+            :items="tipovi"
+            label="Tip"
+            outlined
+            dense
+            :rules="rule"
+            required
+            return-object
+          >
+      
+          <template slot="selection" slot-scope="data">
+                  <!-- HTML that describe how select should render selected items -->
+                  Naziv: {{ data.item.naziv }} , Cena: {{ data.item.stavkeCenovnika.cena }}
+              </template>
+              <template slot="item" slot-scope="data">
+                  <!-- HTML that describe how select should render items when the select is open -->
+                  Naziv: {{ data.item.naziv }} , Cena: {{ data.item.stavkeCenovnika.cena }}
+              </template>
+          </v-select>
+      
+      
+          <v-select
+            v-model="tipPregleda"
+            :items= '["Pregled", "Operacija"]'
+            label="Pregled/Operacija"
+            outlined
+            dense
+            :rules="rule"
+            required
+          >
+          </v-select>
+      
+          <v-btn
+            :disabled="!valid"
+            color="success"
+            class="mr-4"
+            @click="dodajTermin"
+          >
+            Dodaj termin
+          </v-btn>
+      
+        </v-form>
+      </v-container>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
@@ -89,7 +100,7 @@ export default {
           termin: {pocetak: '', kraj: ''},
           tipPosete: null,
           sala: null,
-          pacijent: null
+          pacijentId: null
       },
       tipPregleda: "Pregled",
       tipovi: [],
@@ -102,6 +113,7 @@ export default {
     }
     },
     mounted() {
+      this.pregled.pacijentId = this.pacijent.id; 
         axios
             .get('tip')
             .then(response => {

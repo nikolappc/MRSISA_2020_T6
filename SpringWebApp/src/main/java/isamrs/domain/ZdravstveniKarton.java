@@ -49,7 +49,13 @@ public class ZdravstveniKarton {
 	@JsonBackReference(value = "zdravstveniKartonReference")
 	public Pacijent pacijent;
 
-	
+	public ZdravstveniKarton(Integer id, Double visina, Double tezina, String krvnaGrupa) {
+		this.id = id;
+		this.visina = visina;
+		this.tezina = tezina;
+		this.krvnaGrupa = krvnaGrupa;
+	}
+
 
 	public Collection<Dijagnoza> getDijagnoza() {
 		if (dijagnoza == null)

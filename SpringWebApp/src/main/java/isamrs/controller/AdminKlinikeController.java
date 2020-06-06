@@ -1,25 +1,21 @@
 package isamrs.controller;
 
-import isamrs.domain.AdministratorKlinike;
-import isamrs.domain.Adresa;
-import isamrs.domain.Klinika;
+import isamrs.domain.*;
 import isamrs.dto.AdminKlinikeDTO;
+import isamrs.exceptions.LekarZauzetException;
 import isamrs.exceptions.NotFoundException;
+import isamrs.exceptions.SalaZauzetaException;
 import isamrs.service.AdministratorKlinikeService;
 import isamrs.service.AdresaService;
 import isamrs.service.KlinikaServiceImpl;
+import isamrs.service.OperacijaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,11 +25,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import isamrs.domain.Pregled;
-import isamrs.domain.Sala;
-import isamrs.dto.SalaTerminiDTO;
-import isamrs.service.AdministratorKlinikeService;
-import isamrs.service.SalaService;
 @RestController
 @RequestMapping("/adminKlinike")
 public class AdminKlinikeController {
@@ -45,7 +36,7 @@ public class AdminKlinikeController {
     KlinikaServiceImpl klinikaService;
 
     @Autowired
-    AdresaService adresaService;
+    OperacijaService operacijaService;
 
     @Autowired
     private AdministratorKlinikeService adminService;
@@ -118,9 +109,16 @@ public class AdminKlinikeController {
     }
 	@GetMapping(value = "/pregled",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Integer>> getSalas() {
-		Collection<Integer> pregledi = adminService.findAllZahtevi();
+		Collection<Integer> pregledi = adminService.findAllZahteviPregleda();
 		return new ResponseEntity<Collection<Integer>>(pregledi, HttpStatus.OK);
 	}
+
+    @GetMapping(value = "/operacija",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<Integer>> getOperacije() {
+        Collection<Integer> operacije = adminService.findAllZahteviOperacija();
+        return new ResponseEntity<Collection<Integer>>(operacije, HttpStatus.OK);
+    }
+
 
 	@GetMapping(value = "/pregled/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Pregled> getPregled(@PathVariable("id") Integer id) {
@@ -151,5 +149,34 @@ public class AdminKlinikeController {
 		return new ResponseEntity<Pregled>(updatePregled, HttpStatus.OK);
 	}
 
+
+    @GetMapping(value = "/operacija/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Operacija> getOperacija(@PathVariable("id") Integer id) {
+        Operacija operacija = adminService.findOperacija(id);
+
+        if (operacija == null)
+            return new ResponseEntity<Operacija>(HttpStatus.NOT_FOUND);
+
+        if (operacija.getSala() != null)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<>(operacija, HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/operacija/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Operacija> updateSalaOperacija(@RequestBody Operacija operacija, @PathVariable Integer id) throws Exception, SalaZauzetaException, LekarZauzetException {
+
+
+        Operacija updateOperacija = null;
+
+        updateOperacija = adminService.update(id,operacija);
+        return new ResponseEntity<Operacija>(updateOperacija, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/lekar", consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<Lekar>> getSlobodniLekari(@RequestBody Termin termin){
+        Collection<Lekar> lekari = adminService.getSlobodniLekari(termin);
+        return new ResponseEntity<>(lekari, HttpStatus.OK);
+    }
 }
 

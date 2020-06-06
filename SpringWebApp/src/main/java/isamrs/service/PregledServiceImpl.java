@@ -74,4 +74,14 @@ public class PregledServiceImpl implements PregledService {
 		System.out.println(id + "********");
 		return pregledRepository.getBuduciPotvrdjeniPregledi(id, now);
 	}
+
+	@Override
+	public Collection<Pregled> findByLekar(Lekar lekar) {
+		return pregledRepository.findByLekar(lekar);
+	}
+
+	@Override
+	public Iterable<? extends Pregled> findBySala(Sala s) {
+		return pregledRepository.findBySala(s);
+	}
 }

@@ -24,7 +24,7 @@ public class AdministratorKlinickogCentraService implements isamrs.service.Servi
 	}
 
 	@Override
-	public AdministratorKlinickogCentra findOne(Integer integer) {
+	public AdministratorKlinickogCentra findOne(Integer integer) throws NotFoundException {
 		return adminkcRepository.findById(integer).orElseThrow(NotFoundException::new);
 	}
 

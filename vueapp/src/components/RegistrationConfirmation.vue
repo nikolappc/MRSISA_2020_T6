@@ -48,14 +48,23 @@
                                         Odbij
                                     </v-btn>
                                 </v-row>
-
                             </v-col>
                         </v-row>
                     </v-col>
-
                 </v-row>
             </v-col>
         </v-row>
+        <v-overlay
+            v-model="overlay"
+            absolute="true"
+        >
+            <v-progress-circular
+                :indeterminate="overlay"
+                :width="7"
+                color="primary"
+            >
+            </v-progress-circular>
+        </v-overlay>
     </v-card>
 </template>
 <script>
@@ -65,6 +74,11 @@
         props:[
             "username",
         ],
+        data:function () {
+            return{
+                overlay:false,
+            }
+        },
         methods:{
             allow:function () {
                 this.notifyServer("/api/approveRegistration");
@@ -73,13 +87,16 @@
                 this.notifyServer("/api/denyRegistration");
             },
             notifyServer:function(address){
+                this.overlay = true;
                 axios.get(address+"/"+this.username)
                     .then(res=>{
                         this.$store.commit("setSnackBar", {text:res.data, color:"success"});
                         this.$emit("resolved");
+                        this.overlay = false;
                     })
                     .catch(error=>{
                         console.log(error);
+                        this.overlay = false;    
                     });
             },
         }

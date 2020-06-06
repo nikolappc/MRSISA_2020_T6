@@ -32,4 +32,12 @@ public interface KlinikaRepository extends JpaRepository<Klinika, Integer>{
 	
 	@Query("SELECT COUNT (pr.id) FROM Pregled pr WHERE pr.lekar.klinika.id = ?2 AND pr.zdravstveniKarton.pacijent.id = ?1")
 	public Integer pacijentPosjetioKliniku(int idPacijenta, int idKlinike);
+
+
+	@Query("SELECT k FROM Klinika k JOIN  k.lekari l JOIN l.operacije o WHERE o.id = ?1")
+    Klinika findByOperacija(Integer id);
+
+	@Query("SELECT k FROM Klinika k JOIN  k.lekari l WHERE l.id = ?1")
+	Klinika findByLekar(Integer id);
+
 }

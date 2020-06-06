@@ -1,23 +1,24 @@
 <template>
     <v-card
         outlined="true"
+        :color="pozadina"
     >
         <v-row>
             <v-col
                 cols="8"
             >
-                <v-toolbar
+                <v-card
                     flat="true"
                     :color="color"
                 >
                     <v-container>
                         <v-text-field
                             v-model="sifra"
-                            @change="filtriraj()"
+                            label="Pretraži"
                         >
                         </v-text-field>
                     </v-container>
-                </v-toolbar>
+                </v-card>
                 <v-list
                     rounded="rounded"
                 >
@@ -36,6 +37,11 @@
                                 >
                                     {{element[atribut]}}
                                 </v-col>
+                                <v-col>
+                                    <v-icon>
+                                        mdi-plus
+                                    </v-icon>
+                                </v-col>
                             </v-row>
                         </v-list-item>
                     </v-list-item-group>
@@ -44,7 +50,6 @@
             <v-col
                 cols="4"
             >   
-                
                     <v-list
                         rounded="rounded"
                         color="color"
@@ -84,12 +89,17 @@
 <script>
     export default {
         name:"Pretrazivac",
-        props:["atribut", "color", "id", "elementi"],
+        props:["atribut", "color", "id", "elementi", "pozadina"],
         data:function () {
             return{
                 filtriraniElementi:[],
                 odabraniElementi:[],
                 sifra:""
+            }
+        },
+        watch:{
+            sifra:function () {
+                this.filtriraj();
             }
         },
         mounted:function () {

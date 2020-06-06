@@ -2,14 +2,10 @@ package isamrs.repository;
 
 import java.util.List;
 
+import isamrs.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
-import isamrs.domain.Lekar;
-import isamrs.domain.Operacija;
-import isamrs.domain.Sala;
-import isamrs.domain.TipPosete;
 
 @Repository
 public interface OperacijaRepository extends JpaRepository<Operacija, Integer> {
@@ -25,4 +21,6 @@ public interface OperacijaRepository extends JpaRepository<Operacija, Integer> {
 
 	@Query("SELECT o FROM Operacija o JOIN o.lekari l WHERE l = ?1")
 	public List<Operacija> findByLekar(Lekar l);
-}
+
+	@Query("SELECT o FROM Operacija o WHERE o.sala = null")
+	public List<Operacija> findZahteve();}

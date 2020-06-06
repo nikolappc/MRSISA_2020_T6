@@ -25,6 +25,7 @@ public class RegistrationEmailListener implements ApplicationListener<OnRegistra
 	
 	private void confirmRegistration(OnRegistrationSuccessEvent event) {
 		Pacijent user = event.getUser();
+		user.setAllowed(true);
 		String token = UUID.randomUUID().toString();
 		userService.createVerificationToken(user,token);
 		

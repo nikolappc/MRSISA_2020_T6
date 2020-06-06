@@ -1,91 +1,141 @@
 <template>
   <v-container>
       <v-card>
-          <v-card-title>
-              Pregled pacijenta
-              <Timer />
-          </v-card-title>
-          <v-row class="mx-4">
-              <v-col cols="12" md="6">
-                    <v-textarea
-                    ma
-                    outlined
-                    v-model="pregled.opis"
-                    label="Opis pregleda"
-                    ></v-textarea>
-              </v-col>
-              <v-spacer></v-spacer>
-              <v-chip
-                class="ma-2"
-                color="primary"
-                text-color="white"
-                label
-                >
-                <v-avatar left>
-                    <v-icon>mdi-clock</v-icon>
-                </v-avatar>
-                {{Math.floor(time/60)}}:{{time%60}}
-              </v-chip>
-          </v-row>
-          <v-row>
-              <v-container class="pa-5">
-                  <v-tabs
-                      background-color="primary"
-                  >
-                      <v-tab>
-                        Dijagnoze
-                      </v-tab>
-                      <v-tab>
-                        Lekovi
-                      </v-tab>
-                      <v-tab-item>
-                          <v-container>
-                              <v-card flat>
-                                  <Pretrazivac
-                                      @odabrani="promenaDijagnoza"
-                                      id="sifraDijagnoze"
-                                      atribut="nazivDijagnoze"
-                                      color="dijagnoza"
-                                      :elementi="dijagnoze"
-                                  >
-                                  </Pretrazivac>
-                              </v-card>
-                          </v-container>
-                      </v-tab-item>
-  
-                      <v-tab-item>
-                          <v-container>
-                              <v-card flat>
-                                  <Pretrazivac
-                                      @odabrani="promenaLekova"
-                                      id="sifraLeka"
-                                      atribut="nazivLeka"
-                                      color="lek"
-                                      :elementi="lekovi"
-                                  >
-                                  </Pretrazivac>
-                              </v-card>
-                          </v-container>
-                      </v-tab-item>
-                  </v-tabs>
-              </v-container>
-          </v-row>
-          <v-row >
-              <v-spacer></v-spacer>
-              <v-col cols="6">
-                  <v-btn class="mx-10"
-                    color="primary"
-                    @click="dialog = true"
-                  >
-                      Zakaži pregled
-                  </v-btn>
-                  <v-btn
-                  @click="end"
-                  color="success">
-                      Završi pregled
-                  </v-btn>
-              </v-col>
-          </v-row>
+          <v-tabs>
+            <v-tab>
+                Pregled
+            </v-tab>
+            <v-tab>
+                Zdravstveni karton
+            </v-tab>
+            <v-tab-item>
+                <v-card-title>
+                    Pregled pacijenta
+                    <Timer />
+                </v-card-title>
+                <v-row class="mx-4">
+                    <v-col cols="12" md="6">
+                          <v-textarea
+                          ma
+                          outlined
+                          v-model="pregled.opis"
+                          label="Opis pregleda"
+                          ></v-textarea>
+                    </v-col>
+                    <v-spacer></v-spacer>
+                    <v-chip
+                      class="ma-2"
+                      color="primary"
+                      text-color="white"
+                      label
+                      >
+                      <v-avatar left>
+                          <v-icon>mdi-clock</v-icon>
+                      </v-avatar>
+                      {{Math.floor(time/60)}}:{{time%60}}
+                    </v-chip>
+                </v-row>
+                <v-row>
+                    <v-container class="pa-5">
+                        <v-card
+                          outlined="true"
+                        >
+                            <v-tabs
+                                background-color="primary"
+                            >
+                                <v-tab>
+                                  Dijagnoze
+                                </v-tab>
+                                <v-tab>
+                                  Lekovi
+                                </v-tab>
+                                <v-tab-item>
+                                    <Pretrazivac
+                                        @odabrani="promenaDijagnoza"
+                                        id="sifraDijagnoze"
+                                        atribut="nazivDijagnoze"
+                                        color="dijagnoza"
+                                        :elementi="dijagnoze"
+                                        pozadina="karton"
+                                    >
+                                    </Pretrazivac>
+                                </v-tab-item>
+            
+                                <v-tab-item>
+                                    <Pretrazivac
+                                        @odabrani="promenaLekova"
+                                        id="sifraLeka"
+                                        atribut="nazivLeka"
+                                        color="lek"
+                                        :elementi="lekovi"
+                                        pozadina="roze"
+                                    >
+                                    </Pretrazivac>
+                                </v-tab-item>
+                            </v-tabs>
+                        </v-card>
+                    </v-container>
+                </v-row>
+                <v-row >
+                    <v-spacer></v-spacer>
+                    <v-col cols="6">
+                        <v-btn class="mx-10"
+                          color="primary"
+                          @click="dialog = true"
+                        >
+                            Zakaži pregled
+                        </v-btn>
+                        <v-btn
+                        @click="end"
+                        color="success">
+                            Završi pregled
+                        </v-btn>
+                    </v-col>
+                </v-row>
+            </v-tab-item>
+            <v-tab-item>
+                <v-container>
+                    <v-card
+                        color="dijagnoza" 
+                    >
+                        <v-container>
+                            <display-1>
+                                {{pacijent.ime +' '+ pacijent.prezime}}
+                            </display-1>
+                            <v-form
+                                refs="zkarton"
+                            >
+                                <v-text-field
+                                    label="Visina"
+                                    v-model="pacijent.zdravstveniKarton.visina"
+                                >
+                                </v-text-field>
+                                <v-text-field
+                                    label="Težina"
+                                    v-model="pacijent.zdravstveniKarton.tezina"
+                                >
+                                </v-text-field>
+                                <v-text-field
+                                    label="Krvna grupa"
+                                    v-model="pacijent.zdravstveniKarton.krvnaGrupa"
+                                >
+                                </v-text-field>
+                                <v-row>
+                                    <v-col
+                                        cols="4"
+                                        class="ml-auto"
+                                    >
+                                        <v-btn color="success" @click="izmeniKarton">
+                                            Izmeni zdravstveni karton
+                                        </v-btn>
+                                    </v-col>
+                                </v-row>
+                            </v-form>
+                        </v-container>
+                    </v-card>
+                </v-container>
+            </v-tab-item>
+          </v-tabs>
       </v-card>
       
       <v-dialog
@@ -153,9 +203,7 @@ name: 'Pregled  ',
                         this.pacijent = res.data;
                     }).catch(error=>{
                         console.log(error);
-                        
                     });
-                
             })    
             .catch((err) => { 
                 console.log(err);
@@ -179,6 +227,17 @@ name: 'Pregled  ',
     },
     promenaDijagnoza(dijagnoze){
         this.dijagnoze = dijagnoze;
+    },
+    izmeniKarton(){
+        axios.put("/poseta/zdravstveniKarton/"+this.pacijent.zdravstveniKarton.id, this.pacijent.zdravstveniKarton)
+            .then(res=>{
+                this.pacijent.zdravstveniKarton = res.data;
+                this.$store.commit("setSnackbar", {text:"Zdravstveni karton je izmenjen.", color: "success"});
+            })
+            .catch(error=>{
+                console.log(error);
+                this.$store.commit("setSnackbar", {text:"Izvinjavamo se došlo je do greške.", color: "error"});
+            });
     },
     end(){
         let recepti = [];

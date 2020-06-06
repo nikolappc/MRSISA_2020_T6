@@ -1,16 +1,12 @@
 package isamrs.repository;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import isamrs.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import isamrs.domain.Lekar;
-import isamrs.domain.Ocena;
-import isamrs.domain.Pacijent;
-import isamrs.domain.Pregled;
 public interface LekarRepository extends JpaRepository<Lekar, Integer>{
 	@Query("SELECT l FROM Lekar l WHERE l.email = ?1")
 	public Lekar findByEmail(String email);
@@ -31,4 +27,7 @@ public interface LekarRepository extends JpaRepository<Lekar, Integer>{
 	//@Query("SELECT COUNT (pr) FROM Pregled pr WHERE pr.lekar.id = ?2 AND pr.zdravstveniKarton.pacijent.id = ?1")
 	@Query("SELECT pr FROM Pregled pr WHERE pr.lekar.id = ?2 AND pr.zdravstveniKarton.pacijent.id = ?1")
 	public List<Pregled> pacijentPosjetioLekara(int idPacijenta, int idLekara);
+
+	@Query("SELECT l FROM Lekar l JOIN l.klinika k WHERE k.id = ?1")
+	Collection<Lekar> findByKlinika(Integer klinikaId);
 }

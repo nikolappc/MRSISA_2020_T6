@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import isamrs.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -67,7 +68,7 @@ public class KlinikaController {
 	
 	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<KlinikaDTO> getKlinika(@PathVariable("id") Integer id){
+	public ResponseEntity<KlinikaDTO> getKlinika(@PathVariable("id") Integer id) throws NotFoundException {
 		Klinika k = klinikaService.findOne(id);
 		if(k==null) {
 			return new ResponseEntity<KlinikaDTO>(HttpStatus.NOT_FOUND);
@@ -76,7 +77,7 @@ public class KlinikaController {
 	}
 	
 	@GetMapping(value = "/admin", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<KlinikaDTO> getKlinikaAdmin(HttpServletRequest req){
+	public ResponseEntity<KlinikaDTO> getKlinikaAdmin(HttpServletRequest req) throws NotFoundException {
 		AdministratorKlinike ak = (AdministratorKlinike) req.getSession().getAttribute("user");
 		
 		Klinika k = klinikaService.findOne(ak.getKlinika().getId());
@@ -95,7 +96,7 @@ public class KlinikaController {
 	}
 	
 	@PutMapping(value = "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<KlinikaDTO> updateKlinika(@RequestBody KlinikaDTO k, @PathVariable("id") Integer id){
+	public ResponseEntity<KlinikaDTO> updateKlinika(@RequestBody KlinikaDTO k, @PathVariable("id") Integer id) throws NotFoundException {
 		Klinika klinika = klinikaService.update(id, mapToEntity(k));
 		
 		return new ResponseEntity<KlinikaDTO>(mapToDTO(klinika), HttpStatus.CREATED);
@@ -204,7 +205,7 @@ public class KlinikaController {
 	}
 	
 	@PostMapping(value = "/ocijeni", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Boolean> ocijeniKliniku(@RequestBody SetOcenaDTO novaOcena, HttpServletRequest req) throws Exception {
+	public ResponseEntity<Boolean> ocijeniKliniku(@RequestBody SetOcenaDTO novaOcena, HttpServletRequest req) throws Exception, NotFoundException {
 		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
@@ -228,7 +229,7 @@ public class KlinikaController {
 	
 	
 	@PostMapping(value = "/getSlobodniLekariKlinike", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ArrayList<LekarZaPacijentaDTO>> getSlobodniLekariKlinike(@RequestBody SlobodniLekariKlinikeDTO slk, HttpServletRequest req) throws Exception {
+	public ResponseEntity<ArrayList<LekarZaPacijentaDTO>> getSlobodniLekariKlinike(@RequestBody SlobodniLekariKlinikeDTO slk, HttpServletRequest req) throws Exception, NotFoundException {
 		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
 			return new ResponseEntity<ArrayList<LekarZaPacijentaDTO>>(HttpStatus.FORBIDDEN);
 		}

@@ -1,13 +1,10 @@
 package isamrs.service;
 
-import isamrs.domain.AdministratorKlinickogCentra;
-import isamrs.domain.AdministratorKlinike;
-import isamrs.domain.Lekar;
-import isamrs.domain.Operacija;
-import isamrs.domain.Pregled;
-import isamrs.domain.Sala;
-import isamrs.domain.Termin;
+import isamrs.domain.*;
+import isamrs.exceptions.LekarZauzetException;
 import isamrs.exceptions.NotFoundException;
+import isamrs.exceptions.SalaZauzetaException;
+import isamrs.operacije.doktori.OnDoktorDodatEvent;
 import isamrs.repository.AdministratorKlinikeRepository;
 import isamrs.repository.LekarRepository;
 import isamrs.repository.OperacijaRepository;
@@ -18,9 +15,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class AdministratorKlinikeService implements isamrs.service.Service<AdministratorKlinike, Integer> {
@@ -40,6 +40,9 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
 	@Autowired
 	private LekarRepository lekarRepo;
 
+	@Autowired
+	ApplicationEventPublisher eventPublisher;
+
 	public AdministratorKlinike findByEmail(String email) {
 		return adminklinikeRepository.findByEmail(email);
 	}
@@ -50,7 +53,7 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
 	}
 
 	@Override
-	public AdministratorKlinike findOne(Integer integer) {
+	public AdministratorKlinike findOne(Integer integer) throws NotFoundException {
 		return adminklinikeRepository.findById(integer).orElseThrow(NotFoundException::new);
 	}
 
@@ -61,9 +64,9 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
 
 	@Override
 	public AdministratorKlinike update(Integer integer, AdministratorKlinike administratorKlinickogCentra) {
-		
+
 		AdministratorKlinike ak = adminklinikeRepository.findById(integer).orElseGet(null);
-		
+
 		ak.setAdresa(administratorKlinickogCentra.getAdresa());
 		ak.setBrojTelefona(administratorKlinickogCentra.getBrojTelefona());
 		ak.setEmail(administratorKlinickogCentra.getEmail());
@@ -73,7 +76,7 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
 		ak.setPassword(administratorKlinickogCentra.getPassword());
 		if(administratorKlinickogCentra.getKlinika() != null)
 			ak.setKlinika(administratorKlinickogCentra.getKlinika());
-		
+
 		return adminklinikeRepository.save(ak);
 	}
 
@@ -86,13 +89,66 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
 		return pregledRepo.findById(id).orElseGet(null);
 	}
 
-	public Collection<Integer> findAllZahtevi() {
+	public Operacija findOperacija(Integer id) {
+		return operacijaRepo.findById(id).orElseGet(null);
+	}
+
+	public Collection<Integer> findAllZahteviPregleda() {
 		ArrayList<Integer> lista = new ArrayList<Integer>();
 		for(Pregled p : pregledRepo.findZahteve()) {
 			if (p.getSala() == null)
 				lista.add(p.getId());
 		}
 		return lista;
+	}
+
+	public Collection<Integer> findAllZahteviOperacija() {
+		ArrayList<Integer> lista = new ArrayList<Integer>();
+		for(Operacija operacija : operacijaRepo.findZahteve()) {
+			if (operacija.getSala() == null)
+				lista.add(operacija.getId());
+		}
+		return lista;
+	}
+
+
+	public Operacija update(Integer id, Operacija operacija) throws Exception, SalaZauzetaException, LekarZauzetException {
+
+		Operacija operacijaBaza = operacijaRepo.findById(id).orElseGet(null);
+		if (operacijaBaza != null) {
+			Sala s = salaRepo.findById(operacija.getSala().getId()).orElseGet(null);
+
+			if(!proveriTerminSala(s,operacija.getTermin())) {
+				throw new SalaZauzetaException("Zauzeta sala", "Izvinjavamo se sala je zauzeta u odabranom terminu");
+			}
+			if(!proveriTerminLekara(operacija.getLekar(), operacija.getTermin())){
+				throw new LekarZauzetException("Zauzet lekar", "Izvinjavamo se lekar je zauzet u odabranom terminu");
+			}
+			Set<Integer> ids = new HashSet<>();
+			for(Lekar l:operacijaBaza.getLekar()){
+				ids.add(l.getId());
+			}
+			for(Lekar l:operacija.getLekar()){
+				if(ids.contains(l.getId())){
+					continue;
+				}
+				eventPublisher.publishEvent(new OnDoktorDodatEvent(l, operacijaBaza, operacija.getTermin()));
+			}
+			operacijaBaza.setSala(s);
+
+			operacijaBaza.setLekar(operacija.getLekar());
+			operacijaRepo.save(operacijaBaza);
+		}
+		return operacijaBaza;
+	}
+
+	public Boolean proveriTerminLekara(Collection<Lekar> lekar, Termin termin) {
+		for(Lekar l:lekar){
+			if(!proveriTerminLekara(l.getId(), termin)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public Pregled update(Integer id, Pregled pregled) throws Exception {
@@ -111,8 +167,8 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
 			pregledBaza.setSala(s);
 
 			pregledBaza.setLekar(pregled.getLekar());
+			pregledRepo.save(pregledBaza);
 		}
-		pregledRepo.save(pregledBaza);
 		//Dodaj pacijenta u klinici
 
 		return pregledBaza;
@@ -120,8 +176,12 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
 
 	private boolean proveriTerminLekara(Integer id, Termin termin) {
 		Lekar lekar = lekarRepo.findById(id).orElseGet(null);
+		return proveriTerminLekara(lekar, termin);
+	}
 
-		for(Pregled p: lekar.getPregled()) {
+	public boolean proveriTerminLekara(Lekar lekar, Termin termin){
+		Collection<Pregled> pregledi = pregledRepo.findByLekar(lekar);
+		for(Pregled p: pregledi) {
 			//Ako je termin posle kraja nekog pregleda to je ok
 			if(p.getSala() == null)
 				continue;
@@ -137,8 +197,9 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
 			//Ako je bilo koji drugi slucaj onda je zauzeta sala
 			return false;
 		}
+		Collection<Operacija> operacije = operacijaRepo.findByLekar(lekar);
 
-		for(Operacija p: lekar.getOperacije() ) {
+		for(Operacija p: operacije ) {
 
 			if(p.getSala() == null)
 				continue;
@@ -160,7 +221,7 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
 		return true;
 	}
 
-	private boolean proveriTerminSala(Sala s, Termin termin) {
+	public boolean proveriTerminSala(Sala s, Termin termin) {
 		for(Pregled p: pregledRepo.findBySala(s) ) {
 			//Ako je termin posle kraja nekog pregleda to je ok
 			if(p.getTermin().getKraj().before(termin.getPocetak())) {
@@ -194,8 +255,9 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
 	}
 
 
-
-
-
-
+	public Collection<Lekar> getSlobodniLekari(Termin t){
+		Collection<Lekar> lekari = lekarRepo.findAll();
+		lekari = lekari.stream().filter(lekar->proveriTerminLekara(lekar, t)).collect(Collectors.toList());
+		return lekari;
+	}
 }
