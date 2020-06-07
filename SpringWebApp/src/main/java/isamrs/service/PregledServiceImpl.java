@@ -97,6 +97,10 @@ public class PregledServiceImpl implements PregledService {
 	public List<Pregled> findByKartonId(Integer id) {
 		return pregledRepository.findByIdKarton(id);
 	}
+	
+	public List<Pregled> findByKartonIdOdradjen(Integer id) {
+		return pregledRepository.findByIdKartonOdradjen(id);
+	}
 
 
 	//@Override

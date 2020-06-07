@@ -138,8 +138,6 @@ export default {
             var d2 = new Date(b['termin'].pocetak);
             console.log(d1);
             console.log(a[index]);
-            //var d1 = moment(this.formatDate(a[index]), 'DD.MM.YYYY. HH:mm');
-            //var d2 = moment(this.formatDate(b[index]), 'DD.MM.YYYY. HH:mm');
             if (!isDesc[0]) {
                 console.log("desc uslo");
                 console.log(d1.getTime());

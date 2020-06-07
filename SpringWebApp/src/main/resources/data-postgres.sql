@@ -54,8 +54,8 @@ insert into termini (pocetak, kraj) values (to_timestamp('2020-03-20 08:00', 'YY
 insert into termini (pocetak, kraj) values (to_timestamp('2020-03-20 10:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-03-20 11:00', 'YYYY-MM-DD HH24:MI'));
 insert into termini (pocetak, kraj) values (to_timestamp('2020-05-21 10:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-05-21 11:00', 'YYYY-MM-DD HH24:MI'));
 insert into termini (pocetak, kraj) values (current_timestamp,current_timestamp + interval '10 minutes');
-insert into termini (pocetak, kraj) values (to_timestamp('2020-05-23 10:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-05-23 11:00', 'YYYY-MM-DD HH24:MI'));
-insert into termini (pocetak, kraj) values (to_timestamp('2020-05-25 10:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-05-25 11:00', 'YYYY-MM-DD HH24:MI'));
+insert into termini (pocetak, kraj) values (to_timestamp('2020-06-08 10:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-06-08 11:00', 'YYYY-MM-DD HH24:MI'));
+insert into termini (pocetak, kraj) values (to_timestamp('2020-06-25 10:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-06-25 11:00', 'YYYY-MM-DD HH24:MI'));
 insert into termini (pocetak, kraj) values (current_timestamp,current_timestamp + interval '20 minutes');
 insert into termini (pocetak, kraj) values (current_timestamp,current_timestamp + interval '30 minutes');
 insert into termini (pocetak, kraj) values (current_timestamp,current_timestamp + interval '60 minutes');
@@ -71,6 +71,7 @@ insert into ocene (vrednost, id_lekara, id_pacijenta) values (3, 2, 3);
 insert into ocene (vrednost, id_klinike, id_pacijenta) values (2, 1, 3);
 
 insert into radna_vremena (kraj, pocetak, id_lekara) values (to_timestamp('1000-01-01 17:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('1000-01-01 08:00', 'YYYY-MM-DD HH24:MI'), 1);
+insert into radna_vremena (kraj, pocetak, id_lekara) values (to_timestamp('1000-01-01 17:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('1000-01-01 08:00', 'YYYY-MM-DD HH24:MI'), 2);
 
 insert into sale (naziv, id_klinike) values ('sala 1', 1);
 insert into sale (naziv, id_klinike) values ('operaciona', 1);
@@ -85,6 +86,7 @@ insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_le
 insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen) values ('zakazani1', 1, 7, 1, 2, 2, 1, true, false);
 insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen) values ('zakazani2', 1, 8, 1, 2, 2, 1, true, false);
 insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen) values ('zakazani3', null, 8, 1, 2, 2, 1, false, false);
+
 
 insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike, potvrdjen, odradjen) values ('slijepo crijevo', 2, 3, 2, 3, 1, true, true);
 insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike, potvrdjen, odradjen) values ('slijepo crijevo', 2, 3, 2, 2, 1, true, true);

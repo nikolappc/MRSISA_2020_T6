@@ -155,7 +155,11 @@ export default {
     ljekari : [],
     tipovi:[],
     fromDateMenu : false,
-    opis : '',
+	opis : '',
+	vremena: [],
+	cijena: null,
+	mozeOcjenjivatiL: false,
+	ocjenaL: null,
 	rule: [
 		v => !!v || 'Obavezno polje',
 	],
@@ -259,6 +263,9 @@ export default {
 
 		return [year, month, day].join('-');
 	},
+	formatDate1(value) {
+		return moment(String(value)).format('DD.MM.YYYY.');
+	},
 	formatDateStr(value) {
 		//console.log(value);
 		//console.log(String(value));
@@ -271,9 +278,44 @@ export default {
 		}
 		console.log(value.listaVremena);*/
 		let adr = this.adresaKlinike.adresa + ", " + this.adresaKlinike.grad + ", " + this.adresaKlinike.drzava;
+
 		console.log(value.id);
-		this.dialogZahtjev = {zakazivanje: this.pretrazeno, idKlinike: this.idKlinike, nazivKlinike: this.nazivKlinike, adresaKlinike: adr, idPacijenta: this.ulogovani.id, idLekara: value.id, imeLekara: value.ime, prezimeLekara: value.prezime, nazivTipa: this.nazivTipa, listaVremena: value.listaVremena, datum: this.datum, cenaPregleda: this.cena};
-		this.dialog = true;
+		axios
+		.get('lekar/pacijentPosjetio/' + this.ulogovani.id + '/' + value.id)
+		.then(response => {
+		var getOcena = response.data;
+		this.mozeOcjenjivatiL = getOcena.mozeOcjenjivati;
+		this.ocjenaL = getOcena.ocjena;
+		console.log(this.mozeOcjenjivatiL);
+		console.log(this.ocjenaL);
+		
+		if (this.pretrazeno == true) {
+			axios
+			.get('lekar/vratiVremenaCijenu/' + value.id + '/' + this.nazivTipa + '/' + this.formatDate1(this.datum))
+			.then(response => {
+			var podaci = response.data;
+			this.cijena = podaci.cijenaTipaOpciono;
+			this.vremena = podaci.listaVremena;
+			console.log(podaci.cijenaTipaOpciono);
+			console.log(podaci.listaVremena);
+			
+			this.dialogZahtjev = {zakazivanje: this.pretrazeno, idKlinike: this.idKlinike, nazivKlinike: this.nazivKlinike, adresaKlinike: adr, idPacijenta: this.ulogovani.id, idLekara: value.id, imeLekara: value.ime, prezimeLekara: value.prezime, nazivTipa: this.nazivTipa, listaVremena: this.vremena, datum: this.datum, cenaPregleda: this.cijena, mozeOcjenjivati: this.mozeOcjenjivatiL, ocjena: this.ocjenaL};
+			this.dialog = true;
+		
+			})
+			.catch(function (error) { console.log(error); router.push("/"); });
+		} else {
+			this.dialogZahtjev = {zakazivanje: this.pretrazeno, idKlinike: this.idKlinike, nazivKlinike: this.nazivKlinike, adresaKlinike: adr, idPacijenta: this.ulogovani.id, idLekara: value.id, imeLekara: value.ime, prezimeLekara: value.prezime, nazivTipa: this.nazivTipa, listaVremena: this.vremena, datum: this.datum, cenaPregleda: this.cijena, mozeOcjenjivati: this.mozeOcjenjivatiL, ocjena: this.ocjenaL};
+			this.dialog = true;
+		}
+		
+		})
+		.catch(function (error) { console.log(error); router.push("/"); });
+		
+		
+		
+
+		
 	},
 	pretrazi() {
 		this.pretrazeno = true;

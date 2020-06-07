@@ -31,8 +31,12 @@ public class LekarSlobodanDTO {
 	
 	public void setCijena(String nazivTipa, Klinika k) {
 		for (StavkaCenovnika sc : k.getCenovnik().getStavkaCenovnika()) {
+			System.out.println(nazivTipa);
+			System.out.println(sc.getTipPosete().getNaziv());
+			System.out.println(sc.getCena());
 			if (sc.getTipPosete().getNaziv().equals(nazivTipa)) {
 				this.cijenaTipaOpciono = sc.getCena();
+				return;
 			}
 		}
 	}

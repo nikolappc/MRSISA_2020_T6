@@ -53,6 +53,7 @@
         <v-text-field
           v-model="ulogovani.jbo"
           :rules="jboRules"
+          :disabled="true"
           label="Jedinstveni broj osiguranika"
         ></v-text-field>
         <v-btn

@@ -10,9 +10,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.fasterxml.jackson.annotation.OptBoolean;
 
-import isamrs.controller.KlinikaController;
 import isamrs.domain.GodisnjiOdmor;
 import isamrs.domain.Klinika;
 import isamrs.domain.Lekar;
@@ -22,7 +20,6 @@ import isamrs.domain.Pacijent;
 import isamrs.domain.Pregled;
 import isamrs.domain.RadnoVreme;
 import isamrs.dto.GetOcenaDTO;
-import isamrs.dto.KlinikaDTO;
 import isamrs.dto.KlinikaZaPacijentaDTO;
 import isamrs.dto.LekarZaPacijentaDTO;
 import isamrs.dto.PretragaKlinikeDTO;

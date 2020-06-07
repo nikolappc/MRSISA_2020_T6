@@ -15,6 +15,9 @@ public interface PregledRepository extends JpaRepository<Pregled, Integer> {
 
 	@Query("SELECT p FROM Pregled p WHERE p.zdravstveniKarton.id = ?1")
 	public List<Pregled> findByIdKarton(Integer id);
+	
+	@Query("SELECT p FROM Pregled p WHERE p.zdravstveniKarton.id = ?1 AND p.odradjen = true")
+	public List<Pregled> findByIdKartonOdradjen(Integer id);
 
 	@Query("SELECT p FROM Pregled p WHERE p.sala = ?1")
 	public List<Pregled> findBySala(Sala sala);
@@ -39,6 +42,6 @@ public interface PregledRepository extends JpaRepository<Pregled, Integer> {
 	@Query("SELECT p FROM Pregled p WHERE p.lekar = ?1")
 	public Collection<Pregled> findByLekar(Lekar l);
 
-	@Query("SELECT p FROM Pregled p WHERE p.zdravstveniKarton.pacijent.id = ?1 AND p.termin.pocetak > ?2 AND p.potvrdjen = true")
+	@Query("SELECT p FROM Pregled p WHERE p.zdravstveniKarton.pacijent.id = ?1 AND p.termin.pocetak > ?2 AND p.potvrdjen = true AND p.odradjen = false")
 	public List<Pregled> getBuduciPotvrdjeniPregledi(Integer id, Date now);
 }

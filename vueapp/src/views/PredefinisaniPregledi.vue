@@ -15,7 +15,6 @@
         <template v-slot:item.datum="{ item }">{{ formatDate(item.datum)}}</template>
         <template v-slot:item.cena="{ item }">{{ item.cena }} din</template>
         <template v-slot:item.data-table-expand="{ item }"><v-btn @click="zakazi(item)">Zakaži</v-btn></template>
-        <!--<template><v-btn @click="zakazi(row.item)">Zakaži</v-btn></template>-->
       </v-data-table></v-card-text></v-card>
     </v-container>
   </div>

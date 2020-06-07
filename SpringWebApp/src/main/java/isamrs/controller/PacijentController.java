@@ -39,7 +39,7 @@ public class PacijentController {
 	private PacijentServiceImpl pacijentService;
 
 	@Autowired
-	private PregledService pregledService;
+	private PregledServiceImpl pregledService;
 
 	@Autowired
 	private OperacijaService operacijaService;
@@ -78,7 +78,7 @@ public class PacijentController {
 	}
 
 	@PostMapping(value = "/izmjena", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Pacijent> updatePacijent(@RequestBody Pacijent pacijent, HttpServletRequest req) {
+	public ResponseEntity<Pacijent> updatePacijent(@RequestBody IzmjenaOsobeDTO pacijent, HttpServletRequest req) {
 		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
 			return new ResponseEntity<Pacijent>(HttpStatus.FORBIDDEN);
 		}
@@ -93,10 +93,12 @@ public class PacijentController {
 		p.setPassword(pacijent.getPassword());
 		p.setBrojTelefona(pacijent.getBrojTelefona());
 		p.setJbo(pacijent.getJbo());
-		p.setAdresa(pacijent.getAdresa());
+		p.getAdresa().setAdresa(pacijent.getAdresa().getAdresa());
+		p.getAdresa().setGrad(pacijent.getAdresa().getGrad());
+		p.getAdresa().setDrzava(pacijent.getAdresa().getDrzava());
 
 		p = pacijentService.save(p);
-		//req.getSession().setAttribute("user", p);
+		req.getSession().setAttribute("user", p);
 
 		return new ResponseEntity<Pacijent>(p, HttpStatus.OK);
 	}
@@ -107,7 +109,7 @@ public class PacijentController {
 			return new ResponseEntity<List<PosetaDTO>>(HttpStatus.FORBIDDEN);
 		}
 		Pacijent p = pacijentService.findOne(id);
-		List<Pregled> pregledi = pregledService.findByKartonId(p.getZdravstveniKarton().getId());
+		List<Pregled> pregledi = pregledService.findByKartonIdOdradjen(p.getZdravstveniKarton().getId());
 		List<Operacija> operacije = operacijaService.findByKartonId(p.getZdravstveniKarton().getId());
 
 		List<PosetaDTO> preglediDTO = new ArrayList<>();

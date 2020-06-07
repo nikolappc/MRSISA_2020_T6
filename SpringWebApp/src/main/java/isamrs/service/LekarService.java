@@ -5,18 +5,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Optional;
 
 import isamrs.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import isamrs.dto.GetOcenaDTO;
 import isamrs.dto.LekarSlobodanDTO;
 import isamrs.dto.OsobaDTO;
-import isamrs.dto.SalaTerminiDTO;
 import isamrs.dto.SetOcenaDTO;
 import isamrs.dto.TerminDTO;
 import isamrs.repository.LekarRepository;

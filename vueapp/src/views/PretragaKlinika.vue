@@ -39,26 +39,11 @@
 		@input="fromDateMenu = false"
 	></v-date-picker>
 	</v-menu>
-    
-    
-				<!--<v-date-picker 
-				label="*Datum"
-				v-model="datum"
-				dateFormat= 'dd.MM.yyyy'
-				:rules="rule"
-				:min="minDate"
-				>
-				<template slot="dateIcon">
-					<v-icon>mdi-calendar</v-icon>	
-				</template>
-				</v-date-picker>-->
-            
             </td>
             <td colspan="3" valign="middle"><v-select
 				v-model="tip"
 				:items="tipovi"
 				label="*Tip pregleda"
-				dense
 				:rules="rule"
 				outlined
 				return-object

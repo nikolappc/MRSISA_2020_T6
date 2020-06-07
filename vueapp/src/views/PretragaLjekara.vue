@@ -53,6 +53,8 @@ export default {
   props: ["pretraga"],
   data: () => ({
     ulogovani : {},
+    mozeOcjenjivati: false,
+    ocjena: null,
     adresaKlinike : null,
     nazivKlinike : '',
     dialogZahtjev: null,
@@ -171,8 +173,23 @@ export default {
 		}
 		console.log(value.listaVremena);*/
 		let adr = this.adresaKlinike.adresa + ", " + this.adresaKlinike.grad + ", " + this.adresaKlinike.drzava;
-		this.dialogZahtjev = {zakazivanje: true, idKlinike: this.idKlinike, nazivKlinike: this.nazivKlinike, adresaKlinike: adr, idPacijenta: this.ulogovani.id, idLekara: value.id, imeLekara: value.ime, prezimeLekara: value.prezime, nazivTipa: this.nazivTipa, listaVremena: value.listaVremena, datum: this.datum, cenaPregleda: this.cena};
+		
+		axios
+		.get('lekar/pacijentPosjetio/' + this.ulogovani.id + '/' + value.id)
+		.then(response => {
+		var getOcena = response.data;
+		this.mozeOcjenjivati = getOcena.mozeOcjenjivati;
+		this.ocjena = getOcena.ocjena;
+		console.log(this.mozeOcjenjivati);
+		console.log(this.ocjena);
+		
+		this.dialogZahtjev = {zakazivanje: true, idKlinike: this.idKlinike, nazivKlinike: this.nazivKlinike, adresaKlinike: adr, idPacijenta: this.ulogovani.id, idLekara: value.id, imeLekara: value.ime, prezimeLekara: value.prezime, nazivTipa: this.nazivTipa, listaVremena: value.listaVremena, datum: this.datum, cenaPregleda: this.cena, mozeOcjenjivati: this.mozeOcjenjivati, ocjena: this.ocjena};
 		this.dialog = true;
+		
+		})
+		.catch(function (error) { console.log(error); router.push("/"); });
+		
+		
 	},
 	pretrazi() {
 		this.nazivTipa = this.tip.naziv;
