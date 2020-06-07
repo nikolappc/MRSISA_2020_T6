@@ -20,10 +20,10 @@
                                     <v-simple-table>
                                         <thead>
                                             <tr>
-                                                <th>
+                                                <th id="sleka">
                                                     Šifra leka
                                                 </th>
-                                                <th>
+                                                <th id="naziv">
                                                     Naziv leka
                                                 </th>
                                             </tr>

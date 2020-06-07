@@ -8,10 +8,10 @@
         ></v-text-field>
         <v-simple-table border="1">
             <thead>
-                <th>Naziv</th>
-                <th>Tip (Din/h)</th>
-                <th>Cena</th>
-                <th></th>
+                <th id="naziv">Naziv</th>
+                <th id="tip">Tip (Din/h)</th>
+                <th id="cena">Cena</th>
+                <th id=""></th>
             </thead>
             <tbody>
                 <Tip v-for="tip in filterTip" v-bind:key="tip.id" v-bind:tip="tip" v-on:del-tip="deleteTip"

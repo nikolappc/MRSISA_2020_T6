@@ -8,10 +8,10 @@
         ></v-text-field>
         <v-simple-table border="1">
             <thead>
-                <th>Ime</th>
-                <th>Prezime</th>
-                <th>Adresa</th>
-                <th>Broj Telefona</th>
+                <th id="ime">Ime</th>
+                <th id="prezime">Prezime</th>
+                <th id="adresa">Adresa</th>
+                <th id="br">Broj Telefona</th>
                 <th></th>
             </thead>
             <tbody>

@@ -72,9 +72,3 @@ export default{
     }
 }
 </script>
-<style>
-random{
-    color:"#ffffff";
-}
-
-</style>

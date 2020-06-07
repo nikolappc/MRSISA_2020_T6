@@ -4,8 +4,8 @@
 
 			<v-card-title>Zakazivanje pregleda</v-card-title>
 			<v-card-subtitle><p>Izaberite ljekara i termin pregleda.</p>			
-			<p>Datum pregleda: <b>{{ formatDateStr(this.datum) }}</b></p>
-			<p>Tip pregleda: <b>{{ this.nazivTipa }}</b></p></v-card-subtitle>
+			<p>Datum pregleda: <strong>{{ formatDateStr(this.datum) }}</strong></p>
+			<p>Tip pregleda: <strong>{{ this.nazivTipa }}</strong></p></v-card-subtitle>
 		
 	<v-card-text>
 		<v-spacer></v-spacer>

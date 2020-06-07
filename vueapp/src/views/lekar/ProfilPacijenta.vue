@@ -3,8 +3,8 @@
     <v-container>
       <v-card><v-simple-table>
         <thead>
-          <th>Email adresa</th>
-          <th>{{ pacijent.email }}</th>
+          <th id="email">Email adresa</th>
+          <th id="remail">{{ pacijent.email }}</th>
         </thead>
         <tbody>
           <tr>

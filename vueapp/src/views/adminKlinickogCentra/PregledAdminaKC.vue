@@ -20,22 +20,34 @@
                                     <v-simple-table>     
                                          <thead>
                                              <tr>
-                                                 <th>
+                                                 <th
+                                                    id="ime"
+                                                 >
                                                      Ime
                                                  </th>
-                                                 <th>
+                                                 <th
+                                                    id="prezime"
+                                                 >
                                                      Prezime
                                                  </th>
-                                                 <th>
+                                                 <th
+                                                    id="br"
+                                                 >
                                                      Broj telefona
                                                  </th>
-                                                 <th>
+                                                 <th
+                                                    id="jbo"
+                                                 >
                                                      JBO
                                                  </th>
-                                                 <th>
+                                                 <th
+                                                    id="email"
+                                                 >
                                                      E-mail
                                                  </th>
-                                                 <th>
+                                                 <th
+                                                    id="adresa"
+                                                 >
                                                      Adresa
                                                  </th>
                                              </tr>

@@ -44,8 +44,8 @@
                 <v-simple-table border="1"
                 >
                     <thead>
-                        <th>ID</th>
-                        <th>Naziv</th>
+                        <th id="id">ID</th>
+                        <th id="naziv">Naziv</th>
                         <th></th>
                     </thead>
                     <tbody>

@@ -69,9 +69,3 @@
 
     }
 </script>
-<style>
-random{
-    color:"#ffffff";
-}
-
-</style>
