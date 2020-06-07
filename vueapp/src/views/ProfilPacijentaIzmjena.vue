@@ -64,13 +64,14 @@
           append-icon='mdi-map-marker'
           outlined
         ></v-text-field>
-        <v-text-field
+        <!--<v-text-field
           v-model="izmijenjen.jbo"
           :rules="jboRules"
+          :disabled="true"
           label="Jedinstveni broj osiguranika"
           repend-inner-icon="mdi-file-chart"
           outlined
-        ></v-text-field></v-card-text>
+        ></v-text-field>--></v-card-text>
         <v-card-actions><v-spacer></v-spacer><v-btn
           :disabled="!valid"
           color="success"

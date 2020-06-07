@@ -59,7 +59,7 @@ public class KlinikaZaPacijentaDTO {
 		this.prosjek = prosjek;
 	}
 
-	public KlinikaZaPacijentaDTO(int id, String naziv, String tip, String opis, Adresa adresa, double cijenaPregleda) {
+	public KlinikaZaPacijentaDTO(int id, String naziv, String tip, String opis, Adresa adresa, double cijenaPregleda, double prosjek) {
 		super();
 		this.id = id;
 		this.naziv = naziv;
@@ -86,7 +86,11 @@ public class KlinikaZaPacijentaDTO {
 			sum += o.getVrednost();
 			count += 1;
 		}
-		this.prosjek = sum/count;
+		if (count != 0) {
+			this.prosjek = sum/count;
+		} else {
+			this.prosjek = 0;
+		}
 	}
 	
 	public void postaviCijenuPregleda(Klinika k, String naziv) {

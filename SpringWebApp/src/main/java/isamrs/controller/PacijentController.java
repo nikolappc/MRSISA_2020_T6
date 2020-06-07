@@ -36,10 +36,10 @@ import org.springframework.web.server.ResponseStatusException;
 public class PacijentController {
 
 	@Autowired
-	private PacijentService pacijentService;
+	private PacijentServiceImpl pacijentService;
 
 	@Autowired
-	private PregledService pregledService;
+	private PregledServiceImpl pregledService;
 
 	@Autowired
 	private OperacijaService operacijaService;
@@ -56,7 +56,7 @@ public class PacijentController {
 	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Pacijent> getPacijet(@PathVariable("id") Integer id, HttpServletRequest req) {
-		if (req.getSession().getAttribute("user") == null || (req.getSession().getAttribute("user") instanceof Pacijent && ((Pacijent)req.getSession().getAttribute("user")).getId() != id)) {
+		if (req.getSession().getAttribute("user").equals(null) || (req.getSession().getAttribute("user") instanceof Pacijent && ((Pacijent)req.getSession().getAttribute("user")).getId() != id)) {
 			return new ResponseEntity<Pacijent>(HttpStatus.FORBIDDEN);
 		}
 		Pacijent pacijent = pacijentService.findOne(id);
@@ -78,7 +78,7 @@ public class PacijentController {
 	}
 
 	@PostMapping(value = "/izmjena", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Pacijent> updatePacijent(@RequestBody Pacijent pacijent, HttpServletRequest req) {
+	public ResponseEntity<Pacijent> updatePacijent(@RequestBody IzmjenaOsobeDTO pacijent, HttpServletRequest req) {
 		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
 			return new ResponseEntity<Pacijent>(HttpStatus.FORBIDDEN);
 		}
@@ -93,7 +93,9 @@ public class PacijentController {
 		p.setPassword(pacijent.getPassword());
 		p.setBrojTelefona(pacijent.getBrojTelefona());
 		p.setJbo(pacijent.getJbo());
-		p.setAdresa(pacijent.getAdresa());
+		p.getAdresa().setAdresa(pacijent.getAdresa().getAdresa());
+		p.getAdresa().setGrad(pacijent.getAdresa().getGrad());
+		p.getAdresa().setDrzava(pacijent.getAdresa().getDrzava());
 
 		p = pacijentService.save(p);
 		req.getSession().setAttribute("user", p);
@@ -103,11 +105,11 @@ public class PacijentController {
 
 	@GetMapping(value = "/listaPregleda/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<PosetaDTO>> getPregledi(@PathVariable("id") Integer id, HttpServletRequest req) {
-		if (req.getSession().getAttribute("user") == null || (req.getSession().getAttribute("user") instanceof Pacijent && ((Pacijent)req.getSession().getAttribute("user")).getId() != id)) {
+		if (req.getSession().getAttribute("user").equals(null) || (req.getSession().getAttribute("user") instanceof Pacijent && ((Pacijent)req.getSession().getAttribute("user")).getId() != id)) {
 			return new ResponseEntity<List<PosetaDTO>>(HttpStatus.FORBIDDEN);
 		}
 		Pacijent p = pacijentService.findOne(id);
-		List<Pregled> pregledi = pregledService.findByKartonId(p.getZdravstveniKarton().getId());
+		List<Pregled> pregledi = pregledService.findByKartonIdOdradjen(p.getZdravstveniKarton().getId());
 		List<Operacija> operacije = operacijaService.findByKartonId(p.getZdravstveniKarton().getId());
 
 		List<PosetaDTO> preglediDTO = new ArrayList<>();
@@ -126,7 +128,7 @@ public class PacijentController {
 
 	@GetMapping(value = "/karton/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ZdravstveniKartonDTO> getKarton(@PathVariable("id") Integer id, HttpServletRequest req) {
-		if (req.getSession().getAttribute("user") == null || (req.getSession().getAttribute("user") instanceof Pacijent && ((Pacijent)req.getSession().getAttribute("user")).getId() != id)) {
+		if (req.getSession().getAttribute("user").equals(null) || (req.getSession().getAttribute("user") instanceof Pacijent && ((Pacijent)req.getSession().getAttribute("user")).getId() != id)) {
 			return new ResponseEntity<ZdravstveniKartonDTO>(HttpStatus.FORBIDDEN);
 		}
 		Pacijent p = pacijentService.findOne(id);

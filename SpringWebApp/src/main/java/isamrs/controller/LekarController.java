@@ -34,9 +34,6 @@ public class LekarController {
 	@Autowired
 	private LekarService lekarService;
 	
-	@Autowired
-	private PacijentServiceImpl pacijentService;
-	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<OsobaDTO>> getLekars() {
 		Collection<OsobaDTO> lekari = lekarService.findAll();
@@ -106,87 +103,38 @@ public class LekarController {
 	
 	@PostMapping(value = "/provjeriDaLiJeLjekarSlobodan", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Boolean> provjeriDaLiJeLjekarSlobodan(@RequestBody ProveraLekarSlobodanDTO provera, HttpServletRequest req) throws Exception {
-		System.out.println(provera.getIdLekara()+"************************************************");
 		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
 			return new ResponseEntity<Boolean>(HttpStatus.FORBIDDEN);
 		}
-		System.out.println(provera.getIdLekara());
-		Lekar l = lekarService.findOne(provera.getIdLekara());
-		System.out.println(l);
-		if (KlinikaController.lekarImaSlobodanTermin(l, provera.getDatum())) {
-			for (TipPosete tp : l.getTipoviPoseta()) {
-				if (tp.getNaziv().equals(provera.getNazivTipa())) {
-					return new ResponseEntity<Boolean>(true, HttpStatus.OK);
-				}
-			}
-		}
-		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+		Boolean slobodan = lekarService.proverDaLiJeLekarSlobodan(provera);
+		return new ResponseEntity<Boolean>(slobodan, HttpStatus.OK);
 	}
-//	
-//	@GetMapping(value = "/pacijentPosjetio/{idPacijenta}/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-//	public ResponseEntity<GetOcenaDTO> pacijentPosjetioLekara(@PathVariable("idPacijenta") Integer idPcijenta, @PathVariable("id") Integer id, HttpServletRequest req) throws Exception {
-//		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
-//			return new ResponseEntity<GetOcenaDTO>(HttpStatus.FORBIDDEN);
-//		}
-//		Boolean ocijenio = lekarService.pacijentOcijenioLekara(idPcijenta, id);
-//		Boolean posjetio = lekarService.pacijentPosjetioLekara(idPcijenta, id);
-//		GetOcenaDTO getOcena = new GetOcenaDTO();
-//		if (posjetio && ocijenio) {
-//			getOcena.setMozeOcjenjivati(true);
-//			getOcena.setOcjena(lekarService.getOcenaPacijenta(id, idPcijenta).getVrednost());
-//		} else if (posjetio) {
-//			getOcena.setMozeOcjenjivati(true);
-//			getOcena.setOcjena(0);
-//		} else {
-//			getOcena.setMozeOcjenjivati(false);
-//			getOcena.setOcjena(0);
-//		}
-//		return new ResponseEntity<GetOcenaDTO>(getOcena, HttpStatus.OK);
-//	}
-//	
-//	@PostMapping(value = "/ocijeni", produces = MediaType.APPLICATION_JSON_VALUE)
-//	public ResponseEntity<Boolean> ocijeniLekara(@RequestBody SetOcenaDTO novaOcena, HttpServletRequest req) throws Exception {
-//		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
-//			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-//		}
-//		System.out.println(novaOcena.getIdPacijenta() + novaOcena.getId());
-//		if (lekarService.pacijentOcijenioLekara(novaOcena.getIdPacijenta(), novaOcena.getId())) {
-//			System.out.println("USLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-//			Ocena stara = lekarService.getOcenaPacijenta(novaOcena.getId(), novaOcena.getIdPacijenta());
-//			stara.setVrednost(novaOcena.getOcjena());
-//			Ocena updated = lekarService.updateOcena(stara.getId(), stara);
-//		} else {
-//			System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-//			Ocena nova = new Ocena();
-//			nova.setVrednost(novaOcena.getOcjena());
-//			Pacijent p = pacijentService.findOne(novaOcena.getIdPacijenta());
-//			Lekar l = lekarService.findOne(novaOcena.getId());
-//			nova.setPacijent(p);
-//			l.getOcena().add(nova);
-//			
-//			Ocena created = lekarService.createOcena(nova);
-//			//Lekar ll = lekarService.update(novaOcena.getId(), k);
-//		}
-//		return new ResponseEntity<>(HttpStatus.OK);
-//	}
-//	
+	
+	@GetMapping(value = "/pacijentPosjetio/{idPacijenta}/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<GetOcenaDTO> pacijentPosjetioLekara(@PathVariable("idPacijenta") Integer idPcijenta, @PathVariable("id") Integer id, HttpServletRequest req) throws Exception {
+		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
+			return new ResponseEntity<GetOcenaDTO>(HttpStatus.FORBIDDEN);
+		}
+		GetOcenaDTO getOcena = lekarService.pacijentPosjetioLekaraFunc(idPcijenta, id);
+		return new ResponseEntity<GetOcenaDTO>(getOcena, HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/ocijeni", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Boolean> ocijeniLekara(@RequestBody SetOcenaDTO novaOcena, HttpServletRequest req) throws Exception {
+		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
+		lekarService.ocijeniLekara(novaOcena);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
 	@GetMapping(value = "/vratiVremenaCijenu/{idLekara}/{nazivTipa}/{datum}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<LekarSlobodanDTO> vratiVremenaCijenu(@PathVariable("idLekara") Integer idLekara, @PathVariable("nazivTipa") String nazivTipa,@PathVariable("datum") String datum, HttpServletRequest req) throws Exception {
 		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.");
-		Date d = sdf.parse(datum);
-		Lekar l = lekarService.findOne(idLekara);
-		LekarSlobodanDTO vremenaCijena = new LekarSlobodanDTO();
-		vremenaCijena.setListaVremena(KlinikaController.getSlobodniTermini(l, d));
-		String naziv = nazivTipa.replace("%20", " ");
-		vremenaCijena.setCijena(naziv, l.getKlinika());
-		
-		System.out.println(vremenaCijena.getCijenaTipaOpciono());
-		for (String s : vremenaCijena.getListaVremena()) {
-			System.out.println(s);
-		}
+		LekarSlobodanDTO vremenaCijena = lekarService.vratiVremenaCijenu(idLekara, nazivTipa, datum);
+
 		return new ResponseEntity<LekarSlobodanDTO>(vremenaCijena, HttpStatus.OK);
 	}
 

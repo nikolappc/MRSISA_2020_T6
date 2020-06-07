@@ -55,9 +55,7 @@ import isamrs.service.PacijentServiceImpl;
 public class KlinikaController {
 	@Autowired
 	private KlinikaServiceImpl klinikaService;
-	
-	@Autowired
-	private PacijentServiceImpl pacijentService;
+
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<KlinikaDTO>> getKlinike(){
@@ -122,7 +120,10 @@ public class KlinikaController {
 	}
 	
 	@GetMapping(value = "/klinikeZaPacijenta", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<KlinikaZaPacijentaDTO>> getPregledi() {
+	public ResponseEntity<List<KlinikaZaPacijentaDTO>> getPregledi(HttpServletRequest req) {
+		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
+			return new ResponseEntity<List<KlinikaZaPacijentaDTO>>(HttpStatus.FORBIDDEN);
+		}
 		Collection<Klinika> klinike = klinikaService.findAll();
 		
 		List<KlinikaZaPacijentaDTO> klinikeDTO = new ArrayList<>();
@@ -137,36 +138,8 @@ public class KlinikaController {
 		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
 			return new ResponseEntity<List<KlinikaZaPacijentaDTO>>(HttpStatus.FORBIDDEN);
 		}
-		//Collection<Klinika> kliniks = klinikaService.findAll();
-		Collection<Klinika> kliniks = klinikaService.pretragaZakazivanje(pretraga);
-		//System.out.println(pretraga.getDatum().toString());
-		List<Klinika> klinike = new ArrayList<Klinika>();
-		for (Klinika kk : kliniks) {
-			/*if (!klinikaImaTip(kk, pretraga.getNazivTipa())) {
-				continue;
-			}*/
-			boolean datumOk = false;
-			for (Lekar l : kk.getLekari()) {
-				if (lekarImaSlobodanTermin(l, pretraga.getDatum())) {
-					//System.out.println("SLOBODAN " + l.getIme());
-					datumOk = true;
-					break;
-				}
-			}
-			klinike.add(kk);
-			/*String grad = kk.getAdresa().getGrad();
-			String drzava = kk.getAdresa().getDrzava();
-			if (datumOk && grad.contains(pretraga.getGrad()) && drzava.contains(pretraga.getDrzava()) && kk.getProsjek() >= pretraga.getOcjena()) {
-				klinike.add(kk);
-			}*/
-		}
-		
-		List<KlinikaZaPacijentaDTO> klinikeDTO = new ArrayList<>();
-		for (Klinika klinika : klinike) {
-			KlinikaZaPacijentaDTO klinikaDTO = new KlinikaZaPacijentaDTO(klinika);
-			klinikaDTO.postaviCijenuPregleda(klinika, pretraga.getNazivTipa());
-			klinikeDTO.add(klinikaDTO);
-		}
+		ArrayList<KlinikaZaPacijentaDTO> klinikeDTO = klinikaService.pretragaKlinikaZakazivanje(pretraga);
+
 		return new ResponseEntity<List<KlinikaZaPacijentaDTO>>(klinikeDTO, HttpStatus.OK);
 	}
 	
@@ -188,19 +161,7 @@ public class KlinikaController {
 		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
 			return new ResponseEntity<GetOcenaDTO>(HttpStatus.FORBIDDEN);
 		}
-		Boolean ocijenio = klinikaService.pacijentOcijenioKliniku(idPcijenta, id);
-		Boolean posjetio = klinikaService.pacijentPosjetioKliniku(idPcijenta, id);
-		GetOcenaDTO getOcena = new GetOcenaDTO();
-		if (posjetio && ocijenio) {
-			getOcena.setMozeOcjenjivati(true);
-			getOcena.setOcjena(klinikaService.getOcenaPacijenta(id, idPcijenta).getVrednost());
-		} else if (posjetio) {
-			getOcena.setMozeOcjenjivati(true);
-			getOcena.setOcjena(0);
-		} else {
-			getOcena.setMozeOcjenjivati(false);
-			getOcena.setOcjena(0);
-		}
+		GetOcenaDTO getOcena = klinikaService.pacijentPosjetio(idPcijenta, id);
 		return new ResponseEntity<GetOcenaDTO>(getOcena, HttpStatus.OK);
 	}
 	
@@ -209,21 +170,8 @@ public class KlinikaController {
 		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-		if (klinikaService.pacijentOcijenioKliniku(novaOcena.getIdPacijenta(), novaOcena.getId())) {
-			Ocena stara = klinikaService.getOcenaPacijenta(novaOcena.getId(), novaOcena.getIdPacijenta());
-			stara.setVrednost(novaOcena.getOcjena());
-			Ocena updated = klinikaService.updateOcena(stara.getId(), stara);
-		} else {
-			Ocena nova = new Ocena();
-			nova.setVrednost(novaOcena.getOcjena());
-			Pacijent p = pacijentService.findOne(novaOcena.getIdPacijenta());
-			Klinika k = klinikaService.findOne(novaOcena.getId());
-			nova.setPacijent(p);
-			k.getOcena().add(nova);
-			
-			Ocena created = klinikaService.createOcena(nova);
-			//Klinika kk = klinikaService.update(novaOcena.getId(), k);
-		}
+		klinikaService.ocijeniKliniku(novaOcena);
+		
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
@@ -233,84 +181,33 @@ public class KlinikaController {
 		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
 			return new ResponseEntity<ArrayList<LekarZaPacijentaDTO>>(HttpStatus.FORBIDDEN);
 		}
-		//ArrayList<Lekar> lekars = lekarService.findLekariKlinike(slk.getIdKlinike());
-		Klinika k = klinikaService.findOne(slk.getIdKlinike());
-		/*Collection<Lekar> lekars = k.getLekari();*/
-		List<Lekar> lekars = klinikaService.lekariKlinikeTipa(slk.getIdKlinike(), slk.getNazivTipa());
-		ArrayList<LekarZaPacijentaDTO> lekari = new ArrayList<LekarZaPacijentaDTO>();
-		//System.out.println(slk.getDatum().toString() + "***");
-		for (Lekar l : lekars) {
-			if (lekarImaSlobodanTermin(l, slk.getDatum())/* && ljekarImaTip(l, slk.getNazivTipa())*/) {
-				LekarZaPacijentaDTO lzp = new LekarZaPacijentaDTO(l);
-				lzp.setListaVremena(KlinikaController.getSlobodniTermini(l, slk.getDatum()));
-				lzp.setCijena(slk.getNazivTipa(), k);
-				lekari.add(lzp);
-			}
-		}
-		//System.out.println("OVOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-		/*for (LekarZaPacijentaDTO ll : lekari) {
-			for (String dd : ll.getListaVremena()) {
-				System.out.println(dd);
-			}
-		}*/
+		ArrayList<LekarZaPacijentaDTO> lekari = klinikaService.getSlobodniLekariKlinike(slk);
+
 		return new ResponseEntity<ArrayList<LekarZaPacijentaDTO>>(lekari, HttpStatus.OK);
 	}
 	
-	
-	
-	
-	/*public static boolean klinikaImaTip(Klinika k, String naziv) {
-		for (StavkaCenovnika sc : k.getCenovnik().getStavkaCenovnika()) {
-			if (sc.getTipPosete().getNaziv().equals(naziv)) {
-				return true;
-			}
-		}
-		return false;
-	}*/
-	
-	/*public static boolean ljekarImaTip(Lekar l, String naziv) {
-		for (TipPosete tp : l.getTipoviPoseta()) {
-			if (tp.getNaziv().equals(naziv)) {
-				return true;
-			}
-		}
-		return false;
-	}*/
-	
-	public static boolean terminZauzetF(Lekar l, Calendar cal1 /*datum iz pretrage*/, Calendar c /*termin koji se provjerava*/) {
+	/*
+	public static boolean terminZauzetF(Lekar l, Calendar cal1, Calendar c) {
 		Calendar cal2 = Calendar.getInstance();
 		for (Pregled p : l.getPregled()) {
-			//System.out.println("pregled " + p.getTermin().getPocetak());
-			//System.out.println("datum za koji se trazi " + cal1.getTime());
-			//System.out.println("termin koji se provjerava " + c.getTime());
 			cal2.setTime(p.getTermin().getPocetak());
 			if ((cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)) && 
 					(cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR))) { //pregled je tog datuma
-				//System.out.println("jednaki godina i dan");
-				//if (cal2.getTime() == c.getTime()) {
 				if ((cal2.get(Calendar.HOUR_OF_DAY) == c.get(Calendar.HOUR_OF_DAY)) && 
 						(cal2.get(Calendar.MINUTE) == c.get(Calendar.MINUTE))) {
-					//System.out.println("zauzet");
 					return true;
 				}
-				//System.out.println("nije zauzet");
 			}
 		}
 		for (Operacija o : l.getOperacije()) {
-			//System.out.println("operacija " + o.getTermin().getPocetak());
-			//System.out.println("datum za koji se trazi " + cal1.getTime());
-			//System.out.println("termin koji se provjerava " + c.getTime());
 			cal2.setTime(o.getTermin().getPocetak());
 			if ((cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)) && (cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR))) { //pregled je tog datuma
 				Calendar cckraj = Calendar.getInstance();
 				cckraj.setTime(c.getTime());
 				cckraj.add(Calendar.MINUTE, 30);
 				if (!(o.getTermin().getPocetak().after(cckraj.getTime()) || o.getTermin().getKraj().before(c.getTime()) || o.getTermin().getPocetak().equals(cckraj.getTime()) || o.getTermin().getKraj().equals(c.getTime()))) {
-					//ovdje <=
-					//System.out.println("zauzet");
 					return true;
 				}
-				//System.out.println("nije zauzet");
 			}
 		}
 		return false;
@@ -325,20 +222,16 @@ public class KlinikaController {
 		return false;
 	}
 	
-	public static boolean lekarImaSlobodanTermin(Lekar l, Date date1 /*datum iz pretrage*/) {
-		//ima isto radno vrijeme 5 dana i ne radi vikendom?
+	public static boolean lekarImaSlobodanTermin(Lekar l, Date date1) {
 		Calendar cal1 = Calendar.getInstance();
 		cal1.setTime(date1);
 		if (lekarNaGodisnjem(l, cal1.getTime())) {
-			//System.out.println("NA GODISNJEM " + l.getIme());
 			return false;
 		}
 		if (cal1.get(Calendar.DAY_OF_WEEK)==0 || cal1.get(Calendar.DAY_OF_WEEK)==1) {
-			//System.out.println("VIKEND " + l.getIme());
 			return false;
 		}
 		if (l.getRadnoVreme() == null || l.getRadnoVreme().isEmpty()) {
-			//System.out.println("NEMA RADNO VRIJEME " + l.getIme());
 			return false;
 		}
 		ArrayList<RadnoVreme> radnaVremena = new ArrayList<RadnoVreme>(l.getRadnoVreme());
@@ -346,22 +239,16 @@ public class KlinikaController {
 		Calendar cal4 = Calendar.getInstance();
 		Date pocetak = radnaVremena.get(l.getRadnoVreme().size()-1).getPocetak();
 		Date kraj = radnaVremena.get(l.getRadnoVreme().size()-1).getKraj();
-		//System.out.println(l.getIme() + " radno vrijeme: " + pocetak + "  -  " + kraj);
 		cal3.setTime(pocetak);
 		cal4.setTime(kraj);
 		Calendar c = Calendar.getInstance();
 		for (c = cal3; c.before(cal4); c.add(Calendar.MINUTE, 30)) {
-			//System.out.println("TERMIN" + c.getTime());
 			boolean terminZauzet = terminZauzetF(l, cal1, c);
-			//System.out.println("zauzet " + terminZauzet);
 			if (!terminZauzet) {
 				return true;
 			}
 		}
 		return false;
-		/*if (slobodan && !lekarNaGodisnjem(l, pretraga.getDatum())) {
-			datumOk = true;
-		}*/
 	}
 	
 	public static ArrayList<String> getSlobodniTermini(Lekar l, Date date1){
@@ -389,9 +276,6 @@ public class KlinikaController {
 				vremena.add(c.getTime());
 			}
 		}
-		/*for (Date v : vremena) {
-			System.out.println(v);
-		}*/
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		ArrayList<String> vremenaStr = new ArrayList<String>();
@@ -401,6 +285,6 @@ public class KlinikaController {
 		
 		return vremenaStr;
 	}
-	
+	*/
 	
 }

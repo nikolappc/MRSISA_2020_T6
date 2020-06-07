@@ -90,6 +90,20 @@ public class PacijentServiceImpl implements PacijentService {
 	public Pacijent findByKarton(Integer idKartona) {
 		return pacijentRepository.findByKarton(idKartona);
 	}
+	
+	public Pacijent update(Integer id,Pacijent lekar) {
+		Pacijent pForUpdate = pacijentRepository.findById(id).orElseGet(null);
+		
+		pForUpdate.setAdresa(lekar.getAdresa());
+		pForUpdate.setBrojTelefona(lekar.getBrojTelefona());
+		pForUpdate.setEmail(lekar.getEmail());
+		pForUpdate.setIme(lekar.getIme());
+		pForUpdate.setPrezime(lekar.getPrezime());
+		pForUpdate.setJbo(lekar.getJbo());
+		pForUpdate.setPassword(lekar.getPassword());
+		
+		return pacijentRepository.save(pForUpdate);
+	}
 
 	
 	

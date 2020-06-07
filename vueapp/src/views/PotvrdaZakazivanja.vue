@@ -1,8 +1,8 @@
 <template>
 <v-container>
 	<v-card-title class="headline" v-if="dialogZahtjev.zakazivanje">Zakazivanje pregleda</v-card-title>
-	<div v-if="mozeOcjenjivati">
-		<h1 v-if="dialogZahtjev.zakazivanje == false"><b>{{ this.dialogZahtjev.imeLekara }} {{ this.dialogZahtjev.prezimeLekara }}</b></h1>
+	<div v-if="dialogZahtjev.mozeOcjenjivati">
+		<h1 v-if="dialogZahtjev.zakazivanje == false"><strong>{{ this.dialogZahtjev.imeLekara }} {{ this.dialogZahtjev.prezimeLekara }}</strong></h1>
 		<v-rating
 			v-model="ocjena"
 			color="yellow darken-3"
@@ -15,12 +15,12 @@
 	</div>
 	<v-form v-if="dialogZahtjev.zakazivanje" ref="form" v-model="valid">
 	<v-simple-table>
-		<tr><td>Klinika: </td><td><b>{{ this.dialogZahtjev.nazivKlinike }}</b></td></tr>
-		<tr><td>Adresa: </td><td><b>{{ this.dialogZahtjev.adresaKlinike }}</b></td></tr>
-		<tr><td>Lekar: </td><td><b>{{ this.dialogZahtjev.imeLekara }} {{ this.dialogZahtjev.prezimeLekara }}</b></td></tr>
-		<tr><td>Tip pregleda: </td><td><b>{{ this.dialogZahtjev.nazivTipa }}</b></td></tr>
-		<tr><td>Datum: </td><td><b>{{ formatDate(this.dialogZahtjev.datum) }}</b></td></tr>
-		<tr><td>Cena: </td><td><b>{{ this.cijena }} din</b></td></tr>
+		<tr><td>Klinika: </td><td><strong>{{ this.dialogZahtjev.nazivKlinike }}</strong></td></tr>
+		<tr><td>Adresa: </td><td><strong>{{ this.dialogZahtjev.adresaKlinike }}</strong></td></tr>
+		<tr><td>Lekar: </td><td><strong>{{ this.dialogZahtjev.imeLekara }} {{ this.dialogZahtjev.prezimeLekara }}</strong></td></tr>
+		<tr><td>Tip pregleda: </td><td><strong>{{ this.dialogZahtjev.nazivTipa }}</strong></td></tr>
+		<tr><td>Datum: </td><td><strong>{{ formatDate(this.dialogZahtjev.datum) }}</strong></td></tr>
+		<tr><td>Cena: </td><td><strong>{{ this.dialogZahtjev.cenaPregleda }} din</strong></td></tr>
 		<tr><td>Termin pregleda: </td><td>
 			<v-select
 				v-model="terminPocetak"
@@ -31,11 +31,9 @@
 				return-object
 			>
 				<template slot="selection" slot-scope="data">
-				<!-- HTML that describe how select should render selected items -->
 				{{ formatDateStr(data.item) }} 
 				</template>
 				<template slot="item" slot-scope="data">
-				<!-- HTML that describe how select should render items when the select is open -->
 				{{ formatDateStr(data.item) }}
 				</template>
 			</v-select></td></tr>
@@ -71,17 +69,26 @@ export default {
     name: 'PotvrdaZakazivanja',
     props: ["dialogZahtjev"],
 	data: () => ({
+		valid: false,
 		terminPocetak: null,
-		vremena: [],
-		cijena: null,
-		mozeOcjenjivati : false,
-		ocjena: null,
+		//vremena: [],
+		//cijena: null,
+		//mozeOcjenjivati : false,
+		//ocjena: null,
 		rule: [
 			v => !!v || 'Obavezno polje'
 		]
 	}),
+	computed: {
+		vremena: function(){
+			return this.dialogZahtjev.listaVremena;
+		},
+		ocjena: function(){
+			return this.dialogZahtjev.ocjena;
+		}
+	},
 	mounted() {
-		console.log(this.dialogZahtjev.idLekara);
+		/*console.log(this.dialogZahtjev.idLekara);
 		axios
 		.get('lekar/pacijentPosjetio/' + this.dialogZahtjev.idPacijenta + '/' + this.dialogZahtjev.idLekara)
 		.then(response => {
@@ -91,10 +98,13 @@ export default {
 		console.log(this.mozeOcjenjivati);
 		console.log(this.ocjena);
 		})
-		.catch(function (error) { console.log(error); router.push("/"); });
+		.catch(function (error) { console.log(error); router.push("/"); });*/
 		this.cijena = this.dialogZahtjev.cenaPregleda;
 		this.vremena = this.dialogZahtjev.listaVremena;
-		if (this.dialogZahtjev.zakazivanje == true && this.dialogZahtjev.listaVremena == null) {
+		console.log(this.cijena);
+		console.log(this.vremena);
+
+		/*if (this.dialogZahtjev.zakazivanje == true && this.dialogZahtjev.listaVremena == null) {
 		axios
 		.get('lekar/vratiVremenaCijenu/' + this.dialogZahtjev.idLekara + '/' + this.dialogZahtjev.nazivTipa + '/' + this.formatDate(this.dialogZahtjev.datum))
 		.then(response => {
@@ -103,11 +113,9 @@ export default {
 		this.vremena = podaci.listaVremena;
 		console.log(podaci.cijenaTipaOpciono);
 		console.log(podaci.listaVremena);
-		console.log(this.cijena);
-		console.log(this.vremena);
 		})
 		.catch(function (error) { console.log(error); router.push("/"); });
-		}
+		}*/
 	},
     methods: {
 		otkazi() {

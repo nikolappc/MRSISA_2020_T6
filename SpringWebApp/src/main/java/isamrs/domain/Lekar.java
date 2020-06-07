@@ -9,21 +9,17 @@ package isamrs.domain;
 import java.util.*;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "lekari")
@@ -202,7 +198,11 @@ public class Lekar extends MedicinskoOsoblje {
 			sum += o.getVrednost();
 			count += 1;
 		}
-		return sum/count;
+		if (count != 0) {
+			return sum/count;
+		} else {
+			return 0;
+		}
 	}
 
 
