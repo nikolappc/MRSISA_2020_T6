@@ -1,5 +1,7 @@
 package isamrs.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -7,15 +9,22 @@ import java.util.Optional;
 
 import isamrs.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import isamrs.dto.GetOcenaDTO;
+import isamrs.dto.LekarSlobodanDTO;
 import isamrs.dto.OsobaDTO;
 import isamrs.dto.SalaTerminiDTO;
+import isamrs.dto.SetOcenaDTO;
 import isamrs.dto.TerminDTO;
 import isamrs.repository.LekarRepository;
 import isamrs.repository.OcenaRepository;
 import isamrs.repository.OperacijaRepository;
+import isamrs.repository.PacijentRepository;
 import isamrs.repository.PregledRepository;
+import isamrs.dto.ProveraLekarSlobodanDTO;
 
 @Service
 public class LekarService {
@@ -31,6 +40,9 @@ public class LekarService {
 	
 	@Autowired
 	private OcenaRepository repoOcena;
+	
+	@Autowired
+	private PacijentRepository repoPacijent;
 	
 	
 	public Collection<OsobaDTO> findAll() {
@@ -147,6 +159,70 @@ public class LekarService {
 	
 	public Ocena createOcena(Ocena o) {
 		return repoOcena.save(o);
+	}
+	
+	public Boolean proverDaLiJeLekarSlobodan(ProveraLekarSlobodanDTO provera) {
+		Lekar l = findOne(provera.getIdLekara());
+		if (KlinikaServiceImpl.lekarImaSlobodanTermin(l, provera.getDatum())) {
+			for (TipPosete tp : l.getTipoviPoseta()) {
+				if (tp.getNaziv().equals(provera.getNazivTipa())) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public GetOcenaDTO pacijentPosjetioLekaraFunc(int idPacijenta, int id) {
+		Boolean ocijenio = pacijentOcijenioLekara(idPacijenta, id);
+		Boolean posjetio = pacijentPosjetioLekara(idPacijenta, id);
+		GetOcenaDTO getOcena = new GetOcenaDTO();
+		if (posjetio && ocijenio) {
+			getOcena.setMozeOcjenjivati(true);
+			getOcena.setOcjena(getOcenaPacijenta(id, idPacijenta).getVrednost());
+		} else if (posjetio) {
+			getOcena.setMozeOcjenjivati(true);
+			getOcena.setOcjena(0);
+		} else {
+			getOcena.setMozeOcjenjivati(false);
+			getOcena.setOcjena(0);
+		}
+		return getOcena;
+	}
+	
+	public void ocijeniLekara(SetOcenaDTO novaOcena) {
+		if (pacijentOcijenioLekara(novaOcena.getIdPacijenta(), novaOcena.getId())) {
+			Ocena stara = getOcenaPacijenta(novaOcena.getId(), novaOcena.getIdPacijenta());
+			stara.setVrednost(novaOcena.getOcjena());
+			Ocena updated = updateOcena(stara.getId(), stara);
+		} else {
+			Ocena nova = new Ocena();
+			nova.setVrednost(novaOcena.getOcjena());
+			Pacijent p = repoPacijent.findById(novaOcena.getIdPacijenta()).orElseGet(null);
+			Lekar l = findOne(novaOcena.getId());
+			nova.setPacijent(p);
+			l.getOcena().add(nova);
+			
+			Ocena created = createOcena(nova);
+			//Lekar ll = lekarService.update(novaOcena.getId(), k);
+		}
+	}
+	
+	public LekarSlobodanDTO vratiVremenaCijenu(int idLekara, String nazivTipa, String datum) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.");
+		Date d = null;
+		try {
+			d = sdf.parse(datum);
+		} catch (ParseException e) {
+			System.out.println("greska 217 lekar service");
+			e.printStackTrace();
+		}
+		Lekar l = findOne(idLekara);
+		LekarSlobodanDTO vremenaCijena = new LekarSlobodanDTO();
+		vremenaCijena.setListaVremena(KlinikaServiceImpl.getSlobodniTermini(l, d));
+		String naziv = nazivTipa.replace("%20", " ");
+		vremenaCijena.setCijena(naziv, l.getKlinika());
+		return vremenaCijena;
 	}
 
 }

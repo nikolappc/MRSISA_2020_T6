@@ -51,6 +51,7 @@ import isamrs.service.AdministratorKlinikeService;
 import isamrs.service.LekarService;
 import isamrs.service.MedicinskaSestraService;
 import isamrs.service.PacijentService;
+import isamrs.service.PacijentServiceImpl;
 import isamrs.service.PregledService;
 import isamrs.service.ZdravstveniKartonServiceImpl;
 
@@ -59,7 +60,7 @@ import isamrs.service.ZdravstveniKartonServiceImpl;
 public class UserController {
 
 	@Autowired
-	private PacijentService pacijentService;
+	private PacijentServiceImpl pacijentService;
 	@Autowired
 	private LekarService lekarService;
 	@Autowired
@@ -261,6 +262,9 @@ public class UserController {
 				break;
 			case "SESTRA":
 				updatedOsoba = sestraService.update(id, (MedicinskaSestra)osoba);
+				break;
+			case "PACIJENT":
+				updatedOsoba = pacijentService.update(id, (Pacijent)osoba);
 				break;
 
 			default:

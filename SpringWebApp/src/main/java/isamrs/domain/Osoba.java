@@ -2,6 +2,7 @@ package isamrs.domain;
 
 import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 
+import java.io.Serializable;
 import java.util.*;
 
 import javax.persistence.*;
@@ -23,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
   @Type(value = Pacijent.class, name = "PACIJENT"), 
 })
 @MappedSuperclass
-public abstract class Osoba{
+public abstract class Osoba implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

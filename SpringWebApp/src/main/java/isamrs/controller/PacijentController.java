@@ -36,7 +36,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class PacijentController {
 
 	@Autowired
-	private PacijentService pacijentService;
+	private PacijentServiceImpl pacijentService;
 
 	@Autowired
 	private PregledService pregledService;
@@ -56,7 +56,7 @@ public class PacijentController {
 	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Pacijent> getPacijet(@PathVariable("id") Integer id, HttpServletRequest req) {
-		if (req.getSession().getAttribute("user") == null || (req.getSession().getAttribute("user") instanceof Pacijent && ((Pacijent)req.getSession().getAttribute("user")).getId() != id)) {
+		if (req.getSession().getAttribute("user").equals(null) || (req.getSession().getAttribute("user") instanceof Pacijent && ((Pacijent)req.getSession().getAttribute("user")).getId() != id)) {
 			return new ResponseEntity<Pacijent>(HttpStatus.FORBIDDEN);
 		}
 		Pacijent pacijent = pacijentService.findOne(id);
@@ -96,14 +96,14 @@ public class PacijentController {
 		p.setAdresa(pacijent.getAdresa());
 
 		p = pacijentService.save(p);
-		req.getSession().setAttribute("user", p);
+		//req.getSession().setAttribute("user", p);
 
 		return new ResponseEntity<Pacijent>(p, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/listaPregleda/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<PosetaDTO>> getPregledi(@PathVariable("id") Integer id, HttpServletRequest req) {
-		if (req.getSession().getAttribute("user") == null || (req.getSession().getAttribute("user") instanceof Pacijent && ((Pacijent)req.getSession().getAttribute("user")).getId() != id)) {
+		if (req.getSession().getAttribute("user").equals(null) || (req.getSession().getAttribute("user") instanceof Pacijent && ((Pacijent)req.getSession().getAttribute("user")).getId() != id)) {
 			return new ResponseEntity<List<PosetaDTO>>(HttpStatus.FORBIDDEN);
 		}
 		Pacijent p = pacijentService.findOne(id);
@@ -126,7 +126,7 @@ public class PacijentController {
 
 	@GetMapping(value = "/karton/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ZdravstveniKartonDTO> getKarton(@PathVariable("id") Integer id, HttpServletRequest req) {
-		if (req.getSession().getAttribute("user") == null || (req.getSession().getAttribute("user") instanceof Pacijent && ((Pacijent)req.getSession().getAttribute("user")).getId() != id)) {
+		if (req.getSession().getAttribute("user").equals(null) || (req.getSession().getAttribute("user") instanceof Pacijent && ((Pacijent)req.getSession().getAttribute("user")).getId() != id)) {
 			return new ResponseEntity<ZdravstveniKartonDTO>(HttpStatus.FORBIDDEN);
 		}
 		Pacijent p = pacijentService.findOne(id);

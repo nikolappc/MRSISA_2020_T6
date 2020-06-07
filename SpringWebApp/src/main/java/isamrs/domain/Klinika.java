@@ -103,50 +103,13 @@ public class Klinika {
 //	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@JsonManagedReference("adminRefer")
 	public java.util.Collection<AdministratorKlinike> administratorKlinike;
-	/*
-	 * @OneToOne
-	 *
-	 * @JoinColumn(name = "id") public TipKlinike tipKlinike;
-	 */
+
 
 	public Klinika() {
 		super();
 	}
 
-	/*
-	 * public java.util.Collection<MedicniskoOsoblje> getMedicniskoOsoblje() { if
-	 * (medicniskoOsoblje == null) medicniskoOsoblje = new
-	 * java.util.HashSet<MedicniskoOsoblje>(); return medicniskoOsoblje; }
-	 * 
-	 * public java.util.Iterator getIteratorMedicniskoOsoblje() { if
-	 * (medicniskoOsoblje == null) medicniskoOsoblje = new
-	 * java.util.HashSet<MedicniskoOsoblje>(); return medicniskoOsoblje.iterator();
-	 * }
-	 * 
-	 * public void setMedicniskoOsoblje(java.util.Collection<MedicniskoOsoblje>
-	 * newMedicniskoOsoblje) { removeAllMedicniskoOsoblje(); for (java.util.Iterator
-	 * iter = newMedicniskoOsoblje.iterator(); iter.hasNext();)
-	 * addMedicniskoOsoblje((MedicniskoOsoblje)iter.next()); }
-	 * 
-	 * 
-	 * public void addMedicniskoOsoblje(MedicniskoOsoblje newMedicniskoOsoblje) { if
-	 * (newMedicniskoOsoblje == null) return; if (this.medicniskoOsoblje == null)
-	 * this.medicniskoOsoblje = new java.util.HashSet<MedicniskoOsoblje>(); if
-	 * (!this.medicniskoOsoblje.contains(newMedicniskoOsoblje))
-	 * this.medicniskoOsoblje.add(newMedicniskoOsoblje); }
-	 * 
-	 * 
-	 * public void removeMedicniskoOsoblje(MedicniskoOsoblje oldMedicniskoOsoblje) {
-	 * if (oldMedicniskoOsoblje == null) return; if (this.medicniskoOsoblje != null)
-	 * if (this.medicniskoOsoblje.contains(oldMedicniskoOsoblje))
-	 * this.medicniskoOsoblje.remove(oldMedicniskoOsoblje); }
-	 * 
-	 * public void removeAllMedicniskoOsoblje() { if (medicniskoOsoblje != null)
-	 * medicniskoOsoblje.clear(); }
-	 */
-
 	public Klinika(String naziv, Adresa adresa, String opis, TipKlinike tipKlinike) {
-		// TODO Auto-generated constructor stub
 		this.naziv = naziv;
 		this.adresa = adresa;
 		this.opis = opis;
@@ -156,16 +119,16 @@ public class Klinika {
 	/** @pdGenerated default getter */
 	public java.util.Collection<Sala> getSala() {
 		if (sala == null)
-			sala = new java.util.HashSet<Sala>();
+			sala = new java.util.HashSet<>();
 		return sala;
 	}
-
-	/** @pdGenerated default iterator getter */
-	public java.util.Iterator getIteratorSala() {
+	
+	public java.util.Iterator<Sala> getIteratorSala() {
 		if (sala == null)
-			sala = new java.util.HashSet<Sala>();
+			sala = new java.util.HashSet<>();
 		return sala.iterator();
 	}
+
 
 	/**
 	 * @pdGenerated default setter
@@ -173,7 +136,7 @@ public class Klinika {
 	 */
 	public void setSala(java.util.Collection<Sala> newSala) {
 		removeAllSala();
-		for (java.util.Iterator iter = newSala.iterator(); iter.hasNext();)
+		for (java.util.Iterator<Sala> iter = newSala.iterator(); iter.hasNext();)
 			addSala((Sala) iter.next());
 	}
 
@@ -185,7 +148,7 @@ public class Klinika {
 		if (newSala == null)
 			return;
 		if (this.sala == null)
-			this.sala = new java.util.HashSet<Sala>();
+			this.sala = new java.util.HashSet<>();
 		if (!this.sala.contains(newSala))
 			this.sala.add(newSala);
 	}
@@ -197,9 +160,12 @@ public class Klinika {
 	public void removeSala(Sala oldSala) {
 		if (oldSala == null)
 			return;
-		if (this.sala != null)
+		if ((this.sala != null) && (this.sala.contains(oldSala)))
+			this.sala.remove(oldSala);
+		/*if (this.sala != null)
 			if (this.sala.contains(oldSala))
 				this.sala.remove(oldSala);
+		*/
 	}
 
 	/** @pdGenerated default removeAll */
@@ -211,14 +177,14 @@ public class Klinika {
 	/** @pdGenerated default getter */
 	public java.util.Collection<Pacijent> getPacijent() {
 		if (pacijent == null)
-			pacijent = new java.util.HashSet<Pacijent>();
+			pacijent = new java.util.HashSet<>();
 		return pacijent;
 	}
 
 	/** @pdGenerated default iterator getter */
-	public java.util.Iterator getIteratorPacijent() {
+	public java.util.Iterator<Pacijent> getIteratorPacijent() {
 		if (pacijent == null)
-			pacijent = new java.util.HashSet<Pacijent>();
+			pacijent = new java.util.HashSet<>();
 		return pacijent.iterator();
 	}
 
@@ -228,7 +194,7 @@ public class Klinika {
 	 */
 	public void setPacijent(java.util.Collection<Pacijent> newPacijent) {
 		removeAllPacijent();
-		for (java.util.Iterator iter = newPacijent.iterator(); iter.hasNext();)
+		for (java.util.Iterator<Pacijent> iter = newPacijent.iterator(); iter.hasNext();)
 			addPacijent((Pacijent) iter.next());
 	}
 
@@ -252,9 +218,8 @@ public class Klinika {
 	public void removePacijent(Pacijent oldPacijent) {
 		if (oldPacijent == null)
 			return;
-		if (this.pacijent != null)
-			if (this.pacijent.contains(oldPacijent))
-				this.pacijent.remove(oldPacijent);
+		if ((this.pacijent != null) && (this.pacijent.contains(oldPacijent)))
+			this.pacijent.remove(oldPacijent);
 	}
 
 	/** @pdGenerated default removeAll */
@@ -263,29 +228,7 @@ public class Klinika {
 			pacijent.clear();
 	}
 
-	/*
-	 * public java.util.Collection<Poseta> getPoseta() { if (poseta == null) poseta
-	 * = new java.util.HashSet<Poseta>(); return poseta; }
-	 * 
-	 * public java.util.Iterator getIteratorPoseta() { if (poseta == null) poseta =
-	 * new java.util.HashSet<Poseta>(); return poseta.iterator(); }
-	 * 
-	 * 
-	 * public void setPoseta(java.util.Collection<Poseta> newPoseta) {
-	 * removeAllPoseta(); for (java.util.Iterator iter = newPoseta.iterator();
-	 * iter.hasNext();) addPoseta((Poseta)iter.next()); }
-	 * 
-	 * 
-	 * public void addPoseta(Poseta newPoseta) { if (newPoseta == null) return; if
-	 * (this.poseta == null) this.poseta = new java.util.HashSet<Poseta>(); if
-	 * (!this.poseta.contains(newPoseta)) this.poseta.add(newPoseta); }
-	 * 
-	 * public void removePoseta(Poseta oldPoseta) { if (oldPoseta == null) return;
-	 * if (this.poseta != null) if (this.poseta.contains(oldPoseta))
-	 * this.poseta.remove(oldPoseta); }
-	 * 
-	 * public void removeAllPoseta() { if (poseta != null) poseta.clear(); }
-	 */
+
 	/** @pdGenerated default parent getter */
 	public Cenovnik getCenovnik() {
 		return cenovnik;
@@ -302,14 +245,14 @@ public class Klinika {
 	/** @pdGenerated default getter */
 	public java.util.Collection<TipPosete> getTipPosete() {
 		if (tipPosete == null)
-			tipPosete = new java.util.HashSet<TipPosete>();
+			tipPosete = new java.util.HashSet<>();
 		return tipPosete;
 	}
 
 	/** @pdGenerated default iterator getter */
-	public java.util.Iterator getIteratorTipPosete() {
+	public java.util.Iterator<TipPosete> getIteratorTipPosete() {
 		if (tipPosete == null)
-			tipPosete = new java.util.HashSet<TipPosete>();
+			tipPosete = new java.util.HashSet<>();
 		return tipPosete.iterator();
 	}
 
@@ -319,7 +262,7 @@ public class Klinika {
 	 */
 	public void setTipPosete(java.util.Collection<TipPosete> newTipPosete) {
 		removeAllTipPosete();
-		for (java.util.Iterator iter = newTipPosete.iterator(); iter.hasNext();)
+		for (java.util.Iterator<TipPosete> iter = newTipPosete.iterator(); iter.hasNext();)
 			addTipPosete((TipPosete) iter.next());
 	}
 
@@ -331,7 +274,7 @@ public class Klinika {
 		if (newTipPosete == null)
 			return;
 		if (this.tipPosete == null)
-			this.tipPosete = new java.util.HashSet<TipPosete>();
+			this.tipPosete = new java.util.HashSet<>();
 		if (!this.tipPosete.contains(newTipPosete))
 			this.tipPosete.add(newTipPosete);
 	}
@@ -343,9 +286,8 @@ public class Klinika {
 	public void removeTipPosete(TipPosete oldTipPosete) {
 		if (oldTipPosete == null)
 			return;
-		if (this.tipPosete != null)
-			if (this.tipPosete.contains(oldTipPosete))
-				this.tipPosete.remove(oldTipPosete);
+		if ((this.tipPosete != null) && (this.tipPosete.contains(oldTipPosete)))
+			this.tipPosete.remove(oldTipPosete);
 	}
 
 	/** @pdGenerated default removeAll */
@@ -357,14 +299,14 @@ public class Klinika {
 	/** @pdGenerated default getter */
 	public java.util.Collection<Ocena> getOcena() {
 		if (ocena == null)
-			ocena = new java.util.HashSet<Ocena>();
+			ocena = new java.util.HashSet<>();
 		return ocena;
 	}
 
 	/** @pdGenerated default iterator getter */
-	public java.util.Iterator getIteratorOcena() {
+	public java.util.Iterator<Ocena> getIteratorOcena() {
 		if (ocena == null)
-			ocena = new java.util.HashSet<Ocena>();
+			ocena = new java.util.HashSet<>();
 		return ocena.iterator();
 	}
 
@@ -374,7 +316,7 @@ public class Klinika {
 	 */
 	public void setOcena(java.util.Collection<Ocena> newOcena) {
 		removeAllOcena();
-		for (java.util.Iterator iter = newOcena.iterator(); iter.hasNext();)
+		for (java.util.Iterator<Ocena> iter = newOcena.iterator(); iter.hasNext();)
 			addOcena((Ocena) iter.next());
 	}
 
@@ -386,7 +328,7 @@ public class Klinika {
 		if (newOcena == null)
 			return;
 		if (this.ocena == null)
-			this.ocena = new java.util.HashSet<Ocena>();
+			this.ocena = new java.util.HashSet<>();
 		if (!this.ocena.contains(newOcena))
 			this.ocena.add(newOcena);
 	}
@@ -398,9 +340,8 @@ public class Klinika {
 	public void removeOcena(Ocena oldOcena) {
 		if (oldOcena == null)
 			return;
-		if (this.ocena != null)
-			if (this.ocena.contains(oldOcena))
-				this.ocena.remove(oldOcena);
+		if ((this.ocena != null) && (this.ocena.contains(oldOcena)))
+			this.ocena.remove(oldOcena);
 	}
 
 	/** @pdGenerated default removeAll */
@@ -412,14 +353,14 @@ public class Klinika {
 	/** @pdGenerated default getter */
 	public java.util.Collection<AdministratorKlinike> getAdministratorKlinike() {
 		if (administratorKlinike == null)
-			administratorKlinike = new java.util.HashSet<AdministratorKlinike>();
+			administratorKlinike = new java.util.HashSet<>();
 		return administratorKlinike;
 	}
 
 	/** @pdGenerated default iterator getter */
-	public java.util.Iterator getIteratorAdministratorKlinike() {
+	public java.util.Iterator<AdministratorKlinike> getIteratorAdministratorKlinike() {
 		if (administratorKlinike == null)
-			administratorKlinike = new java.util.HashSet<AdministratorKlinike>();
+			administratorKlinike = new java.util.HashSet<>();
 		return administratorKlinike.iterator();
 	}
 
@@ -429,7 +370,7 @@ public class Klinika {
 	 */
 	public void setAdministratorKlinike(java.util.Collection<AdministratorKlinike> newAdministratorKlinike) {
 		removeAllAdministratorKlinike();
-		for (java.util.Iterator iter = newAdministratorKlinike.iterator(); iter.hasNext();)
+		for (java.util.Iterator<AdministratorKlinike> iter = newAdministratorKlinike.iterator(); iter.hasNext();)
 			addAdministratorKlinike((AdministratorKlinike) iter.next());
 	}
 
@@ -441,7 +382,7 @@ public class Klinika {
 		if (newAdministratorKlinike == null)
 			return;
 		if (this.administratorKlinike == null)
-			this.administratorKlinike = new java.util.HashSet<AdministratorKlinike>();
+			this.administratorKlinike = new java.util.HashSet<>();
 		if (!this.administratorKlinike.contains(newAdministratorKlinike))
 			this.administratorKlinike.add(newAdministratorKlinike);
 	}
@@ -453,9 +394,8 @@ public class Klinika {
 	public void removeAdministratorKlinike(AdministratorKlinike oldAdministratorKlinike) {
 		if (oldAdministratorKlinike == null)
 			return;
-		if (this.administratorKlinike != null)
-			if (this.administratorKlinike.contains(oldAdministratorKlinike))
-				this.administratorKlinike.remove(oldAdministratorKlinike);
+		if ((this.administratorKlinike != null) && (this.administratorKlinike.contains(oldAdministratorKlinike)))
+			this.administratorKlinike.remove(oldAdministratorKlinike);
 	}
 
 	/** @pdGenerated default removeAll */
@@ -549,7 +489,12 @@ public class Klinika {
 			sum += o.getVrednost();
 			count += 1;
 		}
-		return sum/count;
+		if (count != 0) {
+			return sum/count;
+		} else {
+			return 0;
+		}
+
 	}
 	
 	
