@@ -62,14 +62,15 @@ public class OperacijaServiceImpl implements OperacijaService {
 
 	@Override
 	public Operacija update(Integer id, Operacija t) throws NotFoundException {
-		operacijaRepository.findById(id).orElseThrow(NotFoundException::new);
+		if(!operacijaRepository.existsById(id)){
+			throw new NotFoundException();
+		}
 		return operacijaRepository.save(t);
 	}
 
 	@Override
 	public void delete(Integer id) {
 		operacijaRepository.deleteById(id);
-		
 	}
 
 	@Override

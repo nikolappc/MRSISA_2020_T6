@@ -294,7 +294,7 @@ public class PosetaController {
 	}
 
 	@GetMapping(value = "/predstojeciPregledi/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<PosetaDTO>> getBuduciPregledi(@PathVariable("id") Integer idPacijent){
+	public ResponseEntity<Collection<PosetaDTO>> getBuduciPregledi(@PathVariable("id") Integer idPacijent) throws NotFoundException {
 		Collection<PosetaDTO> posete = pacijentService.findBuduciPregled(idPacijent);
 
 		return new ResponseEntity<Collection<PosetaDTO>>(posete, HttpStatus.OK);

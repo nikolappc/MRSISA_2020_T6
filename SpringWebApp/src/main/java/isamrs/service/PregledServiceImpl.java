@@ -7,6 +7,7 @@ import java.util.List;
 import isamrs.domain.Lekar;
 import isamrs.domain.Pregled;
 import isamrs.domain.Sala;
+import isamrs.exceptions.NotFoundException;
 import isamrs.repository.PacijentRepository;
 import isamrs.repository.PregledRepository;
 
@@ -28,8 +29,8 @@ public class PregledServiceImpl implements PregledService {
 	}
 
 	@Override
-	public Pregled findOne(Integer id) {
-		return pregledRepository.findById(id).orElseGet(null);
+	public Pregled findOne(Integer id) throws NotFoundException {
+		return pregledRepository.findById(id).orElseThrow(NotFoundException::new);
 	}
 
 	@Override
@@ -41,8 +42,8 @@ public class PregledServiceImpl implements PregledService {
 
 
 	@Override
-	public Pregled update(Integer id, Pregled t) {
-		Pregled pregledForUpdate = pregledRepository.findById(id).orElseGet(null);
+	public Pregled update(Integer id, Pregled t) throws NotFoundException {
+		Pregled pregledForUpdate = pregledRepository.findById(id).orElseThrow(NotFoundException::new);
 		return pregledRepository.save(t);
 	}
 

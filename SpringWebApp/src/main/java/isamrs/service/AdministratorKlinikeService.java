@@ -154,24 +154,22 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
 		return true;
 	}
 
-	public Pregled update(Integer id, Pregled pregled) throws Exception {
-		Pregled pregledBaza = pregledRepo.findById(id).orElseGet(null);
-		if (pregledBaza != null) {
-			Sala s = salaRepo.findById(pregled.getSala().getId()).orElseGet(null);
+	public Pregled update(Integer id, Pregled pregled) throws Exception, NotFoundException {
+		Pregled pregledBaza = pregledRepo.findById(id).orElseThrow(NotFoundException::new);
+		Sala s = salaRepo.findById(pregled.getSala().getId()).orElseGet(null);
 
-			if(!proveriTerminSala(s,pregled.getTermin())) {
-				throw new Exception();
-			}
-
-			if(!proveriTerminLekara(pregled.getLekar().getId(), pregled.getTermin())) {
-				throw new Exception();
-			}
-
-			pregledBaza.setSala(s);
-
-			pregledBaza.setLekar(pregled.getLekar());
-			pregledRepo.save(pregledBaza);
+		if(!proveriTerminSala(s,pregled.getTermin())) {
+			throw new Exception();
 		}
+
+		if(!proveriTerminLekara(pregled.getLekar().getId(), pregled.getTermin())) {
+			throw new Exception();
+		}
+
+		pregledBaza.setSala(s);
+
+		pregledBaza.setLekar(pregled.getLekar());
+		pregledRepo.save(pregledBaza);
 		//Dodaj pacijenta u klinici
 
 		return pregledBaza;

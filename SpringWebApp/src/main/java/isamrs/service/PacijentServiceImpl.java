@@ -70,8 +70,8 @@ public class PacijentServiceImpl implements PacijentService {
 	}
 
 	@Override
-	public Collection<PosetaDTO> findBuduciPregled(Integer id) {
-		Pacijent p = pacijentRepository.findById(id).orElseGet(null);
+	public Collection<PosetaDTO> findBuduciPregled(Integer id) throws NotFoundException {
+		Pacijent p = pacijentRepository.findById(id).orElseThrow(NotFoundException::new);
 		ArrayList<PosetaDTO> pregledi = new ArrayList<PosetaDTO>();
 		ZdravstveniKarton zk = p.getZdravstveniKarton();
 		if(zk != null) {			

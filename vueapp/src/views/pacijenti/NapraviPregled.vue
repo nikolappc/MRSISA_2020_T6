@@ -133,7 +133,7 @@ export default {
                     .post('poseta/operacija',this.pregled)
                     .then(() => {
                         this.$store.commit("setSnackbar", {text:"Uspešno ste poslali zahtev za operaciju", color: "success"});
-                        this.$emit("zatvori");
+                        this.$emit("zatvori", true);
                     })
                     .catch(function (error) { console.log(error); });
             }
@@ -143,7 +143,7 @@ export default {
                     .post('poseta/pregled',this.pregled)
                     .then(() => {
                         this.$store.commit("setSnackbar", {text:"Uspešno ste poslali zahtev za pregled", color: "success"});
-                        this.$emit("zatvori");
+                        this.$emit("zatvori", false);
                     })
                     .catch(function (error) { console.log(error); });
             }

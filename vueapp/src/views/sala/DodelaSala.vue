@@ -298,12 +298,12 @@ export default {
     },
     methods: {
         dodajDoktora(l){
-            if(this.pregled.lekari.find(lekar=>{
+            if(this.pregled.lekari.find(lekar=>
                 lekar.id==l.id
-            })){
-                this.pregled.lekari.filter(lekar=>{
-                    lekar.id != l.id;
-                })
+            )){
+                this.pregled.lekari.filter(lekar=>
+                    lekar.id != l.id
+                )
             }else{
                 this.pregled.lekari.push(l);
             }

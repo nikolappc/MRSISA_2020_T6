@@ -134,14 +134,15 @@ public class AdminKlinikeController {
 	}
 
 	@PutMapping(value = "/pregled/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Pregled> updateSala(@RequestBody Pregled pregled, @PathVariable Integer id){
+	public ResponseEntity<Pregled> updateSala(@RequestBody Pregled pregled, @PathVariable Integer id) throws NotFoundException {
 
 
 		Pregled updatePregled = null;
 
 		try {
 			updatePregled = adminService.update(id,pregled);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			return new ResponseEntity<Pregled>(HttpStatus.BAD_REQUEST);
 		}
 

@@ -82,8 +82,9 @@
                         <v-btn class="mx-10"
                           color="primary"
                           @click="dialog = true"
+                          disabled="zakazaoNovi"
                         >
-                            Zakaži pregled
+                            Zakaži dodatni pregled
                         </v-btn>
                         <v-btn
                         @click="end"
@@ -168,7 +169,8 @@ name: 'Pregled  ',
     time: 2000,
     dialog: false,
     lekar: {},
-    pacijent: {}
+    pacijent: {},
+    zakazaoNovi:false
   }),
   components:{
     Pretrazivac,
@@ -239,6 +241,9 @@ name: 'Pregled  ',
                 this.$store.commit("setSnackbar", {text:"Izvinjavamo se došlo je do greške.", color: "error"});
             });
     },
+    zakazanNovi(val){
+        this.zakazaoNovi = val;
+    },
     end(){
         let recepti = [];
         for (const lek of this.lekovi) {
@@ -252,7 +257,9 @@ name: 'Pregled  ',
         axios.put("/poseta/pregled/"+this.pregled.id, this.pregled)
             .then(res=>{
                 console.log(res);
+                this.$store.commit("setSnackbar", {text:"Pregled je uspešno završen.", color: "success"});
                 this.$router.push("/");
+
             })
             .catch(error=>{
                 console.log(error);
