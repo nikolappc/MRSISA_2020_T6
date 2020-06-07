@@ -130,7 +130,7 @@ public class PregledServiceImpl implements PregledService {
 		return pregledRepository.findBySala(s);
 	}
 	
-	public Boolean otkaziPregled(int idPregleda, int idUlogovanog) {
+	public Boolean otkaziPregled(int idPregleda, int idUlogovanog) throws NotFoundException {
 		Pregled p = findOne(idPregleda);
 		if (p.getZdravstveniKarton().getPacijent().getId() != idUlogovanog) {
 			return null;
@@ -204,7 +204,7 @@ public class PregledServiceImpl implements PregledService {
 		return true;
 	}
 	
-	public Boolean zakaziPredefinisaniPregled(ZakazivanjePregledaDTO zahtjev, int idZk, String email) {
+	public Boolean zakaziPredefinisaniPregled(ZakazivanjePregledaDTO zahtjev, int idZk, String email) throws NotFoundException {
 		Klinika k = klinikaRepo.findById(zahtjev.getIdKlinike()).orElseGet(null);
 		Pregled prDef = findOne(zahtjev.getIdPredefinisanogTermina());
 		//ZdravstveniKarton zk = kartonService.findOne(idZk);
