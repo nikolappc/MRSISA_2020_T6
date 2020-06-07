@@ -117,48 +117,48 @@
           </v-container>
         </v-col>
         <v-col
-        lg="4"
-        md="6"
-        sm="12"
-      >
-        <v-container>
-          <v-card
-                color="primary"
-              >
-            <v-container>
-                <v-col
-                  cols="12"
+          lg="4"
+          md="6"
+          sm="12"
+        >
+          <v-container>
+            <v-card
+                  color="primary"
                 >
-                  <v-card>
-                    <v-card-title
-                    >
-                      Zahtevi za operaciju
-                    </v-card-title>
-                  </v-card>
-                </v-col>
-                <v-col
-                  cols="12"
-                  v-if="operacije.length == 0"
-                >
-                  <v-card>
-                    <v-container>
-                      Trenutno nema zahteva za operaciju.
-                    </v-container>
-                  </v-card>
-                </v-col>
-                <v-col
-                  cols="12"
-                  v-for="o in operacije"
-                  :key="o"
-                  v-else
-                >
-                  <PosetaConf :id="o" :pregled="false">
-                  </PosetaConf>
-                </v-col>
-            </v-container>
-          </v-card>
-        </v-container>
-      </v-col>
+              <v-container>
+                  <v-col
+                    cols="12"
+                  >
+                    <v-card>
+                      <v-card-title
+                      >
+                        Zahtevi za operaciju
+                      </v-card-title>
+                    </v-card>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    v-if="operacije.length == 0"
+                  >
+                    <v-card>
+                      <v-container>
+                        Trenutno nema zahteva za operaciju.
+                      </v-container>
+                    </v-card>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    v-for="o in operacije"
+                    :key="o"
+                    v-else
+                  >
+                    <PosetaConf :id="o" :pregled="false">
+                    </PosetaConf>
+                  </v-col>
+              </v-container>
+            </v-card>
+          </v-container>
+        </v-col>
         <v-col
           lg="4"
           md="6"
@@ -199,7 +199,7 @@
 
         </v-col>
       
-      <v-row>
+      </v-row>
     </v-container>
 
   </div>

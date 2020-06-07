@@ -19,40 +19,42 @@
           <v-card>
             <RadniKalendar
               :events="events"
-              @selected="selektovanEvent"
+              @selected="selektovan"
             >
+              <template slot-scope="kalendar">
+                <v-menu
+                  v-model="kalendar.opened"
+                  :close-on-content-click="false"
+                  :activator="kalendar.activator"
+                  offset-x
+                  v-if="selected!=null"
+                >
+                  <v-card>
+                    <v-toolbar color="blue">
+                      <v-row>
+                        <v-col>
+                          {{selected.tip.naziv}}
+                        </v-col>
+                        <v-col>
+                          <v-icon>
+                            mdi-doctor
+                          </v-icon>
+                          {{selected.lekar}}
+                        </v-col>
+                      </v-row>
+                    </v-toolbar>
+                    <v-container>
+                        {{selected.opis}}
+                        <v-row>
+                            <v-btn :disabled="selected.recepti.length==0" collor="success" :to="{ name: 'OveriRecepte', params: { pregled: selected }}" class="ml-auto">
+                              Overi recepte
+                            </v-btn>
+                        </v-row>
+                    </v-container>
+                  </v-card>
+                </v-menu>
+              </template>
             </RadniKalendar>
-            <v-menu
-              v-model="opened"
-              :close-on-content-click="false"
-              :activator="activator"
-              offset-x
-              v-if="selected!=null"
-            >
-              <v-card>
-                <v-toolbar color="blue">
-                  <v-row>
-                    <v-col>
-                      {{selected.tip.naziv}}
-                    </v-col>
-                    <v-col>
-                      <v-icon>
-                        mdi-doctor
-                      </v-icon>
-                      {{selected.lekar}}
-                    </v-col>
-                  </v-row>
-                </v-toolbar>
-                <v-container>
-                    {{selected.opis}}
-                    <v-row>
-                        <v-btn :disabled="selected.recepti.length==0" collor="success" :to="{ name: 'OveriRecepte', params: { pregled: selected }}" class="ml-auto">
-                          Overi recepte
-                        </v-btn>
-                    </v-row>
-                </v-container>
-              </v-card>
-            </v-menu>
           </v-card>
         </v-col>
         <v-col
@@ -137,9 +139,7 @@ export default {
       ],
       pregledi : [],
       events:[],
-      selected:null,
-      activator:null,
-      opened:false,
+      selected:null
 
     }
   },
@@ -172,26 +172,12 @@ export default {
         })
   },
   methods: {
-    selektovanEvent(e){
-      let nativeEvent = e.nativeEvent;
-      let event = e.event;
-      
-      if(!this.selected || this.selected.id != event.id){
-        this.selected = this.pregledi.find(function(pregled) {
-            return pregled.id == event.id;
-        });
-        this.activator = nativeEvent.target;
-        this.opened = true;
-      }else{
-        this.opened = false;
-        this.activator = null;
-        this.selected = null;
-      }
-
-    },
     formatDate (a) {
       return `${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()} ${a.getHours()}:${a.getMinutes()}`;
     },
+    selektovan(sel){
+      this.selected = this.pregledi.find(p=>p.id==sel.id);
+    }
   }
 }
 </script>

@@ -21,6 +21,7 @@ import isamrs.dto.PredefinisaniPregledDTO;
 import isamrs.dto.ZakazivanjePregledaDTO;
 import isamrs.repository.KlinikaRepository;
 import isamrs.repository.LekarRepository;
+import isamrs.exceptions.NotFoundException;
 import isamrs.repository.PacijentRepository;
 import isamrs.repository.PregledRepository;
 import isamrs.repository.TipPoseteRepository;
@@ -69,8 +70,8 @@ public class PregledServiceImpl implements PregledService {
 	}
 
 	//@Override
-	public Pregled findOne(Integer id) {
-		return pregledRepository.findById(id).orElseGet(null);
+	public Pregled findOne(Integer id) throws NotFoundException {
+		return pregledRepository.findById(id).orElseThrow(NotFoundException::new);
 	}
 
 	//@Override
@@ -82,8 +83,8 @@ public class PregledServiceImpl implements PregledService {
 
 
 	//@Override
-	public Pregled update(Integer id, Pregled t) {
-		Pregled pregledForUpdate = pregledRepository.findById(id).orElseGet(null);
+	public Pregled update(Integer id, Pregled t) throws NotFoundException {
+		Pregled pregledForUpdate = pregledRepository.findById(id).orElseThrow(NotFoundException::new);
 		return pregledRepository.save(t);
 	}
 

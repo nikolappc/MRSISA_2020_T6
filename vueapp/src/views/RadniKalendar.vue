@@ -1,44 +1,48 @@
 <template>
-    <div>
-        Radni kalendar
-            <v-tabs>
-              <v-tab @click="setType('month')">
-                Mesečni prikaz
-              </v-tab>
-              <v-tab @click="setType('week')">
-                Nedeljni prikaz
-              </v-tab>
-              <v-tab @click="setType('day')">
-                Dnevni prikaz
-              </v-tab>
-            </v-tabs>
+    <v-card>
+        <v-container>
+            <display-1>
+                Radni kalendar
+            </display-1>
             <v-btn
-                fab
                 small
-                absolute
-                left
                 @click="$refs.calendar.prev()"
             >
                 <v-icon dark>mdi-chevron-left</v-icon>
             </v-btn>
             <v-btn
-                fab
                 small
-                absolute
-                right
                 @click="$refs.calendar.next()"
             >
                 <v-icon dark>mdi-chevron-right</v-icon>
             </v-btn>
-            <v-calendar
-              ref="calendar"
-              v-model="calendar"
-              :type="type"
-              :events="events"
-              @click:event="selectedEvent"
-            >
-            </v-calendar>
-    </div>
+        </v-container>
+        <v-tabs>
+            <v-tab @click="setType('month')">
+            Mesečni prikaz
+            </v-tab>
+            <v-tab @click="setType('week')">
+                Nedeljni prikaz
+            </v-tab>
+            <v-tab @click="setType('day')">
+                Dnevni prikaz
+            </v-tab>
+        </v-tabs>
+        
+        <slot :selected="selected" :activator="activator" :opened="opened">
+        </slot>
+        <v-calendar
+            ref="calendar"
+            v-model="calendar"
+            :type="type"
+            :events="events"
+            @click:event="selectedEvent"
+        >
+        </v-calendar>
+           
+        
+        
+    </v-card>
 </template>
 
 <script>
@@ -47,7 +51,10 @@
         data:function(){
             return{
                 type:"month",
-                calendar:"",
+                calendar:"",            
+                selected:null,
+                activator:null,
+                opened:false,
             }
         },
         props:[
@@ -57,13 +64,46 @@
 
         },
         methods:{ 
+            selektovanEvent(e){
+                let nativeEvent = e.nativeEvent;
+                let event = e.event;
+                const open = () => {
+                    this.selected = event
+                    this.activator = nativeEvent.target
+                    setTimeout(() => this.opened = true, 10)
+                }
+
+                if (this.opened) {
+                    this.opened = false
+                    setTimeout(open, 10)
+                } else {
+                    open()
+                }
+
+                nativeEvent.stopPropagation()
+                // this.activator = nativeEvent.target;
+                
+                // if(this.selected && this.selected.id == event.id){     
+                //     this.opened = false;
+                //     this.activator = null;
+                //     this.selected = null;
+                // }else{
+                //     this.selected = this.events.find(function(e) {
+                //         return e.id == event.id;
+                //     });
+                //     this.opened = true;
+                // }
+                // nativeEvent.stopPropagation();
+            },
+            
             setType(type){
                 this.type = type;
             },
             selectedEvent({nativeEvent, event}){
                 console.log(nativeEvent);
                 console.log(event);
-                this.$emit("selected", {nativeEvent:nativeEvent, event:event});
+                this.selektovanEvent({nativeEvent:nativeEvent, event:event});
+                this.$emit("selected", this.selected);
             }
         }
 
