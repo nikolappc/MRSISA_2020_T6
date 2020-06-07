@@ -173,7 +173,7 @@ export default {
         dialog : false,
         dialogSala: null,
         search: '',
-        pregled: {lekar: null},
+        pregled: {},
         lekari: [],
         pocetak: null,
         kraj: null,
@@ -193,6 +193,7 @@ export default {
 
         if(!this.isPregled){
             this.pregled.lekari = [];
+            delete this.pregled.lekar;
         }
         console.log(this.address);
 

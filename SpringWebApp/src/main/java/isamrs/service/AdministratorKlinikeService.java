@@ -121,22 +121,25 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
 			if(!proveriTerminSala(s,operacija.getTermin())) {
 				throw new SalaZauzetaException("Zauzeta sala", "Izvinjavamo se sala je zauzeta u odabranom terminu");
 			}
-			if(!proveriTerminLekara(operacija.getLekar(), operacija.getTermin())){
+			if(!proveriTerminLekara(operacija.getLekari(), operacija.getTermin())){
 				throw new LekarZauzetException("Zauzet lekar", "Izvinjavamo se lekar je zauzet u odabranom terminu");
 			}
 			Set<Integer> ids = new HashSet<>();
-			for(Lekar l:operacijaBaza.getLekar()){
+			for(Lekar l:operacijaBaza.getLekari()){
 				ids.add(l.getId());
 			}
-			for(Lekar l:operacija.getLekar()){
+			for(Lekar l:operacija.getLekari()){
 				if(ids.contains(l.getId())){
 					continue;
 				}
 				eventPublisher.publishEvent(new OnDoktorDodatEvent(l, operacijaBaza, operacija.getTermin()));
+				l.getOperacije().add(operacijaBaza);
+				lekarRepo.save(l);
 			}
 			operacijaBaza.setSala(s);
 
-			operacijaBaza.setLekar(operacija.getLekar());
+
+			operacijaBaza.setLekar(operacija.getLekari());
 			operacijaRepo.save(operacijaBaza);
 		}
 		return operacijaBaza;

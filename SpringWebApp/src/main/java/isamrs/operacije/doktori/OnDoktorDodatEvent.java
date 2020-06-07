@@ -1,6 +1,5 @@
 package isamrs.operacije.doktori;
 
-import isamrs.domain.GodisnjiOdmor;
 import isamrs.domain.Lekar;
 import isamrs.domain.Operacija;
 import isamrs.domain.Termin;

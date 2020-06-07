@@ -82,7 +82,6 @@ public class PosetaController {
 		Pregled savedPregled = pregledService.create(pregled);
 		return new ResponseEntity<Pregled>(savedPregled, HttpStatus.CREATED);
 	}
-
 	@PostMapping(value = "/operacija", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Operacija> createOperacija(@RequestBody PosetaPostDTO o, HttpServletRequest req) throws Exception, NotFoundException {
 

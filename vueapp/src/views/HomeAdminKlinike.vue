@@ -95,6 +95,7 @@
                   </v-col>
                   <v-col
                     cols="12"
+                    v-if="pregledi.length == 0"
                   >
                     <v-card>
                       <v-container>
@@ -103,6 +104,7 @@
                     </v-card>
                   </v-col>
                   <v-col
+                    v-else
                     cols="12"
                     v-for="idPregleda in pregledi"
                     :key="idPregleda"
@@ -136,6 +138,7 @@
                 </v-col>
                 <v-col
                   cols="12"
+                  v-if="operacije.length == 0"
                 >
                   <v-card>
                     <v-container>
@@ -147,6 +150,7 @@
                   cols="12"
                   v-for="o in operacije"
                   :key="o"
+                  v-else
                 >
                   <PosetaConf :id="o" :pregled="false">
                   </PosetaConf>
