@@ -112,20 +112,13 @@ public class KlinikaController {
 	}
 
 
-	private KlinikaDTO mapToDTO(Klinika k) {
-		return new KlinikaDTO(k.getId(), k.getNaziv(), k.getAdresa(), k.getOpis(), k.getTipKlinike());
-	}
-	private Klinika mapToEntity(KlinikaDTO k) {
-		return new Klinika(k.getNaziv(), k.getAdresa(), k.getOpis(), k.getTipKlinike());
-	}
-	
 	@GetMapping(value = "/klinikeZaPacijenta", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<KlinikaZaPacijentaDTO>> getPregledi(HttpServletRequest req) {
 		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
 			return new ResponseEntity<List<KlinikaZaPacijentaDTO>>(HttpStatus.FORBIDDEN);
 		}
 		Collection<Klinika> klinike = klinikaService.findAll();
-		
+
 		List<KlinikaZaPacijentaDTO> klinikeDTO = new ArrayList<>();
 		for (Klinika klinika : klinike) {
 			klinikeDTO.add(new KlinikaZaPacijentaDTO(klinika));
@@ -142,7 +135,7 @@ public class KlinikaController {
 
 		return new ResponseEntity<List<KlinikaZaPacijentaDTO>>(klinikeDTO, HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/getSviLekariKlinike/{idKlinike}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ArrayList<LekarZaPacijentaDTO>> getSviLekariKlinike(@PathVariable("idKlinike") Integer idKlinike, HttpServletRequest req) throws Exception {
 		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
@@ -155,7 +148,7 @@ public class KlinikaController {
 		}
 		return new ResponseEntity<ArrayList<LekarZaPacijentaDTO>>(sviLekari, HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/pacijentPosjetio/{idPacijenta}/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<GetOcenaDTO> pacijentPosjetioKliniku(@PathVariable("idPacijenta") Integer idPcijenta, @PathVariable("id") Integer id, HttpServletRequest req) throws Exception {
 		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
@@ -164,18 +157,18 @@ public class KlinikaController {
 		GetOcenaDTO getOcena = klinikaService.pacijentPosjetio(idPcijenta, id);
 		return new ResponseEntity<GetOcenaDTO>(getOcena, HttpStatus.OK);
 	}
-	
+
 	@PostMapping(value = "/ocijeni", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Boolean> ocijeniKliniku(@RequestBody SetOcenaDTO novaOcena, HttpServletRequest req) throws Exception, NotFoundException {
 		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
 		klinikaService.ocijeniKliniku(novaOcena);
-		
+
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
-	
+
+
 	@PostMapping(value = "/getSlobodniLekariKlinike", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ArrayList<LekarZaPacijentaDTO>> getSlobodniLekariKlinike(@RequestBody SlobodniLekariKlinikeDTO slk, HttpServletRequest req) throws Exception, NotFoundException {
 		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
@@ -185,15 +178,23 @@ public class KlinikaController {
 
 		return new ResponseEntity<ArrayList<LekarZaPacijentaDTO>>(lekari, HttpStatus.OK);
 	}
-	
+
+
+	private KlinikaDTO mapToDTO(Klinika k) {
+		return new KlinikaDTO(k.getId(), k.getNaziv(), k.getAdresa(), k.getOpis(), k.getTipKlinike());
+	}
+	private Klinika mapToEntity(KlinikaDTO k) {
+		return new Klinika(k.getNaziv(), k.getAdresa(), k.getOpis(), k.getTipKlinike());
+	}
+
 	/*
 	public static boolean terminZauzetF(Lekar l, Calendar cal1, Calendar c) {
 		Calendar cal2 = Calendar.getInstance();
 		for (Pregled p : l.getPregled()) {
 			cal2.setTime(p.getTermin().getPocetak());
-			if ((cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)) && 
+			if ((cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)) &&
 					(cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR))) { //pregled je tog datuma
-				if ((cal2.get(Calendar.HOUR_OF_DAY) == c.get(Calendar.HOUR_OF_DAY)) && 
+				if ((cal2.get(Calendar.HOUR_OF_DAY) == c.get(Calendar.HOUR_OF_DAY)) &&
 						(cal2.get(Calendar.MINUTE) == c.get(Calendar.MINUTE))) {
 					return true;
 				}
@@ -212,7 +213,7 @@ public class KlinikaController {
 		}
 		return false;
 	}
-	
+
 	public static boolean lekarNaGodisnjem(Lekar l, Date datum) {
 		for (GodisnjiOdmor go : l.getGodisnjiOdmor()) {
 			if ((datum.after(go.getPocetak()) || datum.equals(go.getPocetak())) && (datum.before(go.getKraj()) || datum.equals(go.getKraj()))) {
@@ -221,7 +222,7 @@ public class KlinikaController {
 		}
 		return false;
 	}
-	
+
 	public static boolean lekarImaSlobodanTermin(Lekar l, Date date1) {
 		Calendar cal1 = Calendar.getInstance();
 		cal1.setTime(date1);
@@ -250,7 +251,7 @@ public class KlinikaController {
 		}
 		return false;
 	}
-	
+
 	public static ArrayList<String> getSlobodniTermini(Lekar l, Date date1){
 		Calendar cal1 = Calendar.getInstance();
 		cal1.setTime(date1);
@@ -271,20 +272,19 @@ public class KlinikaController {
 		Calendar c = Calendar.getInstance();
 		for (c = cal3; c.before(cal4); c.add(Calendar.MINUTE, 30)) {
 			boolean terminZauzet = terminZauzetF(l, cal1, c);
-			
+
 			if (!terminZauzet) {
 				vremena.add(c.getTime());
 			}
 		}
-		
+
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		ArrayList<String> vremenaStr = new ArrayList<String>();
 		for (Date ddd : vremena) {
 			vremenaStr.add(sdf.format(ddd));
 		}
-		
+
 		return vremenaStr;
 	}
 	*/
-	
 }

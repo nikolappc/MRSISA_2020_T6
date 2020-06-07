@@ -82,7 +82,7 @@
                         <v-btn class="mx-10"
                           color="primary"
                           @click="dialog = true"
-                          disabled="!zakazaoNovi"
+                          :disabled="zakazaoNovi"
                         >
                             Zakaži dodatni pregled
                         </v-btn>
@@ -146,7 +146,7 @@
                 <v-card>
                     <v-card-title class="headline mx-4">Zakaži pregled/operaciju</v-card-title>
 
-                        <NapraviPregled v-bind:pacijent="pacijent" v-bind:lekar="lekar" v-on:zatvori="dialog = false"/>
+                        <NapraviPregled v-bind:pacijent="pacijent" v-bind:lekar="lekar" v-on:zatvori="zakazanNovi"/>
 
                     
                 </v-card>
@@ -243,6 +243,7 @@ name: 'Pregled  ',
     },
     zakazanNovi(val){
         this.zakazaoNovi = val;
+        this.dialog = false;
     },
     end(){
         let recepti = [];
