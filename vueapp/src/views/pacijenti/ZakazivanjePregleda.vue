@@ -9,13 +9,6 @@
           ref="form"
           v-model="valid"
           >
-          <v-text-field
-            v-model="pregled.opis"
-            label="Naziv pregleda"
-            :rules="rule"
-          >
-      
-          </v-text-field>
           <v-datetime-picker 
             label="Početak termina"
             v-model="pregled.termin.pocetak"
@@ -146,7 +139,6 @@ export default {
           tipPosete: null,
           sala: null,
           pacijentId: null,
-          opis:null
       },
       tipPregleda: "Pregled",
       tipovi: [],

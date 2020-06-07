@@ -1,14 +1,14 @@
 package isamrs.controller;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
+import isamrs.dto.*;
+import isamrs.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,20 +22,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import isamrs.domain.Klinika;
 import isamrs.domain.Lekar;
-import isamrs.domain.Ocena;
 import isamrs.domain.Pacijent;
 import isamrs.domain.TipPosete;
-import isamrs.dto.GetOcenaDTO;
-import isamrs.dto.LekarSlobodanDTO;
-import isamrs.dto.LekarZaPacijentaDTO;
-import isamrs.dto.OsobaDTO;
-import isamrs.dto.ProveraLekarSlobodanDTO;
-import isamrs.dto.SetOcenaDTO;
-import isamrs.dto.SlobodniLekariKlinikeDTO;
-import isamrs.dto.TerminDTO;
-import isamrs.service.KlinikaServiceImpl;
 import isamrs.service.LekarService;
 import isamrs.service.PacijentServiceImpl;
 @RestController
@@ -66,17 +55,16 @@ public class LekarController {
 		return new ResponseEntity<Lekar>(lekar, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/pregledi/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<TerminDTO>> getPreglediLekar(@PathVariable("id") Integer id) {
-		Collection<TerminDTO> termini = lekarService.findTermini(id);
+	@GetMapping(value = "/poseta/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<PosetaPacijentDTO>> getPosetaLekar(@PathVariable("id") Integer id) throws NotFoundException {
+		Collection<PosetaPacijentDTO> termini = lekarService.findPosete(id);
 
 		if (termini == null) {
-			return new ResponseEntity<Collection<TerminDTO>>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		
-		return new ResponseEntity<Collection<TerminDTO>>(termini, HttpStatus.OK);
+
+		return new ResponseEntity<>(termini, HttpStatus.OK);
 	}
-	
 	@PostMapping(value = "/pocetak/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<HashMap<String, Boolean>> checkStart(@RequestBody Lekar lekar, @PathVariable Integer id)
 			throws Exception {

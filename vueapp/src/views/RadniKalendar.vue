@@ -4,6 +4,9 @@
             <display-1>
                 Radni kalendar
             </display-1>
+            <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">
+                Danas
+            </v-btn>
             <v-btn
                 small
                 @click="$refs.calendar.prev()"
@@ -19,7 +22,7 @@
         </v-container>
         <v-tabs>
             <v-tab @click="setType('month')">
-            Mesečni prikaz
+                Mesečni prikaz
             </v-tab>
             <v-tab @click="setType('week')">
                 Nedeljni prikaz
@@ -37,6 +40,8 @@
             :type="type"
             :events="events"
             @click:event="selectedEvent"
+            @change="updateRange"
+            :event-color="getEventColor"
         >
         </v-calendar>
            
@@ -64,6 +69,13 @@
 
         },
         methods:{ 
+            setToday () {
+                this.calendar = this.today
+            },
+            updateRange ({ start, end }) {
+                this.start = start
+                this.end = end
+            },
             selektovanEvent(e){
                 let nativeEvent = e.nativeEvent;
                 let event = e.event;
@@ -81,19 +93,6 @@
                 }
 
                 nativeEvent.stopPropagation()
-                // this.activator = nativeEvent.target;
-                
-                // if(this.selected && this.selected.id == event.id){     
-                //     this.opened = false;
-                //     this.activator = null;
-                //     this.selected = null;
-                // }else{
-                //     this.selected = this.events.find(function(e) {
-                //         return e.id == event.id;
-                //     });
-                //     this.opened = true;
-                // }
-                // nativeEvent.stopPropagation();
             },
             
             setType(type){
@@ -104,7 +103,10 @@
                 console.log(event);
                 this.selektovanEvent({nativeEvent:nativeEvent, event:event});
                 this.$emit("selected", this.selected);
-            }
+            },
+            getEventColor (event) {
+                return event.color
+            },
         }
 
     }

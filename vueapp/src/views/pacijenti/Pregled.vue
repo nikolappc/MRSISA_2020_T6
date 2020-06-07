@@ -82,7 +82,7 @@
                         <v-btn class="mx-10"
                           color="primary"
                           @click="dialog = true"
-                          disabled="zakazaoNovi"
+                          disabled="!zakazaoNovi"
                         >
                             Zakaži dodatni pregled
                         </v-btn>

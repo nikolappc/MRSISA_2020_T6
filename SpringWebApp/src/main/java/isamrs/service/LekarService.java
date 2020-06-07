@@ -3,19 +3,15 @@ package isamrs.service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Optional;
 
 import isamrs.domain.*;
+import isamrs.dto.PosetaPacijentDTO;
+import isamrs.exceptions.NotFoundException;
+import isamrs.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import isamrs.dto.OsobaDTO;
-import isamrs.dto.SalaTerminiDTO;
-import isamrs.dto.TerminDTO;
-import isamrs.repository.LekarRepository;
-import isamrs.repository.OcenaRepository;
-import isamrs.repository.OperacijaRepository;
-import isamrs.repository.PregledRepository;
 
 @Service
 public class LekarService {
@@ -28,7 +24,10 @@ public class LekarService {
 	
 	@Autowired
 	private OperacijaRepository operacijaRepo;
-	
+
+	@Autowired
+	private PacijentRepository pacijentRepository;
+
 	@Autowired
 	private OcenaRepository repoOcena;
 	
@@ -94,18 +93,19 @@ public class LekarService {
 		return false;
 	}
 
-	public Collection<TerminDTO> findTermini(Integer id) {
-		ArrayList<TerminDTO> pregledi = new ArrayList<TerminDTO>();
+	public Collection<PosetaPacijentDTO> findPosete(Integer id) throws NotFoundException {
+		ArrayList<PosetaPacijentDTO> pregledi = new ArrayList<>();
 		
-		Lekar l = lekarRepo.findById(id).orElseGet(null);
+		Lekar l = lekarRepo.findById(id).orElseThrow(NotFoundException::new);
 		
 		for(Pregled p : pregledRepo.findByLekar(l)) {
-			pregledi.add(new TerminDTO(p)); 
+			Pacijent pacijent = pacijentRepository.findByKarton(p.getZdravstveniKarton().getId());
+			pregledi.add(new PosetaPacijentDTO(p, "pregled", pacijent));
 		}
 		
 		for(Operacija o : operacijaRepo.findByLekar(l)) {
-			pregledi.add(new TerminDTO(o));
-		}
+			Pacijent pacijent = pacijentRepository.findByKarton(o.getZdravstveniKarton().getId());
+			pregledi.add(new PosetaPacijentDTO(o, "operacija", pacijent));		}
 		
 		return pregledi;
 	}
