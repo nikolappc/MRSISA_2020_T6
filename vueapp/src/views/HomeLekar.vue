@@ -104,6 +104,14 @@
                                         {{(kalendar.selected.endDate - kalendar.selected.startDate)/1000/60}} min
                                       </td>
                                   </tr>
+                                  <tr> 
+                                    <td>
+                                      Pacijent
+                                    </td>
+                                    <td>
+                                      {{kalendar.selected.pacijent}}
+                                    </td>
+                                </tr>
                                 </tbody>
                             </v-simple-table>
                             <v-card
@@ -169,6 +177,7 @@ export default {
             event.tip = termin.kategorija;
             event.opis = termin.opis;
             event.name = termin.tip.naziv;
+            event.pacijent = termin.pacijent.ime+" "+termin.pacijent.prezime;
             console.log(event);
             this.events.push(event);
         }
