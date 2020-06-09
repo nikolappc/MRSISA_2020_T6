@@ -19,7 +19,7 @@ public interface OperacijaRepository extends JpaRepository<Operacija, Integer> {
 	@Query("SELECT o FROM Operacija o WHERE o.tipPosete = ?1")
 	public List<Operacija> findByTip(TipPosete tp);
 
-	@Query("SELECT o FROM Operacija o JOIN o.lekari l WHERE l = ?1")
+	@Query("SELECT o FROM Operacija o JOIN o.lekari l WHERE l = ?1 and o.potvrdjen = true")
 	public List<Operacija> findByLekar(Lekar l);
 
 	@Query("SELECT o FROM Operacija o WHERE o.sala = null")

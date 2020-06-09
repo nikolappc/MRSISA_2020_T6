@@ -10,7 +10,7 @@
             </v-tab>
             <v-tab-item>
                 <v-card-title>
-                    Pregled pacijenta
+                    Pregled pacijenta {{pacijent.ime +' '+ pacijent.prezime}}
                     <Timer />
                 </v-card-title>
                 <v-row class="mx-4">
@@ -194,7 +194,7 @@ name: 'Pregled  ',
                 
             });
         axios
-            .get('poseta/' + this.$route.params.id)
+            .get('/poseta/' + this.$route.params.id)
             .then(response => {
                 this.pregled = response.data;
                 this.time = Math.floor((Date.parse(this.pregled.termin.kraj)- new Date())/1000);
@@ -253,6 +253,7 @@ name: 'Pregled  ',
                 lek:lek
             });
         }
+        this.pregled.odradjen = true;
         this.pregled.recepti = recepti;
         this.pregled.lekovi = this.lekovi;
         axios.put("/poseta/pregled/"+this.pregled.id, this.pregled)

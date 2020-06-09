@@ -133,7 +133,7 @@
                 v-for="(user, i) in nepotvrdjeniKorisnici"
                 :key="i"
               >
-                <RegConf :username="user.email" @resolved="onResolved">
+                <RegConf :user="user" @resolved="onResolved">
                 </RegConf>
               </v-col>
             </v-row>
@@ -191,6 +191,3 @@ export default {
   
 }
 </script>
-
-<style>
-</style>

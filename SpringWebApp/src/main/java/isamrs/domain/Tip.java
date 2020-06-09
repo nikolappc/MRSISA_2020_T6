@@ -3,7 +3,11 @@ package isamrs.domain;
 import java.util.*;
 
 public enum Tip {
-   operacija,
-   pregled;
+   operacija("operacija"),
+   pregled("pregled");
 
+   String tip;
+   Tip(String pregled) {
+      this.tip = pregled;
+   }
 }

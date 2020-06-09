@@ -66,14 +66,19 @@ public class PosetaController {
 //	}
 
 	@PutMapping(value = "pregled/{id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PregledDTO> zavrsiPregled(@PathVariable("id") Integer id, @RequestBody Pregled p) throws NotFoundException {
-		Pregled updated = pregledService.update(id, p);
+	public ResponseEntity<PregledDTO> zavrsiPregled(@PathVariable("id") Integer id, @RequestBody PregledDTO p, HttpServletRequest req) throws NotFoundException {
+
+		Pregled pregled = new Pregled(p);
+		Integer idLekar =  ((Lekar)req.getSession().getAttribute("user")).getId();
+		Lekar lekar = lekarService.findOne(idLekar);
+		pregled.setLekar(lekar);
+		Pregled updated = pregledService.update(id, pregled);
 		return new ResponseEntity<>(pregledToPregledDTO(updated), HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "/pregled", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Pregled> createPregled(@RequestBody PosetaPostDTO p, HttpServletRequest req) throws Exception, NotFoundException {
-		Pregled pregled = DTOtoPregled(p);
+		Pregled pregled = DTOtoNewPregled(p);
 		ZdravstveniKarton zdravstveniKarton = zdravstveniKartonService.findByPacijent(p.getPacijentId());
 		Integer idLekar =  ((Lekar)req.getSession().getAttribute("user")).getId();
 		Lekar lekar = lekarService.findOne(idLekar);
@@ -107,10 +112,12 @@ public class PosetaController {
 		return new Operacija(o.getOpis(), o.getTermin(), o.getTipPosete());
 	}
 
-	private Pregled DTOtoPregled(PosetaPostDTO p) {
+	private Pregled DTOtoNewPregled(PosetaPostDTO p) {
 		return new Pregled(p.getOpis(), p.getTermin(), p.getTipPosete());
 	}
-
+	private Pregled DTOtoPregled(PregledDTO p) {
+		return new Pregled(p);
+	}
 	@GetMapping(value = "/pacijent/{idPregled}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PacijentDTO> getPacijentPregleda(@PathVariable("idPregled") Integer idPregled) throws Exception {
 
@@ -136,34 +143,6 @@ public class PosetaController {
 		Pregled savedSlobodniTerminiDTO = posetaService.create(poseta.napraviPregled());
 		return new ResponseEntity<Pregled>(savedSlobodniTerminiDTO, HttpStatus.CREATED);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 
 	@GetMapping(value = "zakazani/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -248,39 +227,6 @@ public class PosetaController {
 		return new ResponseEntity<>(posete, HttpStatus.OK);
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-
 	@GetMapping(value = "/pregledi", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<PregledDTO>> getPregledi(HttpServletRequest request){
 		try{
@@ -295,14 +241,14 @@ public class PosetaController {
 	}
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Pregled> getPregled(@PathVariable("id") Integer id) throws NotFoundException {
+	public ResponseEntity<PregledDTO> getPregled(@PathVariable("id") Integer id) throws NotFoundException {
 		Pregled pregled = pregledService.findOne(id);
 
 		if (pregled == null) {
-			return new ResponseEntity<Pregled>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<PregledDTO>(HttpStatus.NOT_FOUND);
 		}
 
-		return new ResponseEntity<Pregled>(pregled, HttpStatus.OK);
+		return new ResponseEntity<PregledDTO>(new PregledDTO(pregled), HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/predstojeciPregledi/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

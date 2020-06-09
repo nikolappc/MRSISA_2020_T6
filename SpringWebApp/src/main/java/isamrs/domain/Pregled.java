@@ -15,6 +15,8 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import isamrs.dto.PregledDTO;
+import isamrs.dto.post.PosetaPostDTO;
 
 @Entity
 @Table(name = "pregled")
@@ -35,7 +37,13 @@ public class Pregled extends Poseta {
 		super(opis,  termin, tipPosete);
 	}
 
-    public Collection<Recepti> getRecepti() {
+	public Pregled(PregledDTO p) {
+		super(p.getOpis(), p.getId(), p.getTermin(),new TipPosete(p.getTip()), new ZdravstveniKarton(p.getZdravstveniKarton()),p.getSala());
+		this.setPotvrdjen(p.isPotvrdjen());
+		this.setOdradjen(p.isOdradjen());
+	}
+
+	public Collection<Recepti> getRecepti() {
 		if (recepti == null)
 			recepti = new ArrayList<Recepti>();
 		return recepti;

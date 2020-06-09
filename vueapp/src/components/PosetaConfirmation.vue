@@ -1,56 +1,40 @@
 <template>
-    <v-card>
-        <v-row>
-            <v-col
-                cols="12"
-            >
-            </v-col>
-                <v-container>
-                    <v-card-title
-                        v-if="pregled"
-                    >
-                        Zahtev za pregled sa ID: {{id}}
-                    </v-card-title>
-                    <v-card-title
-                        v-else
-                    >
-                        Zahtev za operaciju sa ID: {{id}}
-                    </v-card-title>
-                </v-container>
-            <v-col
-                cols="12"
-            >
-                <v-row
-                    justify="end"
-                >
-                    <v-col
-                        lg="12"
-                        cols="6"
-                        class="ml-auto"
-                    >
-                        <v-row
-                            justify="center"
-                            align="center"
-                        >
-                            <v-col
-                                cols="6"
+    <v-card
+        class="card"
+    >
+        <v-container>
+            <v-simple-table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <display-1
+                                v-if="pregled"
                             >
-                                <v-row        
-                                    justify="center"
-                                    align="center"
-                                >
-                                    <v-btn color="success" @click="predjiNaDodeluSale">
-                                        Postavi salu
-                                    </v-btn>
-                                </v-row>
-                            </v-col>
-                            
-                        </v-row>
-                    </v-col>
-
-                </v-row>
-            </v-col>
-        </v-row>
+                                Zahtev za pregled sa ID: {{poseta.id}}
+                            </display-1>
+                            <display-1
+                                v-else
+                            >
+                                Zahtev za operaciju sa ID: {{poseta.id}}
+                        </display-1>
+                        </td>
+                        <td>
+                            <v-btn color="success" @click="predjiNaDodeluSale">
+                                Postavi salu
+                            </v-btn>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Pacijent
+                        </td>
+                        <td>
+                            {{poseta.pacijent.ime+' ' + poseta.pacijent.prezime}}
+                        </td>
+                    </tr>
+                </tbody>
+            </v-simple-table>
+        </v-container>
     </v-card>
 </template>
 <script>
@@ -58,14 +42,23 @@
     export default{
         name:"PosetaConf",
         props:{
-            id:null,
+            poseta:Object,
             pregled:Boolean
         },
         methods:{
             predjiNaDodeluSale:function () {
-                this.$router.push("/potvrdaPosete/"+this.id+"/"+this.pregled);
+                this.$router.push("/potvrdaPosete/"+this.poseta.id+"/"+this.pregled);
             }
         },
-
+        mounted(){
+            console.log(this.poseta);
+            
+        }
     }
 </script>
+
+<style>
+.card{
+    max-height: 250px;
+}    
+</style>

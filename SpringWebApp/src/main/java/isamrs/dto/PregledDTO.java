@@ -2,18 +2,13 @@ package isamrs.dto;
 
 import java.util.ArrayList;
 
-import isamrs.domain.Dijagnoza;
-import isamrs.domain.Lekar;
-import isamrs.domain.Pregled;
-import isamrs.domain.Recepti;
-import isamrs.domain.Sala;
-import isamrs.domain.Termin;
-import isamrs.domain.TipPosete;
+import isamrs.domain.*;
 
 public class PregledDTO extends PosetaDTO {
 	private ArrayList<ReceptiDTO> recepti;
 	private ArrayList<DijagnozaDTO> dijagnoze;
 	private String lekar;
+	private ZdravstveniKartonDTO zdravstveniKarton;
 	
 
 	
@@ -45,13 +40,17 @@ public class PregledDTO extends PosetaDTO {
 	
 	public PregledDTO(Integer id, String opis, Termin termin, TipPosete tip, Sala sala, Lekar lekar) {
 		super(id, opis, termin, tip, sala);
-		this.lekar = lekar.getIme() + " " + lekar.getPrezime();
+		if(this.lekar!=null){
+			this.lekar = lekar.getIme() + " " + lekar.getPrezime();
+		}
 	}
 	
 	public PregledDTO() {}
 	
 	public PregledDTO(Pregled p) {
 		this(p.getId(), p.getOpis(), p.getTermin(), p.getTipPosete(), p.getSala(), p.getLekar());
+		setOdradjen(p.isOdradjen());
+		setPotvrdjen(p.isPotvrdjen());
 		this.recepti = new ArrayList<ReceptiDTO>();
 		for (Recepti r : p.getRecepti()) {
 			this.recepti.add(new ReceptiDTO(r));
@@ -60,5 +59,14 @@ public class PregledDTO extends PosetaDTO {
 		for (Dijagnoza d : p.getDijagnoza()) {
 			this.dijagnoze.add(new DijagnozaDTO(d));
 		}
+		this.zdravstveniKarton = new ZdravstveniKartonDTO(p.zdravstveniKarton);
+	}
+
+	public ZdravstveniKartonDTO getZdravstveniKarton() {
+		return zdravstveniKarton;
+	}
+
+	public void setZdravstveniKarton(ZdravstveniKartonDTO zdravstveniKarton) {
+		this.zdravstveniKarton = zdravstveniKarton;
 	}
 }

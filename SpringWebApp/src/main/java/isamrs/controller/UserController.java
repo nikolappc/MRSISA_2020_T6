@@ -5,12 +5,14 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import isamrs.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
@@ -39,10 +41,6 @@ import isamrs.domain.Pacijent;
 import isamrs.domain.Pregled;
 import isamrs.domain.Sala;
 import isamrs.domain.ZdravstveniKarton;
-import isamrs.dto.PregledDTO;
-import isamrs.dto.RegDTO;
-import isamrs.dto.UserDTO;
-import isamrs.dto.ZdravstveniKartonDTO;
 import isamrs.registracija.OnRegistrationFailEvent;
 import isamrs.registracija.OnRegistrationSuccessEvent;
 import isamrs.registracija.VerificationToken;
@@ -239,9 +237,9 @@ public class UserController {
 
 	// Sluzi za dobavljanje nepotvrdjenih registrovanih korisnika
 	@GetMapping(value = "/nepotvrdjeni", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Pacijent>> getNepotvrdjeni() {
-		Collection<Pacijent> pac = pacijentService.findNotConfirmed();
-		return new ResponseEntity<Collection<Pacijent>>(pac, HttpStatus.OK);
+	public ResponseEntity<Collection<PacijentDTO>> getNepotvrdjeni() {
+		Collection<PacijentDTO> pac = pacijentService.findNotConfirmed().stream().map(PacijentDTO::new).collect(Collectors.toList());
+		return new ResponseEntity<>(pac, HttpStatus.OK);
 	}
 	
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

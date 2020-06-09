@@ -182,6 +182,14 @@ export default {
         isPregled:Boolean,
         id:Number
     },
+    watch:{
+        pocetak:function () {
+            
+        },
+        kraj:function () {
+            
+        }
+    },
     mounted () {
 
         console.log(this.isPregled);
@@ -217,15 +225,17 @@ export default {
                     //this.pregled.termin.kraj = formatirajDatum(this.pregled.termin.kraj);
                     this.kraj = new Date(this.pregled.termin.kraj);
 
-                    if(this.isPregled){
-                        axios
+
+                    axios
                             .get('lekar')
                             .then(response => {
                                 this.lekari = response.data;
-                                for(var id in this.lekari){
-                                    if(this.lekari[id].id == this.pregled.lekar.id){
-                                        this.lekari[id] = this.pregled.lekar;
-                                        break;
+                                if(this.isPregled){
+                                    for(var id in this.lekari){
+                                        if(this.lekari[id].id == this.pregled.lekar.id){
+                                            this.lekari[id] = this.pregled.lekar;
+                                            break;
+                                        }
                                     }
                                 }
                                 console.log(response);
@@ -235,19 +245,6 @@ export default {
                                 this.$store.commit("setSnackbar", {text:"U sistemu ne postoji nijedan doktor.", color: "error"});
                                 this.$router.push("/");
                             });
-                    }else{
-                        axios
-                            .post('adminKlinike/lekar', this.pregled.termin)
-                            .then(response => {
-                                this.lekari = response.data;
-                                console.log(response);
-                            })
-                            .catch(error => { 
-                                console.log(error);
-                                this.$store.commit("setSnackbar", {text:"Izvinjavamo se došlo je do greške.", color: "error"});
-                                this.$router.push("/");
-                            });
-                    }
                 })
                 .catch(error => { 
                     console.log(error);

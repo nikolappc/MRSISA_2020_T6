@@ -4,6 +4,8 @@ import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
 
+import isamrs.domain.*;
+import isamrs.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,11 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import isamrs.domain.AdministratorKlinike;
-import isamrs.domain.GodisnjiOdmor;
-import isamrs.domain.Lekar;
-import isamrs.domain.MedicinskoOsoblje;
-import isamrs.domain.TipKlinike;
 import isamrs.dto.OdmorDTO;
 import isamrs.dto.OsobaDTO;
 import isamrs.service.OdmorService;
@@ -45,15 +42,23 @@ public class GodisnjiOdmorController {
 	
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<GodisnjiOdmor> createZahtev(HttpServletRequest req,@RequestBody GodisnjiOdmor go){
-		Lekar l = (Lekar)req.getSession().getAttribute("user");
-		GodisnjiOdmor savedGO = odmorService.create(go, l.getId());
+	public ResponseEntity<GodisnjiOdmor> createZahtev(HttpServletRequest req,@RequestBody GodisnjiOdmor go) throws NotFoundException {
+		MedicinskoOsoblje mo = (MedicinskoOsoblje)req.getSession().getAttribute("user");
+		GodisnjiOdmor savedGO;
+		if(mo instanceof Lekar){
+			savedGO = odmorService.create(go, mo.getId());
+		}else if(mo instanceof MedicinskaSestra){
+			savedGO = odmorService.createSestra(go, mo.getId());
+		}else{
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		return new ResponseEntity<GodisnjiOdmor>(savedGO, HttpStatus.OK);
 	}
-	
+
+
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<GodisnjiOdmor> updateLekar(@RequestBody GodisnjiOdmor odmor, @PathVariable Integer id)
-			throws Exception {
+			throws Exception, NotFoundException {
 		
 		GodisnjiOdmor updatedOdmor = odmorService.update(id,odmor);
 		return new ResponseEntity<GodisnjiOdmor>(updatedOdmor, HttpStatus.OK);

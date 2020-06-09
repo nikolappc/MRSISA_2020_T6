@@ -2,6 +2,9 @@ package isamrs.controller;
 
 import isamrs.domain.*;
 import isamrs.dto.AdminKlinikeDTO;
+import isamrs.dto.OperacijaDTO;
+import isamrs.dto.PosetaPacijentDTO;
+import isamrs.dto.PregledDTO;
 import isamrs.exceptions.LekarZauzetException;
 import isamrs.exceptions.NotFoundException;
 import isamrs.exceptions.SalaZauzetaException;
@@ -15,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -108,15 +112,15 @@ public class AdminKlinikeController {
                 , adminKlinikeDTO.getEmail());
     }
 	@GetMapping(value = "/pregled",produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Integer>> getSalas() {
-		Collection<Integer> pregledi = adminService.findAllZahteviPregleda();
-		return new ResponseEntity<Collection<Integer>>(pregledi, HttpStatus.OK);
+	public ResponseEntity<Collection<PosetaPacijentDTO>> getSalas() {
+		Collection<PosetaPacijentDTO> pregledi = adminService.findAllZahteviPregleda();
+		return new ResponseEntity<>(pregledi, HttpStatus.OK);
 	}
 
     @GetMapping(value = "/operacija",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Integer>> getOperacije() {
-        Collection<Integer> operacije = adminService.findAllZahteviOperacija();
-        return new ResponseEntity<Collection<Integer>>(operacije, HttpStatus.OK);
+    public ResponseEntity<Collection<PosetaPacijentDTO>> getOperacije() {
+        Collection<PosetaPacijentDTO> operacije = adminService.findAllZahteviOperacija();
+        return new ResponseEntity<>(operacije, HttpStatus.OK);
     }
 
 

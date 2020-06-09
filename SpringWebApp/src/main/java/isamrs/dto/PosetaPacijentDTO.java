@@ -5,14 +5,10 @@ import isamrs.domain.Poseta;
 
 public class PosetaPacijentDTO extends PosetaDTO {
 
-    private String kategorija;
-
-
     private PacijentDTO pacijent;
 
-    public PosetaPacijentDTO(Poseta p, String tip, Pacijent pacijent) {
+    public PosetaPacijentDTO(Poseta p, Pacijent pacijent) {
         super(p);
-        this.kategorija = tip;
         this.pacijent = new PacijentDTO(pacijent);
     }
 
@@ -24,11 +20,4 @@ public class PosetaPacijentDTO extends PosetaDTO {
         this.pacijent = pacijent;
     }
 
-    public String getKategorija() {
-        return kategorija;
-    }
-
-    public void setKategorija(String kategorija) {
-        this.kategorija = kategorija;
-    }
 }

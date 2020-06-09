@@ -11,6 +11,7 @@
           >
           <v-datetime-picker 
             label="Početak termina"
+            prepend-icon="mdi-calendar"
             v-model="pregled.termin.pocetak"
             dateFormat= 'dd.MM.yyyy'
             >
@@ -26,6 +27,7 @@
       
           <v-datetime-picker 
             label="Kraj termina"
+            prepend-icon="mdi-calendar"
             v-model="pregled.termin.kraj"
             dateFormat= 'dd.MM.yyyy'
             >
