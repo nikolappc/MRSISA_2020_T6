@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import isamrs.dto.TipPoseteDTO;
 
 @Entity
 @Table(name="tipovi_posete")
@@ -44,7 +45,11 @@ public class TipPosete {
 		this.naziv = naziv;
 	}
 
-	public java.util.Collection<Lekar> getLekari() {
+	public TipPosete(TipPoseteDTO tip) {
+		this(tip.getId(), tip.getTip(), tip.getNaziv());
+	}
+
+    public java.util.Collection<Lekar> getLekari() {
 		return lekari;
 	}
 

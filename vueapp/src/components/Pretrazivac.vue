@@ -89,7 +89,7 @@
 <script>
     export default {
         name:"Pretrazivac",
-        props:["atribut", "color", "id", "elementi", "pozadina"],
+        props:["atribut", "color", "id", "elementi", "pozadina", "odabrani"],
         data:function () {
             return{
                 filtriraniElementi:[],
@@ -103,6 +103,9 @@
             }
         },
         mounted:function () {
+            if(this.odabrani){
+                this.odabraniElementi = this.odabrani;
+            }
             this.filtriraniElementi = this.elementi;
         },
         methods:{

@@ -1,7 +1,7 @@
 <template>
-  <div class="profilPacijenta">
-    <v-container>
-      <v-card><v-card-text><v-simple-table>
+  <div class="profilPacijenta" style="width:100%;">
+    <v-container style="width:100%;">
+      <v-card style="width:100%;"><v-card-text><v-simple-table>
         <thead>
           <th id="profil">Moj profil</th>
           <th id="email">{{ ulogovani.email }}</th>
@@ -33,7 +33,7 @@
           </tr>
         </tbody>
       </v-simple-table></v-card-text>
-      <v-card-actions><v-btn :to="{path: 'profilPacijentaIzmjena'}" dark medium left class="blue" slot="action">Izmjena profila</v-btn></v-card-actions></v-card>
+      <v-card-actions><v-btn :to="{path: 'profilPacijentaIzmjena'}" dark medium left class="blue" slot="action">Izmena profila</v-btn></v-card-actions></v-card>
     </v-container>
   </div>
 </template>

@@ -1,11 +1,23 @@
 <template>
-  <div class="klinikeZaPacijenta">
-    <v-container grid-list-md>
-    <v-card>
+  <div class="klinikeZaPacijenta" style="width:100%;">
+    <v-container grid-list-md style="width:100%;">
+    <v-card style="width:100%;">
 			<v-card-title>Klinike</v-card-title>
 	<v-card-text>
+	<v-card-title>
+		
+		<v-spacer></v-spacer>
+		<v-text-field
+		v-model="search"
+		append-icon="mdi-magnify"
+		label="Pretraga"
+		single-line
+		hide-details
+		></v-text-field>
+	</v-card-title>
       <v-data-table
         :headers="headers"
+        :search="search"
         :items="klinike"
         :items-per-page="10"
         class="elevation-1"
@@ -26,6 +38,7 @@ export default {
   data: () => ({
     ulogovani : {},
     klinike : [],
+    search : '',
     headers: [
         {
           text: 'Ime', 

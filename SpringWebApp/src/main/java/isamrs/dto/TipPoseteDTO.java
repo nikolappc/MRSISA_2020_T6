@@ -24,7 +24,10 @@ public class TipPoseteDTO {
 		this.id = id;
 		this.tip = tip;
 	}
-	
+
+	public TipPoseteDTO() {
+	}
+
 	public TipPoseteDTO(int id, Tip tip, String naziv) {
 		super();
 		this.id = id;

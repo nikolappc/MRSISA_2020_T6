@@ -16,6 +16,8 @@
             label="Početak termina"
             v-model="pregled.termin.pocetak"
             dateFormat= 'dd.MM.yyyy'
+            prepend-icon="mdi-calendar"
+
             >
               <template slot="dateIcon">
                   <v-icon>mdi-calendar</v-icon>
@@ -31,6 +33,7 @@
             label="Kraj termina"
             v-model="pregled.termin.kraj"
             dateFormat= 'dd.MM.yyyy'
+            prepend-icon="mdi-calendar"
             >
               <template slot="dateIcon">
                   <v-icon>mdi-calendar</v-icon>

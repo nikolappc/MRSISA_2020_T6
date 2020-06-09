@@ -2,83 +2,84 @@
   <div class="home">
     <v-container>
       <h1>Administrator klinike</h1>
-      <v-col
-      >
-        <v-container>
-          <v-card class="main-card">
-    
-            <v-row
-              justify="center"
-              align-content="stretch"
-              align="stretch"
+      <v-card class="main-card">
+
+        <v-row
+          justify="center"
+          align-content="stretch"
+          align="stretch"
+        >
+          <v-col
+            lg="6"
+            md="6"
+            sm="6"
+            xs="12"
+          >
+          <router-link to="/lekari">
+            <LinkCard
+              :img="lekari"
+              title="Lista lekara"
             >
-              <v-col
-                lg="6"
-                md="12"
-                sm="12"
-                xs="12"
+            </LinkCard>
+          </router-link>
+          </v-col>
+          <v-col
+            lg="6"
+            md="6"
+            sm="6"
+            xs="12"
+          >
+            <router-link to="/sale">
+              <LinkCard
+                :img="sale"
+                title="Lista sala"
               >
-              <router-link to="/lekari">
-                <LinkCard
-                  :img="lekari"
-                  title="Lista lekara"
-                >
-                </LinkCard>
-              </router-link>
-              </v-col>
-              <v-col
-                lg="6"
-                md="12"
-                sm="12"
-                xs="12"
+              </LinkCard>
+            </router-link>
+          </v-col>
+          <v-col
+            lg="6"
+            md="6"
+            sm="6"
+            xs="12"
+          >
+            <router-link to="/tipoviPoseta">
+              <LinkCard
+                :img="tipPregleda"
+                title="Lista tipova pregleda"
               >
-                <router-link to="/sale">
-                  <LinkCard
-                    :img="sale"
-                    title="Lista sala"
-                  >
-                  </LinkCard>
-                </router-link>
-              </v-col>
-              <v-col
-                lg="6"
-                md="12"
-                sm="12"
-                xs="12"
+              </LinkCard>
+            </router-link>
+          </v-col>
+          <v-col
+            lg="6"
+            md="6"
+            sm="6"
+            xs="12"
+          >
+            <router-link to="/DodavanjeTermina">
+              <LinkCard
+                :img="dodavanje"
+                title="Dodavanje slobodnih termina"
               >
-                <router-link to="/tipoviPoseta">
-                  <LinkCard
-                    :img="tipPregleda"
-                    title="Lista tipova pregleda"
-                  >
-                  </LinkCard>
-                </router-link>
-              </v-col>
-              <v-col
-                lg="6"
-                md="12"
-                sm="12"
-                xs="12"
-              >
-                <router-link to="/DodavanjeTermina">
-                  <LinkCard
-                    :img="dodavanje"
-                    title="Dodavanje slobodnih termina"
-                  >
-                  </LinkCard>
-                </router-link>
-              </v-col>
-            </v-row>
-          </v-card>
-        </v-container>
-      </v-col>
+              </LinkCard>
+            </router-link>
+          </v-col>
+        </v-row>
+      </v-card>
+      <v-container>
+
+        <v-divider>
+  
+        </v-divider>
+      </v-container>
       <v-row>
         <v-col
           lg="4"
-          md="6"
-          sm="12"
+          md="4"
+          sm="4"
+          xs="12"
         >
-          <v-container>
             <v-card
                   color="primary"
                 >
@@ -89,6 +90,9 @@
                     <v-card>
                       <v-card-title
                       >
+                        <v-icon>
+                          mdi-account-tie
+                        </v-icon>
                         Zahtevi za pregled
                       </v-card-title>
                     </v-card>
@@ -109,19 +113,18 @@
                     v-for="idPregleda in pregledi"
                     :key="idPregleda"
                   >
-                    <PosetaConf :id="idPregleda" :pregled="true">
+                    <PosetaConf :poseta="idPregleda" :pregled="true">
                     </PosetaConf>
                   </v-col>
               </v-container>
             </v-card>
-          </v-container>
         </v-col>
         <v-col
           lg="4"
-          md="6"
-          sm="12"
+          md="4"
+          sm="4"
+          xs="12"
         >
-          <v-container>
             <v-card
                   color="primary"
                 >
@@ -132,6 +135,9 @@
                     <v-card>
                       <v-card-title
                       >
+                      <v-icon>
+                        mdi-doctor
+                      </v-icon>
                         Zahtevi za operaciju
                       </v-card-title>
                     </v-card>
@@ -152,19 +158,18 @@
                     :key="o"
                     v-else
                   >
-                    <PosetaConf :id="o" :pregled="false">
+                    <PosetaConf :poseta="o" :pregled="false">
                     </PosetaConf>
                   </v-col>
               </v-container>
             </v-card>
-          </v-container>
         </v-col>
         <v-col
           lg="4"
-          md="6"
-          sm="12"
+          md="4"
+          sm="4"
+          xs="12"
         >
-          <v-container>
             <v-card
                   color="primary"
                 >
@@ -176,16 +181,25 @@
                       <v-card>
                         <v-card-title
                         >
+                        <v-icon>
+                          mdi-calendar
+                        </v-icon>
                           Zahtevi za odsustvo
                         </v-card-title>
                       </v-card>
                     </v-col>
                     <v-col
                       cols="12"
-                      v-if="odsustvo"
+                      v-if="odsustva.length == 0"
                     >
+                      <v-card>
+                        <v-container>
+                          Trenutno nema zahteva za odsustvo.
+                        </v-container>
+                      </v-card>
                     </v-col>
                     <v-col
+                      v-else
                       cols="12"
                       v-for="odsustvo in odsustva"
                       :key="odsustvo.odmor.id"
@@ -195,7 +209,6 @@
                     </v-col>
                 </v-container>
               </v-card>
-          </v-container>
 
         </v-col>
       

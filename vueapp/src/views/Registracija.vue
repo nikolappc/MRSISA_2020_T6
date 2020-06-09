@@ -1,7 +1,7 @@
 <template>
-  <div class="registracija">
-    <v-container>
-      <v-card outlined>
+  <div class="registracija" style="width:100%;">
+    <v-container style="width:100%;">
+      <v-card outlined style="width:100%;">
         <v-container>
           <v-card><v-form
             ref="form"
@@ -53,7 +53,7 @@
 			<td><v-text-field
               v-model="reg.adresa.drzava"
               :rules="Rules"
-              label="DrÅ¾ava"
+              label="Država"
               required
             ></v-text-field></td></tr>
             <tr><td colspan="3"><v-text-field

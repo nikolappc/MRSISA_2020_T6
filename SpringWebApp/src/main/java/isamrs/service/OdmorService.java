@@ -3,13 +3,12 @@ package isamrs.service;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import isamrs.domain.*;
+import isamrs.exceptions.NotFoundException;
+import isamrs.repository.SestraRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import isamrs.domain.GodisnjiOdmor;
-import isamrs.domain.Klinika;
-import isamrs.domain.Lekar;
-import isamrs.domain.MedicinskoOsoblje;
 import isamrs.dto.OdmorDTO;
 import isamrs.repository.KlinikaRepository;
 import isamrs.repository.LekarRepository;
@@ -20,7 +19,7 @@ public class OdmorService {
 
 	
 	@Autowired
-	private LekarRepository sestraRepo;
+	private SestraRepository sestraRepo;
 	
 	@Autowired
 	private LekarRepository lekarRepo;
@@ -48,16 +47,20 @@ public class OdmorService {
 
 	
 
-	public GodisnjiOdmor create(GodisnjiOdmor t, Integer lekarID) {
-		Lekar l = lekarRepo.findById(lekarID).orElseGet(null);
+	public GodisnjiOdmor create(GodisnjiOdmor t, Integer lekarID) throws NotFoundException {
+		Lekar l = lekarRepo.findById(lekarID).orElseThrow(NotFoundException::new);
 		l.addGodisnjiOdmor(t);
 		GodisnjiOdmor go = odmorRepo.save(t);
 		return go;
 	}
-
-	public GodisnjiOdmor update(Integer id, GodisnjiOdmor t) {
+	public GodisnjiOdmor createSestra(GodisnjiOdmor t, Integer sestraId) throws NotFoundException {
+		MedicinskaSestra med = sestraRepo.findById(sestraId).orElseThrow(NotFoundException::new);
+		med.addGodisnjiOdmor(t);
+		return odmorRepo.save(t);
+	}
+	public GodisnjiOdmor update(Integer id, GodisnjiOdmor t) throws NotFoundException {
 		if(t.isOdobren()) {
-			GodisnjiOdmor go = odmorRepo.findById(id).orElse(null);
+			GodisnjiOdmor go = odmorRepo.findById(id).orElseThrow(NotFoundException::new);
 			go.setOdobren(true);
 			return odmorRepo.save(go);
 		}

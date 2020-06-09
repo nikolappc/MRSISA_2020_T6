@@ -113,12 +113,12 @@ public class LekarService {
 		
 		for(Pregled p : pregledRepo.findByLekar(l)) {
 			Pacijent pacijent = pacijentRepository.findByKarton(p.getZdravstveniKarton().getId());
-			pregledi.add(new PosetaPacijentDTO(p, "pregled", pacijent));
+			pregledi.add(new PosetaPacijentDTO(p,  pacijent));
 		}
 		
 		for(Operacija o : operacijaRepo.findByLekar(l)) {
 			Pacijent pacijent = pacijentRepository.findByKarton(o.getZdravstveniKarton().getId());
-			pregledi.add(new PosetaPacijentDTO(o, "operacija", pacijent));		}
+			pregledi.add(new PosetaPacijentDTO(o,  pacijent));		}
 		
 		return pregledi;
 	}

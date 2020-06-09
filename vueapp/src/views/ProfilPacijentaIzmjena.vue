@@ -1,6 +1,6 @@
 <template>
-  <div class="profilPacijentaIzmjena">
-    <v-container>
+  <div class="profilPacijentaIzmjena" style="width:100%;">
+    <v-container style="width:100%;">
       <v-form
         ref="form"
         v-model="valid"

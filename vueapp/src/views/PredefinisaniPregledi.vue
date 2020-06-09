@@ -1,6 +1,6 @@
 <template>
-  <div class="predefinisaniPregledi">
-    <v-container><v-card>
+  <div class="predefinisaniPregledi" style="width:100%;">
+    <v-container style="width:100%;"><v-card style="width:100%;">
 			<v-card-title>Zakažite predefinisani pregled</v-card-title>
 		<v-card-text>
       <v-data-table
@@ -67,7 +67,7 @@ export default {
           sortable: true, 
         },
         {
-          text: 'Pocetak', 
+          text: 'Početak', 
           value: 'pocetak', 
           sortable: true, 
         },
@@ -137,7 +137,7 @@ export default {
 		axios
 		.post('poseta/zakaziPregled', {idPredefinisanogTermina: item.id, idKlinike: this.$route.params.idKlinike, idPacijenta: this.ulogovani.id, idLekara: null, nazivTipa: null, terminPocetak: null})
 		.then(() => {
-			this.$store.commit("setSnackbar", {text:"Uspešno ste poslali zahtev za zakazivanje pregleda!", color: "success"});
+			this.$store.commit("setSnackbar", {text:"UspeÅ¡no ste poslali zahtev za zakazivanje pregleda!", color: "success"});
 				router.push("/");   
 			})
 		.catch( () => { this.$store.commit("setSnackbar", {text:"Greska", color: "error"})});
