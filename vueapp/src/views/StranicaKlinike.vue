@@ -1,6 +1,6 @@
 <template>
-  <div class="stranicaKlinike">
-    <v-container><v-card>
+  <div class="stranicaKlinike" style="width:100%;">
+    <v-container style="width:100%;"><v-card style="width:100%;">
     <v-card-title>{{ this.nazivKlinike }}</v-card-title>
 			<v-card-subtitle><p>{{ this.adresaKlinike.adresa }}, {{ this.adresaKlinike.grad }}, {{ this.adresaKlinike.drzava }}</p>
 			<p>{{ this.opis }}</p></v-card-subtitle>
@@ -23,7 +23,26 @@
 			
 	<v-simple-table>
 	
-	<tr><td>
+	<tr>
+	<td>
+				<v-select
+				v-model="tip"
+				:items="tipovi"
+				label="*Tip pregleda"
+				dense
+				:rules="rule"
+				required
+				return-object
+			>
+				<template slot="selection" slot-scope="data">
+				{{ data.item.naziv }} 
+				</template>
+				<template slot="item" slot-scope="data">
+				{{ data.item.naziv }}
+				</template>
+			</v-select>
+			</td>
+			<td>
 	<v-menu
 		v-model="fromDateMenu"
 		:close-on-content-click="false"
@@ -55,24 +74,7 @@
 	</v-menu>
 	</td>
 
-				<td>
-				<v-select
-				v-model="tip"
-				:items="tipovi"
-				label="*Tip pregleda"
-				dense
-				:rules="rule"
-				required
-				return-object
-			>
-				<template slot="selection" slot-scope="data">
-				{{ data.item.naziv }} 
-				</template>
-				<template slot="item" slot-scope="data">
-				{{ data.item.naziv }}
-				</template>
-			</v-select>
-			</td></tr></v-simple-table>
+				</tr></v-simple-table>
 			</v-card-text>
 			
 			<v-card-actions>
@@ -83,7 +85,7 @@
 			class="mr-4"
 			@click="ponisti"
 			>
-				Ponisti rezulate pretrage
+				Poništi pretragu
 			</v-btn>
 			<v-btn
 			:disabled="!valid"
@@ -91,7 +93,7 @@
 			class="mr-4"
 			@click="pretrazi"
 			>
-				PretraÅ¾i
+				Pretraži
 			</v-btn></v-card-actions>
 			</v-form></v-card>
 
@@ -175,7 +177,7 @@ export default {
           sortable: true, 
         },
         {
-          text: 'ProseÄ�na ocena', 
+          text: 'Prosečna ocena', 
           value: 'prosjek', 
           sortable: true, 
         },

@@ -1,6 +1,6 @@
 <template>
-  <div class="posjetePacijenta">
-    <v-container><v-card>
+  <div class="posjetePacijenta" style="width:100%;">
+    <v-container style="width:100%;"><v-card style="width:100%;">
 		<v-card-title>Istorija pregleda i operacija</v-card-title>
 		<v-card-subtitle>{{ ulogovani.ime }} {{ ulogovani.prezime }}</v-card-subtitle>
 		<v-card-text>
@@ -74,7 +74,7 @@ export default {
           sortable: true, 
         },
         {
-          text: 'Pocetak', 
+          text: 'Početak', 
           value: 'termin.pocetak', 
           sortable: true, 
         },

@@ -1,9 +1,9 @@
 <template>
-  <div class="pretragaLjekara">
-    <v-container><v-card>
+  <div class="pretragaLjekara" style="width:100%;">
+    <v-container style="width:100%;"><v-card style="width:100%;">
 
 			<v-card-title>Zakazivanje pregleda</v-card-title>
-			<v-card-subtitle><p>Izaberite ljekara i termin pregleda.</p>			
+			<v-card-subtitle><p>Izaberite lekara i termin pregleda.</p>			
 			<p>Datum pregleda: <b>{{ formatDateStr(this.datum) }}</b></p>
 			<p>Tip pregleda: <b>{{ this.nazivTipa }}</b></p></v-card-subtitle>
 		
@@ -83,7 +83,7 @@ export default {
           sortable: true, 
         },
         {
-          text: 'ProseÄ�na ocena', 
+          text: 'Prosečna ocena', 
           value: 'prosjek', 
           sortable: true, 
         },

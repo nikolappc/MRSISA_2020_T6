@@ -10,6 +10,7 @@ import isamrs.domain.AdministratorKlinike;
 import isamrs.domain.Dijagnoza;
 import isamrs.domain.Klinika;
 import isamrs.domain.Lekar;
+import isamrs.domain.Operacija;
 import isamrs.domain.Pacijent;
 import isamrs.domain.Pregled;
 import isamrs.domain.Recepti;
@@ -165,11 +166,10 @@ public class PregledServiceImpl implements PregledService {
 		Klinika k = klinikaRepo.findById(zahtjev.getIdKlinike()).orElseGet(null);
 		Pregled pregled = new Pregled();
 		pregled.setPotvrdjen(false);
-		Termin termin = new Termin();
 		pregled.setRecepti(new ArrayList<Recepti>());
 		pregled.setDijagnoza(new ArrayList<Dijagnoza>());
 		//Lekar l = posetaService.findOneLekar(zahtjev.getIdLekara());
-		Lekar l = lekarRepo.findById(zahtjev.getIdLekara()).orElseGet(null);
+		Lekar l = lekarRepo.findById(zahtjev.getIdLekara()).orElseGet(null);		
 		//Pacijent p = pacijentService.findOne(zahtjev.getIdPacijenta());
 		Pacijent p = pacijentRepo.findById(zahtjev.getIdPacijenta()).orElseGet(null);
 		pregled.setZdravstveniKarton(p.getZdravstveniKarton());
@@ -177,12 +177,16 @@ public class PregledServiceImpl implements PregledService {
 		//TipPosete tp = posetaService.findTipByNaziv(zahtjev.getNazivTipa());
 		TipPosete tp = tipRepo.findByNaziv(zahtjev.getNazivTipa());
 		pregled.setTipPosete(tp);   //falice sala
+		Termin termin = new Termin();
 		termin.setPocetak(zahtjev.getTerminPocetak());
 		Calendar c = Calendar.getInstance();
 		c.setTime(zahtjev.getTerminPocetak());
 		c.add(Calendar.MINUTE, 30);
 		termin.setKraj(c.getTime());
 		//Termin ter = terminService.create(termin);
+		if (lekarZauzetZaTermin(l, termin)) {
+			return false;
+		}
 		pregled.setTermin(termin);
 		k.getPregledi().add(pregled);
 		l.getPregled().add(pregled);
@@ -202,6 +206,24 @@ public class PregledServiceImpl implements PregledService {
 			mailSender.send(email);
 		}
 		return true;
+	}
+	
+	Boolean lekarZauzetZaTermin(Lekar l, Termin t) {
+		for (Pregled p : l.getPregled()) {
+			if (((p.getTermin().getPocetak().before(t.getPocetak()) || p.getTermin().getPocetak().equals(t.getPocetak()))
+				&& (p.getTermin().getKraj().after(t.getPocetak())))
+			|| (p.getTermin().getPocetak().after(t.getPocetak()) && (p.getTermin().getPocetak().before(t.getKraj())))){
+				return true;
+			}
+		}
+		for (Operacija p : l.getOperacije()) {
+			if (((p.getTermin().getPocetak().before(t.getPocetak()) || p.getTermin().getPocetak().equals(t.getPocetak()))
+				&& (p.getTermin().getKraj().after(t.getPocetak())))
+			|| (p.getTermin().getPocetak().after(t.getPocetak()) && (p.getTermin().getPocetak().before(t.getKraj())))){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public Boolean zakaziPredefinisaniPregled(ZakazivanjePregledaDTO zahtjev, int idZk, String email) throws NotFoundException {

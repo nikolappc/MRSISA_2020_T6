@@ -67,7 +67,7 @@ export default {
               this.$store.commit("setUlogovan", res.data);
               router.push("/");
             })
-            .catch( () => { this.$store.commit("setSnackbar", {text:"Pokusaj ponovo", color: "error"}); });
+            .catch( () => { this.$store.commit("setSnackbar", {text:"Neispravno korisničko ime ili lozinka, pokusajte ponovo.", color: "error"}); });
         }
     }
 }

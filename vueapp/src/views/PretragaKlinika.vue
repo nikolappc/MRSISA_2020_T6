@@ -1,12 +1,29 @@
 <template>
-  <div class="pretragaKlinika">
-    <v-container grid-list-md><v-card>
+  <div class="pretragaKlinika" style="width:100%;">
+    <v-container grid-list-md style="width:100%;"><v-card style="width:100%;">
     <v-form ref="form" v-model="valid">
 			<v-card-title>Zakazivanje pregleda</v-card-title>
-			<v-card-subtitle>Izaberite datum i tip pregleda.</v-card-subtitle>
+			<v-card-subtitle>Izaberite tip pregleda i datum kada želite da zakažete pregled.</v-card-subtitle>
 		<v-card-text>
 		<v-simple-table>
-			<tr><td colspan="3">
+			<tr>
+			<td colspan="3" valign="middle"><v-select
+				v-model="tip"
+				:items="tipovi"
+				label="*Tip pregleda"
+				:rules="rule"
+				outlined
+				dense
+				return-object
+			>
+				<template slot="selection" slot-scope="data">
+				{{ data.item.naziv }} 
+				</template>
+				<template slot="item" slot-scope="data">
+				{{ data.item.naziv }}
+				</template>
+            </v-select></td>
+            <td colspan="3">
 			
 	<v-menu
 		v-model="fromDateMenu"
@@ -23,6 +40,8 @@
 		<v-text-field
 		label="*Datum"
 		readonly
+		:rules="rule"
+		dense
 		:value="fromDateDisp"
 		v-on="on"
 		prepend-inner-icon="mdi-calendar-range"
@@ -40,21 +59,7 @@
 	></v-date-picker>
 	</v-menu>
             </td>
-            <td colspan="3" valign="middle"><v-select
-				v-model="tip"
-				:items="tipovi"
-				label="*Tip pregleda"
-				:rules="rule"
-				outlined
-				return-object
-			>
-				<template slot="selection" slot-scope="data">
-				{{ data.item.naziv }} 
-				</template>
-				<template slot="item" slot-scope="data">
-				{{ data.item.naziv }}
-				</template>
-            </v-select></td></tr>
+            </tr>
             <tr><td colspan="2"><v-text-field
               v-model="grad"
               label="Grad"
@@ -63,7 +68,7 @@
             ></v-text-field></td>
             <td colspan="2"><v-text-field
               v-model="drzava"
-              label="DrÅ¾ava"
+              label="Država"
               append-icon='mdi-map-marker'
               outlined
             ></v-text-field></td>
@@ -79,11 +84,23 @@
 			class="mr-4"
 			@click="pretraziKlinike"
 			>
-				PretraÅ¾i klinike
+				Pretraži klinike
 			</v-btn></v-card-actions>
 		</v-form></v-card>
 	<v-card-title>
-		
+		Filtriraj po ceni:
+		<v-text-field
+		v-model="od"
+		label="Od "
+		single-line
+		hide-details
+		></v-text-field>
+		<v-text-field
+		v-model="doo"
+		label="Do"
+		single-line
+		hide-details
+		></v-text-field>
 		<v-spacer></v-spacer>
 		<v-text-field
 		v-model="search"
@@ -95,7 +112,7 @@
 	</v-card-title>
       <v-data-table
         :headers="headers"
-        :items="klinike"
+        :items="klinikeFilter"
         :items-per-page="10"
         class="elevation-1"
         :search="search"
@@ -114,6 +131,7 @@ import router from "../router/index.js"
 export default {
   name: 'PretragaKlinika',
   data: () => ({
+	valid: false,
     ulogovani : {},
     search : '',
     datum : '',
@@ -123,11 +141,13 @@ export default {
     drzava: "",
     ocjena: '',
     ocjenaRules: [
-		v => (v <= 10) && (v >= 1) || 'Ocena mora biti u opsegu od 1 do 10.',
+		v => (v <= 5) && (v >= 0) || 'Ocena mora biti u opsegu od 0 do 5.',
 	],
 	rule: [
 		v => !!v || 'Obavezno polje',
 	],
+	od: "",
+	doo: "",
     tipovi: [],
     klinike : [],
     headers: [
@@ -157,12 +177,12 @@ export default {
           sortable: true, 
         },
         {
-          text: 'DrÅ¾ava', 
+          text: 'Država', 
           value: 'adresa.drzava', 
           sortable: true, 
         },
         {
-          text: 'ProseÄ�na ocena', 
+          text: 'Prosečna ocena', 
           value: 'prosjek', 
           sortable: true, 
         },
@@ -186,6 +206,17 @@ export default {
 	.catch(function (error) { console.log(error); router.push("/"); });
 	},
 	computed: {
+		klinikeFilter() {
+			console.log(this.od);
+			console.log(this.doo);
+			let proveraOd = this.od;
+			if (this.od == ""  || isNaN(this.od)) { proveraOd = 0; }
+			let proveraDo = this.doo;
+			if (this.doo == "" || isNaN(this.doo)) { proveraDo = 9999999; }
+			console.log(Number(proveraOd));
+			console.log(Number(proveraDo));
+			return this.klinike.filter(klinika => (Number(klinika.cenaPregleda) >= Number(proveraOd)) && (Number(klinika.cenaPregleda) <= Number(proveraDo)));
+		},
 	minDate() {
 		const today = new Date();
 		return this.formatDate(today);

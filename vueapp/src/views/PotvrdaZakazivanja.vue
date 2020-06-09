@@ -12,6 +12,7 @@
 			hover
 			@input="ocijeniLjekara($event)"
 		></v-rating>
+		<h6>Ocenite lekara!</h6>
 	</div>
 	<v-form v-if="dialogZahtjev.zakazivanje" ref="form" v-model="valid">
 	<v-simple-table>
