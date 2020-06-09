@@ -5,16 +5,13 @@ import java.util.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -34,12 +31,6 @@ public class TipPosete {
 	@Column(name = "naziv", unique = true, nullable = false)
 	private String naziv;
 	
-	
-	/*@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name="id_stavke")
-	private StavkaCenovnika stavkaCenovnika;
-
-*/
 	@JsonIgnore
 	@ManyToMany(mappedBy = "tipoviPoseta")
 	public java.util.Collection<Lekar> lekari;
@@ -69,14 +60,6 @@ public class TipPosete {
 		this.stavkeCenovnika = stavkeCenovnika;
 	}
 
-	/*public StavkaCenovnika getStavkaCenovnika() {
-		return stavkaCenovnika;
-	}
-
-	public void setStavkaCenovnika(StavkaCenovnika stavkaCenovnika) {
-		this.stavkaCenovnika = stavkaCenovnika;
-	}
-*/
 	public int getId() {
 		return id;
 	}
@@ -103,14 +86,6 @@ public class TipPosete {
 		this.naziv = naziv;
 	}
 
-	/*public TipPosete(int id, Tip tip, StavkaCenovnika stavkaCenovnika, String naziv) {
-		super();
-		this.id = id;
-		this.tip = tip;
-		this.stavkaCenovnika = stavkaCenovnika;
-		this.naziv = naziv;
-	}
-*/
 	public TipPosete(int id, Tip tip, ArrayList<StavkaCenovnika> stavkeCenovnika, String naziv) {
 		super();
 		this.id = id;

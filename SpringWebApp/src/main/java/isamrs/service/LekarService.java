@@ -64,7 +64,9 @@ public class LekarService {
 	public Lekar update(Integer id,Lekar lekar) {
 		Lekar lekarForUpdate = lekarRepo.findById(id).orElseGet(null);
 		
-		lekarForUpdate.setAdresa(lekar.getAdresa());
+		lekarForUpdate.getAdresa().setAdresa(lekar.getAdresa().getAdresa());
+		lekarForUpdate.getAdresa().setGrad(lekar.getAdresa().getGrad());
+		lekarForUpdate.getAdresa().setDrzava(lekar.getAdresa().getDrzava());
 		lekarForUpdate.setBrojTelefona(lekar.getBrojTelefona());
 		lekarForUpdate.setEmail(lekar.getEmail());
 		lekarForUpdate.setIme(lekar.getIme());

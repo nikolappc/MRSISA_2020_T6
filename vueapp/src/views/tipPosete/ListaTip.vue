@@ -9,8 +9,8 @@
         <v-simple-table border="1">
             <thead>
                 <th id="naziv">Naziv</th>
-                <th id="tip">Tip (Din/h)</th>
-                <th id="cena">Cena</th>
+                <th id="tip">Tip</th>
+                <th id="cena">Cena (Din/h)</th>
                 <th id=""></th>
             </thead>
             <tbody>
@@ -30,8 +30,6 @@
                     <v-card-title class="headline">Izmeni tip</v-card-title>
 
                         <IzmenaTipa  v-bind:tip="dialogTip" v-on:zatvori="dialog = false"/>
-
-                    
                 </v-card>
         </v-dialog>
     </div>
@@ -55,7 +53,7 @@ export default {
                 this.tipovi = response.data;
                 console.log(response);
             })
-            .catch(() => { this.tipovi = [{naziv: 'pera',tip: 'operacija',stavkaCenovnika: {cena: 20}}]; });
+            .catch(() => { this.tipovi = [{naziv: 'pera',tip: 'operacija',stavkaCenovnika: [{cena: 20}]}]; });
     },
     components: {
         Tip,

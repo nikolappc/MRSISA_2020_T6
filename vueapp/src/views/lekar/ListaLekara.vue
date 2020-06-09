@@ -44,7 +44,7 @@ import IzmenaLekara from "./IzmenaLekar.vue"
 import axios from "axios"
 export default {
     data: () => ({
-        lekari : [],
+        lekari : [{"id":2,"ime":"Sirius","prezime":"Black","password":"sirius12345","brojTelefona":"066/123-163","jbo":"000","adresa":{"id":3,"drzava":"Bosna i Hercegovina","grad":"Prnjavor","adresa":"Svjetozara Markovica 44"},"email":"black@gmail.com","tip":"LEKAR"},{"id":3,"ime":"Sirius","prezime":"Black","password":"1","brojTelefona":"066/123-163","jbo":"000","adresa":{"id":3,"drzava":"Bosna i Hercegovina","grad":"Prnjavor","adresa":"Svjetozara Markovica 44"},"email":"neekolapapic@gmail.com","tip":"LEKAR"},{"id":1,"ime":"Remus1213","prezime":"Lupin","password":"remus12345","brojTelefona":"066/123-113","jbo":"000","adresa":{"id":2,"drzava":"Srbija","grad":"Vidin","adresa":"Svetozara Markovskog 44"},"email":"lupin@gmail.com","tip":"LEKAR"}],
         dialog : false,
         dialogLekar: null,
         search: ''
@@ -56,7 +56,7 @@ export default {
                 this.lekari = response.data;
                 console.log(response);
             })
-            .catch(() => { this.lekari = [{ime: 'pera',prezime: ''}]; });
+            .catch(() => {  });
     },
     components: {
         Lekar,
