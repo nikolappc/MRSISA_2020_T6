@@ -207,7 +207,7 @@ Vue.use(VueRouter, VueAxios, axios)
     component: () => import('../views/lekar/IzmenaPregleda.vue')
   },
   {
-    path: '/istorijaPoseta/:id',
+    path: '/istorijaPoseta/',
     name: 'IstorijaPoseta',
     component: () => import('../views/lekar/IstorijaPoseta.vue')
   },
