@@ -18,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import isamrs.dto.ZdravstveniKartonDTO;
 
 @Entity
 @Table(name = "zdravstveni_kartoni")
@@ -54,6 +55,10 @@ public class ZdravstveniKarton {
 		this.visina = visina;
 		this.tezina = tezina;
 		this.krvnaGrupa = krvnaGrupa;
+	}
+
+	public ZdravstveniKarton(ZdravstveniKartonDTO zdravstveniKarton) {
+		this(zdravstveniKarton.getId(), zdravstveniKarton.getVisina(), zdravstveniKarton.getTezina(),zdravstveniKarton.getKrvnaGrupa());
 	}
 
 

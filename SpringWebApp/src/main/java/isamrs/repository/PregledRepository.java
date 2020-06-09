@@ -39,7 +39,7 @@ public interface PregledRepository extends JpaRepository<Pregled, Integer> {
 	public Collection<Pregled> getPredefinisaniPreglediKlinike(@Param("id") Integer id);
 
 	
-	@Query("SELECT p FROM Pregled p WHERE p.lekar = ?1")
+	@Query("SELECT p FROM Pregled p WHERE p.lekar = ?1 and p.potvrdjen = true")
 	public Collection<Pregled> findByLekar(Lekar l);
 
 	@Query("SELECT p FROM Pregled p WHERE p.zdravstveniKarton.pacijent.id = ?1 AND p.termin.pocetak > ?2 AND p.potvrdjen = true AND p.odradjen = false")

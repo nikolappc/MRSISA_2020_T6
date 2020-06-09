@@ -61,7 +61,7 @@ insert into termini (pocetak, kraj) values (current_timestamp,current_timestamp 
 insert into termini (pocetak, kraj) values (current_timestamp,current_timestamp + interval '60 minutes');
 
 
-insert into pacijent (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_kartona,  allowed, responded) values (1, '065/123-111', 'neekolapapic@gmail.com', 'nklppc', '0101', 'hermione12345', 'nklppc',  4, false, false);
+insert into pacijent (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_kartona,  allowed, responded) values (1, '065/123-111', 'neekolapapic@gmail.com', 'nklppc', '0101', 'hermione12345', 'papic',  4, false, false);
 insert into pacijent (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_kartona,  allowed, responded) values (2, '065/123-111', 'hermione@gmail.com', 'Hermione', '0101', 'hermione12345', 'Granger', 1, true, true);
 insert into pacijent (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_kartona,  allowed, responded) values (3, '065/823-115', 'harry@gmail.com', 'Harry', '000', 'harry12345', 'Potter', 2, true, true);
 insert into pacijent (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_kartona,  allowed, responded) values (1, '065/923-115', 'ron@gmail.com', 'Ron', '000', 'ron12345', 'Weasley', 3, true, true);

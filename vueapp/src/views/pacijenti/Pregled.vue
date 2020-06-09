@@ -10,7 +10,7 @@
             </v-tab>
             <v-tab-item>
                 <v-card-title>
-                    Pregled pacijenta
+                    Pregled pacijenta {{pacijent.ime +' '+ pacijent.prezime}}
                     <Timer />
                 </v-card-title>
                 <v-row class="mx-4">
@@ -82,7 +82,7 @@
                         <v-btn class="mx-10"
                           color="primary"
                           @click="dialog = true"
-                          disabled="zakazaoNovi"
+                          :disabled="zakazaoNovi"
                         >
                             Zakaži dodatni pregled
                         </v-btn>
@@ -146,7 +146,7 @@
                 <v-card>
                     <v-card-title class="headline mx-4">Zakaži pregled/operaciju</v-card-title>
 
-                        <NapraviPregled v-bind:pacijent="pacijent" v-bind:lekar="lekar" v-on:zatvori="dialog = false"/>
+                        <NapraviPregled v-bind:pacijent="pacijent" v-bind:lekar="lekar" v-on:zatvori="zakazanNovi"/>
 
                     
                 </v-card>
@@ -194,7 +194,7 @@ name: 'Pregled  ',
                 
             });
         axios
-            .get('poseta/' + this.$route.params.id)
+            .get('/poseta/' + this.$route.params.id)
             .then(response => {
                 this.pregled = response.data;
                 this.time = Math.floor((Date.parse(this.pregled.termin.kraj)- new Date())/1000);
@@ -243,6 +243,7 @@ name: 'Pregled  ',
     },
     zakazanNovi(val){
         this.zakazaoNovi = val;
+        this.dialog = false;
     },
     end(){
         let recepti = [];
@@ -252,6 +253,7 @@ name: 'Pregled  ',
                 lek:lek
             });
         }
+        this.pregled.odradjen = true;
         this.pregled.recepti = recepti;
         this.pregled.lekovi = this.lekovi;
         axios.put("/poseta/pregled/"+this.pregled.id, this.pregled)

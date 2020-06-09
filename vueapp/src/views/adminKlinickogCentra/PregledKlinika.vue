@@ -21,13 +21,13 @@
                                         
                                         <thead>
                                             <tr>
-                                                <th>
+                                                <th id="naziv">
                                                     Naziv
                                                 </th>
-                                                <th>
+                                                <th id="adresa">
                                                     Adresa
                                                 </th>
-                                                <th>
+                                                <th id="spec">
                                                     Specijalizacija
                                                 </th>
                                             </tr>

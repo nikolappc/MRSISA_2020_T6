@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.Date;
 
 import isamrs.domain.*;
+import isamrs.dto.PosetaPacijentDTO;
+import isamrs.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +16,6 @@ import isamrs.dto.GetOcenaDTO;
 import isamrs.dto.LekarSlobodanDTO;
 import isamrs.dto.OsobaDTO;
 import isamrs.dto.SetOcenaDTO;
-import isamrs.dto.TerminDTO;
 import isamrs.repository.LekarRepository;
 import isamrs.repository.OcenaRepository;
 import isamrs.repository.OperacijaRepository;
@@ -33,14 +34,15 @@ public class LekarService {
 	
 	@Autowired
 	private OperacijaRepository operacijaRepo;
-	
+
+	@Autowired
+	private PacijentRepository pacijentRepository;
+
 	@Autowired
 	private OcenaRepository repoOcena;
 	
-	@Autowired
-	private PacijentRepository repoPacijent;
-	
-	
+
+
 	public Collection<OsobaDTO> findAll() {
 		ArrayList<OsobaDTO> lekari = new ArrayList<OsobaDTO>();
 		for(Lekar l : lekarRepo.findAll()) {
@@ -102,18 +104,19 @@ public class LekarService {
 		return false;
 	}
 
-	public Collection<TerminDTO> findTermini(Integer id) {
-		ArrayList<TerminDTO> pregledi = new ArrayList<TerminDTO>();
+	public Collection<PosetaPacijentDTO> findPosete(Integer id) throws NotFoundException {
+		ArrayList<PosetaPacijentDTO> pregledi = new ArrayList<>();
 		
-		Lekar l = lekarRepo.findById(id).orElseGet(null);
+		Lekar l = lekarRepo.findById(id).orElseThrow(NotFoundException::new);
 		
 		for(Pregled p : pregledRepo.findByLekar(l)) {
-			pregledi.add(new TerminDTO(p)); 
+			Pacijent pacijent = pacijentRepository.findByKarton(p.getZdravstveniKarton().getId());
+			pregledi.add(new PosetaPacijentDTO(p,  pacijent));
 		}
 		
 		for(Operacija o : operacijaRepo.findByLekar(l)) {
-			pregledi.add(new TerminDTO(o));
-		}
+			Pacijent pacijent = pacijentRepository.findByKarton(o.getZdravstveniKarton().getId());
+			pregledi.add(new PosetaPacijentDTO(o,  pacijent));		}
 		
 		return pregledi;
 	}
@@ -156,7 +159,7 @@ public class LekarService {
 	public Ocena createOcena(Ocena o) {
 		return repoOcena.save(o);
 	}
-	
+
 	public Boolean proverDaLiJeLekarSlobodan(ProveraLekarSlobodanDTO provera) {
 		Lekar l = findOne(provera.getIdLekara());
 		if (KlinikaServiceImpl.lekarImaSlobodanTermin(l, provera.getDatum())) {
@@ -168,7 +171,7 @@ public class LekarService {
 		}
 		return false;
 	}
-	
+
 	public GetOcenaDTO pacijentPosjetioLekaraFunc(int idPacijenta, int id) {
 		Boolean ocijenio = pacijentOcijenioLekara(idPacijenta, id);
 		Boolean posjetio = pacijentPosjetioLekara(idPacijenta, id);
@@ -185,7 +188,7 @@ public class LekarService {
 		}
 		return getOcena;
 	}
-	
+
 	public void ocijeniLekara(SetOcenaDTO novaOcena) {
 		if (pacijentOcijenioLekara(novaOcena.getIdPacijenta(), novaOcena.getId())) {
 			Ocena stara = getOcenaPacijenta(novaOcena.getId(), novaOcena.getIdPacijenta());
@@ -194,16 +197,16 @@ public class LekarService {
 		} else {
 			Ocena nova = new Ocena();
 			nova.setVrednost(novaOcena.getOcjena());
-			Pacijent p = repoPacijent.findById(novaOcena.getIdPacijenta()).orElseGet(null);
+			Pacijent p = pacijentRepository.findById(novaOcena.getIdPacijenta()).orElseGet(null);
 			Lekar l = findOne(novaOcena.getId());
 			nova.setPacijent(p);
 			l.getOcena().add(nova);
-			
+
 			Ocena created = createOcena(nova);
 			//Lekar ll = lekarService.update(novaOcena.getId(), k);
 		}
 	}
-	
+
 	public LekarSlobodanDTO vratiVremenaCijenu(int idLekara, String nazivTipa, String datum) {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.");
 		Date d = null;

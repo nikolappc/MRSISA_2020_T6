@@ -40,9 +40,9 @@
         <v-simple-table border="1"
         >
             <thead>
-                <th>ID</th>
-                <th>Naziv</th>
-                <th></th>
+                <th id="id">ID</th>
+                <th id="naziv">Naziv</th>
+                <th id=""></th>
             </thead>
             <tbody>
                 <Sala @click="dialog = true" v-for="sala in filterSale" v-bind:key="sala.id"

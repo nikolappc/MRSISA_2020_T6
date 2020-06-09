@@ -1,127 +1,224 @@
 <template>
   <div class="home">
     <v-container>
-      <h1>Lekar</h1>
-      <v-col
-      >
-        <v-container>
-          <v-card class="main-card">
-    
-            <v-row
-              justify="center"
-              align-content="stretch"
-              align="stretch"
+      <v-container>
+        <label class="display-1">
+          Lekar
+        </label>
+        <br>
+        <label class="subtitle-1">
+  
+          Dobrodošli, {{ulogovan.ime}}
+        </label>
+      </v-container>
+      <v-card class="main-card">
+        <RadniKalendar
+          :events="events"
+        >
+          <template slot-scope="kalendar">
+            <v-menu
+              v-model="kalendar.opened"
+              :close-on-content-click="false"
+              :activator="kalendar.activator"
+              offset-x
+              v-if="kalendar.selected!=null"
             >
-              <v-col
-                lg="6"
-                md="12"
-                sm="12"
-                xs="12"
-              >
-              <router-link to="/listaPacijenata">
-                <LinkCard
-                  :img="pacijent"
-                  title="Lista pacijenata"
-                >
-                </LinkCard>
-              </router-link>
-              </v-col>
+              <v-card>
+                <v-toolbar :color="kalendar.selected.color">
+                  <v-row>
+                    <v-col>
+                      {{kalendar.selected.name}}:{{kalendar.selected.tip}}
+                    </v-col>
+                  </v-row>
+                </v-toolbar>
+                <v-container>
+                    <v-simple-table>
+                        <tbody>
+                            <tr> 
+                                <td>
+                                  Vreme početka                                        
+                                </td>
+                                <td>
+                                  {{kalendar.selected.start}}
+                                </td>
+                            </tr>
+                            <tr> 
+                              <td>
+                                Trajanje
+                              </td>
+                              <td>
+                                {{(kalendar.selected.endDate - kalendar.selected.startDate)/1000/60}} min
+                              </td>
+                          </tr>
+                          <tr> 
+                            <td>
+                              Pacijent
+                            </td>
+                            <td>
+                              {{kalendar.selected.pacijent}}
+                            </td>
+                        </tr>
+                        
+                        </tbody>
+                    </v-simple-table>
+                    <v-card
+                      outlined="true"
+                    >
+                      {{kalendar.selected.opis}}
+                    </v-card>
+                    
+                    <v-btn
+                      v-if="kalendar.selected.tip=='pregled'&&kalendar.selected.odradjen"
+                      @click="toIzmena(kalendar.selected.id)"
+                      :disabled="!kalendar.selected.odradjen"
+                    >
+                      Izmena pregleda
+                    </v-btn>
+                </v-container>
+              </v-card>
+            </v-menu>
+          </template>
+        </RadniKalendar>
+        <v-row
+          justify="center"
+          align-content="stretch"
+          align="stretch"
+        >
+          <v-col
+            lg="6"
+            md="12"
+            sm="12"
+            xs="12"
+          >
+          <router-link to="/listaPacijenata">
+            <LinkCard
+              :img="pacijent"
+              title="Lista pacijenata"
+            >
+            </LinkCard>
+          </router-link>
+          </v-col>
 
-              <v-col
-                lg="6"
-                md="12"
-                sm="12"
-                xs="12"
+          <v-col
+            lg="6"
+            md="12"
+            sm="12"
+            xs="12"
+          >
+          <router-link to="/zakaziPregled">
+            <LinkCard
+              :img="pregled"
+              title="Zakaži pregled"
+            >
+            </LinkCard>
+          </router-link>
+          </v-col>
+          </v-row>
+          <v-row
+          justify="center"
+            align-content="stretch"
+            align="stretch"
+          >
+          <v-col
+            lg="6"
+            md="12"
+            sm="12"
+            xs="12"
+          >
+            <router-link to="/zakaziOdmor">
+              <LinkCard
+                :img="odmor"
+                title="Zakaži godišnji odmor"
               >
-              <router-link to="/zakaziPregled">
-                <LinkCard
-                  :img="pregled"
-                  title="Zakaži pregled"
-                >
-                </LinkCard>
-              </router-link>
-              </v-col>
-              </v-row>
-              <v-row
-              justify="center"
-                align-content="stretch"
-                align="stretch"
+              </LinkCard>
+            </router-link>
+          </v-col>
+          <v-col
+            lg="6"
+            md="12"
+            sm="12"
+            xs="12"
+          >
+            <router-link to="/istorijaPregleda">
+              <LinkCard
+                :img="odmor"
+                title="Istorija pregleda"
               >
-              <v-col
-                lg="6"
-                md="12"
-                sm="12"
-                xs="12"
-              >
-              <router-link to="/zakaziOdmor">
-                <LinkCard
-                  :img="odmor"
-                  title="Zakaži godišnji odmor"
-                >
-                </LinkCard>
-              </router-link>
-              </v-col>
-              <v-col
-                lg="6"
-                md="12"
-                sm="12"
-                xs="12"
-              >
-                <Kalendar v-bind:events="termini"/>
-              </v-col>
-            </v-row>
-          </v-card>
-        </v-container>
-      </v-col>
+              </LinkCard>
+            </router-link>
+          </v-col>
+        </v-row>
+      </v-card>
+      
     </v-container>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import Kalendar from "./sala/Kalendar.vue";
-  function preurediDatum(termini){
-        for(let termin of termini){
-            termin.start = formatirajDatum(termin.start);
-            termin.end = formatirajDatum(termin.end);
-        }
-        return termini;
-  }
-  function formatirajDatum(datum){
-      return datum.substring(0, 10) + " " + datum.substring(11,16); 
-  }
+import RadniKalendar from "./RadniKalendar.vue";
+
+// import Kalendar from "./sala/Kalendar.vue";
+ 
 import LinkCard from "../components/LinkCard.vue";
 
 export default {
-
-  
-
-
   name: 'HomeLekar',
   components:{
     LinkCard,
-    Kalendar
+    RadniKalendar
   },
    data: () => ({
       termini: {},
+      events:[],
       pacijent:require("../assets/pacijent.jpg"),
-      pregled:require("../assets/pregled.jpg")
+      pregled:require("../assets/pregled.jpg"),
   }),
+  computed:{
+    ulogovan(){
+      return this.$store.state.ulogovan;
+    }
+  },
   mounted () {
     axios
-            .get('lekar/pregledi/'+this.$store.state.ulogovan.id)
+            .get('lekar/poseta/'+this.$store.state.ulogovan.id)
             .then((res) => {
-                this.termini = preurediDatum(res.data);
+                this.preurediEvent(res.data);
             })
-            .catch(() => { this.$store.commit("setSnackbar", {text:"Whops", color: "error"});
-
+            .catch(error => { 
+              console.log(error);
+              
+              this.$store.commit("setSnackbar", {text:"Whoops", color: "error"});
             });
   },
   methods: {
-    
+    toIzmena(id){
+      this.$router.push('/izmenaPregleda/' + id);
+    },
+    preurediEvent(termini){
+        for(let termin of termini){
+            let event = {}; 
+            event.id = termin.id;
+            event.startDate = new Date(termin.termin.pocetak);
+            event.endDate = new Date(termin.termin.kraj);
+            event.start = this.formatirajDatum(event.startDate);
+            event.end = this.formatirajDatum(event.endDate);
+            event.color = termin.tip.tip == "pregled"?"blue":"lek";
+            event.tip = termin.tip.tip;
+            event.opis = termin.opis;
+            event.name = termin.tip.naziv;
+            event.odradjen = termin.odradjen;
+            event.pacijent = termin.pacijent.ime+" "+termin.pacijent.prezime;
+            console.log(event);
+            this.events.push(event);
+        }
+    },
+    formatirajDatum (a) {
+      return `${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()} ${a.getHours()}:${a.getMinutes()}`;
+    }
   }
-  
 }
+
 </script>
 
 <style>

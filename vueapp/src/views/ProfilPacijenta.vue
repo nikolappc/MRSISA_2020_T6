@@ -3,7 +3,8 @@
     <v-container style="width:100%;">
       <v-card style="width:100%;"><v-card-text><v-simple-table>
         <thead>
-          <th colspan="2">{{ ulogovani.email }}</th>
+          <th id="profil">Moj profil</th>
+          <th id="email">{{ ulogovani.email }}</th>
         </thead>
         <tbody>
           <tr>

@@ -1,7 +1,7 @@
 <template>
     <v-card 
-    min-width="300px" 
-    min-height="300px"
+    min-width="200px" 
+    min-height="200px"
     :img="img"
     >
         <v-container>

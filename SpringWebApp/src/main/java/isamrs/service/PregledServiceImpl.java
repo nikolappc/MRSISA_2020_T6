@@ -60,9 +60,10 @@ public class PregledServiceImpl implements PregledService {
 	
 	@Autowired
 	private MailSender mailSender;
-	
-	
-	
+
+	@Autowired
+	private ZdravstveniKartonRepository zdrrepo;
+
 
 	//@Override
 	public Collection<Pregled> findAll() {
@@ -86,6 +87,7 @@ public class PregledServiceImpl implements PregledService {
 	//@Override
 	public Pregled update(Integer id, Pregled t) throws NotFoundException {
 		Pregled pregledForUpdate = pregledRepository.findById(id).orElseThrow(NotFoundException::new);
+		t.setZdravstveniKarton(zdrrepo.findById(t.getZdravstveniKarton().getId()).get());
 		return pregledRepository.save(t);
 	}
 

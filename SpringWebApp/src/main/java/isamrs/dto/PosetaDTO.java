@@ -11,6 +11,9 @@ public class PosetaDTO {
 	private Termin termin;
 	private TipPoseteDTO tip;
 	private Sala sala;
+	private boolean potvrdjen;
+	private boolean odradjen;
+
 	public Integer getId() {
 		return id;
 	}
@@ -54,5 +57,23 @@ public class PosetaDTO {
 	
 	public PosetaDTO(Poseta p) {
 		this(p.getId(), p.getOpis(), p.getTermin(), p.getTipPosete(), p.getSala());
+		this.odradjen = p.isOdradjen();
+		this.potvrdjen = p.isPotvrdjen();
+	}
+
+	public boolean isPotvrdjen() {
+		return potvrdjen;
+	}
+
+	public void setPotvrdjen(boolean potvrdjen) {
+		this.potvrdjen = potvrdjen;
+	}
+
+	public boolean isOdradjen() {
+		return odradjen;
+	}
+
+	public void setOdradjen(boolean odradjen) {
+		this.odradjen = odradjen;
 	}
 }

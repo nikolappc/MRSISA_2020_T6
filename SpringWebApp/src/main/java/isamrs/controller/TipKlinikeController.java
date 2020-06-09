@@ -1,7 +1,9 @@
 package isamrs.controller;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
+import isamrs.dto.TipKlinikeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,10 +30,10 @@ public class TipKlinikeController {
 	
 	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<TipKlinike> getTipKlinike(@PathVariable("id")Long id){
+	public ResponseEntity<TipKlinikeDTO> getTipKlinike(@PathVariable("id")Long id){
 		try {
 			TipKlinike t = service.findOne(id);
-			return new ResponseEntity<TipKlinike>(t, HttpStatus.OK);
+			return new ResponseEntity<TipKlinikeDTO>(new TipKlinikeDTO(t), HttpStatus.OK);
 		}catch (NotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Tip Klinike sa id-jem: "+id+ " nije pronadjen.", e);
 		}
@@ -39,26 +41,26 @@ public class TipKlinikeController {
 
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<TipKlinike>> getTipoviKlinike(){
-		Collection<TipKlinike> tipovi = service.findAll();
-		return new ResponseEntity<Collection<TipKlinike>>(tipovi, HttpStatus.OK);
+	public ResponseEntity<Collection<TipKlinikeDTO>> getTipoviKlinike(){
+		Collection<TipKlinikeDTO> tipovi = service.findAll().stream().map(TipKlinikeDTO::new).collect(Collectors.toList());
+		return new ResponseEntity<Collection<TipKlinikeDTO>>(tipovi, HttpStatus.OK);
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<TipKlinike> createTipKlinike(@RequestBody TipKlinike t){
+	public ResponseEntity<TipKlinikeDTO> createTipKlinike(@RequestBody TipKlinike t){
 		TipKlinike t2 = service.create(t);
-		return new ResponseEntity<TipKlinike>(t2, HttpStatus.OK);
+		return new ResponseEntity<TipKlinikeDTO>(new TipKlinikeDTO(t2), HttpStatus.OK);
 	}
 	
 	@PutMapping(value = "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<TipKlinike> updateTipKlinike(@PathVariable("id") Long id,@RequestBody TipKlinike t) throws NotFoundException {
+	public ResponseEntity<TipKlinikeDTO> updateTipKlinike(@PathVariable("id") Long id,@RequestBody TipKlinike t) throws NotFoundException {
 		TipKlinike t2 = service.update(id, t);
-		return new ResponseEntity<TipKlinike>(t2, HttpStatus.OK);
+		return new ResponseEntity<TipKlinikeDTO>(new TipKlinikeDTO(t), HttpStatus.OK);
 	}
 	
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<TipKlinike> deleteTipKlinike(@PathVariable("id") Long id){
+	public ResponseEntity<TipKlinikeDTO> deleteTipKlinike(@PathVariable("id") Long id){
 		service.delete(id);
-		return new ResponseEntity<TipKlinike>(HttpStatus.OK);
+		return new ResponseEntity<TipKlinikeDTO>(HttpStatus.OK);
 	}
 }

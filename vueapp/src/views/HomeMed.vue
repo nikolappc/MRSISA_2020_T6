@@ -123,13 +123,12 @@ export default {
         {
           title:"Zahtevi za odmor ili odsustvo",
           img:require("../assets/vacation.jpg"),
-          link:"/homeMed"
+          link:"/zakaziOdmor"
         },
         {
           title:"Profil",
           img:require("../assets/profile.jpg"),
           link:"/profilPacijenta"
-
         },
         {
           title:"Overavanje recepata",

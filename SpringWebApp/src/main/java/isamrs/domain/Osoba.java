@@ -13,9 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 
 @JsonTypeInfo(
-  use = JsonTypeInfo.Id.NAME, 
-  include = JsonTypeInfo.As.PROPERTY, 
-  property = "tip")
+  use = JsonTypeInfo.Id.NAME, property = "tip")
 @JsonSubTypes({ 
   @Type(value = AdministratorKlinickogCentra.class, name = "ADMIN_KC"), 
   @Type(value = AdministratorKlinike.class, name = "ADMIN_K"),
@@ -44,9 +42,6 @@ public abstract class Osoba implements Serializable{
 
 	@Column(name = "jbo", unique = false, nullable = false)
 	private String jbo;
-//
-//	@Column(name = "adresa", unique = false, nullable = false)
-//	private String adresa;
 
 	@Column(name = "email", unique = true, nullable = false)
 	private String email;

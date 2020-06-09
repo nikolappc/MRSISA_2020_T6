@@ -1,59 +1,43 @@
 <template>
     <v-card>
-        <v-row>
-            <v-col
-                cols="12"
-            >
-            </v-col>
-                <v-container>
-                    <v-card-title>
-                        {{username}}
-                    </v-card-title>
-                </v-container>
-            <v-col
-                cols="12"
-            >
-                <v-row
-                    justify="end"
-                >
-                    <v-col
-                        lg="12"
-                        cols="6"
-                        class="ml-auto"
-                    >
-                        <v-row
-                            justify="center"
-                            align="center"
-                        >
-                            <v-col
-                                cols="6"
+        <v-container>
+            <v-simple-table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <display-1
                             >
-                                <v-row        
-                                    justify="center"
-                                    align="center"
-                                >
-                                    <v-btn color="success" @click="allow()">
-                                        Odobri
-                                    </v-btn>
-                                </v-row>
-                            </v-col>
-                            <v-col
-                                cols="6"
-                            >
-                                <v-row
-                                    justify="center"
-                                    align="center"
-                                >
-                                    <v-btn color="error" @click="deny()"> 
-                                        Odbij
-                                    </v-btn>
-                                </v-row>
-                            </v-col>
-                        </v-row>
-                    </v-col>
-                </v-row>
-            </v-col>
-        </v-row>
+                                Zahtev za registraciju
+                            </display-1>
+                        </td>
+                        <td>
+                            {{user.email}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Ime i prezime
+                        </td>
+                        <td>
+                            {{user.ime+' ' + user.prezime}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <v-btn color="success" @click="allow()">
+                                Odobri
+                            </v-btn>
+                        </td>
+                        <td>
+                            <v-btn color="error" @click="deny()"> 
+                                Odbij
+                            </v-btn>
+                        </td>
+                    </tr>
+                </tbody>
+            </v-simple-table>
+        </v-container>
+
         <v-overlay
             v-model="overlay"
             absolute="true"
@@ -72,7 +56,7 @@
     export default{
         name:"RegConf",
         props:[
-            "username",
+            "user",
         ],
         data:function () {
             return{
@@ -88,7 +72,7 @@
             },
             notifyServer:function(address){
                 this.overlay = true;
-                axios.get(address+"/"+this.username)
+                axios.get(address+"/"+this.user.email)
                     .then(res=>{
                         this.$store.commit("setSnackBar", {text:res.data, color:"success"});
                         this.$emit("resolved");
@@ -102,9 +86,3 @@
         }
     }
 </script>
-<style>
-random{
-    color:"#ffffff";
-}
-
-</style>
