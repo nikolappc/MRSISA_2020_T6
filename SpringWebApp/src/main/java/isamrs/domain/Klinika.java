@@ -6,7 +6,6 @@
 
 package isamrs.domain;
 
-import java.util.*;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,7 +21,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -55,52 +53,43 @@ public class Klinika {
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_klinike")
-//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	public java.util.Collection<Lekar> lekari;
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_klinike")
-//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	@JsonManagedReference
 	public java.util.Collection<MedicinskaSestra> sestre;
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_klinike")
-//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	public java.util.Collection<Sala> sala;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "klinika_pacijent", joinColumns = @JoinColumn(name = "id_klinike"), inverseJoinColumns = @JoinColumn(name = "id_pacijenta"))
-//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@JsonIgnore
 	public java.util.Collection<Pacijent> pacijent;
 	
 	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_klinike")
-//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	@JsonManagedReference
 	public java.util.Collection<Pregled> pregledi;
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_klinike")
-//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	@JsonManagedReference
 	public java.util.Collection<Operacija> operacije;
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_klinike")
-//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	@JsonManagedReference
 	public java.util.Collection<TipPosete> tipPosete;
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_klinike")
-//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	@JsonManagedReference
 	public java.util.Collection<Ocena> ocena;
 
 	@OneToMany(fetch = FetchType.LAZY)
-//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@JsonManagedReference("adminRefer")
 	public java.util.Collection<AdministratorKlinike> administratorKlinike;
 
@@ -116,34 +105,19 @@ public class Klinika {
 		this.tipKlinike = tipKlinike;
 	}
 
-	/** @pdGenerated default getter */
 	public java.util.Collection<Sala> getSala() {
 		if (sala == null)
 			sala = new java.util.HashSet<>();
 		return sala;
 	}
-	
-	public java.util.Iterator<Sala> getIteratorSala() {
-		if (sala == null)
-			sala = new java.util.HashSet<>();
-		return sala.iterator();
-	}
 
-
-	/**
-	 * @pdGenerated default setter
-	 * @param newSala
-	 */
 	public void setSala(java.util.Collection<Sala> newSala) {
 		removeAllSala();
 		for (java.util.Iterator<Sala> iter = newSala.iterator(); iter.hasNext();)
 			addSala((Sala) iter.next());
 	}
 
-	/**
-	 * @pdGenerated default add
-	 * @param newSala
-	 */
+
 	public void addSala(Sala newSala) {
 		if (newSala == null)
 			return;
@@ -153,55 +127,34 @@ public class Klinika {
 			this.sala.add(newSala);
 	}
 
-	/**
-	 * @pdGenerated default remove
-	 * @param oldSala
-	 */
+
 	public void removeSala(Sala oldSala) {
 		if (oldSala == null)
 			return;
 		if ((this.sala != null) && (this.sala.contains(oldSala)))
 			this.sala.remove(oldSala);
-		/*if (this.sala != null)
-			if (this.sala.contains(oldSala))
-				this.sala.remove(oldSala);
-		*/
+
 	}
 
-	/** @pdGenerated default removeAll */
 	public void removeAllSala() {
 		if (sala != null)
 			sala.clear();
 	}
 
-	/** @pdGenerated default getter */
 	public java.util.Collection<Pacijent> getPacijent() {
 		if (pacijent == null)
 			pacijent = new java.util.HashSet<>();
 		return pacijent;
 	}
 
-	/** @pdGenerated default iterator getter */
-	public java.util.Iterator<Pacijent> getIteratorPacijent() {
-		if (pacijent == null)
-			pacijent = new java.util.HashSet<>();
-		return pacijent.iterator();
-	}
 
-	/**
-	 * @pdGenerated default setter
-	 * @param newPacijent
-	 */
+
 	public void setPacijent(java.util.Collection<Pacijent> newPacijent) {
 		removeAllPacijent();
 		for (java.util.Iterator<Pacijent> iter = newPacijent.iterator(); iter.hasNext();)
 			addPacijent((Pacijent) iter.next());
 	}
 
-	/**
-	 * @pdGenerated default add
-	 * @param newPacijent
-	 */
 	public void addPacijent(Pacijent newPacijent) {
 		if (newPacijent == null)
 			return;
@@ -211,10 +164,6 @@ public class Klinika {
 			this.pacijent.add(newPacijent);
 	}
 
-	/**
-	 * @pdGenerated default remove
-	 * @param oldPacijent
-	 */
 	public void removePacijent(Pacijent oldPacijent) {
 		if (oldPacijent == null)
 			return;
@@ -222,54 +171,32 @@ public class Klinika {
 			this.pacijent.remove(oldPacijent);
 	}
 
-	/** @pdGenerated default removeAll */
 	public void removeAllPacijent() {
 		if (pacijent != null)
 			pacijent.clear();
 	}
 
 
-	/** @pdGenerated default parent getter */
 	public Cenovnik getCenovnik() {
 		return cenovnik;
 	}
 
-	/**
-	 * @pdGenerated default parent setter
-	 * @param newCenovnik
-	 */
 	public void setCenovnik(Cenovnik newCenovnik) {
 		this.cenovnik = newCenovnik;
 	}
 
-	/** @pdGenerated default getter */
 	public java.util.Collection<TipPosete> getTipPosete() {
 		if (tipPosete == null)
 			tipPosete = new java.util.HashSet<>();
 		return tipPosete;
 	}
 
-	/** @pdGenerated default iterator getter */
-	public java.util.Iterator<TipPosete> getIteratorTipPosete() {
-		if (tipPosete == null)
-			tipPosete = new java.util.HashSet<>();
-		return tipPosete.iterator();
-	}
-
-	/**
-	 * @pdGenerated default setter
-	 * @param newTipPosete
-	 */
 	public void setTipPosete(java.util.Collection<TipPosete> newTipPosete) {
 		removeAllTipPosete();
 		for (java.util.Iterator<TipPosete> iter = newTipPosete.iterator(); iter.hasNext();)
 			addTipPosete((TipPosete) iter.next());
 	}
 
-	/**
-	 * @pdGenerated default add
-	 * @param newTipPosete
-	 */
 	public void addTipPosete(TipPosete newTipPosete) {
 		if (newTipPosete == null)
 			return;
@@ -279,10 +206,7 @@ public class Klinika {
 			this.tipPosete.add(newTipPosete);
 	}
 
-	/**
-	 * @pdGenerated default remove
-	 * @param oldTipPosete
-	 */
+
 	public void removeTipPosete(TipPosete oldTipPosete) {
 		if (oldTipPosete == null)
 			return;
@@ -290,40 +214,23 @@ public class Klinika {
 			this.tipPosete.remove(oldTipPosete);
 	}
 
-	/** @pdGenerated default removeAll */
 	public void removeAllTipPosete() {
 		if (tipPosete != null)
 			tipPosete.clear();
 	}
 
-	/** @pdGenerated default getter */
 	public java.util.Collection<Ocena> getOcena() {
 		if (ocena == null)
 			ocena = new java.util.HashSet<>();
 		return ocena;
 	}
 
-	/** @pdGenerated default iterator getter */
-	public java.util.Iterator<Ocena> getIteratorOcena() {
-		if (ocena == null)
-			ocena = new java.util.HashSet<>();
-		return ocena.iterator();
-	}
-
-	/**
-	 * @pdGenerated default setter
-	 * @param newOcena
-	 */
 	public void setOcena(java.util.Collection<Ocena> newOcena) {
 		removeAllOcena();
 		for (java.util.Iterator<Ocena> iter = newOcena.iterator(); iter.hasNext();)
 			addOcena((Ocena) iter.next());
 	}
 
-	/**
-	 * @pdGenerated default add
-	 * @param newOcena
-	 */
 	public void addOcena(Ocena newOcena) {
 		if (newOcena == null)
 			return;
@@ -333,10 +240,6 @@ public class Klinika {
 			this.ocena.add(newOcena);
 	}
 
-	/**
-	 * @pdGenerated default remove
-	 * @param oldOcena
-	 */
 	public void removeOcena(Ocena oldOcena) {
 		if (oldOcena == null)
 			return;
@@ -344,40 +247,25 @@ public class Klinika {
 			this.ocena.remove(oldOcena);
 	}
 
-	/** @pdGenerated default removeAll */
 	public void removeAllOcena() {
 		if (ocena != null)
 			ocena.clear();
 	}
 
-	/** @pdGenerated default getter */
 	public java.util.Collection<AdministratorKlinike> getAdministratorKlinike() {
 		if (administratorKlinike == null)
 			administratorKlinike = new java.util.HashSet<>();
 		return administratorKlinike;
 	}
 
-	/** @pdGenerated default iterator getter */
-	public java.util.Iterator<AdministratorKlinike> getIteratorAdministratorKlinike() {
-		if (administratorKlinike == null)
-			administratorKlinike = new java.util.HashSet<>();
-		return administratorKlinike.iterator();
-	}
 
-	/**
-	 * @pdGenerated default setter
-	 * @param newAdministratorKlinike
-	 */
 	public void setAdministratorKlinike(java.util.Collection<AdministratorKlinike> newAdministratorKlinike) {
 		removeAllAdministratorKlinike();
 		for (java.util.Iterator<AdministratorKlinike> iter = newAdministratorKlinike.iterator(); iter.hasNext();)
 			addAdministratorKlinike((AdministratorKlinike) iter.next());
 	}
 
-	/**
-	 * @pdGenerated default add
-	 * @param newAdministratorKlinike
-	 */
+
 	public void addAdministratorKlinike(AdministratorKlinike newAdministratorKlinike) {
 		if (newAdministratorKlinike == null)
 			return;
@@ -387,10 +275,7 @@ public class Klinika {
 			this.administratorKlinike.add(newAdministratorKlinike);
 	}
 
-	/**
-	 * @pdGenerated default remove
-	 * @param oldAdministratorKlinike
-	 */
+
 	public void removeAdministratorKlinike(AdministratorKlinike oldAdministratorKlinike) {
 		if (oldAdministratorKlinike == null)
 			return;
@@ -398,21 +283,15 @@ public class Klinika {
 			this.administratorKlinike.remove(oldAdministratorKlinike);
 	}
 
-	/** @pdGenerated default removeAll */
 	public void removeAllAdministratorKlinike() {
 		if (administratorKlinike != null)
 			administratorKlinike.clear();
 	}
 
-	/** @pdGenerated default parent getter */
 	public TipKlinike getTipKlinike() {
 		return tipKlinike;
 	}
 
-	/**
-	 * @pdGenerated default parent setter
-	 * @param newTipKlinike
-	 */
 	public void setTipKlinike(TipKlinike newTipKlinike) {
 		this.tipKlinike = newTipKlinike;
 	}

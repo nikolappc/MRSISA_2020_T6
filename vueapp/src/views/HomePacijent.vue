@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <v-container>
-      <h1 style="text-align:center">{{ ulogovani.email }}</h1>
+      <h1>Dobrodošli, {{ ulogovani.email }}</h1>
        <v-card class="main-card">
 
         <v-row

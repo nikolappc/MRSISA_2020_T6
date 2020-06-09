@@ -1,7 +1,7 @@
 <template>
-  <div class="zdravstveniKartonPrikaz">
-    <v-container>
-			<v-card><v-card-title>Zdravstveni karton</v-card-title>
+  <div class="zdravstveniKartonPrikaz" style="width:100%;">
+    <v-container style="width:100%;">
+			<v-card style="width:100%;"><v-card-title>Zdravstveni karton</v-card-title>
 			<v-card-subtitle>{{ karton.email }}, {{ karton.ime }} {{ karton.prezime }}</v-card-subtitle>
       <v-simple-table>
         <tbody>
@@ -45,7 +45,7 @@ export default {
       .then(response => {
           this.karton = response.data;
       })
-		.catch(() => { this.$store.commit("setSnackbar", {text:"Pacijent još uvek nema svoj zdravstveni karton.", color: "info"}); router.go(-1); });
+		.catch(() => { this.$store.commit("setSnackbar", {text:"Pacijent joÅ¡ uvek nema svoj zdravstveni karton.", color: "info"}); router.go(-1); });
 },
 	
 }

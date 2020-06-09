@@ -37,8 +37,20 @@
       required
     ></v-text-field>
     <v-text-field
-      v-model="lekar.adresa"
+      v-model="lekar.adresa.adresa"
       label="Adresa"
+      :rules="rule"
+      required
+    ></v-text-field>
+    <v-text-field
+      v-model="lekar.adresa.grad"
+      label="Grad"
+      :rules="rule"
+      required
+    ></v-text-field>
+    <v-text-field
+      v-model="lekar.adresa.drzava"
+      label="Država"
       :rules="rule"
       required
     ></v-text-field>
@@ -48,6 +60,7 @@
       :rules="rule"
       required
     ></v-text-field>
+    
     <v-btn
       :disabled="!valid"
       color="success"
@@ -67,6 +80,9 @@ export default {
     name: 'IzmenaLekar',
     props: ["lekar"],
     data: function() { return {
+      smena: [{ pocetak: new Date("1000-01-01 07:00"),kraj: new Date("1000-01-01 15:00")},
+          { pocetak: new Date("1000-01-01 15:00"),kraj: new Date("1000-01-01 23:00")}
+      ],
       valid: true,
       rule: [
         v => !!v || 'Obavezno polje'
@@ -77,8 +93,23 @@ export default {
       ],
       passwordRules: [
         v => !!v || 'Password je obavezno polje'
-      ]
+      ],
+      tipovi: [],
+      rule2: [
+        v => v.length != 0 || 'Obavezno polje'
+      ],
     }
+    
+    },
+    mounted () {
+
+      axios
+            .get('tip')
+            .then(response => {
+                this.tipovi = response.data;
+                console.log(response);
+            })
+            .catch(() => { this.tipovi = [{naziv: 'pera',tip: 'operacija',stavkaCenovnika: {cena: 20}}]; });
     },
     methods: {
         izmeniLekara: function(event) {

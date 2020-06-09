@@ -30,7 +30,7 @@ public class Lekar extends MedicinskoOsoblje {
 	public java.util.Collection<Ocena> ocena;
 	
 	@JsonIgnore
-	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY, mappedBy = "lekar")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lekar")
 	public Collection<Pregled> pregled;
 	
 	@JsonIgnore
@@ -98,7 +98,7 @@ public class Lekar extends MedicinskoOsoblje {
 
 	public void setOcena(java.util.Collection<Ocena> newOcena) {
 		removeAllOcena();
-		for (java.util.Iterator iter = newOcena.iterator(); iter.hasNext();)
+		for (java.util.Iterator<Ocena> iter = newOcena.iterator(); iter.hasNext();)
 			addOcena((Ocena) iter.next());
 	}
 

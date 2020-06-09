@@ -70,8 +70,9 @@ insert into ocene (vrednost, id_lekara, id_pacijenta) values (5, 1, 3);
 insert into ocene (vrednost, id_lekara, id_pacijenta) values (3, 2, 3);
 insert into ocene (vrednost, id_klinike, id_pacijenta) values (2, 1, 3);
 
-insert into radna_vremena (kraj, pocetak, id_lekara) values (to_timestamp('1000-01-01 17:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('1000-01-01 08:00', 'YYYY-MM-DD HH24:MI'), 1);
-insert into radna_vremena (kraj, pocetak, id_lekara) values (to_timestamp('1000-01-01 17:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('1000-01-01 08:00', 'YYYY-MM-DD HH24:MI'), 2);
+insert into radna_vremena (kraj, pocetak, id_lekara) values (to_timestamp('1000-01-01 15:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('1000-01-01 07:00', 'YYYY-MM-DD HH24:MI'), 1);
+insert into radna_vremena (kraj, pocetak, id_lekara) values (to_timestamp('1000-01-01 15:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('1000-01-01 07:00', 'YYYY-MM-DD HH24:MI'), 2);
+insert into radna_vremena (kraj, pocetak, id_lekara) values (to_timestamp('1000-01-01 23:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('1000-01-01 15:00', 'YYYY-MM-DD HH24:MI'), 3);
 
 insert into sale (naziv, id_klinike) values ('sala 1', 1);
 insert into sale (naziv, id_klinike) values ('operaciona', 1);
