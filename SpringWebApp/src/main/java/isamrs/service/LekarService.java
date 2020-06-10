@@ -11,6 +11,8 @@ import isamrs.dto.PosetaPacijentDTO;
 import isamrs.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import isamrs.dto.GetOcenaDTO;
 import isamrs.dto.LekarSlobodanDTO;
@@ -53,13 +55,19 @@ public class LekarService {
 		return lekarRepo.findById(id).orElseGet(null);
 	}
 	
+	/*public Lekar findOneById(Integer id) {
+		return lekarRepo.findOneById(id);
+	}*/
+	
 	public Lekar create(Lekar lekar) {
 		//lekar.setId((int)lekarRepo.count());
 		return lekarRepo.save(lekar);
 	}
 
+	//@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public Lekar update(Integer id,Lekar lekar) {
-		Lekar lekarForUpdate = lekarRepo.findById(id).orElseGet(null);
+		//Lekar lekarForUpdate = lekarRepo.findById(id).orElseGet(null);
+		Lekar lekarForUpdate = lekarRepo.findOneById(id);
 		
 		lekarForUpdate.getAdresa().setAdresa(lekar.getAdresa().getAdresa());
 		lekarForUpdate.getAdresa().setGrad(lekar.getAdresa().getGrad());

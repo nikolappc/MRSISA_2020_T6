@@ -3,11 +3,25 @@ package isamrs.repository;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.LockModeType;
+import javax.persistence.QueryHint;
+
 import isamrs.domain.*;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.QueryHints;
+import org.springframework.data.repository.query.Param;
 
 public interface LekarRepository extends JpaRepository<Lekar, Integer>{
+	
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	@Query("select l from Lekar l where l.id = :id")
+	@QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="0")})
+	public Lekar findOneById(@Param("id")Integer id);
+	
+	
 	@Query("SELECT l FROM Lekar l WHERE l.email = ?1")
 	public Lekar findByEmail(String email);
 	

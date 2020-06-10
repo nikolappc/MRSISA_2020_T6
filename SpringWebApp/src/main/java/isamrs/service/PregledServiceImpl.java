@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.PessimisticLockException;
+
 import isamrs.domain.AdministratorKlinike;
 import isamrs.domain.Dijagnoza;
 import isamrs.domain.Klinika;
@@ -29,8 +31,10 @@ import isamrs.repository.TipPoseteRepository;
 import isamrs.repository.ZdravstveniKartonRepository;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
@@ -85,6 +89,7 @@ public class PregledServiceImpl implements PregledService {
 
 
 	//@Override
+	//@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public Pregled update(Integer id, Pregled t) throws NotFoundException {
 		Pregled pregledForUpdate = pregledRepository.findById(id).orElseThrow(NotFoundException::new);
 		t.setZdravstveniKarton(zdrrepo.findById(t.getZdravstveniKarton().getId()).get());
@@ -163,6 +168,7 @@ public class PregledServiceImpl implements PregledService {
 		return true;
 	}
 	
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public Boolean zakaziPregled(ZakazivanjePregledaDTO zahtjev) {
 		//Klinika k = klinikaService.findOne(zahtjev.getIdKlinike());
 		Klinika k = klinikaRepo.findById(zahtjev.getIdKlinike()).orElseGet(null);
@@ -170,12 +176,9 @@ public class PregledServiceImpl implements PregledService {
 		pregled.setPotvrdjen(false);
 		pregled.setRecepti(new ArrayList<Recepti>());
 		pregled.setDijagnoza(new ArrayList<Dijagnoza>());
-		//Lekar l = posetaService.findOneLekar(zahtjev.getIdLekara());
-		Lekar l = lekarRepo.findById(zahtjev.getIdLekara()).orElseGet(null);		
 		//Pacijent p = pacijentService.findOne(zahtjev.getIdPacijenta());
 		Pacijent p = pacijentRepo.findById(zahtjev.getIdPacijenta()).orElseGet(null);
 		pregled.setZdravstveniKarton(p.getZdravstveniKarton());
-		pregled.setLekar(l);
 		//TipPosete tp = posetaService.findTipByNaziv(zahtjev.getNazivTipa());
 		TipPosete tp = tipRepo.findByNaziv(zahtjev.getNazivTipa());
 		pregled.setTipPosete(tp);   //falice sala
@@ -186,14 +189,27 @@ public class PregledServiceImpl implements PregledService {
 		c.add(Calendar.MINUTE, 30);
 		termin.setKraj(c.getTime());
 		//Termin ter = terminService.create(termin);
-		if (lekarZauzetZaTermin(l, termin)) {
+		//Lekar l = posetaService.findOneLekar(zahtjev.getIdLekara());
+		Lekar l = null;
+		try {
+			l = lekarRepo.findOneById(zahtjev.getIdLekara());		
+		} catch (/*PessimisticLockingFailureException*/Exception e) {
+			System.out.println("greskaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 			return false;
 		}
+		System.out.println(l.getIme());
+		if (lekarZauzetZaTermin(l, termin)) {
+			System.out.println("nije prosloo");
+			return false;
+		}
+		pregled.setLekar(l);
 		pregled.setTermin(termin);
 		k.getPregledi().add(pregled);
 		l.getPregled().add(pregled);
 		p.getZdravstveniKarton().getPregledi().add(pregled);
 		Pregled pr = create(pregled);
+		//Lekar updated = lekarRepo.save(l);
+		System.out.println(pr.getId() + "PREGLED");
 
 		//send mail
 		String subject = "Zahtjev za zakazivanje pregleda";
@@ -211,31 +227,62 @@ public class PregledServiceImpl implements PregledService {
 	}
 	
 	Boolean lekarZauzetZaTermin(Lekar l, Termin t) {
+		System.out.println("*****************"+t.getPocetak() + " " + t.getKraj());
+		System.out.println("-----------");
 		for (Pregled p : l.getPregled()) {
-			if (((p.getTermin().getPocetak().before(t.getPocetak()) || p.getTermin().getPocetak().equals(t.getPocetak()))
-				&& (p.getTermin().getKraj().after(t.getPocetak())))
-			|| (p.getTermin().getPocetak().after(t.getPocetak()) && (p.getTermin().getPocetak().before(t.getKraj())))){
+			System.out.println("+++++"+p.getTermin().getPocetak() + " " + p.getTermin().getKraj());
+			if ( ( !p.getTermin().getPocetak().after(t.getPocetak() )
+				&& p.getTermin().getKraj().after(t.getPocetak()) )
+			|| ( p.getTermin().getPocetak().after(t.getPocetak()) && p.getTermin().getPocetak().before(t.getKraj()) ) ){
+				System.out.println("zauzet");
 				return true;
 			}
+			System.out.println(!p.getTermin().getPocetak().after(t.getPocetak()));
+			System.out.println(p.getTermin().getPocetak().before(t.getPocetak()));
+			System.out.println(p.getTermin().getPocetak().equals(t.getPocetak()));
+			System.out.println(p.getTermin().getKraj().after(t.getPocetak()));
+			System.out.println(p.getTermin().getPocetak().after(t.getPocetak()));
+			System.out.println(p.getTermin().getPocetak().before(t.getKraj()));
 		}
 		for (Operacija p : l.getOperacije()) {
+			System.out.println("+++++"+p.getTermin().getPocetak() + " " + p.getTermin().getKraj());
 			if (((p.getTermin().getPocetak().before(t.getPocetak()) || p.getTermin().getPocetak().equals(t.getPocetak()))
 				&& (p.getTermin().getKraj().after(t.getPocetak())))
 			|| (p.getTermin().getPocetak().after(t.getPocetak()) && (p.getTermin().getPocetak().before(t.getKraj())))){
+				System.out.println("zauzet");
 				return true;
 			}
 		}
 		return false;
 	}
 	
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public Boolean zakaziPredefinisaniPregled(ZakazivanjePregledaDTO zahtjev, int idZk, String email) throws NotFoundException {
 		Klinika k = klinikaRepo.findById(zahtjev.getIdKlinike()).orElseGet(null);
 		Pregled prDef = findOne(zahtjev.getIdPredefinisanogTermina());
+		System.out.println("*******"+prDef);
+		if (prDef == null) {
+			System.out.println("NIJE pregled");
+			return false;
+		}
+		System.out.println(prDef.getZdravstveniKarton());
+		if (prDef.getZdravstveniKarton() != null) {
+			System.out.println("ne moze se pregaziti, vise nije predefinisan");
+			return false;
+		}
 		//ZdravstveniKarton zk = kartonService.findOne(idZk);
 		ZdravstveniKarton zk = kartonRepo.findById(idZk).orElseGet(null);
 		prDef.setZdravstveniKarton(zk);
 		prDef.setPotvrdjen(true);
-		Pregled prDef1 = update(zahtjev.getIdPredefinisanogTermina(), prDef);
+		System.out.println(prDef.getVersion()+"----------------------------------------------------------------------------------11");
+		try {
+			Pregled prDef1 = update(zahtjev.getIdPredefinisanogTermina(), prDef);
+		} catch (Exception e) {
+			System.out.println("greska");
+			return false;
+		}
+		System.out.println(prDef.getVersion()+"----------------------------------------------------------------------------------22");
+
 
 		//send mail
 		String subject1 = "Potvrda o zakazivanju pregleda";
@@ -247,6 +294,7 @@ public class PregledServiceImpl implements PregledService {
 		//String recipient1 = ((Pacijent)req.getSession().getAttribute("user")).getEmail();
 		email1.setTo(email);
 		mailSender.send(email1);
+		System.out.println("ZAKAZALOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
 		return true;
 	}
 	

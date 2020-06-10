@@ -58,6 +58,11 @@ export default {
         usernameRules: [v => !!v || 'Username je obavezno polje'],
     }
     },
+    mounted(){
+		if (this.$store.state.ulogovan != {} && this.$store.state.ulogovan != ""  && this.$store.state.ulogovan != null && this.$store.state.ulogovan != undefined) {
+			router.push("/");
+		}
+    },
     methods: {
         login: function() {
             axios

@@ -53,7 +53,7 @@
 			<td><v-text-field
               v-model="reg.adresa.drzava"
               :rules="Rules"
-              label="Dr�ava"
+              label="Država"
               required
             ></v-text-field></td></tr>
             <tr><td colspan="3"><v-text-field
@@ -138,7 +138,7 @@ export default {
 			axios
 			.post('api/registracija',this.reg)
 			.then(() => {
-			this.$store.commit("setSnackbar", {text:"Poslali ste zahtev za registraciju. Biće Vam poslat email na adresu \n" + this.reg.email + ", gde možete verifikovati Vaš nalog.", color: "success"});
+			this.$store.commit("setSnackbar", {text:"Poslali ste zahtev za registraciju. BiÄ‡e Vam poslat email na adresu \n" + this.reg.email + ", gde moÅ¾ete verifikovati VaÅ¡ nalog.", color: "success"});
 				router.push("/");
 			})
 			.catch(error => { 

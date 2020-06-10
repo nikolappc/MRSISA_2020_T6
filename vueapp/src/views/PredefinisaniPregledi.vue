@@ -137,10 +137,10 @@ export default {
 		axios
 		.post('poseta/zakaziPregled', {idPredefinisanogTermina: item.id, idKlinike: this.$route.params.idKlinike, idPacijenta: this.ulogovani.id, idLekara: null, nazivTipa: null, terminPocetak: null})
 		.then(() => {
-			this.$store.commit("setSnackbar", {text:"UspeÅ¡no ste poslali zahtev za zakazivanje pregleda!", color: "success"});
+			this.$store.commit("setSnackbar", {text:"Uspešno ste poslali zahtev za zakazivanje pregleda!", color: "success"});
 				router.push("/");   
 			})
-		.catch( () => { this.$store.commit("setSnackbar", {text:"Greska", color: "error"})});
+		.catch( () => { this.$store.commit("setSnackbar", {text:"Greska", color: "error"}); console.log("greska"); router.push("/");  });
 	},
   },
 }

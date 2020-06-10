@@ -59,6 +59,9 @@ public class PosetaController {
 	@Autowired
 	private ZdravstveniKartonServiceImpl zdravstveniKartonService;
 	
+	@Autowired
+	private MailSender mailSender;
+	
 //
 //	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 //	public ResponseEntity<Poseta> getPosete(HttpServletRequest req){
@@ -85,6 +88,19 @@ public class PosetaController {
 		pregled.setZdravstveniKarton(zdravstveniKarton);
 		pregled.setLekar(lekar);
 		Pregled savedPregled = pregledService.create(pregled);
+		
+		String subject1 = "Kreiran novi pregled";
+		String message1 = "Obavestavamo Vas da je u Vasoj klinici kreiran novi pregled.";
+		SimpleMailMessage email1 = new SimpleMailMessage();
+		email1.setSubject(subject1);
+		email1.setText(message1);
+		for (AdministratorKlinike ak : lekar.getKlinika().getAdministratorKlinike()) {
+			String recipient = ak.getEmail();
+			email1.setTo(recipient);
+			mailSender.send(email1);
+		}
+
+		
 		return new ResponseEntity<Pregled>(savedPregled, HttpStatus.CREATED);
 	}
 	@PostMapping(value = "/operacija", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -102,6 +118,17 @@ public class PosetaController {
         klinikaService.update(k.getId(), k);
         lekar.addOperacija(savedOperacija);
         lekarService.update(lekar.getId(), lekar);
+        
+        String subject1 = "Kreirana nova operacija";
+		String message1 = "Obavestavamo Vas da je u Vasoj klinici kreirana nova operacija.";
+		SimpleMailMessage email1 = new SimpleMailMessage();
+		email1.setSubject(subject1);
+		email1.setText(message1);
+		for (AdministratorKlinike ak : lekar.getKlinika().getAdministratorKlinike()) {
+			String recipient = ak.getEmail();
+			email1.setTo(recipient);
+			mailSender.send(email1);
+		}
 
 
 
@@ -214,6 +241,7 @@ public class PosetaController {
 			String recipient1 = ((Pacijent)req.getSession().getAttribute("user")).getEmail();
 			response = pregledService.zakaziPredefinisaniPregled(zahtjev, idZk, recipient1);
 		}
+		System.out.println("++++++++++++++++++++++++++++++++++++++"+response);
 		if (response == true) {
 			return new ResponseEntity<String>("Uspesno!", HttpStatus.OK);
 		} else {
