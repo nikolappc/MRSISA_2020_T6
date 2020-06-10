@@ -134,7 +134,7 @@ export default {
 					this.$store.commit("setSnackbar", {text:"Zahtev za zakazivanje pregleda je poslat!", color: "success"});
 					router.push("/");   
 				})
-				.catch( () => { this.$store.commit("setSnackbar", {text:"Greska", color: "error"});
+				.catch( () => { this.$store.commit("setSnackbar", {text:"Greska", color: "error"}); console.log("greska");
 				});
 			}
          

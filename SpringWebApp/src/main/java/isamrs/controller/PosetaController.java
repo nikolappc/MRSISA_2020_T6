@@ -209,6 +209,7 @@ public class PosetaController {
 			String recipient1 = ((Pacijent)req.getSession().getAttribute("user")).getEmail();
 			response = pregledService.zakaziPredefinisaniPregled(zahtjev, idZk, recipient1);
 		}
+		System.out.println("++++++++++++++++++++++++++++++++++++++"+response);
 		if (response == true) {
 			return new ResponseEntity<String>("Uspesno!", HttpStatus.OK);
 		} else {

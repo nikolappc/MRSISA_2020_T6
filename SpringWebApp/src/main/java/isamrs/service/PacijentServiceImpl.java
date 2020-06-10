@@ -6,12 +6,18 @@ import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import isamrs.domain.Lekar;
 import isamrs.domain.Pacijent;
 import isamrs.domain.Pregled;
 import isamrs.domain.ZdravstveniKarton;
+import isamrs.dto.IzmjenaOsobeDTO;
 import isamrs.dto.PosetaDTO;
 import isamrs.exceptions.NotFoundException;
 import isamrs.registracija.VerificationToken;
@@ -104,7 +110,35 @@ public class PacijentServiceImpl implements PacijentService {
 		
 		return pacijentRepository.save(pForUpdate);
 	}
+	
+	
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public Pacijent izmijeni(Integer id, IzmjenaOsobeDTO pacijent) {
+		Pacijent p = findOne(pacijent.getId());
 
+		if (p == null) {
+			return null;
+			//return new ResponseEntity<Pacijent>(p, HttpStatus.BAD_REQUEST);
+		}
+
+		p.setIme(pacijent.getIme());
+		p.setPrezime(pacijent.getPrezime());
+		p.setPassword(pacijent.getPassword());
+		p.setBrojTelefona(pacijent.getBrojTelefona());
+		p.setJbo(pacijent.getJbo());
+		p.getAdresa().setAdresa(pacijent.getAdresa().getAdresa());
+		p.getAdresa().setGrad(pacijent.getAdresa().getGrad());
+		p.getAdresa().setDrzava(pacijent.getAdresa().getDrzava());
+
+		System.out.println(p.getVersion()+"----------------------------------------------------------------------------------1");
+		Pacijent updated = pacijentRepository.save(p);
+		//pacijentRepository.flush();
+		System.out.println(p.getVersion()+"----------------------------------------------------------------------------------2");
+
+		return updated;
+		
+	}
+	
 	
 	
 

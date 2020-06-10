@@ -82,7 +82,7 @@ public class PacijentController {
 		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
 			return new ResponseEntity<Pacijent>(HttpStatus.FORBIDDEN);
 		}
-		Pacijent p = pacijentService.findOne(pacijent.getId());
+		/*Pacijent p = pacijentService.findOne(pacijent.getId());
 
 		if (p == null) {
 			return new ResponseEntity<Pacijent>(p, HttpStatus.BAD_REQUEST);
@@ -97,7 +97,20 @@ public class PacijentController {
 		p.getAdresa().setGrad(pacijent.getAdresa().getGrad());
 		p.getAdresa().setDrzava(pacijent.getAdresa().getDrzava());
 
-		p = pacijentService.save(p);
+		p = pacijentService.save(p);*/
+		
+		Pacijent p = null;
+		try {
+			p = pacijentService.izmijeni(pacijent.getId(), pacijent);
+		} catch (Exception e) {
+			System.out.println("KONFLIIIIIIIIIIIIIIIIKT");
+			return new ResponseEntity<Pacijent>(p, HttpStatus.BAD_REQUEST);
+		}
+		
+		if (p == null) {
+			return new ResponseEntity<Pacijent>(p, HttpStatus.BAD_REQUEST);
+		}
+		
 		req.getSession().setAttribute("user", p);
 
 		return new ResponseEntity<Pacijent>(p, HttpStatus.OK);

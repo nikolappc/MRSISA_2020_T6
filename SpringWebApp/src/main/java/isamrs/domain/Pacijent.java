@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -30,6 +31,9 @@ public class Pacijent extends Osoba {
 	@JoinColumn(name = "id_kartona")
 	@JsonBackReference(value = "zdravstveniKartonReference")
 	private ZdravstveniKarton zdravstveniKarton;
+	
+	@Version
+	private Long version;
 
 	@Transient
 	public String tip = "PACIJENT";
@@ -80,5 +84,13 @@ public class Pacijent extends Osoba {
 
 	public void setResponded(Boolean responded) {
 		this.responded = responded;
+	}
+	
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
 	}
 }
