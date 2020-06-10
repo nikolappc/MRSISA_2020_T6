@@ -3,9 +3,11 @@ package isamrs.service;
 import java.util.Collection;
 import java.util.List;
 
+import isamrs.domain.AdministratorKlinike;
 import isamrs.domain.Operacija;
 import isamrs.domain.Pregled;
 import isamrs.domain.TipPosete;
+import isamrs.repository.AdministratorKlinikeRepository;
 import isamrs.repository.OperacijaRepository;
 import isamrs.repository.PregledRepository;
 import isamrs.repository.TipPoseteRepository;
@@ -25,9 +27,13 @@ public class TipPoseteService {
 	@Autowired
 	private OperacijaRepository operacijaRepo;
 	
+	@Autowired
+	private AdministratorKlinikeRepository adminRepo;
 	
-	public Collection<TipPosete> findAll() {
-		return tipRepo.findAll();
+	
+	public Collection<TipPosete> findAll(Integer idAdmina) {
+		AdministratorKlinike ak = adminRepo.findById(idAdmina).get();
+		return tipRepo.findByKlinika(ak.getKlinika().getId());
 	}
 	
 	public Collection<TipPosete> findPregledi() {
@@ -42,8 +48,10 @@ public class TipPoseteService {
 		return tipRepo.findByNaziv(naziv);
 	}
 
-	public TipPosete create(TipPosete t) throws Exception{
-		return tipRepo.save(t);
+	public TipPosete create(TipPosete t,Integer idAdmina) throws Exception{
+		AdministratorKlinike ak = adminRepo.findById(idAdmina).get();
+		TipPosete tp = tipRepo.save(t); 
+		return tp;
 	}
 
 	public TipPosete update(Integer id, TipPosete t) throws Exception {

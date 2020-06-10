@@ -2,9 +2,7 @@ package isamrs.controller;
 
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,9 +23,7 @@ import isamrs.service.LekarService;
 import isamrs.service.OperacijaService;
 import isamrs.service.PacijentService;
 import isamrs.service.PosetaService;
-import isamrs.service.PregledService;
 import isamrs.service.PregledServiceImpl;
-import isamrs.service.TerminService;
 import isamrs.service.ZdravstveniKartonServiceImpl;
 
 
@@ -141,9 +137,6 @@ public class PosetaController {
 
 	private Pregled DTOtoNewPregled(PosetaPostDTO p) {
 		return new Pregled(p.getOpis(), p.getTermin(), p.getTipPosete());
-	}
-	private Pregled DTOtoPregled(PregledDTO p) {
-		return new Pregled(p);
 	}
 	@GetMapping(value = "/pacijent/{idPregled}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PacijentDTO> getPacijentPregleda(@PathVariable("idPregled") Integer idPregled) throws Exception {

@@ -1,10 +1,7 @@
 package isamrs.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,30 +22,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import isamrs.domain.AdministratorKlinike;
-import isamrs.domain.GodisnjiOdmor;
 import isamrs.domain.Klinika;
 import isamrs.domain.Lekar;
-import isamrs.domain.Ocena;
-import isamrs.domain.Operacija;
 import isamrs.domain.Pacijent;
-import isamrs.domain.Pregled;
-import isamrs.domain.RadnoVreme;
-import isamrs.domain.Sala;
-import isamrs.domain.StavkaCenovnika;
-import isamrs.domain.TipPosete;
 import isamrs.dto.GetOcenaDTO;
 import isamrs.dto.SetOcenaDTO;
 import isamrs.dto.KlinikaDTO;
 import isamrs.dto.KlinikaZaPacijentaDTO;
 import isamrs.dto.LekarZaPacijentaDTO;
-import isamrs.dto.OperacijaDTO;
-import isamrs.dto.PosetaDTO;
-import isamrs.dto.PregledDTO;
 import isamrs.dto.PretragaKlinikeDTO;
-import isamrs.dto.ProveraLekarSlobodanDTO;
 import isamrs.dto.SlobodniLekariKlinikeDTO;
 import isamrs.service.KlinikaServiceImpl;
-import isamrs.service.PacijentServiceImpl;
 
 @RestController
 @RequestMapping("/klinika")

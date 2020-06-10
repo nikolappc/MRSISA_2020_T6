@@ -55,7 +55,7 @@ public class TipKlinikeController {
 	@PutMapping(value = "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TipKlinikeDTO> updateTipKlinike(@PathVariable("id") Long id,@RequestBody TipKlinike t) throws NotFoundException {
 		TipKlinike t2 = service.update(id, t);
-		return new ResponseEntity<TipKlinikeDTO>(new TipKlinikeDTO(t), HttpStatus.OK);
+		return new ResponseEntity<TipKlinikeDTO>(new TipKlinikeDTO(t2), HttpStatus.OK);
 	}
 	
 	@DeleteMapping(value = "/{id}")

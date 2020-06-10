@@ -2,6 +2,8 @@ package isamrs.controller;
 
 import java.util.Collection;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,9 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import isamrs.domain.AdministratorKlinike;
 import isamrs.domain.TipPosete;
-import isamrs.repository.OperacijaRepository;
-import isamrs.repository.PregledRepository;
 import isamrs.service.TipPoseteService;
 @RestController
 @RequestMapping("/tip")
@@ -26,16 +27,16 @@ public class TipPoseteController {
 	@Autowired
 	private TipPoseteService tipService;
 	
-	@Autowired
-	private PregledRepository pregledRepo;
-	
-	@Autowired
-	private OperacijaRepository operacijaRepo;
-	
-	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<TipPosete>> getTipovi() {
-		Collection<TipPosete> tipovi = tipService.findAll();
+	public ResponseEntity<Collection<TipPosete>> getTipovi(HttpServletRequest req) {
+		AdministratorKlinike ak;
+		try {
+			ak = (AdministratorKlinike) req.getSession().getAttribute("user");
+		}
+		catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
+		Collection<TipPosete> tipovi = tipService.findAll(ak.getId());
 		return new ResponseEntity<Collection<TipPosete>>(tipovi, HttpStatus.OK);
 	}
 	
@@ -57,8 +58,15 @@ public class TipPoseteController {
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<TipPosete> createTipPosete(@RequestBody TipPosete tip) throws Exception {
-		TipPosete savedTipPosete = tipService.create(tip);
+	public ResponseEntity<TipPosete> createTipPosete(@RequestBody TipPosete tip, HttpServletRequest req) throws Exception {
+		AdministratorKlinike ak;
+		try {
+			ak = (AdministratorKlinike) req.getSession().getAttribute("user");
+		}
+		catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
+		TipPosete savedTipPosete = tipService.create(tip,ak.getId());
 		return new ResponseEntity<TipPosete>(savedTipPosete, HttpStatus.CREATED);
 	}
 

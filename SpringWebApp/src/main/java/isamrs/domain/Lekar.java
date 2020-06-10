@@ -25,6 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "lekari")
 public class Lekar extends MedicinskoOsoblje {
 	
+
 	@OneToMany
 	@JoinColumn(name = "id_lekara")
 	public java.util.Collection<Ocena> ocena;

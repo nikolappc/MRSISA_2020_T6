@@ -1,12 +1,9 @@
 package isamrs.controller;
 
 import isamrs.domain.AdministratorKlinickogCentra;
-import isamrs.domain.AdministratorKlinike;
-import isamrs.domain.Adresa;
 import isamrs.dto.AdminKCDTO;
 import isamrs.exceptions.NotFoundException;
 import isamrs.service.AdministratorKlinickogCentraService;
-import isamrs.service.AdministratorKlinikeService;
 import isamrs.service.AdresaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

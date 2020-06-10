@@ -1,24 +1,16 @@
 package isamrs.repository;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import isamrs.domain.Klinika;
-import isamrs.domain.Lekar;
 import isamrs.domain.Ocena;
-import isamrs.domain.Operacija;
-import isamrs.domain.Pregled;
-import isamrs.dto.KlinikaZaPacijentaDTO;
 @Repository
 public interface KlinikaRepository extends JpaRepository<Klinika, Integer>{
 	

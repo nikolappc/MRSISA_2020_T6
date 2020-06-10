@@ -11,13 +11,12 @@ import isamrs.dto.PosetaPacijentDTO;
 import isamrs.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import isamrs.dto.GetOcenaDTO;
 import isamrs.dto.LekarSlobodanDTO;
-import isamrs.dto.OsobaDTO;
 import isamrs.dto.SetOcenaDTO;
+import isamrs.repository.AdministratorKlinikeRepository;
 import isamrs.repository.LekarRepository;
 import isamrs.repository.OcenaRepository;
 import isamrs.repository.OperacijaRepository;
@@ -43,25 +42,32 @@ public class LekarService {
 	@Autowired
 	private OcenaRepository repoOcena;
 	
+	@Autowired
+	private AdministratorKlinikeRepository adminRepository;
+	
 
 
-	public Collection<Lekar> findAll() {
-		
-		
-		return lekarRepo.findAll();
+	public Collection<Lekar> findAll(Integer idAdmina) {
+		AdministratorKlinike ak = adminRepository.findById(idAdmina).get();
+		return lekarRepo.findByKlinika(ak.getKlinika().getId());
 	}
 
+	@Transactional(readOnly = false)
 	public Lekar findOne(Integer id) {
-		return lekarRepo.findById(id).orElseGet(null);
+		Lekar lekar = lekarRepo.findOneById(id);
+		return lekar;
 	}
 	
 	/*public Lekar findOneById(Integer id) {
 		return lekarRepo.findOneById(id);
 	}*/
 	
-	public Lekar create(Lekar lekar) {
-		//lekar.setId((int)lekarRepo.count());
-		return lekarRepo.save(lekar);
+	public Lekar create(Lekar lekar, Integer idKlinike) {
+		Lekar l = lekarRepo.save(lekar);
+		AdministratorKlinike ak = adminRepository.findById(idKlinike).get();
+		l.setKlinika(ak.getKlinika());
+		ak.getKlinika().getLekari().add(l);
+		return l;
 	}
 
 	//@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
