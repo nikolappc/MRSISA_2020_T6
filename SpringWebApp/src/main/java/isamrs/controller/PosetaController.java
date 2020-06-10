@@ -139,8 +139,13 @@ public class PosetaController {
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Pregled> createSlobodniTerminiDTO(@RequestBody SlobodniTerminiDTO poseta) throws Exception {
-
-		Pregled savedSlobodniTerminiDTO = posetaService.create(poseta.napraviPregled());
+		Pregled savedSlobodniTerminiDTO = null;
+		try {
+			
+			savedSlobodniTerminiDTO = posetaService.create(poseta.napraviPregled());
+		}catch (Exception e) {
+			return new ResponseEntity<Pregled>(HttpStatus.FORBIDDEN);
+		}
 		return new ResponseEntity<Pregled>(savedSlobodniTerminiDTO, HttpStatus.CREATED);
 	}
 	

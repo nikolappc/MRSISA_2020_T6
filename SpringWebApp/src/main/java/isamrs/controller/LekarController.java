@@ -35,9 +35,9 @@ public class LekarController {
 	private LekarService lekarService;
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<OsobaDTO>> getLekars() {
-		Collection<OsobaDTO> lekari = lekarService.findAll();
-		return new ResponseEntity<Collection<OsobaDTO>>(lekari, HttpStatus.OK);
+	public ResponseEntity<Collection<Lekar>> getLekars() {
+		Collection<Lekar> lekari = lekarService.findAll();
+		return new ResponseEntity<Collection<Lekar>>(lekari, HttpStatus.OK);
 	}
 
 

@@ -3,35 +3,51 @@
     ref="form"
     v-model="valid"
   >
-
-    <v-datetime-picker 
-      label="Početak termina"
-      v-model="pregled.termin.pocetak"
-      dateFormat= 'dd.MM.yyyy'
+    <v-menu
+        ref="menu"
+        v-model="menu2"
+        :close-on-content-click="false"
+        :return-value.sync="date"
+        transition="scale-transition"
+        offset-y
+        min-width="290px"
       >
-        <template slot="dateIcon">
-            <v-icon>mdi-calendar</v-icon>
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="formatDate"
+            label="Picker in menu"
+            prepend-icon="mdi-calendar"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+          ></v-text-field>
         </template>
+        <v-date-picker v-model="date" no-title scrollable :min="new Date().toISOString()">
+          <v-spacer></v-spacer>
+          <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
+          <v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
+        </v-date-picker>
+      </v-menu>
 
-        <template slot="timeIcon">
-            <v-icon>mdi-clock-outline</v-icon>
+    <v-select
+      v-model="vreme"
+      :items="vremena"
+      label="Vreme"
+      dense
+      hint ="Termin traje 30 min"
+      :rules="rule"
+      outlined
+      required>
+      <template slot="selection" slot-scope="data">
+            <!-- HTML that describe how select should render selected items -->
+            {{data.item.toLocaleTimeString()}}
         </template>
-    </v-datetime-picker>
-
-
-    <v-datetime-picker 
-      label="Kraj termina"
-      v-model="pregled.termin.kraj"
-      dateFormat= 'dd.MM.yyyy'
-      >
-        <template slot="dateIcon">
-            <v-icon>mdi-calendar</v-icon>
+        <template slot="item" slot-scope="data">
+            <!-- HTML that describe how select should render items when the select is open -->
+            {{data.item.toLocaleTimeString()}}
         </template>
-
-        <template slot="timeIcon">
-            <v-icon>mdi-clock-outline</v-icon>
-        </template>
-    </v-datetime-picker>
+    </v-select>
+    
 
 
     <v-select
@@ -103,21 +119,27 @@
 
 <script>
 import axios from "axios";
+import moment from "moment";
 import router from "../router/index.js"
 export default {
     name: 'AddTermin',
     data: function() { return {
+      date: new Date().toISOString().substr(0, 10),
       pregled: {
-          termin: {pocetak: '', kraj: ''},
+          termin: {pocetak: new Date(), kraj: ''},
           tipPosete: null,
           sala: null,
           lekar: null,
-          },
+      },
 
       tipovi: [],
       sale: [],
       lekari: [],
+      vreme: '',
+      menu2: false,
+      vremena: [
 
+      ],
       valid: true,
 
       rule: [
@@ -125,14 +147,21 @@ export default {
       ]
     }
     },
+    computed:{
+      formatDate () {
+            let datum = this.date;
+            return datum.substring(8,10) +"." +datum.substring(5,7) + "." + datum.substring(0,4) + " " + datum.substring(11,16); 
+        },
+    },
     mounted(){
+        this.generateTimes();
         axios
             .get('tip')
             .then(response => {
                 this.tipovi = response.data;
                 console.log(response);
             })
-            .catch(() => { this.tipovi = [{naziv: 'pera',tip: 'operacija',stavkaCenovnika: {cena: 20}}]; });
+            .catch(() => { this.tipovi = [{naziv: 'pera',tip: 'operacija',stavkeCenovnika: {cena: 20}}]; });
 
         axios
             .get('sala')
@@ -151,16 +180,30 @@ export default {
             .catch(() => { this.lekari = [{ime: 'pera',prezime: 'neko'}]; });
     },
     methods: {
+        
         dodajTermin: function(event) {
             event.preventDefault();
+            this.pregled.termin.pocetak = new Date(this.date);
+            this.pregled.termin.pocetak = moment(this.pregled.termin.pocetak).add(this.vreme.getMinutes(), 'm').toDate();
+            this.pregled.termin.pocetak = moment(this.pregled.termin.pocetak).add(this.vreme.getHours(), 'h').toDate();
+            this.pregled.termin.kraj = moment(this.pregled.termin.pocetak).add(30, 'm').toDate();
+
             axios
             .post('poseta',this.pregled)
             .then(() => {
                 this.$store.commit("setSnackbar", {text:"Uspešno ste dodali slobodan termin", color: "success"});
                 router.push("/sale");
             })
-            .catch(function (error) { console.log(error); });
+            .catch(function (error) { this.$store.commit("setSnackbar", {text:"Termin je zauzet kod lekara ili sale", color: "error"});
+            console.log(error); });
         },
+        generateTimes: function(){
+          let pocetak = new Date("2015-03-25 08:00");
+          while(pocetak < new Date("2015-03-25 23:00")){
+            this.vremena.push(pocetak);
+            pocetak = moment(pocetak).add(30, 'm').toDate();
+          }
+        }
 
     },
 

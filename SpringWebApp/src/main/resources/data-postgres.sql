@@ -33,7 +33,7 @@ insert into administratori_klinike (id_adrese, broj_telefona, email, ime, jbo, p
 
 insert into lekari (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike) values (2, '066/123-113', 'lupin@gmail.com', 'Remus', '000', 'remus12345', 'Lupin', 1);
 insert into lekari (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike) values (3, '066/123-163', 'black@gmail.com', 'Sirius', '000', 'sirius12345', 'Black', 1);
-insert into lekari (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike) values (3, '066/123-163', 'neekolapapic@gmail.com', 'Sirius', '000', '1', 'Black', 1);
+insert into lekari (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike) values (3, '066/123-163', 'neekolapapic@gmail.com', 'Nikola', '000', '1', 'PPC', 1);
 
 insert into medicinske_sestre (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike) values (2, '064/123-114', 'evans@gmail.com', 'Lily', '000', 'lily12345', 'Evans', 1);
 

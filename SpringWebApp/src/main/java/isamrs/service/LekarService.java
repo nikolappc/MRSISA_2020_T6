@@ -43,13 +43,10 @@ public class LekarService {
 	
 
 
-	public Collection<OsobaDTO> findAll() {
-		ArrayList<OsobaDTO> lekari = new ArrayList<OsobaDTO>();
-		for(Lekar l : lekarRepo.findAll()) {
-			lekari.add(new OsobaDTO(l));
-		}
+	public Collection<Lekar> findAll() {
 		
-		return lekari;
+		
+		return lekarRepo.findAll();
 	}
 
 	public Lekar findOne(Integer id) {

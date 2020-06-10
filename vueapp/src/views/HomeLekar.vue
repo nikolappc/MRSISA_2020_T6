@@ -189,8 +189,8 @@ export default {
       events:[],
       pacijent:require("../assets/pacijent.jpg"),
       pregled:require("../assets/pregled.jpg"),
-      istorija:require("../assets/istorija.jpg"),
-      zakazi:require("../assets/zakazi.png"),
+      istorija:require("../assets/lekar.jpg"),
+      zakazi:require("../assets/zakazani.jpg"),
   }),
   computed:{
     ulogovan(){
