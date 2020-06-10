@@ -2,6 +2,8 @@ package isamrs.controller;
 
 import isamrs.domain.*;
 import isamrs.dto.AdminKlinikeDTO;
+import isamrs.dto.GrafDTO;
+import isamrs.dto.IzvestajDTO;
 import isamrs.dto.OperacijaDTO;
 import isamrs.dto.PosetaPacijentDTO;
 import isamrs.dto.PregledDTO;
@@ -18,7 +20,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -183,5 +189,33 @@ public class AdminKlinikeController {
         Collection<Lekar> lekari = adminService.getSlobodniLekari(termin);
         return new ResponseEntity<>(lekari, HttpStatus.OK);
     }
+    
+    
+    @GetMapping(value = "/izvestaj", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<IzvestajDTO> getIzvestaj(HttpServletRequest req){
+    	
+    	AdministratorKlinike ak = (AdministratorKlinike)req.getSession().getAttribute("user");
+    	IzvestajDTO izvestaj = adminService.izvestaj(ak.getId());
+        return new ResponseEntity<>(izvestaj, HttpStatus.OK);
+    }
+    
+    @GetMapping(value = "/izvestaj/{tip}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GrafDTO> getIzvestajDnevni(HttpServletRequest req, @PathVariable String tip){
+    	
+    	AdministratorKlinike ak = (AdministratorKlinike)req.getSession().getAttribute("user");
+    	GrafDTO izvestaj = adminService.izvestajTip(ak.getId(),tip);
+        return new ResponseEntity<>(izvestaj, HttpStatus.OK);
+    }
+    
+    @PostMapping(value = "/troskovi", consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<HashMap<String,Double>> getTroskovi(HttpServletRequest req, @RequestBody HashMap<String,Date> mapa){
+    	AdministratorKlinike ak = (AdministratorKlinike)req.getSession().getAttribute("user");
+    	
+        Double troskovi = adminService.troskovi(ak.getId(), mapa.get("pocetak"), mapa.get("kraj"));
+        HashMap<String,Double> a = new HashMap<String,Double>();
+        a.put("trosak", troskovi);
+        return new ResponseEntity<HashMap<String,Double>>(a, HttpStatus.OK);
+    }
+    
 }
 

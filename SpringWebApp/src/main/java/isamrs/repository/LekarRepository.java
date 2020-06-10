@@ -30,4 +30,8 @@ public interface LekarRepository extends JpaRepository<Lekar, Integer>{
 
 	@Query("SELECT l FROM Lekar l JOIN l.klinika k WHERE k.id = ?1")
 	Collection<Lekar> findByKlinika(Integer klinikaId);
+	
+	@Query("SELECT AVG(o.vrednost) FROM Lekar l JOIN l.ocena o WHERE l.id = ?1")
+	public Double prosekLekara(Integer lekadID);
+	
 }

@@ -1,5 +1,6 @@
 package isamrs.repository;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Repository;
 import isamrs.domain.Klinika;
 import isamrs.domain.Lekar;
 import isamrs.domain.Ocena;
+import isamrs.domain.Operacija;
+import isamrs.domain.Pregled;
 import isamrs.dto.KlinikaZaPacijentaDTO;
 @Repository
 public interface KlinikaRepository extends JpaRepository<Klinika, Integer>{
@@ -39,5 +42,24 @@ public interface KlinikaRepository extends JpaRepository<Klinika, Integer>{
 
 	@Query("SELECT k FROM Klinika k JOIN  k.lekari l WHERE l.id = ?1")
 	Klinika findByLekar(Integer id);
+	
+	@Query("SELECT AVG(o.vrednost) FROM Klinika k JOIN k.ocena o WHERE k.id = ?1")
+	public Double prosekKlinike(Integer id);
+	
+	@Query("SELECT date_trunc(?2, t.pocetak), count(*) FROM Klinika k JOIN k.pregledi p JOIN p.termin t "
+			+ "WHERE k.id = ?1 group by 1 order by 1")
+	public ArrayList<Object[]> dnevniIzvestaj(Integer id,String tip);
+	
+	@Query("SELECT date_trunc(?2, t.pocetak), count(*) FROM Klinika k JOIN k.operacije o JOIN o.termin t "
+			+ "WHERE k.id = ?1 group by 1 order by 1")
+	public ArrayList<Object[]> dnevniIzvestajOperacije(Integer id,String tip);
+	
+	@Query("SELECT SUM(sc.cena) FROM Klinika k JOIN k.pregledi p  JOIN k.cenovnik cen2 JOIN p.termin t JOIN p.tipPosete tip JOIN tip.stavkeCenovnika sc JOIN sc.cenovnik cen1 "
+			+ "WHERE k.id = ?1 and t.pocetak >= ?2 and t.kraj <= ?3 and cen1.id = cen2.id")
+	public Double preglediUIntervalu(Integer id,Date pocetak, Date kraj);
 
+	
+	@Query("SELECT SUM(sc.cena) FROM Klinika k JOIN k.operacije p  JOIN k.cenovnik cen2 JOIN p.termin t JOIN p.tipPosete tip JOIN tip.stavkeCenovnika sc JOIN sc.cenovnik cen1 "
+			+ "WHERE k.id = ?1 and t.pocetak >= ?2 and t.kraj <= ?3 and cen1.id = cen2.id")
+	public Double operacijeUIntervalu(Integer id,Date pocetak, Date kraj);
 }
