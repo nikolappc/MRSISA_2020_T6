@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import isamrs.domain.*;
 import isamrs.dto.*;
+import isamrs.exceptions.NotFoundException;
 import isamrs.service.*;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -160,5 +161,37 @@ public class PacijentController {
 
 	OsobaDTO pacijentToOsobaDTO(Pacijent p){
 		return new OsobaDTO(p);
+	}
+	
+	@GetMapping(value = "/potvrdiPregled/{idPregleda}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> potvrdiPregled(HttpServletRequest request, @PathVariable("idPregleda") Integer idPregleda) {
+		Pregled p = null;
+		try {
+			p = pregledService.findOne(idPregleda);
+		} catch (NotFoundException e) {
+			e.printStackTrace();
+		}
+		if (p.getZdravstveniKarton() == null) {
+			return new ResponseEntity<String>("Greska", HttpStatus.BAD_REQUEST);
+		}
+		p.setPotvrdjen(true);
+		
+		return new ResponseEntity<String>("Uspešno potvrdjen pregled!", HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/odbijPregled/{idPregleda}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> odbijPregled(HttpServletRequest request, @PathVariable("idPregleda") Integer idPregleda) {
+		Pregled p = null;
+		try {
+			p = pregledService.findOne(idPregleda);
+		} catch (NotFoundException e) {
+			e.printStackTrace();
+		}
+		if (p.isPotvrdjen()) {
+			return new ResponseEntity<String>("Greska", HttpStatus.BAD_REQUEST);
+		}
+		p.setZdravstveniKarton(null);
+		
+		return new ResponseEntity<String>("Uspešno odbijen pregled!", HttpStatus.OK);
 	}
 }

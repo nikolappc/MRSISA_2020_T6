@@ -8,17 +8,27 @@ import isamrs.dto.PregledDTO;
 import isamrs.exceptions.LekarZauzetException;
 import isamrs.exceptions.NotFoundException;
 import isamrs.exceptions.SalaZauzetaException;
+import isamrs.registracija.VerificationToken;
 import isamrs.service.AdministratorKlinikeService;
 import isamrs.service.AdresaService;
 import isamrs.service.KlinikaServiceImpl;
 import isamrs.service.OperacijaService;
+import isamrs.service.PregledService;
+import isamrs.service.PregledServiceImpl;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +37,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/adminKlinike")
@@ -41,9 +54,15 @@ public class AdminKlinikeController {
 
     @Autowired
     OperacijaService operacijaService;
+    
+    @Autowired
+    PregledServiceImpl pregledService;
 
     @Autowired
     private AdministratorKlinikeService adminService;
+    
+    @Autowired
+	private MailSender mailSender;
 
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -145,6 +164,22 @@ public class AdminKlinikeController {
 
 		try {
 			updatePregled = adminService.update(id,pregled);
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+			String subject1 = "Zakazivanje pregleda";
+			String link1 = "http://localhost:8081/api/pacijent/potvrdiPregled/" + updatePregled.getId();
+			String link2 = "http://localhost:8081/api/pacijent/odbijPregled/" + updatePregled.getId();
+			String message1 = "Zakazali ste pregled kod lekara "+updatePregled.getLekar().getIme()+""
+					+updatePregled.getLekar().getPrezime()+", u vreme "+sdf.format(updatePregled.getTermin().getPocetak())
+					+".\nMolimo Vas da potvrdite zakazivanje pregleda klikom na link "+link1
+					+" ili da odbijete klikom na link "+link2;
+			SimpleMailMessage email1 = new SimpleMailMessage();
+			email1.setSubject(subject1);
+			email1.setText(message1);
+			String recipient = updatePregled.getZdravstveniKarton().getPacijent().getEmail();
+			email1.setTo(recipient);
+			mailSender.send(email1);
+			
 		}
 		catch (Exception e) {
 			return new ResponseEntity<Pregled>(HttpStatus.BAD_REQUEST);
@@ -153,6 +188,9 @@ public class AdminKlinikeController {
 
 		return new ResponseEntity<Pregled>(updatePregled, HttpStatus.OK);
 	}
+	
+	
+	
 
 
     @GetMapping(value = "/operacija/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
