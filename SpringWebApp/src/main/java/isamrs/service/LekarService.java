@@ -45,13 +45,10 @@ public class LekarService {
 	
 
 
-	public Collection<OsobaDTO> findAll() {
-		ArrayList<OsobaDTO> lekari = new ArrayList<OsobaDTO>();
-		for(Lekar l : lekarRepo.findAll()) {
-			lekari.add(new OsobaDTO(l));
-		}
+	public Collection<Lekar> findAll() {
 		
-		return lekari;
+		
+		return lekarRepo.findAll();
 	}
 
 	public Lekar findOne(Integer id) {
@@ -72,7 +69,9 @@ public class LekarService {
 		//Lekar lekarForUpdate = lekarRepo.findById(id).orElseGet(null);
 		Lekar lekarForUpdate = lekarRepo.findOneById(id);
 		
-		lekarForUpdate.setAdresa(lekar.getAdresa());
+		lekarForUpdate.getAdresa().setAdresa(lekar.getAdresa().getAdresa());
+		lekarForUpdate.getAdresa().setGrad(lekar.getAdresa().getGrad());
+		lekarForUpdate.getAdresa().setDrzava(lekar.getAdresa().getDrzava());
 		lekarForUpdate.setBrojTelefona(lekar.getBrojTelefona());
 		lekarForUpdate.setEmail(lekar.getEmail());
 		lekarForUpdate.setIme(lekar.getIme());

@@ -61,66 +61,48 @@
       :rules="rule"
       required
     ></v-text-field>
-    <v-menu
-        ref="menu"
-        v-model="menu"
-        :close-on-content-click="false"
-        :nudge-right="40"
-        :return-value.sync="pocetak"
-        transition="scale-transition"
-        offset-y
-        max-width="290px"
-        min-width="290px"
-        
-      >
-        <template v-slot:activator="{ on }">
-          <v-text-field
-            :rules="rule"
-            v-model="pocetak"
-            label="Početak radnog vremena"
-            prepend-icon="mdi-clock"
-            readonly
-            v-on="on"
-          ></v-text-field>
+    <v-select
+      v-model="radnoVreme"
+      :items="smena"
+      label="Smena"
+      outlined
+      dense
+      :rules="rule"
+      required
+      return-object
+    >
+
+        <template slot="selection" slot-scope="data">
+            Smena: {{formatirajDatum(data.item.pocetak)}} - {{formatirajDatum(data.item.kraj)}}
         </template>
-        <v-time-picker
-        format="24hr"
-        
-          v-if="menu"
-          v-model="pocetak"
-          full-width
-          @click:minute="$refs.menu.save(pocetak)"
-        ></v-time-picker>
-      </v-menu>
-    <v-menu
-        ref="menu2"
-        v-model="menu2"
-        :close-on-content-click="false"
-        :nudge-right="40"
-        :return-value.sync="kraj"
-        transition="scale-transition"
-        offset-y
-        max-width="290px"
-        min-width="290px"
-      >
-        <template v-slot:activator="{ on }">
-          <v-text-field
-          :rules="rule"
-            v-model="kraj"
-            label="Kraj radnog vremena"
-            prepend-icon="mdi-clock"
-            readonly
-            v-on="on"
-          ></v-text-field>
+        <template slot="item" slot-scope="data">
+            Smena: {{formatirajDatum(data.item.pocetak)}} - {{formatirajDatum(data.item.kraj)}}
         </template>
-        <v-time-picker
-          format="24hr"
-          v-if="menu2"
-          v-model="kraj"
-          full-width
-          @click:minute="$refs.menu2.save(kraj)"
-        ></v-time-picker>
-      </v-menu>
+    </v-select>
+
+
+    <v-select
+      v-model="lekar.tipoviPoseta"
+      :items="tipovi"
+      label="Specijalizacija lekara"
+      chips
+      outlined
+      dense
+      :rules="rule2"
+      multiple
+      required
+      return-object
+      
+    >
+        <template slot="selection" slot-scope="data">
+            {{data.item.naziv}}
+        </template>
+        <template slot="item" slot-scope="data">
+            Tip: {{data.item.naziv}}
+        </template>
+    </v-select>
+
+
     <v-btn
       :disabled="!valid"
       color="success"
@@ -135,45 +117,66 @@
 
 <script>
 import axios from "axios";
+import moment from "moment"
 import router from "../../router/index.js"
 export default {
     name: 'AddLekar',
     data: function() { return {
-      lekar: { 
-          ime: '', 
-          prezime: '',
-          email: '',
-          jbo: '',
-          id: null,
-          adresa: {adresa: '', grad: '', drzava: ''},
-          password: '',
-          brojTelefona: "",
-          radnoVreme: [{pocetak: '', kraj:''}]
-          },
-      valid: true,
-      pocetak: '',
-      kraj: '',
-      menu: false,
-      menu2: false,
-      rule: [
-        v => !!v || 'Obavezno polje'
-      ],
-      emailRules: [
-        v => !!v || 'E-mail je obavezan',
-        v => /.+@.+\..+/.test(v) || 'E-mail mora biti u formi pera@domen.com',
-      ],
-      passwordRules: [
-        v => !!v || 'Password je obavezno polje'
-      ]
+        smena: [{ pocetak: new Date("1000-01-01 07:00"),kraj: new Date("1000-01-01 15:00")},
+          { pocetak: new Date("1000-01-01 15:00"),kraj: new Date("1000-01-01 23:00")}
+        ],
+        lekar: { 
+            ime: '', 
+            prezime: '',
+            email: '',
+            jbo: '',
+            id: null,
+            adresa: {adresa: '', grad: '', drzava: ''},
+            password: '',
+            brojTelefona: "",
+            radnoVreme: [],
+            tipoviPoseta: [],
+            tip: "LEKAR",
+            },
+        valid: true,
+        tipovi: [],
+        radnoVreme: "",
+        rule: [
+          v => !!v || 'Obavezno polje'
+        ],
+        rule2: [
+          v => v.length != 0 || 'Obavezno polje'
+        ],
+        emailRules: [
+          v => !!v || 'E-mail je obavezan',
+          v => /.+@.+\..+/.test(v) || 'E-mail mora biti u formi pera@domen.com',
+        ],
+        passwordRules: [
+          v => !!v || 'Password je obavezno polje'
+        ]
 
-    }
+      }
+    },
+
+    mounted () {
+
+      axios
+            .get('tip')
+            .then(response => {
+                this.tipovi = response.data;
+                console.log(response);
+            })
+            .catch(() => { this.tipovi = [{naziv: 'pera',tip: 'operacija',stavkaCenovnika: {cena: 20}}]; });
     },
     methods: {
+        formatirajDatum: function(datum){
+            
+          return moment(datum).format('HH:mm'); 
+        },
         dodajLekara: function(event) {
             event.preventDefault();
-            
-            this.lekar.radnoVreme[0].pocetak =  new Date("0000-01-1 " + this.pocetak);
-            this.lekar.radnoVreme[0].kraj =  new Date("0000-01-1 " + this.kraj);
+            this.lekar.radnoVreme = [];
+            this.lekar.radnoVreme.push(this.radnoVreme);
             axios
             .post('lekar',this.lekar)
             .then(() => {
@@ -181,10 +184,6 @@ export default {
                 router.push("/lekari");
             })
             .catch(function (error) { console.log(error); });
-        },
-        compareTime(time1, time2) {
-
-            return time1>time2; // true if time1 is later
         }
 
     }

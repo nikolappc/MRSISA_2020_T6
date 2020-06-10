@@ -27,6 +27,14 @@
                 <v-toolbar :color="kalendar.selected.color">
                   <v-row>
                     <v-col>
+                      <v-icon v-if="kalendar.selected.tip=='operacija'">
+                          mdi-box-cutter
+                      </v-icon>
+                      <v-icon
+                        v-else
+                      >
+                          mdi-doctor
+                      </v-icon>
                       {{kalendar.selected.name}}:{{kalendar.selected.tip}}
                     </v-col>
                   </v-row>
@@ -73,6 +81,14 @@
                       :disabled="!kalendar.selected.odradjen"
                     >
                       Izmena pregleda
+                    </v-btn>
+                    <v-btn
+                      v-if="checkStart(kalendar.selected)"
+                      color="success"
+                      class="mr-4"
+                      @click="pocniPregled(item.id)"
+                    >
+                      Započni pregled
                     </v-btn>
                 </v-container>
               </v-card>
@@ -127,7 +143,7 @@
           >
             <router-link to="/zakaziOdmor">
               <LinkCard
-                :img="odmor"
+                :img="zakazi"
                 title="Zakaži godišnji odmor"
               >
               </LinkCard>
@@ -139,10 +155,10 @@
             sm="12"
             xs="12"
           >
-            <router-link to="/istorijaPregleda">
+            <router-link to="/istorijaPoseta">
               <LinkCard
-                :img="odmor"
-                title="Istorija pregleda"
+                :img="istorija"
+                title="Istorija poseta"
               >
               </LinkCard>
             </router-link>
@@ -173,6 +189,8 @@ export default {
       events:[],
       pacijent:require("../assets/pacijent.jpg"),
       pregled:require("../assets/pregled.jpg"),
+      istorija:require("../assets/lekar.jpg"),
+      zakazi:require("../assets/zakazani.jpg"),
   }),
   computed:{
     ulogovan(){
@@ -183,6 +201,8 @@ export default {
     axios
             .get('lekar/poseta/'+this.$store.state.ulogovan.id)
             .then((res) => {
+              console.log(res.data);
+              
                 this.preurediEvent(res.data);
             })
             .catch(error => { 
@@ -192,6 +212,19 @@ export default {
             });
   },
   methods: {
+    checkStart: function(pregled){
+        if(pregled.tip=="operacija"||pregled.odradjen){
+            return false;
+        }
+        return this.checkDate(pregled);
+      },
+      checkDate(pregled){
+        let trenutno = new Date(Date.now() + 5 * 60000);
+        if(pregled.startDate <= trenutno&&trenutno<=pregled.endDate){
+            return true;
+        }
+        return false;
+    },
     toIzmena(id){
       this.$router.push('/izmenaPregleda/' + id);
     },
