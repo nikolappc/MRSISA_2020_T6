@@ -207,6 +207,11 @@ Vue.use(VueRouter, VueAxios, axios)
     component: () => import('../views/pacijenti/Pregled.vue')
   },
   {
+    path: '/operacija/:id',
+    name: 'OperacijaPacijenta',
+    component: () => import('../views/pacijenti/Operacija.vue')
+  },
+  {
     path: '/izmenaPregleda/:id',
     name: 'IzmenaPregleda',
     component: () => import('../views/lekar/IzmenaPregleda.vue')

@@ -37,8 +37,8 @@ public class ZdravstveniKarton {
 	@Column(name = "krvna_grupa", unique = false)
 	private String krvnaGrupa;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	@JoinColumn(name="id_kartona")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	@JsonManagedReference
 	public Collection<Pregled> pregledi;
 	
@@ -171,11 +171,11 @@ public class ZdravstveniKarton {
 		this.krvnaGrupa = krvnaGrupa;
 	}
 
-	public Collection<Pregled> getPregledi() {
+	public Collection<Pregled> getPregled() {
 		return pregledi;
 	}
 
-	public void setPregledi(Collection<Pregled> pregledi) {
+	public void setPregled(Collection<Pregled> pregledi) {
 		this.pregledi = pregledi;
 	}
 

@@ -181,6 +181,13 @@ public class PosetaService {
 			return null;
 		return pregled.getZdravstveniKarton().getPacijent();
 	}
+	
+	public Pacijent findPacijentOperacija(Integer idPregled) {
+		Operacija pregled = operacijaRepository.findById(idPregled).orElseGet(null);
+		if(pregled == null)
+			return null;
+		return pregled.getZdravstveniKarton().getPacijent();
+	}
 
 	public Collection<Poseta> findByLekar(Lekar lekar){
 		Collection<Pregled> pregled = pregledRepo.findByLekar(lekar);

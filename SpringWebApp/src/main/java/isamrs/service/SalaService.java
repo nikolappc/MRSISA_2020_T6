@@ -2,10 +2,12 @@ package isamrs.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import isamrs.domain.AdministratorKlinike;
 import isamrs.domain.Klinika;
@@ -69,7 +71,7 @@ public class SalaService {
 		return salaRepo.findById(id).orElseGet(null);
 	}
 
-
+	@Transactional(readOnly = false)
 	public Sala create(Sala sala, Integer idAdmina) {
 		AdministratorKlinike ak;
 		try {
@@ -82,15 +84,17 @@ public class SalaService {
 		return s;
 	}
 
+	@Transactional(readOnly = false)
 	public Sala update(Integer id,Sala sala) throws Exception {
 		Sala salaForUpdate = salaRepo.findById(id).orElseGet(null);
 		
 		if(salaForUpdate == null)
 			return null;
 		//Ukoliko sala nema preglede i operacije izmeni je
-		List<Pregled> pregledi = pregledRepo.findBySala(sala);
+		Date today = new Date();
+		List<Pregled> pregledi = pregledRepo.findBySala(sala,today);
 		if(pregledi.isEmpty()) {
-			List<Operacija> operacije = operacijaRepo.findBySala(sala);
+			List<Operacija> operacije = operacijaRepo.findBySala(sala,today);
 			if(operacije.isEmpty()) {
 				salaForUpdate.setNaziv(sala.getNaziv());
 				return salaRepo.save(salaForUpdate);
@@ -105,6 +109,13 @@ public class SalaService {
 
 	
 	public void delete(Integer id) throws Exception {
+		Date today = new Date();
+		Sala s = salaRepo.findById(id).orElseGet(null);
+		if (pregledRepo.findBySala(s,today).size() > 0)
+			throw new Exception();
+		if (operacijaRepo.findBySala(s,today).size() > 0)
+			throw new Exception();
+		
 		salaRepo.deleteById(id);
 	}
 

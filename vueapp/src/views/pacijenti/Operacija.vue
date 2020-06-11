@@ -194,13 +194,13 @@ name: 'Pregled  ',
                 
             });
         axios
-            .get('/poseta/' + this.$route.params.id)
+            .get('/poseta/operacija/' + this.$route.params.id)
             .then(response => {
                 this.pregled = response.data;
                 this.time = Math.floor((Date.parse(this.pregled.termin.kraj)- new Date())/1000);
 
 
-                axios.get("/poseta/pacijent/" +this.pregled.id)
+                axios.get("/poseta/pacijent/operacija/"+this.pregled.id)
                     .then(res=>{
                         this.pacijent = res.data;
                     }).catch(error=>{

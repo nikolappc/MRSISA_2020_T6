@@ -1,5 +1,6 @@
 package isamrs.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import isamrs.domain.*;
@@ -12,6 +13,9 @@ public interface OperacijaRepository extends JpaRepository<Operacija, Integer> {
 	
 	@Query("SELECT o FROM Operacija o WHERE o.zdravstveniKarton.id = ?1")
 	public List<Operacija> findByIdKarton(Integer id);
+	
+	@Query("SELECT o FROM Operacija o JOIN o.zdravstveniKarton zk JOIN zk.pacijent p WHERE p.id = ?1 and o.sala != null")
+	public List<Operacija> findByPacijent(Integer id);
 
 	@Query("SELECT o FROM Operacija o WHERE o.sala = ?1")
 	public List<Operacija> findBySala(Sala s);
@@ -23,4 +27,7 @@ public interface OperacijaRepository extends JpaRepository<Operacija, Integer> {
 	public List<Operacija> findByLekar(Lekar l);
 
 	@Query("SELECT o FROM Operacija o WHERE o.sala = null")
-	public List<Operacija> findZahteve();}
+	public List<Operacija> findZahteve();
+
+	@Query("SELECT o FROM Operacija o WHERE o.sala = ?1 and o.termin.kraj >= ?2")
+	public List<Operacija> findBySala(Sala sala, Date today);}

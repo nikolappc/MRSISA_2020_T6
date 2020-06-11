@@ -176,6 +176,7 @@ public class AdminKlinikeController {
 			
 		}
 		catch (Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity<Pregled>(HttpStatus.BAD_REQUEST);
 		}
 

@@ -3,13 +3,16 @@ package isamrs.service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import isamrs.domain.Operacija;
 import isamrs.domain.Pacijent;
+import isamrs.domain.Poseta;
 import isamrs.domain.Pregled;
 import isamrs.domain.ZdravstveniKarton;
 import isamrs.dto.IzmjenaOsobeDTO;
@@ -17,6 +20,7 @@ import isamrs.dto.PosetaDTO;
 import isamrs.exceptions.NotFoundException;
 import isamrs.registracija.VerificationToken;
 import isamrs.registracija.VerificationTokenRepository;
+import isamrs.repository.OperacijaRepository;
 import isamrs.repository.PacijentRepository;
 
 
@@ -24,6 +28,9 @@ import isamrs.repository.PacijentRepository;
 public class PacijentServiceImpl implements PacijentService {
 	@Autowired
 	private PacijentRepository pacijentRepository;
+	
+	@Autowired
+	private OperacijaRepository operacijaRepo;
 	
 	@Autowired
 	private VerificationTokenRepository verificationTokenRepo;
@@ -71,17 +78,24 @@ public class PacijentServiceImpl implements PacijentService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Collection<PosetaDTO> findBuduciPregled(Integer id) throws NotFoundException {
-		Pacijent p = pacijentRepository.findById(id).orElseThrow(NotFoundException::new);
-		ArrayList<PosetaDTO> pregledi = new ArrayList<PosetaDTO>();
-		ZdravstveniKarton zk = p.getZdravstveniKarton();
-		if(zk != null) {			
-			for(Pregled pregled : zk.getPregledi()) {
-				Date d = new Date(System.currentTimeMillis());
-				
-				if(pregled.getTermin().getKraj().after(d)) {
-					pregledi.add(new PosetaDTO(pregled));
-				}
+		//Pacijent p = pacijentRepository.findById(id).orElseThrow(NotFoundException::new);
+		ArrayList<PosetaDTO> pregledi = new ArrayList<PosetaDTO>();		
+		for(Pregled pregled : pacijentRepository.findPregled(id)) {
+			Date d = new Date(System.currentTimeMillis());
+			if(pregled.getSala() == null)
+				continue;
+			if(pregled.getTermin().getKraj().after(d)) {
+				pregledi.add(new PosetaDTO(pregled));
+			}
+		}
+		List<Operacija> operacije = operacijaRepo.findByPacijent(id);
+		for(Operacija o : operacije) {
+			Date d = new Date(System.currentTimeMillis());
+			
+			if(o.getTermin().getKraj().after(d)) {
+				pregledi.add(new PosetaDTO(o));
 			}
 		}
 		return pregledi;

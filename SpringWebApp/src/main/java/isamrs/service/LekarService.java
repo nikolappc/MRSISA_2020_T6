@@ -81,7 +81,19 @@ public class LekarService {
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public Lekar update(Integer id,Lekar lekar) {
+		
+		
 		Lekar lekarForUpdate = lekarRepo.findOneById(id);
+		Date today = new Date();
+		for(Pregled p : lekarForUpdate.getPregled()) {
+			if(p.getTermin().getKraj().after(today))
+				return null;
+		}
+		
+		for(Operacija o : lekarForUpdate.getOperacije()) {
+			if(o.getTermin().getKraj().after(today))
+				return null;
+		}
 		
 		lekarForUpdate.getAdresa().setAdresa(lekar.getAdresa().getAdresa());
 		lekarForUpdate.getAdresa().setGrad(lekar.getAdresa().getGrad());
@@ -125,6 +137,26 @@ public class LekarService {
 				return true;
 			}
 			
+		}
+		
+		return false;
+	}
+	
+	public boolean checkStartOperacija(Integer idOperacije, Lekar lekar) {
+		Operacija o = operacijaRepo.findById(idOperacije).orElseGet(null);
+		if(o == null)
+			return false;
+		for(Lekar l : o.getLekari()) {
+			if(l.getId() != lekar.getId())
+				continue;
+			Date d = new Date(System.currentTimeMillis());
+				
+			if(o.getTermin().getPocetak().before(d) &&
+					o.getTermin().getKraj().after(d)) {
+				return true;
+				
+				
+			}
 		}
 		
 		return false;

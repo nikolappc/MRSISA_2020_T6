@@ -1,6 +1,7 @@
 package isamrs.dto;
 
 import isamrs.domain.Poseta;
+import isamrs.domain.Pregled;
 import isamrs.domain.Sala;
 import isamrs.domain.Termin;
 import isamrs.domain.TipPosete;
@@ -13,7 +14,16 @@ public class PosetaDTO {
 	private Sala sala;
 	private boolean potvrdjen;
 	private boolean odradjen;
+	private String tipPregleda;
 
+	
+	
+	public String getTipPregleda() {
+		return tipPregleda;
+	}
+	public void setTipPregleda(String tipPregleda) {
+		this.tipPregleda = tipPregleda;
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -51,12 +61,14 @@ public class PosetaDTO {
 		this.termin = termin;
 		this.tip = new TipPoseteDTO(tip);
 		this.sala = sala;
+		
 	}
 	
 	public PosetaDTO() {}
 	
 	public PosetaDTO(Poseta p) {
 		this(p.getId(), p.getOpis(), p.getTermin(), p.getTipPosete(), p.getSala());
+		this.tipPregleda = p instanceof Pregled ? "pregled" : "operacija";
 		this.odradjen = p.isOdradjen();
 		this.potvrdjen = p.isPotvrdjen();
 	}
