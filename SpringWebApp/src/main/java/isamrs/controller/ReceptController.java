@@ -17,9 +17,9 @@ public class ReceptController {
     ReceptService receptService;
 
     @PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ReceptiDTO> setRecept(@RequestBody ReceptiDTO receptiDTO, @PathVariable("id") Integer id) throws NotFoundException {
-        Recepti r = receptService.update(id, toEntity(receptiDTO));
-        return new ResponseEntity<>(toDTO(r), HttpStatus.OK);
+    public ResponseEntity<String> setRecept(@RequestBody ReceptiDTO receptiDTO, @PathVariable("id") Integer id) throws NotFoundException {
+        receptService.overiRecept(id, toEntity(receptiDTO));
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     public Recepti toEntity(ReceptiDTO r){
