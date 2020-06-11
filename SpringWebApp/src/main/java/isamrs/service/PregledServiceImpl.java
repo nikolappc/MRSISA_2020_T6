@@ -128,9 +128,25 @@ public class PregledServiceImpl implements PregledService {
 	}
 	
 	//@Override
-	public List<Pregled> getBuduciPotvrdjeniPregledi(Integer id){
+	public List<ZakazaniPregledDTO> getBuduciPotvrdjeniPregledi(Integer id){
 		Date now = new Date();
-		return pregledRepository.getBuduciPotvrdjeniPregledi(id, now);
+		List<Pregled> pregledi = pregledRepository.getBuduciPotvrdjeniPregledi(id, now);
+		List<ZakazaniPregledDTO> zakazani = new ArrayList<ZakazaniPregledDTO>();
+		for (Pregled p : pregledi) {
+			Pregled pr = pregledRepository.getOne(p.getId());
+			Klinika k = klinikaRepo.findByLekar(pr.getLekar().getId());
+			System.out.println(pr.getLekar().getId());
+			System.out.println(k);
+			Klinika kk = klinikaRepo.findById(1).orElseGet(null);
+			for (Lekar llll : kk.getLekari()) {
+				System.out.println(llll.getIme() + llll.getId());
+			}
+			//Lekar ll = lekarRepo.getOne(pr.getLekar().getId());
+			//System.out.println(ll.getKlinika());
+			Cenovnik c = k.getCenovnik();
+			zakazani.add(new ZakazaniPregledDTO(p, c));
+		}
+		return zakazani;
 	}
 
 	//@Override
@@ -180,7 +196,8 @@ public class PregledServiceImpl implements PregledService {
 		if(k == null)
 			return false;
 		Pregled pregled = new Pregled();
-		pregled.setPotvrdjen(false);
+		pregled.setPotvrdjen(true);
+		pregled.setOdradjen(false);
 		pregled.setRecepti(new ArrayList<Recepti>());
 		pregled.setDijagnoza(new ArrayList<Dijagnoza>());
 		//Pacijent p = pacijentService.findOne(zahtjev.getIdPacijenta());

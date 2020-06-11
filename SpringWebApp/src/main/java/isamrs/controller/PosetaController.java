@@ -171,16 +171,17 @@ public class PosetaController {
 	
 
 	@GetMapping(value = "zakazani/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ArrayList<ZakazaniPregledDTO>> getZakazaniPregledi(@PathVariable("id") Integer id, HttpServletRequest req){
+	public ResponseEntity<List<ZakazaniPregledDTO>> getZakazaniPregledi(@PathVariable("id") Integer id, HttpServletRequest req){
 		if (req.getSession().getAttribute("user") == null || (req.getSession().getAttribute("user") instanceof Pacijent && !((Pacijent)req.getSession().getAttribute("user")).getId().equals(id))) {
-			return new ResponseEntity<ArrayList<ZakazaniPregledDTO>>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<List<ZakazaniPregledDTO>>(HttpStatus.FORBIDDEN);
 		}
-		List<Pregled> buduciPotvrdjeni = pregledService.getBuduciPotvrdjeniPregledi(id);
-		ArrayList<ZakazaniPregledDTO> zakazani = new ArrayList<ZakazaniPregledDTO>();
+		List<ZakazaniPregledDTO> buduciPotvrdjeni = pregledService.getBuduciPotvrdjeniPregledi(id);
+		/*ArrayList<ZakazaniPregledDTO> zakazani = new ArrayList<ZakazaniPregledDTO>();
 		for (Pregled p : buduciPotvrdjeni) {
-			zakazani.add(new ZakazaniPregledDTO(p));
-		}
-		return new ResponseEntity<ArrayList<ZakazaniPregledDTO>>(zakazani, HttpStatus.OK);
+			Cenovnik c = p.getLekar().getKlinika().getCenovnik();
+			zakazani.add(new ZakazaniPregledDTO(p, c));
+		}*/
+		return new ResponseEntity<List<ZakazaniPregledDTO>>(buduciPotvrdjeni, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "otkazi/{idPregleda}", produces = MediaType.APPLICATION_JSON_VALUE)

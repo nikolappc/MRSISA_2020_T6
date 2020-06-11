@@ -182,6 +182,12 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
         pregledBaza.setLekar(l);
         pregledRepo.save(pregledBaza);
         //Dodaj pacijenta u klinici
+        
+        System.out.println("servis");
+        Klinika kk = klinikaRepo.findById(1).orElseGet(null);
+		for (Lekar llll : kk.getLekari()) {
+			System.out.println(llll.getIme() + llll.getId());
+		}
 
         return pregledBaza;
     }
