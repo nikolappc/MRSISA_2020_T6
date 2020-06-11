@@ -1,7 +1,8 @@
 <template>
   <v-app>
      <Header></Header>
-    <div style="height: 56px" v-if="$route.path != '/login'"></div>
+    <div style="height: 56px" v-if="$route.path != '/login'">
+	</div>
     <router-view/>
   </v-app>
 </template>

@@ -1,9 +1,19 @@
 <template>
   <div class="home">
     <v-container>
+<vuetify-google-autocomplete
+id='map'
+append-icon='mdi-map-marker'
+v-bind:disable='true'
+placeholder="Adresa"
+v-on:placechanged="getAddressData"
+>
+</vuetify-google-autocomplete>
+<p>hhhh</p>
+	
       <h1>Administrator klinike</h1>
       <v-card class="main-card">
-
+		
         <v-row
           justify="center"
           align-content="stretch"
@@ -227,13 +237,13 @@ import axios from 'axios';
 import LinkCard from "../components/LinkCard.vue";
 import PosetaConf from "../components/PosetaConfirmation.vue"
 import OdmorCard from "../components/OdmorCard.vue"
+
 export default {
   name: 'HomeAdminKlinike',
   components:{
     LinkCard,
     PosetaConf,
-    OdmorCard
-
+    OdmorCard,
   },
    data: function() { return {
       lekari:require("../assets/lekar.jpg"),
@@ -285,7 +295,10 @@ export default {
       console.log(id);
       console.log(this.odsustva);
       this.odsustva = this.odsustva.filter(odsustvo => odsustvo.odmor.id !== id);
-    }
+    },
+getAddressData(formattedData) {
+console.log(formattedData);
+},
   }
   
   
