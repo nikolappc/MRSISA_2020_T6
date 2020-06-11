@@ -30,4 +30,5 @@ public interface OperacijaRepository extends JpaRepository<Operacija, Integer> {
 	public List<Operacija> findZahteve();
 
 	@Query("SELECT o FROM Operacija o WHERE o.sala = ?1 and o.termin.kraj >= ?2")
-	public List<Operacija> findBySala(Sala sala, Date today);}
+	public List<Operacija> findBySala(Sala sala, Date today);
+}

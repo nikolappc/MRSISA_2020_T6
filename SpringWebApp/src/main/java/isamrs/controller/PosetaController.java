@@ -75,6 +75,14 @@ public class PosetaController {
 		return new ResponseEntity<>(pregledToPregledDTO(updated), HttpStatus.OK);
 	}
 	
+	@PutMapping(value = "operacija/{id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Operacija> zavrsiOperaciju(@PathVariable("id") Integer id, @RequestBody OperacijaDTO pregled, HttpServletRequest req) throws NotFoundException {
+
+		Integer idLekar =  ((Lekar)req.getSession().getAttribute("user")).getId();
+		Operacija updated = operacijaService.update(id, pregled,idLekar);
+		return new ResponseEntity<>(updated, HttpStatus.OK);
+	}
+	
 	@PostMapping(value = "/pregled", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Pregled> createPregled(@RequestBody PosetaPostDTO p, HttpServletRequest req) throws Exception, NotFoundException {
 		Pregled pregled = DTOtoNewPregled(p);
