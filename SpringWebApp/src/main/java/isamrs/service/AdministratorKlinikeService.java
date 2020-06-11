@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 @Service
 public class AdministratorKlinikeService implements isamrs.service.Service<AdministratorKlinike, Integer> {
 
+	
     @Autowired
     private AdministratorKlinikeRepository adminklinikeRepository;
     

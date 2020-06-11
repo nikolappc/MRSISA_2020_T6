@@ -2,6 +2,7 @@ package isamrs.dto;
 
 import java.text.SimpleDateFormat;
 
+import isamrs.domain.Cenovnik;
 import isamrs.domain.Klinika;
 import isamrs.domain.Pregled;
 import isamrs.domain.StavkaCenovnika;
@@ -96,7 +97,7 @@ public class ZakazaniPregledDTO {
 	
 	public ZakazaniPregledDTO() {}
 	
-	public ZakazaniPregledDTO(Pregled p) {
+	public ZakazaniPregledDTO(Pregled p, Cenovnik c) {
 		SimpleDateFormat sdfDatum = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat sdfVrijeme = new SimpleDateFormat("HH:mm");
 		this.id = p.getId();
@@ -107,7 +108,7 @@ public class ZakazaniPregledDTO {
 		this.lekar = p.getLekar().getIme() + " " + p.getLekar().getPrezime();
 		this.sala = p.getSala().getId();
 		this.opis = p.getOpis();
-		for (StavkaCenovnika sc : p.getLekar().getKlinika().getCenovnik().getStavkaCenovnika()) {
+		for (StavkaCenovnika sc : c.getStavkaCenovnika()) {
 			if (sc.getTipPosete().getId() == p.getTipPosete().getId()) {
 				this.cena = sc.getCena();
 			}

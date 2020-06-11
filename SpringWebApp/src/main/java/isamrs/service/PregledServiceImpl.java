@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.PessimisticLockException;
 
 import isamrs.domain.AdministratorKlinike;
+import isamrs.domain.Cenovnik;
 import isamrs.domain.Dijagnoza;
 import isamrs.domain.Klinika;
 import isamrs.domain.Lekar;
@@ -21,7 +22,9 @@ import isamrs.domain.Termin;
 import isamrs.domain.TipPosete;
 import isamrs.domain.ZdravstveniKarton;
 import isamrs.dto.PredefinisaniPregledDTO;
+import isamrs.dto.ZakazaniPregledDTO;
 import isamrs.dto.ZakazivanjePregledaDTO;
+import isamrs.dto.ZakazaniPregledDTO;
 import isamrs.repository.KlinikaRepository;
 import isamrs.repository.LekarRepository;
 import isamrs.exceptions.NotFoundException;
@@ -230,9 +233,13 @@ public class PregledServiceImpl implements PregledService {
 		pregled.setTermin(termin);
 		k.getPregledi().add(pregled);
 		l.getPregled().add(pregled);
+<<<<<<< HEAD
 		p.getZdravstveniKarton().getPregled().add(pregled);
+=======
+		p.getZdravstveniKarton().getPregledi().add(pregled);
+		
+>>>>>>> branch 'master' of https://github.com/nikolappc/MRSISA_2020_T6.git
 		Pregled pr = create(pregled);
-		//Lekar updated = lekarRepo.save(l);
 		System.out.println(pr.getId() + "PREGLED");
 
 		//send mail
@@ -247,6 +254,7 @@ public class PregledServiceImpl implements PregledService {
 			email.setTo(recipient);
 			mailSender.send(email);
 		}
+		
 		return true;
 	}
 	
