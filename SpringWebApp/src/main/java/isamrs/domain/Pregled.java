@@ -34,8 +34,7 @@ public class Pregled extends Poseta {
 	@ManyToMany(mappedBy = "pregled", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	public Collection<Dijagnoza> dijagnoza;
 	
-	@Version
-	private Long version;
+	
 
 	public Pregled(String opis, Termin termin, TipPosete tipPosete) {
 		super(opis,  termin, tipPosete);
@@ -136,13 +135,4 @@ public class Pregled extends Poseta {
 
 	public Pregled() {
 	}
-	
-	public Long getVersion() {
-		return version;
-	}
-
-	public void setVersion(Long version) {
-		this.version = version;
-	}
-
 }

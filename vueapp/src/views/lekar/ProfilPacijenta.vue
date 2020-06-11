@@ -50,7 +50,7 @@
                 :disabled="checkStart(item)"
                 color="success"
                 class="mr-4"
-                @click="pocniPregled(item.id)"
+                @click="pocniPregled(item.id,item.tipPregleda)"
               >
                 Započni pregled
               </v-btn>
@@ -116,15 +116,22 @@ export default {
         }
         return true;
     },
-    pocniPregled: function(idPregleda){
+    pocniPregled: function(idPregleda,tipPregleda){
         console.log(this.$store.state.ulogovan);
+        let operacija = tipPregleda == "operacija" ? "operacija/" : "";
+
         axios
-          .post('lekar/pocetak/' + idPregleda, this.$store.state.ulogovan)
+          .post('lekar/pocetak/' + operacija + idPregleda + "/", this.$store.state.ulogovan)
           .then(response => {
               console.log(response.data);
               var provera = response.data;
               if(provera.zapocni){
-                this.$router.push("/pregled/"+ idPregleda);
+                let path = tipPregleda == "operacija" ? "/operacija/" : "/pregled/";
+                this.$router.push(path+ idPregleda);
+              }
+              else{
+                
+              this.$store.commit("setSnackbar", {text:"Nemate pravo da zapocnete pregled", color: "error"});
               }
           })    
           .catch((err) => { 

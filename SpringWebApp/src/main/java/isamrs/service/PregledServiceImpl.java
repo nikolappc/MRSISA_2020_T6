@@ -233,7 +233,7 @@ public class PregledServiceImpl implements PregledService {
 		pregled.setTermin(termin);
 		k.getPregledi().add(pregled);
 		l.getPregled().add(pregled);
-		p.getZdravstveniKarton().getPregledi().add(pregled);
+		p.getZdravstveniKarton().getPregled().add(pregled);
 		
 		Pregled pr = create(pregled);
 		System.out.println(pr.getId() + "PREGLED");
@@ -304,14 +304,12 @@ public class PregledServiceImpl implements PregledService {
 		ZdravstveniKarton zk = kartonRepo.findById(idZk).orElseGet(null);
 		prDef.setZdravstveniKarton(zk);
 		prDef.setPotvrdjen(true);
-		System.out.println(prDef.getVersion()+"----------------------------------------------------------------------------------11");
 		try {
 			Pregled prDef1 = update(zahtjev.getIdPredefinisanogTermina(), prDef);
 		} catch (Exception e) {
 			System.out.println("greska");
 			return false;
 		}
-		System.out.println(prDef.getVersion()+"----------------------------------------------------------------------------------22");
 
 
 		//send mail

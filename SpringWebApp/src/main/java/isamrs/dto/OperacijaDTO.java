@@ -10,6 +10,8 @@ import isamrs.domain.TipPosete;
 
 public class OperacijaDTO extends PosetaDTO {
 	private ArrayList<String> lekari;
+	private ArrayList<DijagnozaDTO> dijagnoze = new ArrayList<DijagnozaDTO>();
+	private ZdravstveniKartonDTO zdravstveniKarton;
 
 	public ArrayList<String> getLekari() {
 		return lekari;
@@ -18,7 +20,23 @@ public class OperacijaDTO extends PosetaDTO {
 	public void setLekari(ArrayList<String> lekari) {
 		this.lekari = lekari;
 	}
-	
+
+	public ArrayList<DijagnozaDTO> getDijagnoze() {
+		return dijagnoze;
+	}
+
+	public void setDijagnoze(ArrayList<DijagnozaDTO> dijagnoze) {
+		this.dijagnoze = dijagnoze;
+	}
+
+	public ZdravstveniKartonDTO getZdravstveniKarton() {
+		return zdravstveniKarton;
+	}
+
+	public void setZdravstveniKarton(ZdravstveniKartonDTO zdravstveniKarton) {
+		this.zdravstveniKarton = zdravstveniKarton;
+	}
+
 	public OperacijaDTO(Integer id, String opis, Termin termin, TipPosete tip, Sala sala) {
 		super(id, opis, termin, tip, sala);
 	}

@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
+import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -25,6 +26,11 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @MappedSuperclass
 public class Poseta {
 
+	
+	@Version
+	private Long version;
+	
+	
 	@Column(name = "ime", unique = false, nullable = true)
 	private String opis;
 
@@ -37,7 +43,7 @@ public class Poseta {
 	public Termin termin;
 
 	@OneToOne
-	@JoinColumn(name = "id_tipa_posete")
+	@JoinColumn(name = "id_tipa_posete", nullable = false)
 	public TipPosete tipPosete;
 
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)

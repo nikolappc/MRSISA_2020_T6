@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.Collectors;
 
@@ -160,6 +161,8 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
         return true;
     }
 
+    
+    @Transactional(readOnly = false)
     public Pregled update(Integer id, Pregled pregled) throws Exception, NotFoundException {
         Pregled pregledBaza = pregledRepo.findById(id).orElseThrow(NotFoundException::new);
         if(pregledBaza == null)
@@ -176,8 +179,8 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
         }
 
         pregledBaza.setSala(s);
-
-        pregledBaza.setLekar(pregled.getLekar());
+        Lekar l = lekarRepo.findById(pregled.getLekar().getId()).orElse(null);
+        pregledBaza.setLekar(l);
         pregledRepo.save(pregledBaza);
         //Dodaj pacijenta u klinici
         

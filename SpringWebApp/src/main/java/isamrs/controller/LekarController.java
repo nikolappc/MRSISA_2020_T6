@@ -71,6 +71,17 @@ public class LekarController {
 			throws Exception {
 		
 		boolean check = lekarService.checkStart(id,lekar);
+		
+		HashMap<String, Boolean> mapa = new HashMap<String, Boolean>();	
+		mapa.put("zapocni", check);
+		return new ResponseEntity<HashMap<String,Boolean>>(mapa, HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/pocetak/operacija/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<HashMap<String, Boolean>> checkStartOperacija(@RequestBody Lekar lekar, @PathVariable Integer id)
+			throws Exception {
+		
+		boolean check = lekarService.checkStartOperacija(id, lekar);
 		HashMap<String, Boolean> mapa = new HashMap<String, Boolean>();	
 		mapa.put("zapocni", check);
 		return new ResponseEntity<HashMap<String,Boolean>>(mapa, HttpStatus.OK);

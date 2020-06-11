@@ -25,5 +25,6 @@ public interface SalaRepository extends JpaRepository<Sala, Integer>{
 
 	@Query("select s from Klinika k JOIN k.sala s where k = ?1")
 	public Collection<Sala> findByKlinika(Klinika k);
+
 	
 }

@@ -75,6 +75,14 @@ public class PosetaController {
 		return new ResponseEntity<>(pregledToPregledDTO(updated), HttpStatus.OK);
 	}
 	
+	@PutMapping(value = "operacija/{id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Operacija> zavrsiOperaciju(@PathVariable("id") Integer id, @RequestBody OperacijaDTO pregled, HttpServletRequest req) throws NotFoundException {
+
+		Integer idLekar =  ((Lekar)req.getSession().getAttribute("user")).getId();
+		Operacija updated = operacijaService.update(id, pregled,idLekar);
+		return new ResponseEntity<>(updated, HttpStatus.OK);
+	}
+	
 	@PostMapping(value = "/pregled", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Pregled> createPregled(@RequestBody PosetaPostDTO p, HttpServletRequest req) throws Exception, NotFoundException {
 		Pregled pregled = DTOtoNewPregled(p);
@@ -277,11 +285,29 @@ public class PosetaController {
 
 		return new ResponseEntity<PregledDTO>(new PregledDTO(pregled), HttpStatus.OK);
 	}
+	
+	@GetMapping(value = "operacija/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<OperacijaDTO> getOperacija(@PathVariable("id") Integer id) throws NotFoundException {
+		Operacija pregled = operacijaService.findOne(id);
+
+		if (pregled == null) {
+			return new ResponseEntity<OperacijaDTO>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<OperacijaDTO>(new OperacijaDTO(pregled), HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/pacijent/operacija/{idPregled}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<PacijentDTO> getPacijentOperacija(@PathVariable("idPregled") Integer idPregled) throws Exception {
+
+		Pacijent pacijent = posetaService.findPacijentOperacija(idPregled);
+		return new ResponseEntity<PacijentDTO>(pacijentToDTO(pacijent), HttpStatus.CREATED);
+	}
 
 	@GetMapping(value = "/predstojeciPregledi/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<PosetaDTO>> getBuduciPregledi(@PathVariable("id") Integer idPacijent) throws NotFoundException {
 		Collection<PosetaDTO> posete = pacijentService.findBuduciPregled(idPacijent);
-
+		
 		return new ResponseEntity<Collection<PosetaDTO>>(posete, HttpStatus.OK);
 	}
 

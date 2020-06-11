@@ -46,9 +46,6 @@
                                 <v-tab>
                                   Dijagnoze
                                 </v-tab>
-                                <v-tab>
-                                  Lekovi
-                                </v-tab>
                                 <v-tab-item>
                                     <Pretrazivac
                                         @odabrani="promenaDijagnoza"
@@ -57,18 +54,6 @@
                                         color="dijagnoza"
                                         :elementi="dijagnoze"
                                         pozadina="karton"
-                                    >
-                                    </Pretrazivac>
-                                </v-tab-item>
-            
-                                <v-tab-item>
-                                    <Pretrazivac
-                                        @odabrani="promenaLekova"
-                                        id="sifraLeka"
-                                        atribut="nazivLeka"
-                                        color="lek"
-                                        :elementi="lekovi"
-                                        pozadina="roze"
                                     >
                                     </Pretrazivac>
                                 </v-tab-item>
@@ -164,7 +149,6 @@ export default {
 name: 'Pregled  ',
   data: () => ({
     pregled: {},
-    lekovi:[],
     dijagnoze:[],
     time: 2000,
     dialog: false,
@@ -179,13 +163,6 @@ name: 'Pregled  ',
   mounted () {
         this.lekar = this.$store.state.ulogovan;
         
-        axios.get("/lek")
-            .then(res=>{
-                this.lekovi = res.data;
-            }).catch(error=>{
-                console.log(error);
-                
-            });
         axios.get("/dijagnoza")
             .then(res=>{
                 this.dijagnoze = res.data;
@@ -194,13 +171,13 @@ name: 'Pregled  ',
                 
             });
         axios
-            .get('/poseta/' + this.$route.params.id)
+            .get('/poseta/operacija/' + this.$route.params.id)
             .then(response => {
                 this.pregled = response.data;
                 this.time = Math.floor((Date.parse(this.pregled.termin.kraj)- new Date())/1000);
 
 
-                axios.get("/poseta/pacijent/" +this.pregled.id)
+                axios.get("/poseta/pacijent/operacija/"+this.pregled.id)
                     .then(res=>{
                         this.pacijent = res.data;
                     }).catch(error=>{
@@ -224,9 +201,6 @@ name: 'Pregled  ',
                 }, 1000)
             }
         },
-    promenaLekova(lekovi){
-        this.lekovi = lekovi;
-    },
     promenaDijagnoza(dijagnoze){
         this.dijagnoze = dijagnoze;
     },
@@ -246,17 +220,8 @@ name: 'Pregled  ',
         this.dialog = false;
     },
     end(){
-        let recepti = [];
-        for (const lek of this.lekovi) {
-            recepti.push({
-                overen:false,
-                lek:lek
-            });
-        }
         this.pregled.odradjen = true;
-        this.pregled.recepti = recepti;
-        this.pregled.lekovi = this.lekovi;
-        axios.put("/poseta/pregled/"+this.pregled.id, this.pregled)
+        axios.put("/poseta/operacija/"+this.pregled.id, this.pregled)
             .then(res=>{
                 console.log(res);
                 this.$store.commit("setSnackbar", {text:"Pregled je uspešno završen.", color: "success"});
