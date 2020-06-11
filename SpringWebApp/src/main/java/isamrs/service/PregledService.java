@@ -6,6 +6,7 @@ import java.util.List;
 import isamrs.domain.Lekar;
 import isamrs.domain.Pregled;
 import isamrs.domain.Sala;
+import isamrs.dto.ZakazaniPregledDTO;
 
 public interface PregledService extends Service<Pregled, Integer> {
 	
@@ -15,7 +16,7 @@ public interface PregledService extends Service<Pregled, Integer> {
 	
 	public Collection<Pregled> findPredefinisaniPreglediKlinike(Integer idKlinike);
 	
-	public List<Pregled> getBuduciPotvrdjeniPregledi(Integer id);
+	public List<ZakazaniPregledDTO> getBuduciPotvrdjeniPregledi(Integer id);
 
     Collection<Pregled> findByLekar(Lekar lekar);
 

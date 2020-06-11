@@ -20,6 +20,9 @@ import java.util.stream.Collectors;
 @Service
 public class AdministratorKlinikeService implements isamrs.service.Service<AdministratorKlinike, Integer> {
 
+	@Autowired 
+    KlinikaRepository klinikaRepo;
+	
     @Autowired
     private AdministratorKlinikeRepository adminklinikeRepository;
 
@@ -166,6 +169,12 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
         pregledBaza.setLekar(pregled.getLekar());
         pregledRepo.save(pregledBaza);
         //Dodaj pacijenta u klinici
+        
+        System.out.println("servis");
+        Klinika kk = klinikaRepo.findById(1).orElseGet(null);
+		for (Lekar llll : kk.getLekari()) {
+			System.out.println(llll.getIme() + llll.getId());
+		}
 
         return pregledBaza;
     }

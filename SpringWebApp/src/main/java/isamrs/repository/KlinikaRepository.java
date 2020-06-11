@@ -40,4 +40,5 @@ public interface KlinikaRepository extends JpaRepository<Klinika, Integer>{
 	@Query("SELECT k FROM Klinika k JOIN  k.lekari l WHERE l.id = ?1")
 	Klinika findByLekar(Integer id);
 
+
 }

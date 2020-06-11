@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.PessimisticLockException;
 
 import isamrs.domain.AdministratorKlinike;
+import isamrs.domain.Cenovnik;
 import isamrs.domain.Dijagnoza;
 import isamrs.domain.Klinika;
 import isamrs.domain.Lekar;
@@ -21,7 +22,9 @@ import isamrs.domain.Termin;
 import isamrs.domain.TipPosete;
 import isamrs.domain.ZdravstveniKarton;
 import isamrs.dto.PredefinisaniPregledDTO;
+import isamrs.dto.ZakazaniPregledDTO;
 import isamrs.dto.ZakazivanjePregledaDTO;
+import isamrs.dto.ZakazaniPregledDTO;
 import isamrs.repository.KlinikaRepository;
 import isamrs.repository.LekarRepository;
 import isamrs.exceptions.NotFoundException;
@@ -123,9 +126,25 @@ public class PregledServiceImpl implements PregledService {
 	}
 	
 	//@Override
-	public List<Pregled> getBuduciPotvrdjeniPregledi(Integer id){
+	public List<ZakazaniPregledDTO> getBuduciPotvrdjeniPregledi(Integer id){
 		Date now = new Date();
-		return pregledRepository.getBuduciPotvrdjeniPregledi(id, now);
+		List<Pregled> pregledi = pregledRepository.getBuduciPotvrdjeniPregledi(id, now);
+		List<ZakazaniPregledDTO> zakazani = new ArrayList<ZakazaniPregledDTO>();
+		for (Pregled p : pregledi) {
+			Pregled pr = pregledRepository.getOne(p.getId());
+			Klinika k = klinikaRepo.findByLekar(pr.getLekar().getId());
+			System.out.println(pr.getLekar().getId());
+			System.out.println(k);
+			Klinika kk = klinikaRepo.findById(1).orElseGet(null);
+			for (Lekar llll : kk.getLekari()) {
+				System.out.println(llll.getIme() + llll.getId());
+			}
+			//Lekar ll = lekarRepo.getOne(pr.getLekar().getId());
+			//System.out.println(ll.getKlinika());
+			Cenovnik c = k.getCenovnik();
+			zakazani.add(new ZakazaniPregledDTO(p, c));
+		}
+		return zakazani;
 	}
 
 	//@Override
@@ -173,7 +192,8 @@ public class PregledServiceImpl implements PregledService {
 		//Klinika k = klinikaService.findOne(zahtjev.getIdKlinike());
 		Klinika k = klinikaRepo.findById(zahtjev.getIdKlinike()).orElseGet(null);
 		Pregled pregled = new Pregled();
-		pregled.setPotvrdjen(false);
+		pregled.setPotvrdjen(true);
+		pregled.setOdradjen(false);
 		pregled.setRecepti(new ArrayList<Recepti>());
 		pregled.setDijagnoza(new ArrayList<Dijagnoza>());
 		//Pacijent p = pacijentService.findOne(zahtjev.getIdPacijenta());
@@ -207,8 +227,8 @@ public class PregledServiceImpl implements PregledService {
 		k.getPregledi().add(pregled);
 		l.getPregled().add(pregled);
 		p.getZdravstveniKarton().getPregledi().add(pregled);
+		
 		Pregled pr = create(pregled);
-		//Lekar updated = lekarRepo.save(l);
 		System.out.println(pr.getId() + "PREGLED");
 
 		//send mail
@@ -223,6 +243,7 @@ public class PregledServiceImpl implements PregledService {
 			email.setTo(recipient);
 			mailSender.send(email);
 		}
+		
 		return true;
 	}
 	

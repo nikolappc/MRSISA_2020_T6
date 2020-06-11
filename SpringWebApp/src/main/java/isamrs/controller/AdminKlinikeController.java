@@ -9,6 +9,7 @@ import isamrs.exceptions.LekarZauzetException;
 import isamrs.exceptions.NotFoundException;
 import isamrs.exceptions.SalaZauzetaException;
 import isamrs.registracija.VerificationToken;
+import isamrs.repository.KlinikaRepository;
 import isamrs.service.AdministratorKlinikeService;
 import isamrs.service.AdresaService;
 import isamrs.service.KlinikaServiceImpl;
@@ -60,6 +61,9 @@ public class AdminKlinikeController {
 
     @Autowired
     private AdministratorKlinikeService adminService;
+    
+    @Autowired 
+    KlinikaRepository klinikaRepo;
     
     @Autowired
 	private MailSender mailSender;
@@ -163,12 +167,19 @@ public class AdminKlinikeController {
 		Pregled updatePregled = null;
 
 		try {
+			System.out.println("prije servisa");
+	        Klinika kk = klinikaRepo.findById(1).orElseGet(null);
+			for (Lekar llll : kk.getLekari()) {
+				System.out.println(llll.getIme() + llll.getId());
+			}
+			
+			//pregled.setPotvrdjen(true);
 			updatePregled = adminService.update(id,pregled);
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 			String subject1 = "Zakazivanje pregleda";
-			String link1 = "http://localhost:8081/api/pacijent/potvrdiPregled/" + updatePregled.getId();
-			String link2 = "http://localhost:8081/api/pacijent/odbijPregled/" + updatePregled.getId();
+			String link1 = "http://localhost:8080/api/pacijent/potvrdiPregled/" + updatePregled.getId();
+			String link2 = "http://localhost:8080/api/pacijent/odbijPregled/" + updatePregled.getId();
 			String message1 = "Zakazali ste pregled kod lekara "+updatePregled.getLekar().getIme()+""
 					+updatePregled.getLekar().getPrezime()+", u vreme "+sdf.format(updatePregled.getTermin().getPocetak())
 					+".\nMolimo Vas da potvrdite zakazivanje pregleda klikom na link "+link1
@@ -179,6 +190,12 @@ public class AdminKlinikeController {
 			String recipient = updatePregled.getZdravstveniKarton().getPacijent().getEmail();
 			email1.setTo(recipient);
 			mailSender.send(email1);
+			
+			System.out.println("kontroler");
+			Klinika kkk = klinikaRepo.findById(1).orElseGet(null);
+			for (Lekar llll : kkk.getLekari()) {
+				System.out.println(llll.getIme() + llll.getId());
+			}
 			
 		}
 		catch (Exception e) {

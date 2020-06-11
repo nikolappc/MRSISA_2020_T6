@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import isamrs.domain.*;
 import isamrs.dto.*;
 import isamrs.exceptions.NotFoundException;
+import isamrs.repository.KlinikaRepository;
 import isamrs.service.*;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,9 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 @RequestMapping("/api/pacijent")
 public class PacijentController {
+	
+	@Autowired
+	KlinikaRepository klinikaRepo;
 
 	@Autowired
 	private PacijentServiceImpl pacijentService;
@@ -164,7 +168,12 @@ public class PacijentController {
 	}
 	
 	@GetMapping(value = "/potvrdiPregled/{idPregleda}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> potvrdiPregled(HttpServletRequest request, @PathVariable("idPregleda") Integer idPregleda) {
+	public ResponseEntity<String> potvrdiPregled(@PathVariable("idPregleda") Integer idPregleda) {
+		System.out.println("prije porvrde");
+		Klinika kkkk = klinikaRepo.findById(1).orElseGet(null);
+		for (Lekar llll : kkkk.getLekari()) {
+			System.out.println(llll.getIme() + llll.getId());
+		}
 		Pregled p = null;
 		try {
 			p = pregledService.findOne(idPregleda);
@@ -175,7 +184,17 @@ public class PacijentController {
 			return new ResponseEntity<String>("Greska", HttpStatus.BAD_REQUEST);
 		}
 		p.setPotvrdjen(true);
+		try {
+			Pregled pr = pregledService.update(p.getId(), p);
+		} catch (NotFoundException e) {
+			e.printStackTrace();
+		}
 		
+		System.out.println("potvrda");
+		Klinika kkk = klinikaRepo.findById(1).orElseGet(null);
+		for (Lekar llll : kkk.getLekari()) {
+			System.out.println(llll.getIme() + llll.getId());
+		}
 		return new ResponseEntity<String>("Uspešno potvrdjen pregled!", HttpStatus.OK);
 	}
 	
@@ -191,6 +210,11 @@ public class PacijentController {
 			return new ResponseEntity<String>("Greska", HttpStatus.BAD_REQUEST);
 		}
 		p.setZdravstveniKarton(null);
+		try {
+			Pregled pr = pregledService.update(p.getId(), p);
+		} catch (NotFoundException e) {
+			e.printStackTrace();
+		}
 		
 		return new ResponseEntity<String>("Uspešno odbijen pregled!", HttpStatus.OK);
 	}
