@@ -233,12 +233,8 @@ public class PregledServiceImpl implements PregledService {
 		pregled.setTermin(termin);
 		k.getPregledi().add(pregled);
 		l.getPregled().add(pregled);
-<<<<<<< HEAD
 		p.getZdravstveniKarton().getPregled().add(pregled);
-=======
-		p.getZdravstveniKarton().getPregledi().add(pregled);
 		
->>>>>>> branch 'master' of https://github.com/nikolappc/MRSISA_2020_T6.git
 		Pregled pr = create(pregled);
 		System.out.println(pr.getId() + "PREGLED");
 
