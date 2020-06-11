@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import isamrs.domain.GodisnjiOdmor;
-import isamrs.dto.OdmorDTO;
 
 @Repository
 public interface OdmorRepository extends JpaRepository<GodisnjiOdmor, Integer>{

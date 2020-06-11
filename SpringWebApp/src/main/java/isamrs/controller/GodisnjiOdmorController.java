@@ -19,9 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import isamrs.dto.OdmorDTO;
-import isamrs.dto.OsobaDTO;
 import isamrs.service.OdmorService;
-import isamrs.service.TipPoseteService;
 
 @RestController
 @RequestMapping("/odmor")

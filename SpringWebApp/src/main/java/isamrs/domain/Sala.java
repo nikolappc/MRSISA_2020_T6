@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 @Entity
 @Table(name="sale")
@@ -19,6 +20,11 @@ public class Sala {
 	
 	@Column(name = "naziv",nullable = false, unique = false)
 	private String naziv;
+	
+	
+	
+	@Version
+	private Long version;
 	
 	public Integer getId() {
 		return id;

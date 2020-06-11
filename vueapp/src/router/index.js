@@ -124,6 +124,11 @@ Vue.use(VueRouter, VueAxios, axios)
     component: () => import('../views/ProfilPacijenta.vue')
   },
   {
+    path: '/izvestaj',
+    name: 'IzvestajKlinike',
+    component: () => import('../views/adminKlinike/Izvestaji.vue')
+  },
+  {
     path: '/profilPacijentaIzmjena',
     name: 'profilPacijentaIzmjena',
     component: ProfilPacijentaIzmjena

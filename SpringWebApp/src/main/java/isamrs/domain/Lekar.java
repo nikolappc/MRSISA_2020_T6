@@ -17,13 +17,19 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
+import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "lekari")
 public class Lekar extends MedicinskoOsoblje {
+	
+
+	
+	@Version
+	private Long version;
+	
 	
 	@OneToMany
 	@JoinColumn(name = "id_lekara")

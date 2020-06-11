@@ -123,6 +123,8 @@ public class KlinikaServiceImpl implements Service<Klinika, Integer>{
 	
 	public Ocena updateOcena(Integer id, Ocena o) {
 		Ocena ocenaForUpdate = repoOcena.findById(id).orElseGet(null);
+		if(ocenaForUpdate == null)
+			return null;
 		ocenaForUpdate.setVrednost(o.getVrednost());
 		return repoOcena.save(ocenaForUpdate);
 	}
@@ -194,6 +196,7 @@ public class KlinikaServiceImpl implements Service<Klinika, Integer>{
 			} catch (NotFoundException e) {
 				System.out.println("greska 195 klinika service");
 				e.printStackTrace();
+				return;
 			}
 			Pacijent p = findOnePacijent(novaOcena.getIdPacijenta());
 			nova.setPacijent(p);

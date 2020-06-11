@@ -2,19 +2,17 @@ package isamrs.controller;
 
 import isamrs.domain.*;
 import isamrs.dto.AdminKlinikeDTO;
-import isamrs.dto.OperacijaDTO;
+import isamrs.dto.GrafDTO;
+import isamrs.dto.IzvestajDTO;
 import isamrs.dto.PosetaPacijentDTO;
-import isamrs.dto.PregledDTO;
 import isamrs.exceptions.LekarZauzetException;
 import isamrs.exceptions.NotFoundException;
 import isamrs.exceptions.SalaZauzetaException;
 import isamrs.registracija.VerificationToken;
 import isamrs.repository.KlinikaRepository;
 import isamrs.service.AdministratorKlinikeService;
-import isamrs.service.AdresaService;
 import isamrs.service.KlinikaServiceImpl;
 import isamrs.service.OperacijaService;
-import isamrs.service.PregledService;
 import isamrs.service.PregledServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +23,9 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.stream.Collectors;
+import java.util.Date;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -38,10 +36,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/adminKlinike")
@@ -238,5 +233,33 @@ public class AdminKlinikeController {
         Collection<Lekar> lekari = adminService.getSlobodniLekari(termin);
         return new ResponseEntity<>(lekari, HttpStatus.OK);
     }
+    
+    
+    @GetMapping(value = "/izvestaj", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<IzvestajDTO> getIzvestaj(HttpServletRequest req){
+    	
+    	AdministratorKlinike ak = (AdministratorKlinike)req.getSession().getAttribute("user");
+    	IzvestajDTO izvestaj = adminService.izvestaj(ak.getId());
+        return new ResponseEntity<>(izvestaj, HttpStatus.OK);
+    }
+    
+    @GetMapping(value = "/izvestaj/{tip}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GrafDTO> getIzvestajDnevni(HttpServletRequest req, @PathVariable String tip){
+    	
+    	AdministratorKlinike ak = (AdministratorKlinike)req.getSession().getAttribute("user");
+    	GrafDTO izvestaj = adminService.izvestajTip(ak.getId(),tip);
+        return new ResponseEntity<>(izvestaj, HttpStatus.OK);
+    }
+    
+    @PostMapping(value = "/troskovi", consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<HashMap<String,Double>> getTroskovi(HttpServletRequest req, @RequestBody HashMap<String,Date> mapa){
+    	AdministratorKlinike ak = (AdministratorKlinike)req.getSession().getAttribute("user");
+    	
+        Double troskovi = adminService.troskovi(ak.getId(), mapa.get("pocetak"), mapa.get("kraj"));
+        HashMap<String,Double> a = new HashMap<String,Double>();
+        a.put("trosak", troskovi);
+        return new ResponseEntity<HashMap<String,Double>>(a, HttpStatus.OK);
+    }
+    
 }
 

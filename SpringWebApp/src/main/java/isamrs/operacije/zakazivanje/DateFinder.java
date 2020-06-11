@@ -1,13 +1,14 @@
 package isamrs.operacije.zakazivanje;
 
 import isamrs.domain.*;
-import isamrs.service.AdministratorKlinikeService;
-import isamrs.service.LekarService;
-import isamrs.service.PosetaService;
+import isamrs.exceptions.NotFoundException;
+import isamrs.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.time.*;
 import java.util.Collection;
 import java.util.Date;
@@ -32,7 +33,26 @@ public class DateFinder {
     @Autowired
     LekarService lekarService;
 
-    private OperacijaRunnable operacijaRunnable;
+    @Autowired
+    TerminService terminService;
+
+    @Autowired
+    PregledService pregledService;
+
+    @Autowired
+    OperacijaService operacijaService;
+
+    @Autowired
+    SalaService salaService;
+
+    @Autowired
+    KlinikaServiceImpl klinikaService;
+
+
+    @Autowired
+    ApplicationEventPublisher eventPublisher;
+
+    private Integer id;
 
     public Collection<Lekar> getLekari() {
         return lekari;
@@ -49,7 +69,7 @@ public class DateFinder {
     public void setSale(Collection<Sala> sale) {
         this.sale = sale;
     }
-    @Transactional
+
     public void calculateTermin(Termin t) throws Exception {
         List<List<Termin>> termini;
         Duration d = t.getDuration();
@@ -190,11 +210,106 @@ public class DateFinder {
         this.termin = termin;
     }
 
-    public OperacijaRunnable getOperacijaRunnable() {
-        return operacijaRunnable;
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void resolve(Integer id) {
+        Operacija o = null;
+        try {
+            o = operacijaService.findOne(id);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+            return;
+        }
+        if(o.getSala() == null){
+            Klinika k = klinikaService.findByOperacija(id);
+            Collection<Lekar> lekari = lekarService.findByKlinika(k);
+            Collection<Sala> sale = salaService.findByKlinika(k);
+
+            Termin t = o.getTermin();
+
+            try {
+
+                if(proveriTerminLekara(lekari, t) && calculateSala(t)) {
+                    Sala s = getSala();
+                    System.out.println("Nasao salu: id:"+s.getId()+" naziv:"+s.getNaziv());
+                    o.setSala(s);
+                    operacijaService.update(o.getId(), o);
+
+                }
+                else{
+                    System.out.println("Menjam termin");
+                    calculateTermin(t);
+                    Termin novit = getTermin();
+                    Sala s = getSala();
+                    novit = terminService.create(novit);
+                    o.setTermin(novit);
+                    o.setSala(s);
+                    o = operacijaService.update(o.getId(), o);
+                    //Event
+                    eventPublisher.publishEvent(new OnTerminChangedEvent(o.getZdravstveniKarton().getPacijent(), o.getTermin(),o));
+
+                }
+            }catch (Exception | NotFoundException e){
+                e.printStackTrace();
+
+                System.out.println("Greska nije promenjen termin");
+
+            }
+        }
+
+    }
+    private boolean proveriTerminLekara(Collection<Lekar> lekari, Termin t) {
+        for(Lekar l:lekari){
+            if(!proveriTerminLekara(l,t)){
+                return false;
+            }
+        }
+        return true;
     }
 
-    public void setOperacijaRunnable(OperacijaRunnable operacijaRunnable) {
-        this.operacijaRunnable = operacijaRunnable;
+
+    private boolean proveriTerminLekara(Lekar lekar, Termin termin) {
+
+        Collection<Pregled> pregledi = pregledService.findByLekar(lekar);
+        for(Pregled p: pregledi) {
+            //Ako je termin posle kraja nekog pregleda to je ok
+            if(p.getSala() == null)
+                continue;
+
+            if(p.getTermin().getKraj().before(termin.getPocetak())) {
+                continue;
+            }
+            //Ako je termin pre pocetka nekog pregleda to je ok
+            if(p.getTermin().getPocetak().after(termin.getKraj())) {
+                continue;
+            }
+
+            //Ako je bilo koji drugi slucaj onda je zauzeta sala
+            return false;
+        }
+        Collection<Operacija> operacije = operacijaService.findByLekar(lekar);
+
+        for(Operacija p: operacije ) {
+            if(p.getId().equals(this.id)){
+                continue;
+            }
+            if(p.getSala() == null)
+                continue;
+
+            //Ako je termin posle kraja nekog pregleda to je ok
+            if(p.getTermin().getKraj().before(termin.getPocetak())) {
+                continue;
+            }
+            //Ako je termin pre pocetka nekog pregleda to je ok
+            if(p.getTermin().getPocetak().after(termin.getKraj())) {
+                continue;
+            }
+
+            //Ako je bilo koji drugi slucaj onda je zauzeta sala
+            return false;
+        }
+
+
+        return true;
     }
+
 }

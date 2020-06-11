@@ -13,7 +13,10 @@ public class Recepti {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
+	@Version
+	private Integer version;
+
 	@Column(name = "overen", nullable = false)
 	private boolean overen;
 	
@@ -69,4 +72,11 @@ public class Recepti {
 	
 	public Recepti() {}
 
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
 }

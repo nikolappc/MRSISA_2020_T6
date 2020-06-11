@@ -1,6 +1,10 @@
 package isamrs.service;
 
 import isamrs.domain.*;
+import isamrs.dto.GrafDTO;
+import isamrs.dto.IzvestajDTO;
+import isamrs.dto.LekarOcena;
+import isamrs.dto.Podatak;
 import isamrs.dto.PosetaPacijentDTO;
 import isamrs.dto.PregledDTO;
 import isamrs.exceptions.LekarZauzetException;
@@ -9,10 +13,12 @@ import isamrs.exceptions.SalaZauzetaException;
 import isamrs.operacije.doktori.OnDoktorDodatEvent;
 import isamrs.repository.*;
 
+import java.sql.Timestamp;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
@@ -20,12 +26,13 @@ import java.util.stream.Collectors;
 @Service
 public class AdministratorKlinikeService implements isamrs.service.Service<AdministratorKlinike, Integer> {
 
-	@Autowired 
-    KlinikaRepository klinikaRepo;
 	
     @Autowired
     private AdministratorKlinikeRepository adminklinikeRepository;
-
+    
+    @Autowired
+    private KlinikaRepository klinikaRepo;
+    
     @Autowired
     private PregledRepository pregledRepo;
 
@@ -67,7 +74,8 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
     public AdministratorKlinike update(Integer integer, AdministratorKlinike administratorKlinickogCentra) {
 
         AdministratorKlinike ak = adminklinikeRepository.findById(integer).orElseGet(null);
-
+        if(ak == null)
+			return null;
         ak.setAdresa(administratorKlinickogCentra.getAdresa());
         ak.setBrojTelefona(administratorKlinickogCentra.getBrojTelefona());
         ak.setEmail(administratorKlinickogCentra.getEmail());
@@ -154,8 +162,11 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
 
     public Pregled update(Integer id, Pregled pregled) throws Exception, NotFoundException {
         Pregled pregledBaza = pregledRepo.findById(id).orElseThrow(NotFoundException::new);
+        if(pregledBaza == null)
+        	return pregledBaza;
         Sala s = salaRepo.findById(pregled.getSala().getId()).orElseGet(null);
-
+        if(s == null)
+        	return pregledBaza;
         if (!proveriTerminSala(s, pregled.getTermin())) {
             throw new Exception();
         }
@@ -185,6 +196,8 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
     }
 
     public boolean proveriTerminLekara(Lekar lekar, Termin termin) {
+    	if(lekar == null)
+    		return false;
         Collection<Pregled> pregledi = pregledRepo.findByLekar(lekar);
         for (Pregled p : pregledi) {
             //Ako je termin posle kraja nekog pregleda to je ok
@@ -265,4 +278,71 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
         lekari = lekari.stream().filter(lekar -> proveriTerminLekara(lekar, t)).collect(Collectors.toList());
         return lekari;
     }
+
+	public IzvestajDTO izvestaj(Integer id) {
+		IzvestajDTO izvestaj = new IzvestajDTO();
+		AdministratorKlinike ak = adminklinikeRepository.findById(id).orElseGet(null);
+		if(ak == null)
+			return null;
+		Double prosekKlinike = klinikaRepo.prosekKlinike(ak.getKlinika().getId());
+		if(prosekKlinike == null) {
+			prosekKlinike = 0.0;
+		}
+		for(Lekar l : ak.getKlinika().getLekari()) {
+			Double prosekLekara = lekarRepo.prosekLekara(l.getId());
+			if(prosekLekara == null) {
+				prosekLekara = 0.0;
+			}
+			LekarOcena lo = new LekarOcena(l, prosekLekara);
+			izvestaj.getOceneLekara().add(lo);
+		}
+		
+		izvestaj.setProsekKlinike(prosekKlinike);
+		return izvestaj;
+	}
+
+	public GrafDTO izvestajTip(Integer id,String tip) {
+		GrafDTO graf = new GrafDTO();
+		AdministratorKlinike ak = adminklinikeRepository.findById(id).orElseGet(null);
+		if(ak == null)
+			return null;
+		ArrayList<Object[]> nesto = klinikaRepo.dnevniIzvestaj(ak.getKlinika().getId(),tip);
+		for(Object[] o : nesto) {
+			Podatak p = new Podatak();
+			p.podatak = ((Timestamp) o[0]).toString();
+			p.vrednost = (int)((long) o[1]);
+			graf.getPodaci().add(p);
+		}
+		nesto = klinikaRepo.dnevniIzvestajOperacije(ak.getKlinika().getId(),tip);
+		spoljna :for(Object[] o : nesto) {
+			
+			Podatak p = new Podatak();
+			p.podatak = ((Timestamp) o[0]).toString();
+			p.vrednost = (int)((long) o[1]);
+			for(Podatak p1 : graf.getPodaci()) {
+				if(p1.podatak.equals(p.podatak)) {
+					p1.vrednost += p.vrednost;
+					continue spoljna;
+				}
+			}
+			
+			graf.getPodaci().add(p);
+		}
+		return graf;
+	}
+	
+	
+	public double troskovi(Integer id, Date pocetak, Date kraj) {
+		double suma = 0;
+		AdministratorKlinike ak = adminklinikeRepository.findById(id).orElseGet(null);
+		if(ak == null)
+			return 0;
+		Double pregledi = klinikaRepo.preglediUIntervalu(ak.getKlinika().getId(), pocetak, kraj);
+		suma += pregledi == null? 0 : pregledi;
+		
+		Double operacije = klinikaRepo.operacijeUIntervalu(ak.getKlinika().getId(), pocetak, kraj);
+		suma += operacije == null? 0 : operacije;
+		
+		return suma;
+	}
 }

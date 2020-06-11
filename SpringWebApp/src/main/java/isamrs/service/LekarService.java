@@ -16,8 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import isamrs.dto.GetOcenaDTO;
 import isamrs.dto.LekarSlobodanDTO;
-import isamrs.dto.OsobaDTO;
 import isamrs.dto.SetOcenaDTO;
+import isamrs.repository.AdministratorKlinikeRepository;
 import isamrs.repository.LekarRepository;
 import isamrs.repository.OcenaRepository;
 import isamrs.repository.OperacijaRepository;
@@ -26,6 +26,7 @@ import isamrs.repository.PregledRepository;
 import isamrs.dto.ProveraLekarSlobodanDTO;
 
 @Service
+@Transactional(readOnly = true)
 public class LekarService {
 
 	@Autowired
@@ -43,30 +44,43 @@ public class LekarService {
 	@Autowired
 	private OcenaRepository repoOcena;
 	
+	@Autowired
+	private AdministratorKlinikeRepository adminRepository;
+	
 
 
-	public Collection<Lekar> findAll() {
-		
-		
-		return lekarRepo.findAll();
+	public Collection<Lekar> findAll(Integer idAdmina) {
+		AdministratorKlinike ak;
+		try {
+			ak = adminRepository.findById(idAdmina).get();			
+		} catch (Exception e) {
+			return null;
+		}
+		return lekarRepo.findByKlinika(ak.getKlinika().getId());
 	}
 
+	@Transactional(readOnly = false)
 	public Lekar findOne(Integer id) {
-		return lekarRepo.findById(id).orElseGet(null);
-	}
-	
-	/*public Lekar findOneById(Integer id) {
-		return lekarRepo.findOneById(id);
-	}*/
-	
-	public Lekar create(Lekar lekar) {
-		//lekar.setId((int)lekarRepo.count());
-		return lekarRepo.save(lekar);
+		Lekar lekar = lekarRepo.findOneById(id);
+		return lekar;
 	}
 
-	//@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	@Transactional(readOnly = false)
+	public Lekar create(Lekar lekar, Integer idAdmina) {
+		Lekar l = lekarRepo.save(lekar);
+		AdministratorKlinike ak;
+		try {
+			ak = adminRepository.findById(idAdmina).get();			
+		} catch (Exception e) {
+			return null;
+		}
+		l.setKlinika(ak.getKlinika());
+		ak.getKlinika().getLekari().add(l);
+		return l;
+	}
+
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public Lekar update(Integer id,Lekar lekar) {
-		//Lekar lekarForUpdate = lekarRepo.findById(id).orElseGet(null);
 		Lekar lekarForUpdate = lekarRepo.findOneById(id);
 		
 		lekarForUpdate.getAdresa().setAdresa(lekar.getAdresa().getAdresa());
@@ -81,21 +95,26 @@ public class LekarService {
 		
 		return lekarRepo.save(lekarForUpdate);
 	}
-
+	
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public void delete(Integer id) throws Exception {
 		lekarRepo.deleteById(id);
 	}
+	
 	
 	public Lekar findByEmail(String email) {
 		return lekarRepo.findByEmail(email);
 	}
 
+	
 	public Collection<Lekar> findByKlinika(Klinika k){
 		return lekarRepo.findByKlinika(k.getId());
 	}
 
 	public boolean checkStart(Integer idPregleda, Lekar lekar) {
 		Pregled p = pregledRepo.findById(idPregleda).orElseGet(null);
+		if(p == null)
+			return false;
 		// Ukoliko je taj lekar zaduzen za pregled i ukoliko je sada vreme
 		// za zapocinjnaje pregleda vrati true
 		if(p.getLekar().getId().equals(lekar.getId())) {
@@ -129,10 +148,7 @@ public class LekarService {
 	}
 
 	
-	/*public ArrayList<Lekar> findLekariKlinike(int idKlinike){
-		return lekarRepo.findLekariKlinike(idKlinike);
-	}
-*/
+
 	
 	public Boolean pacijentOcijenioLekara(int idPacijenta, int idLekara) {
 		//System.out.println(lekarRepo.pacijentOcijenioLekara(idPacijenta, idLekara));
@@ -159,6 +175,8 @@ public class LekarService {
 	
 	public Ocena updateOcena(Integer id, Ocena o) {
 		Ocena ocenaForUpdate = repoOcena.findById(id).orElseGet(null);
+		if(ocenaForUpdate == null)
+			return null;
 		ocenaForUpdate.setVrednost(o.getVrednost());
 		return repoOcena.save(ocenaForUpdate);
 	}
@@ -167,6 +185,7 @@ public class LekarService {
 		return repoOcena.save(o);
 	}
 
+	@Transactional(readOnly = false)
 	public Boolean proverDaLiJeLekarSlobodan(ProveraLekarSlobodanDTO provera) {
 		Lekar l = findOne(provera.getIdLekara());
 		if (KlinikaServiceImpl.lekarImaSlobodanTermin(l, provera.getDatum())) {
@@ -195,7 +214,8 @@ public class LekarService {
 		}
 		return getOcena;
 	}
-
+	
+	@Transactional(readOnly = false)
 	public void ocijeniLekara(SetOcenaDTO novaOcena) {
 		if (pacijentOcijenioLekara(novaOcena.getIdPacijenta(), novaOcena.getId())) {
 			Ocena stara = getOcenaPacijenta(novaOcena.getId(), novaOcena.getIdPacijenta());
@@ -205,6 +225,8 @@ public class LekarService {
 			Ocena nova = new Ocena();
 			nova.setVrednost(novaOcena.getOcjena());
 			Pacijent p = pacijentRepository.findById(novaOcena.getIdPacijenta()).orElseGet(null);
+			if(p == null)
+				return;
 			Lekar l = findOne(novaOcena.getId());
 			nova.setPacijent(p);
 			l.getOcena().add(nova);
@@ -214,6 +236,7 @@ public class LekarService {
 		}
 	}
 
+	@Transactional(readOnly = false)
 	public LekarSlobodanDTO vratiVremenaCijenu(int idLekara, String nazivTipa, String datum) {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.");
 		Date d = null;

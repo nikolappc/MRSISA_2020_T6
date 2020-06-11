@@ -2,9 +2,7 @@ package isamrs.controller;
 
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,9 +23,7 @@ import isamrs.service.LekarService;
 import isamrs.service.OperacijaService;
 import isamrs.service.PacijentService;
 import isamrs.service.PosetaService;
-import isamrs.service.PregledService;
 import isamrs.service.PregledServiceImpl;
-import isamrs.service.TerminService;
 import isamrs.service.ZdravstveniKartonServiceImpl;
 
 
@@ -142,9 +138,6 @@ public class PosetaController {
 	private Pregled DTOtoNewPregled(PosetaPostDTO p) {
 		return new Pregled(p.getOpis(), p.getTermin(), p.getTipPosete());
 	}
-	private Pregled DTOtoPregled(PregledDTO p) {
-		return new Pregled(p);
-	}
 	@GetMapping(value = "/pacijent/{idPregled}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PacijentDTO> getPacijentPregleda(@PathVariable("idPregled") Integer idPregled) throws Exception {
 
@@ -179,7 +172,7 @@ public class PosetaController {
 
 	@GetMapping(value = "zakazani/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<ZakazaniPregledDTO>> getZakazaniPregledi(@PathVariable("id") Integer id, HttpServletRequest req){
-		if (req.getSession().getAttribute("user").equals(null) || (req.getSession().getAttribute("user") instanceof Pacijent && !((Pacijent)req.getSession().getAttribute("user")).getId().equals(id))) {
+		if (req.getSession().getAttribute("user") == null || (req.getSession().getAttribute("user") instanceof Pacijent && !((Pacijent)req.getSession().getAttribute("user")).getId().equals(id))) {
 			return new ResponseEntity<List<ZakazaniPregledDTO>>(HttpStatus.FORBIDDEN);
 		}
 		List<ZakazaniPregledDTO> buduciPotvrdjeni = pregledService.getBuduciPotvrdjeniPregledi(id);
@@ -193,11 +186,11 @@ public class PosetaController {
 
 	@PostMapping(value = "otkazi/{idPregleda}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> otkaziPregled(@PathVariable("idPregleda") Integer idPregleda, HttpServletRequest req) throws NotFoundException {
-		if (req.getSession().getAttribute("user").equals(null)) {
+		if (req.getSession().getAttribute("user") == null) {
 			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
 		}
 		Boolean response = pregledService.otkaziPregled(idPregleda, ((Pacijent)req.getSession().getAttribute("user")).getId());
-		if (response.equals(null)) {
+		if (response == null) {
 			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
 		} else if (response.equals(false)) {
 			return new ResponseEntity<String>("Ne možete otkazati pregled koji počinje u naredna 24 sata.", HttpStatus.BAD_REQUEST);
@@ -231,7 +224,7 @@ public class PosetaController {
 
 	@PostMapping(value = "/zakaziPregled", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> zakaziPregled(@RequestBody ZakazivanjePregledaDTO zahtjev, HttpServletRequest req) throws Exception, NotFoundException {
-		if (req.getSession().getAttribute("user").equals(null) || (req.getSession().getAttribute("user") instanceof Pacijent && !((Pacijent)req.getSession().getAttribute("user")).getId().equals(zahtjev.getIdPacijenta()))) {
+		if (req.getSession().getAttribute("user") == null || (req.getSession().getAttribute("user") instanceof Pacijent && !((Pacijent)req.getSession().getAttribute("user")).getId().equals(zahtjev.getIdPacijenta()))) {
 			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
 		}
 		Boolean response = false;
@@ -253,7 +246,7 @@ public class PosetaController {
 	
 	@GetMapping(value = "/getPredefinisaniPregledi/{idKlinike}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<PredefinisaniPregledDTO>> getPredefinisaniPregledi(HttpServletRequest req, @PathVariable("idKlinike") Integer idKlinike) throws NotFoundException {
-		if (req.getSession().getAttribute("user").equals(null)) {
+		if (req.getSession().getAttribute("user") == null) {
 			return new ResponseEntity<Collection<PredefinisaniPregledDTO>>(HttpStatus.FORBIDDEN);
 		}
 		Collection<PredefinisaniPregledDTO> posete = pregledService.getPredefinisaniPregledi(idKlinike);

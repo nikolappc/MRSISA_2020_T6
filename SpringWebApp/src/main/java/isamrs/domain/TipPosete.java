@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import isamrs.dto.TipPoseteDTO;
@@ -21,6 +22,11 @@ import isamrs.dto.TipPoseteDTO;
 @Table(name="tipovi_posete")
 public class TipPosete {
 
+	
+	@Version
+	private Long version;
+	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;

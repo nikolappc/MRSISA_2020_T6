@@ -1,26 +1,18 @@
 package isamrs.controller;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import isamrs.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,9 +30,6 @@ import isamrs.domain.Lekar;
 import isamrs.domain.MedicinskaSestra;
 import isamrs.domain.Osoba;
 import isamrs.domain.Pacijent;
-import isamrs.domain.Pregled;
-import isamrs.domain.Sala;
-import isamrs.domain.ZdravstveniKarton;
 import isamrs.registracija.OnRegistrationFailEvent;
 import isamrs.registracija.OnRegistrationSuccessEvent;
 import isamrs.registracija.VerificationToken;
@@ -48,10 +37,7 @@ import isamrs.service.AdministratorKlinickogCentraService;
 import isamrs.service.AdministratorKlinikeService;
 import isamrs.service.LekarService;
 import isamrs.service.MedicinskaSestraService;
-import isamrs.service.PacijentService;
 import isamrs.service.PacijentServiceImpl;
-import isamrs.service.PregledService;
-import isamrs.service.ZdravstveniKartonServiceImpl;
 
 @RestController
 @RequestMapping("/api")

@@ -3,15 +3,19 @@ package isamrs.service;
 import java.util.Collection;
 import java.util.List;
 
+import isamrs.domain.AdministratorKlinike;
 import isamrs.domain.Operacija;
 import isamrs.domain.Pregled;
 import isamrs.domain.TipPosete;
+import isamrs.repository.AdministratorKlinikeRepository;
 import isamrs.repository.OperacijaRepository;
 import isamrs.repository.PregledRepository;
 import isamrs.repository.TipPoseteRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TipPoseteService {
@@ -25,9 +29,18 @@ public class TipPoseteService {
 	@Autowired
 	private OperacijaRepository operacijaRepo;
 	
+	@Autowired
+	private AdministratorKlinikeRepository adminRepo;
 	
-	public Collection<TipPosete> findAll() {
-		return tipRepo.findAll();
+	
+	public Collection<TipPosete> findAll(Integer idAdmina) {
+		AdministratorKlinike ak;
+		try {
+			ak = adminRepo.findById(idAdmina).get();			
+		} catch (Exception e) {
+			return null;
+		}
+		return tipRepo.findByKlinika(ak.getKlinika().getId());
 	}
 	
 	public Collection<TipPosete> findPregledi() {
@@ -42,14 +55,25 @@ public class TipPoseteService {
 		return tipRepo.findByNaziv(naziv);
 	}
 
-	public TipPosete create(TipPosete t) throws Exception{
-		return tipRepo.save(t);
+	
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public TipPosete create(TipPosete t,Integer idAdmina) throws Exception{
+		AdministratorKlinike ak;
+		try {
+			ak = adminRepo.findById(idAdmina).get();			
+		} catch (Exception e) {
+			return null;
+		}
+		TipPosete tp = tipRepo.save(t); 
+		ak.getKlinika().getTipPosete().add(tp);
+		return tp;
 	}
 
 	public TipPosete update(Integer id, TipPosete t) throws Exception {
 		
 		TipPosete tp = tipRepo.findById(t.getId()).orElseGet(null);
-
+		if(tp == null)
+			return null;
 		
 		List<Pregled> pregledi = pregledRepo.findByTip(tp);
 		if(pregledi.isEmpty()) {
