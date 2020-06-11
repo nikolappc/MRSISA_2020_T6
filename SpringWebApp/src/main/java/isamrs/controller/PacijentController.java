@@ -48,7 +48,7 @@ public class PacijentController {
 	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Pacijent> getPacijet(@PathVariable("id") Integer id, HttpServletRequest req) {
-		if (req.getSession().getAttribute("user").equals(null) || (req.getSession().getAttribute("user") instanceof Pacijent && ((Pacijent)req.getSession().getAttribute("user")).getId() != id)) {
+		if (req.getSession().getAttribute("user") == null || (req.getSession().getAttribute("user") instanceof Pacijent && ((Pacijent)req.getSession().getAttribute("user")).getId() != id)) {
 			return new ResponseEntity<Pacijent>(HttpStatus.FORBIDDEN);
 		}
 		Pacijent pacijent = pacijentService.findOne(id);
@@ -110,7 +110,7 @@ public class PacijentController {
 
 	@GetMapping(value = "/listaPregleda/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<PosetaDTO>> getPregledi(@PathVariable("id") Integer id, HttpServletRequest req) {
-		if (req.getSession().getAttribute("user").equals(null) || (req.getSession().getAttribute("user") instanceof Pacijent && ((Pacijent)req.getSession().getAttribute("user")).getId() != id)) {
+		if (req.getSession().getAttribute("user") == null || (req.getSession().getAttribute("user") instanceof Pacijent && ((Pacijent)req.getSession().getAttribute("user")).getId() != id)) {
 			return new ResponseEntity<List<PosetaDTO>>(HttpStatus.FORBIDDEN);
 		}
 		Pacijent p = pacijentService.findOne(id);
@@ -133,7 +133,7 @@ public class PacijentController {
 
 	@GetMapping(value = "/karton/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ZdravstveniKartonDTO> getKarton(@PathVariable("id") Integer id, HttpServletRequest req) {
-		if (req.getSession().getAttribute("user").equals(null) || (req.getSession().getAttribute("user") instanceof Pacijent && ((Pacijent)req.getSession().getAttribute("user")).getId() != id)) {
+		if (req.getSession().getAttribute("user") == null || (req.getSession().getAttribute("user") instanceof Pacijent && ((Pacijent)req.getSession().getAttribute("user")).getId() != id)) {
 			return new ResponseEntity<ZdravstveniKartonDTO>(HttpStatus.FORBIDDEN);
 		}
 		Pacijent p = pacijentService.findOne(id);
@@ -161,6 +161,7 @@ public class PacijentController {
 			p = pregledService.findOne(idPregleda);
 		} catch (NotFoundException e) {
 			e.printStackTrace();
+			return new ResponseEntity<String>("Greska", HttpStatus.BAD_REQUEST);
 		}
 		if (p.getZdravstveniKarton() == null) {
 			return new ResponseEntity<String>("Greska", HttpStatus.BAD_REQUEST);
@@ -177,6 +178,7 @@ public class PacijentController {
 			p = pregledService.findOne(idPregleda);
 		} catch (NotFoundException e) {
 			e.printStackTrace();
+			return new ResponseEntity<String>("Greska", HttpStatus.BAD_REQUEST);
 		}
 		if (p.isPotvrdjen()) {
 			return new ResponseEntity<String>("Greska", HttpStatus.BAD_REQUEST);

@@ -73,7 +73,8 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
     public AdministratorKlinike update(Integer integer, AdministratorKlinike administratorKlinickogCentra) {
 
         AdministratorKlinike ak = adminklinikeRepository.findById(integer).orElseGet(null);
-
+        if(ak == null)
+			return null;
         ak.setAdresa(administratorKlinickogCentra.getAdresa());
         ak.setBrojTelefona(administratorKlinickogCentra.getBrojTelefona());
         ak.setEmail(administratorKlinickogCentra.getEmail());
@@ -160,8 +161,11 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
 
     public Pregled update(Integer id, Pregled pregled) throws Exception, NotFoundException {
         Pregled pregledBaza = pregledRepo.findById(id).orElseThrow(NotFoundException::new);
+        if(pregledBaza == null)
+        	return pregledBaza;
         Sala s = salaRepo.findById(pregled.getSala().getId()).orElseGet(null);
-
+        if(s == null)
+        	return pregledBaza;
         if (!proveriTerminSala(s, pregled.getTermin())) {
             throw new Exception();
         }
@@ -185,6 +189,8 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
     }
 
     public boolean proveriTerminLekara(Lekar lekar, Termin termin) {
+    	if(lekar == null)
+    		return false;
         Collection<Pregled> pregledi = pregledRepo.findByLekar(lekar);
         for (Pregled p : pregledi) {
             //Ako je termin posle kraja nekog pregleda to je ok
@@ -268,7 +274,9 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
 
 	public IzvestajDTO izvestaj(Integer id) {
 		IzvestajDTO izvestaj = new IzvestajDTO();
-		AdministratorKlinike ak = adminklinikeRepository.findById(id).get();
+		AdministratorKlinike ak = adminklinikeRepository.findById(id).orElseGet(null);
+		if(ak == null)
+			return null;
 		Double prosekKlinike = klinikaRepo.prosekKlinike(ak.getKlinika().getId());
 		if(prosekKlinike == null) {
 			prosekKlinike = 0.0;
@@ -288,7 +296,9 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
 
 	public GrafDTO izvestajTip(Integer id,String tip) {
 		GrafDTO graf = new GrafDTO();
-		AdministratorKlinike ak = adminklinikeRepository.findById(id).get();
+		AdministratorKlinike ak = adminklinikeRepository.findById(id).orElseGet(null);
+		if(ak == null)
+			return null;
 		ArrayList<Object[]> nesto = klinikaRepo.dnevniIzvestaj(ak.getKlinika().getId(),tip);
 		for(Object[] o : nesto) {
 			Podatak p = new Podatak();
@@ -317,7 +327,9 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
 	
 	public double troskovi(Integer id, Date pocetak, Date kraj) {
 		double suma = 0;
-		AdministratorKlinike ak = adminklinikeRepository.findById(id).get();
+		AdministratorKlinike ak = adminklinikeRepository.findById(id).orElseGet(null);
+		if(ak == null)
+			return 0;
 		Double pregledi = klinikaRepo.preglediUIntervalu(ak.getKlinika().getId(), pocetak, kraj);
 		suma += pregledi == null? 0 : pregledi;
 		

@@ -92,7 +92,12 @@ public class PregledServiceImpl implements PregledService {
 	//@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public Pregled update(Integer id, Pregled t) throws NotFoundException {
 		Pregled pregledForUpdate = pregledRepository.findById(id).orElseThrow(NotFoundException::new);
-		t.setZdravstveniKarton(zdrrepo.findById(t.getZdravstveniKarton().getId()).get());
+		try {
+			t.setZdravstveniKarton(zdrrepo.findById(t.getZdravstveniKarton().getId()).get());			
+		}
+		catch (Exception e) {
+			throw new NotFoundException();
+		}
 		return pregledRepository.save(t);
 	}
 
@@ -172,6 +177,8 @@ public class PregledServiceImpl implements PregledService {
 	public Boolean zakaziPregled(ZakazivanjePregledaDTO zahtjev) {
 		//Klinika k = klinikaService.findOne(zahtjev.getIdKlinike());
 		Klinika k = klinikaRepo.findById(zahtjev.getIdKlinike()).orElseGet(null);
+		if(k == null)
+			return false;
 		Pregled pregled = new Pregled();
 		pregled.setPotvrdjen(false);
 		pregled.setRecepti(new ArrayList<Recepti>());
@@ -259,6 +266,8 @@ public class PregledServiceImpl implements PregledService {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public Boolean zakaziPredefinisaniPregled(ZakazivanjePregledaDTO zahtjev, int idZk, String email) throws NotFoundException {
 		Klinika k = klinikaRepo.findById(zahtjev.getIdKlinike()).orElseGet(null);
+		if(k == null)
+			return null;
 		Pregled prDef = findOne(zahtjev.getIdPredefinisanogTermina());
 		System.out.println("*******"+prDef);
 		if (prDef == null) {
@@ -302,6 +311,8 @@ public class PregledServiceImpl implements PregledService {
 		Collection<Pregled> pregledi = findPredefinisaniPreglediKlinike(idKlinike);
 		Collection<PredefinisaniPregledDTO> posete = new ArrayList<PredefinisaniPregledDTO>();
 		Klinika k = klinikaRepo.findById(idKlinike).orElseGet(null);
+		if(k == null)
+			return null;
 		Calendar c1 = Calendar.getInstance();
 		Calendar c2 = Calendar.getInstance();
 		c2.setTime(new Date());

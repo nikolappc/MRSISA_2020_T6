@@ -222,7 +222,7 @@ public class DateFinder {
         if(o.getSala() == null){
             Klinika k = klinikaService.findByOperacija(id);
             Collection<Lekar> lekari = lekarService.findByKlinika(k);
-            Collection<Sala> sale = salaService.findAll();
+            Collection<Sala> sale = salaService.findByKlinika(k);
 
             Termin t = o.getTermin();
 

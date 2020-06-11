@@ -41,7 +41,7 @@ public class Poseta {
 	public TipPosete tipPosete;
 
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	@JoinColumn(name="id_kartona")
+	@JoinColumn(name="id_kartona", nullable = false)
 	@JsonBackReference
 	public ZdravstveniKarton zdravstveniKarton;
 

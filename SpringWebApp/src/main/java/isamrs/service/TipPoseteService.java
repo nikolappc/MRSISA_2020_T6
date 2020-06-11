@@ -14,6 +14,8 @@ import isamrs.repository.TipPoseteRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TipPoseteService {
@@ -32,7 +34,12 @@ public class TipPoseteService {
 	
 	
 	public Collection<TipPosete> findAll(Integer idAdmina) {
-		AdministratorKlinike ak = adminRepo.findById(idAdmina).get();
+		AdministratorKlinike ak;
+		try {
+			ak = adminRepo.findById(idAdmina).get();			
+		} catch (Exception e) {
+			return null;
+		}
 		return tipRepo.findByKlinika(ak.getKlinika().getId());
 	}
 	
@@ -48,16 +55,25 @@ public class TipPoseteService {
 		return tipRepo.findByNaziv(naziv);
 	}
 
+	
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public TipPosete create(TipPosete t,Integer idAdmina) throws Exception{
-		AdministratorKlinike ak = adminRepo.findById(idAdmina).get();
+		AdministratorKlinike ak;
+		try {
+			ak = adminRepo.findById(idAdmina).get();			
+		} catch (Exception e) {
+			return null;
+		}
 		TipPosete tp = tipRepo.save(t); 
+		ak.getKlinika().getTipPosete().add(tp);
 		return tp;
 	}
 
 	public TipPosete update(Integer id, TipPosete t) throws Exception {
 		
 		TipPosete tp = tipRepo.findById(t.getId()).orElseGet(null);
-
+		if(tp == null)
+			return null;
 		
 		List<Pregled> pregledi = pregledRepo.findByTip(tp);
 		if(pregledi.isEmpty()) {

@@ -20,7 +20,8 @@ public class MedicinskaSestraService {
 
 	public Osoba update(Integer id, MedicinskaSestra osoba) {
 		MedicinskaSestra ms = sestraRepository.findById(id).orElseGet(null);
-		
+		if(ms == null)
+			return null;
 		ms.setAdresa(osoba.getAdresa());
 		ms.setBrojTelefona(osoba.getBrojTelefona());
 		ms.setEmail(osoba.getEmail());

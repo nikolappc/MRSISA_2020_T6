@@ -39,10 +39,12 @@ public class PosetaService {
 		Lekar l = lekarRepo.findById(pre.getLekar().getId()).get();
 		Sala s = salaRepo.findById(pre.getSala().getId()).get();
 		
-		if (!proveriTerminSala(s, pre.getTermin())) {
-            throw new Exception();
-        }
-
+		if(s != null)
+			if (!proveriTerminSala(s, pre.getTermin())) {
+	            throw new Exception();
+	        }
+		if(l == null)
+			throw new Exception();
         if (!proveriTerminLekara(l, pre.getTermin())) {
             throw new Exception();
         }
@@ -175,6 +177,8 @@ public class PosetaService {
 
 	public Pacijent findPacijent(Integer idPregled) {
 		Pregled pregled = pregledRepo.findById(idPregled).orElseGet(null);
+		if(pregled == null)
+			return null;
 		return pregled.getZdravstveniKarton().getPacijent();
 	}
 

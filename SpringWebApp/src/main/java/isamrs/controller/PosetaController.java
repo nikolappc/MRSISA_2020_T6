@@ -172,7 +172,7 @@ public class PosetaController {
 
 	@GetMapping(value = "zakazani/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ArrayList<ZakazaniPregledDTO>> getZakazaniPregledi(@PathVariable("id") Integer id, HttpServletRequest req){
-		if (req.getSession().getAttribute("user").equals(null) || (req.getSession().getAttribute("user") instanceof Pacijent && !((Pacijent)req.getSession().getAttribute("user")).getId().equals(id))) {
+		if (req.getSession().getAttribute("user") == null || (req.getSession().getAttribute("user") instanceof Pacijent && !((Pacijent)req.getSession().getAttribute("user")).getId().equals(id))) {
 			return new ResponseEntity<ArrayList<ZakazaniPregledDTO>>(HttpStatus.FORBIDDEN);
 		}
 		List<Pregled> buduciPotvrdjeni = pregledService.getBuduciPotvrdjeniPregledi(id);
@@ -185,11 +185,11 @@ public class PosetaController {
 
 	@PostMapping(value = "otkazi/{idPregleda}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> otkaziPregled(@PathVariable("idPregleda") Integer idPregleda, HttpServletRequest req) throws NotFoundException {
-		if (req.getSession().getAttribute("user").equals(null)) {
+		if (req.getSession().getAttribute("user") == null) {
 			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
 		}
 		Boolean response = pregledService.otkaziPregled(idPregleda, ((Pacijent)req.getSession().getAttribute("user")).getId());
-		if (response.equals(null)) {
+		if (response == null) {
 			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
 		} else if (response.equals(false)) {
 			return new ResponseEntity<String>("Ne možete otkazati pregled koji počinje u naredna 24 sata.", HttpStatus.BAD_REQUEST);
@@ -223,7 +223,7 @@ public class PosetaController {
 
 	@PostMapping(value = "/zakaziPregled", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> zakaziPregled(@RequestBody ZakazivanjePregledaDTO zahtjev, HttpServletRequest req) throws Exception, NotFoundException {
-		if (req.getSession().getAttribute("user").equals(null) || (req.getSession().getAttribute("user") instanceof Pacijent && !((Pacijent)req.getSession().getAttribute("user")).getId().equals(zahtjev.getIdPacijenta()))) {
+		if (req.getSession().getAttribute("user") == null || (req.getSession().getAttribute("user") instanceof Pacijent && !((Pacijent)req.getSession().getAttribute("user")).getId().equals(zahtjev.getIdPacijenta()))) {
 			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
 		}
 		Boolean response = false;
@@ -245,7 +245,7 @@ public class PosetaController {
 	
 	@GetMapping(value = "/getPredefinisaniPregledi/{idKlinike}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<PredefinisaniPregledDTO>> getPredefinisaniPregledi(HttpServletRequest req, @PathVariable("idKlinike") Integer idKlinike) throws NotFoundException {
-		if (req.getSession().getAttribute("user").equals(null)) {
+		if (req.getSession().getAttribute("user") == null) {
 			return new ResponseEntity<Collection<PredefinisaniPregledDTO>>(HttpStatus.FORBIDDEN);
 		}
 		Collection<PredefinisaniPregledDTO> posete = pregledService.getPredefinisaniPregledi(idKlinike);

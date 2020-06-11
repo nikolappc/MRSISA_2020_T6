@@ -94,7 +94,8 @@ public class PacijentServiceImpl implements PacijentService {
 	
 	public Pacijent update(Integer id,Pacijent lekar) {
 		Pacijent pForUpdate = pacijentRepository.findById(id).orElseGet(null);
-		
+		if(pForUpdate == null)
+			return null;
 		pForUpdate.setAdresa(lekar.getAdresa());
 		pForUpdate.setBrojTelefona(lekar.getBrojTelefona());
 		pForUpdate.setEmail(lekar.getEmail());
