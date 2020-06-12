@@ -186,12 +186,7 @@ public class AdminKlinikeController {
 			String recipient = updatePregled.getZdravstveniKarton().getPacijent().getEmail();
 			email1.setTo(recipient);
 			mailSender.send(email1);
-			
-			System.out.println("kontroler");
-			Klinika kkk = klinikaRepo.findById(1).orElseGet(null);
-			for (Lekar llll : kkk.getLekari()) {
-				System.out.println(llll.getIme() + llll.getId());
-			}
+
 			
 		}
 		catch (Exception e) {

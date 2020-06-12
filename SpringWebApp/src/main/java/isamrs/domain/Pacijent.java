@@ -49,6 +49,11 @@ public class Pacijent extends Osoba {
 		this.zdravstveniKarton = zdravstveniKarton;
 		this.setTip("PACIJENT");
 	}
+	
+	public Pacijent(String ime, String prezime, String password, String brojTelefona, String jbo,
+			String email, Integer id) {
+		super(ime, prezime, password, brojTelefona, jbo, email, id);
+	}
 
 	public Pacijent(String ime, String prezime, String password, String brojTelefona, String jbo, Adresa adresa,
 			String email, Integer id) {
@@ -93,4 +98,5 @@ public class Pacijent extends Osoba {
 	public void setVersion(Long version) {
 		this.version = version;
 	}
+	
 }

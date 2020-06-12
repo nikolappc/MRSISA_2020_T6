@@ -138,12 +138,6 @@ public class PregledServiceImpl implements PregledService {
 		for (Pregled p : pregledi) {
 			Pregled pr = pregledRepository.getOne(p.getId());
 			Klinika k = klinikaRepo.findByLekar(pr.getLekar().getId());
-			System.out.println(pr.getLekar().getId());
-			System.out.println(k);
-			Klinika kk = klinikaRepo.findById(1).orElseGet(null);
-			for (Lekar llll : kk.getLekari()) {
-				System.out.println(llll.getIme() + llll.getId());
-			}
 			//Lekar ll = lekarRepo.getOne(pr.getLekar().getId());
 			//System.out.println(ll.getKlinika());
 			Cenovnik c = k.getCenovnik();
@@ -199,7 +193,7 @@ public class PregledServiceImpl implements PregledService {
 		if(k == null)
 			return false;
 		Pregled pregled = new Pregled();
-		pregled.setPotvrdjen(true);
+		pregled.setPotvrdjen(false);
 		pregled.setOdradjen(false);
 		pregled.setRecepti(new ArrayList<Recepti>());
 		pregled.setDijagnoza(new ArrayList<Dijagnoza>());

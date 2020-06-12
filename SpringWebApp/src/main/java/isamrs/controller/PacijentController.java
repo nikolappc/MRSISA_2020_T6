@@ -99,7 +99,7 @@ public class PacijentController {
 		try {
 			p = pacijentService.izmijeni(pacijent.getId(), pacijent);
 		} catch (Exception e) {
-			System.out.println("KONFLIIIIIIIIIIIIIIIIKT");
+			System.out.println("KONFLIIIIIIIIIIIIIIIIKT<333333");
 			return new ResponseEntity<Pacijent>(p, HttpStatus.BAD_REQUEST);
 		}
 		

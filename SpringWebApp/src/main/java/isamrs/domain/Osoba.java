@@ -195,5 +195,16 @@ public abstract class Osoba implements Serializable{
 		return "Osoba [id=" + id + ", ime=" + ime + ", prezime=" + prezime + ", password=" + password
 				+ ", brojTelefona=" + brojTelefona + ", jbo=" + jbo + ", adresa=" + adresa + ", email=" + email + "]";
 	}
+	
+	public Osoba(String ime, String prezime, String password, String brojTelefona, String jbo,
+			String email, Integer id) {
+		this.ime = ime;
+		this.prezime = prezime;
+		this.password = password;
+		this.brojTelefona = brojTelefona;
+		this.jbo = jbo;
+		this.email = email;
+		this.id = id;
+	}
 
 }
