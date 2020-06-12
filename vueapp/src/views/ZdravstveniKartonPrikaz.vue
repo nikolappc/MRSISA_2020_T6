@@ -34,12 +34,29 @@ export default {
     ulogovani : {},
     karton : {},
   }),
+  
   mounted () {
 	this.ulogovani = this.$store.state.ulogovan;
 	if (this.ulogovani == "") {
-		router.push("/");
+    router.push("/");
   }
   
+  axios
+      .post('api/pacijent/provera/' + this.$route.params.id)
+      .then(response => {
+        console.log(response);
+        if(!response.data.provera){
+          this.$store.commit("setSnackbar", {text:"Nemate pristup kartonu.", color: "error"});
+          router.push("/listaPacijenata");
+        }
+      })
+      .catch(
+        err => {
+          console.log(err);
+          
+        }
+      );  
+
 	axios
       .get('api/pacijent/karton/' + this.$route.params.id)
       .then(response => {

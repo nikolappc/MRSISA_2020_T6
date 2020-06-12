@@ -286,4 +286,14 @@ public class LekarService {
 		return vremenaCijena;
 	}
 
+	public Boolean checkKarton(Integer idKarton, Integer idLekar) {
+		if(pregledRepo.checkKarton(idKarton,idLekar).size() > 0) {
+			return new Boolean(true);
+		}
+		else if(operacijaRepo.checkKarton(idKarton,idLekar).size() > 0){
+			return new Boolean(true);
+		}
+		return new Boolean(false);
+	}
+
 }

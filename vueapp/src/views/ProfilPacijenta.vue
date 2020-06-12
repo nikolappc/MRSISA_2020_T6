@@ -21,7 +21,7 @@
           </tr>
           <tr>
             <td>Adresa:</td>
-            <td>{{ toStringAdresa(ulogovani) }}</td>
+            <td><Map v-bind:adresaMape="ulogovani.adresa"/></td>
           </tr>
           <tr>
             <td>Telefon:</td>
@@ -39,9 +39,12 @@
 </template>
 
 <script>
-import router from "../router/index.js"
-
+import router from "../router/index.js";
+import Map from "../components/Map.vue";
 export default {
+  components: {
+    Map
+  },
   name: 'ProfilPacijenta',
   data: () => ({
     ulogovani : {},

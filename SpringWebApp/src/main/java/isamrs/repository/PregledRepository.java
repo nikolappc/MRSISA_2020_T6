@@ -51,4 +51,8 @@ public interface PregledRepository extends JpaRepository<Pregled, Integer> {
 	@Query("SELECT p FROM Pregled p WHERE p.zdravstveniKarton.pacijent.id = ?1  AND p.termin.pocetak > ?2 AND p.potvrdjen = true AND p.odradjen = false")
 	//@Query("SELECT p FROM Pregled p")
 	public List<Pregled> getBuduciPotvrdjeniPregledi(Integer id, Date now);
+
+	
+	@Query("SELECT p FROM Pregled p WHERE p.lekar.id = ?2 and p.zdravstveniKarton.id = ?1")
+	public List<Pregled> checkKarton(Integer idKarton, Integer idLekar);
 }
