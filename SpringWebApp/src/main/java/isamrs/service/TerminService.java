@@ -16,6 +16,10 @@ public class TerminService {
 	
 
 	public Termin create(Termin pre) throws Exception{
+		Termin postojeci = terminRepo.findByTermin(pre.getPocetak(), pre.getKraj());
+		if(postojeci!=null){
+			return postojeci;
+		}
 		return terminRepo.save(pre);
 	}
 

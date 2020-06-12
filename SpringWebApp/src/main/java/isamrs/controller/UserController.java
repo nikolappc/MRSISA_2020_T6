@@ -178,7 +178,10 @@ public class UserController {
 	}
 
 	@GetMapping(value = "/approveRegistration/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> approveRegistration(@PathVariable("email") String email, WebRequest request) {
+	public ResponseEntity<String> approveRegistration(@PathVariable("email") String email, WebRequest request, HttpServletRequest httpServletRequest) {
+		if (!(httpServletRequest.getSession().getAttribute("user") instanceof AdministratorKlinickogCentra)){
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		try {
 			System.out.println("email:" + email);
 			Pacijent pacijent = pacijentService.findByEmail(email);
@@ -191,7 +194,10 @@ public class UserController {
 	}
 
 	@GetMapping(value = "/denyRegistration/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> denyRegistration(@PathVariable("email") String email, WebRequest request) {
+	public ResponseEntity<String> denyRegistration(@PathVariable("email") String email, WebRequest request, HttpServletRequest httpServletRequest) {
+		if (!(httpServletRequest.getSession().getAttribute("user") instanceof AdministratorKlinickogCentra)){
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		try {
 			Pacijent pacijent = pacijentService.findByEmail(email);
 			eventPublisher.publishEvent(new OnRegistrationFailEvent(pacijent, request.getContextPath()));
@@ -223,14 +229,19 @@ public class UserController {
 
 	// Sluzi za dobavljanje nepotvrdjenih registrovanih korisnika
 	@GetMapping(value = "/nepotvrdjeni", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<PacijentDTO>> getNepotvrdjeni() {
+	public ResponseEntity<Collection<PacijentDTO>> getNepotvrdjeni(HttpServletRequest httpServletRequest) {
+		if (!(httpServletRequest.getSession().getAttribute("user") instanceof AdministratorKlinickogCentra)){
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		Collection<PacijentDTO> pac = pacijentService.findNotConfirmed().stream().map(PacijentDTO::new).collect(Collectors.toList());
 		return new ResponseEntity<>(pac, HttpStatus.OK);
 	}
 	
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Osoba> updateUser(HttpServletRequest req,@RequestBody Osoba osoba, @PathVariable Integer id){
-		
+	public ResponseEntity<Osoba> updateUser(HttpServletRequest req, @RequestBody Osoba osoba, @PathVariable Integer id, HttpServletRequest httpServletRequest){
+		if (httpServletRequest.getSession().getAttribute("user")==null){
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		
 		Osoba updatedOsoba = null;
 		try {
