@@ -3,6 +3,7 @@ package isamrs.controller;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,6 +40,9 @@ public class PacijentController {
 
 	@Autowired
 	private OperacijaService operacijaService;
+	
+	@Autowired
+	private LekarService lekarService;
 
 	@GetMapping(value ="/klinike", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<OsobaDTO>> getPacijents(HttpServletRequest req){
@@ -73,6 +77,25 @@ public class PacijentController {
 		return new ResponseEntity<Collection<Pacijent>>(pacijenti, HttpStatus.OK);
 	}
 
+	@PostMapping(value = "/provera/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<HashMap<String,Boolean>> checkKarton(@PathVariable("id") Integer id, HttpServletRequest req) {
+		HashMap<String,Boolean> mapa = new HashMap<String, Boolean>(); 
+		if ((req.getSession().getAttribute("user") instanceof Pacijent)) {
+			mapa.put("provera", true);
+			return new ResponseEntity<HashMap<String,Boolean>>(mapa, HttpStatus.OK);
+		}
+		else if (req.getSession().getAttribute("user") instanceof Lekar) {
+			Lekar l = (Lekar)  req.getSession().getAttribute("user");
+			
+			Boolean provera = lekarService.checkKarton(id,l.getId());
+			mapa.put("provera", provera);
+			return new ResponseEntity<HashMap<String,Boolean>>(mapa, HttpStatus.OK);
+		}
+
+
+		return new ResponseEntity<HashMap<String,Boolean>>(HttpStatus.FORBIDDEN);
+	}
+	
 	@PostMapping(value = "/izmjena", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Pacijent> updatePacijent(@RequestBody IzmjenaOsobeDTO pacijent, HttpServletRequest req) {
 		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {

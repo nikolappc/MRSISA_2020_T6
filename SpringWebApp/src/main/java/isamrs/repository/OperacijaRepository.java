@@ -1,5 +1,6 @@
 package isamrs.repository;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -31,4 +32,7 @@ public interface OperacijaRepository extends JpaRepository<Operacija, Integer> {
 
 	@Query("SELECT o FROM Operacija o WHERE o.sala = ?1 and o.termin.kraj >= ?2")
 	public List<Operacija> findBySala(Sala sala, Date today);
+
+	@Query("SELECT o FROM Operacija o JOIN o.lekari l WHERE l.id  = ?2 and o.zdravstveniKarton.id = ?1")
+	public Collection<Operacija> checkKarton(Integer idKarton, Integer idLekar);
 }

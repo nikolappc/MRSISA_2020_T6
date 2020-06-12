@@ -38,6 +38,11 @@
         <v-container>
           <v-card><h2 style="text-align:center">Istorija pregleda i operacija</h2>
           <h4>{{ pacijent.ime }} {{ pacijent.prezime }}</h4></v-card>
+          <div>
+          <router-link :to="/zdravstveniKartonPrikaz/+pacijent.id">
+            <v-btn>Zdravsteni karton</v-btn>
+          </router-link>
+          </div>
           <v-data-table
             :headers="headers"
             :items="pregledi"

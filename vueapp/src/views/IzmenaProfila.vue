@@ -35,21 +35,7 @@
           :rules="brojTelefonaRules"
           label="Broj Telefona"
         ></v-text-field>
-        <v-text-field
-          v-model="ulogovani.adresa.adresa"
-          :rules="adresaRules"
-          label="Adresa"
-        ></v-text-field>
-        <v-text-field
-          v-model="ulogovani.adresa.grad"
-          :rules="adresaRules"
-          label="Grad"
-        ></v-text-field>
-        <v-text-field
-          v-model="ulogovani.adresa.drzava"
-          :rules="adresaRules"
-          label="Država"
-        ></v-text-field>
+        <AutocompleteAdresa v-bind:adresa="ulogovani.adresa"/>
         <v-text-field
           v-model="ulogovani.jbo"
           :rules="jboRules"
@@ -74,8 +60,12 @@
 <script>
 import axios from 'axios';
 import router from "../router/index.js"
+import AutocompleteAdresa from "../components/Map.vue"
 export default {
   name: 'ProfilPacijentaIzmjena',
+  components: {
+    AutocompleteAdresa
+  },
   data: function () {
     return {
       ulogovani : {

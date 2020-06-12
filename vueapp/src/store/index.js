@@ -4,6 +4,16 @@ import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex)
 
+const getDefaultState = () => {
+  return {
+    ulogovan:"",
+    snackbar: {
+      showing: false,
+      text: '',
+    }
+  }
+}
+
 export default new Vuex.Store({
   state: {
     ulogovan:"",
@@ -24,6 +34,9 @@ export default new Vuex.Store({
       snackbar.showing = true;
       state.snackbar = snackbar;
     },
+    resetState (state) {
+      Object.assign(state, getDefaultState())
+    }
   },
   actions: {
   },

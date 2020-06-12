@@ -43,35 +43,8 @@
           label="Broj Telefona"
           outlined
         ></v-text-field>
-        <v-text-field
-          v-model="izmijenjen.adresa.adresa"
-          :rules="adresaRules"
-          label="Adresa"
-          append-icon='mdi-map-marker'
-          outlined
-        ></v-text-field>
-        <v-text-field
-          v-model="izmijenjen.adresa.grad"
-          :rules="adresaRules"
-          label="Grad"
-          append-icon='mdi-map-marker'
-          outlined
-        ></v-text-field>
-        <v-text-field
-          v-model="izmijenjen.adresa.drzava"
-          :rules="adresaRules"
-          label="Država"
-          append-icon='mdi-map-marker'
-          outlined
-        ></v-text-field>
-        <!--<v-text-field
-          v-model="izmijenjen.jbo"
-          :rules="jboRules"
-          :disabled="true"
-          label="Jedinstveni broj osiguranika"
-          repend-inner-icon="mdi-file-chart"
-          outlined
-        ></v-text-field>--></v-card-text>
+        <AutocompleteAdresa v-bind:adresa="izmijenjen.adresa"/>
+        </v-card-text>
         <v-card-actions><v-spacer></v-spacer><v-btn
           :disabled="!valid"
           color="success"
@@ -90,7 +63,11 @@
 <script>
 import axios from 'axios';
 import router from "../router/index.js"
+import AutocompleteAdresa from "../components/Autocomplete.vue"
 export default {
+  components:{
+    AutocompleteAdresa
+  },
   name: 'ProfilPacijentaIzmjena',
   data: function () {
     return {

@@ -19,7 +19,7 @@
     ></v-select>
 
     <v-text-field
-      v-model="tip.stavkaCenovnika.cena"
+      v-model="tip.stavkeCenovnika[0].cena"
       :rules="cenaRules"
       label="Cena"
       required
@@ -66,7 +66,6 @@ export default {
             })
             .catch((error) => { console.log(error); 
               this.$store.commit("setSnackbar", {text:"Tip se koristi na pregledu", color: "error"});
-              this.$emit("zatvori");
             });
         }
 

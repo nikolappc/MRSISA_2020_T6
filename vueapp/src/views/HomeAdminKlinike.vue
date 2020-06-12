@@ -1,16 +1,6 @@
 <template>
   <div class="home">
     <v-container>
-<vuetify-google-autocomplete
-id='map'
-append-icon='mdi-map-marker'
-v-bind:disable='true'
-placeholder="Adresa"
-v-on:placechanged="getAddressData"
->
-</vuetify-google-autocomplete>
-<p>hhhh</p>
-	
       <h1>Administrator klinike</h1>
       <v-card class="main-card">
 		
@@ -296,9 +286,7 @@ export default {
       console.log(this.odsustva);
       this.odsustva = this.odsustva.filter(odsustvo => odsustvo.odmor.id !== id);
     },
-getAddressData(formattedData) {
-console.log(formattedData);
-},
+    
   }
   
   

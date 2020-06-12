@@ -23,7 +23,7 @@
     ></v-select>
 
     <v-text-field
-      v-model="tip.stavkaCenovnika.cena"
+      v-model="tip.stavkeCenovnika[0].cena"
       :rules="cenaRules"
       label="Cena"
       required
@@ -49,7 +49,7 @@ export default {
     data: function() { return {
       tip: { 
           naziv: '', 
-          stavkaCenovnika: {cena: 0},
+          stavkeCenovnika: [{cena: 0}],
           tip: '',
           id: 0,
           },

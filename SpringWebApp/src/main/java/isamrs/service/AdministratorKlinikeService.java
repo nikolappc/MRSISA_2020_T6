@@ -11,6 +11,7 @@ import isamrs.exceptions.LekarZauzetException;
 import isamrs.exceptions.NotFoundException;
 import isamrs.exceptions.SalaZauzetaException;
 import isamrs.operacije.doktori.OnDoktorDodatEvent;
+import isamrs.operacije.doktori.OnDoktorDodatEventPregled;
 import isamrs.repository.*;
 
 import java.sql.Timestamp;
@@ -178,8 +179,13 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
             throw new Exception();
         }
 
-        pregledBaza.setSala(s);
         Lekar l = lekarRepo.findById(pregled.getLekar().getId()).orElse(null);
+        eventPublisher.publishEvent(new OnDoktorDodatEventPregled(l, pregledBaza, pregled.getTermin()));
+        l.getPregled().add(pregledBaza);
+        lekarRepo.save(l);
+        
+        
+        pregledBaza.setSala(s);
         pregledBaza.setLekar(l);
         pregledRepo.save(pregledBaza);
         //Dodaj pacijenta u klinici
