@@ -47,6 +47,7 @@ public class KlinikaServiceImpl implements Service<Klinika, Integer>{
 	private PacijentRepository repoPacijent;
 	
 	
+	
 	@Override
 	public Collection<Klinika> findAll() {
 		return repo.findAll();
@@ -154,7 +155,9 @@ public class KlinikaServiceImpl implements Service<Klinika, Integer>{
 					break;
 				}
 			}
-			klinike.add(kk);
+			if (datumOk) {
+				klinike.add(kk);
+			}
 		}
 		ArrayList<KlinikaZaPacijentaDTO> klinikeDTO = new ArrayList<>();
 		for (Klinika klinika : klinike) {

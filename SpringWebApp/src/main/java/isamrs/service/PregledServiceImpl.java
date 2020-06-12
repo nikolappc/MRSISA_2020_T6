@@ -11,11 +11,13 @@ import javax.persistence.PessimisticLockException;
 import isamrs.domain.AdministratorKlinike;
 import isamrs.domain.Cenovnik;
 import isamrs.domain.Dijagnoza;
+import isamrs.domain.GodisnjiOdmor;
 import isamrs.domain.Klinika;
 import isamrs.domain.Lekar;
 import isamrs.domain.Operacija;
 import isamrs.domain.Pacijent;
 import isamrs.domain.Pregled;
+import isamrs.domain.RadnoVreme;
 import isamrs.domain.Recepti;
 import isamrs.domain.Sala;
 import isamrs.domain.Termin;
@@ -248,9 +250,38 @@ public class PregledServiceImpl implements PregledService {
 		return true;
 	}
 	
+	
 	Boolean lekarZauzetZaTermin(Lekar l, Termin t) {
 		System.out.println("*****************"+t.getPocetak() + " " + t.getKraj());
 		System.out.println("-----------");
+		if (l.getGodisnjiOdmor() != null) {
+			for (GodisnjiOdmor go : l.getGodisnjiOdmor()) {
+				if ((t.getPocetak().after(go.getPocetak()) || t.getPocetak().equals(go.getPocetak())) && (t.getPocetak().before(go.getKraj()) || t.getPocetak().equals(go.getKraj()))) {
+					return true;
+				}
+			}
+		}
+		ArrayList<RadnoVreme> radnaVremena = new ArrayList<RadnoVreme>(l.getRadnoVreme());
+		Date pocetak = radnaVremena.get(l.getRadnoVreme().size()-1).getPocetak();
+		Date kraj = radnaVremena.get(l.getRadnoVreme().size()-1).getKraj();
+		Calendar pocetakRadnogVremena = Calendar.getInstance();
+		pocetakRadnogVremena.setTime(pocetak);
+		Calendar krajRadnogVremena = Calendar.getInstance();
+		krajRadnogVremena.setTime(kraj);
+		Calendar pocetakTermina = Calendar.getInstance();
+		pocetakTermina.setTime(t.getPocetak());
+		Calendar krajTermina = Calendar.getInstance();
+		krajTermina.setTime(t.getKraj());
+		if (pocetakTermina.get(Calendar.DAY_OF_WEEK) == 0 || pocetakTermina.get(Calendar.DAY_OF_WEEK) == 1) {
+			return true;
+		}
+		pocetakRadnogVremena.set(Calendar.YEAR, 0); pocetakRadnogVremena.set(Calendar.MONTH, 0); pocetakRadnogVremena.set(Calendar.DAY_OF_MONTH, 0);
+		krajRadnogVremena.set(Calendar.YEAR, 0); krajRadnogVremena.set(Calendar.MONTH, 0); krajRadnogVremena.set(Calendar.DAY_OF_MONTH, 0);
+		pocetakTermina.set(Calendar.YEAR, 0); pocetakTermina.set(Calendar.MONTH, 0); pocetakTermina.set(Calendar.DAY_OF_MONTH, 0);
+		krajTermina.set(Calendar.YEAR, 0); krajTermina.set(Calendar.MONTH, 0); krajTermina.set(Calendar.DAY_OF_MONTH, 0);
+		if (pocetakTermina.getTime().before(pocetakRadnogVremena.getTime()) || krajTermina.getTime().after(krajRadnogVremena.getTime())) {
+			return true;
+		}
 		for (Pregled p : l.getPregled()) {
 			System.out.println("+++++"+p.getTermin().getPocetak() + " " + p.getTermin().getKraj());
 			if ( ( !p.getTermin().getPocetak().after(t.getPocetak() )
