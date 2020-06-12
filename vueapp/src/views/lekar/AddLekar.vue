@@ -37,24 +37,7 @@
       :rules="rule"
       required
     ></v-text-field>
-    <v-text-field
-      v-model="lekar.adresa.adresa"
-      label="Adresa"
-      :rules="rule"
-      required
-    ></v-text-field>
-    <v-text-field
-      v-model="lekar.adresa.grad"
-      label="Grad"
-      :rules="rule"
-      required
-    ></v-text-field>
-    <v-text-field
-      v-model="lekar.adresa.drzava"
-      label="Država"
-      :rules="rule"
-      required
-    ></v-text-field>
+    <AutocompleteAdresa v-bind:adresa="lekar.adresa"/>
     <v-text-field
       v-model="lekar.jbo"
       label="Jedinstveni broj osiguranika"
@@ -102,7 +85,7 @@
         </template>
     </v-select>
 
-
+  
     <v-btn
       :disabled="!valid"
       color="success"
@@ -119,12 +102,17 @@
 import axios from "axios";
 import moment from "moment"
 import router from "../../router/index.js"
+import AutocompleteAdresa from "../../components/Autocomplete.vue";
 export default {
+    components:{
+      AutocompleteAdresa
+    },
     name: 'AddLekar',
     data: function() { return {
         smena: [{ pocetak: new Date("1000-01-01 07:00"),kraj: new Date("1000-01-01 15:00")},
           { pocetak: new Date("1000-01-01 15:00"),kraj: new Date("1000-01-01 23:00")}
         ],
+        adresa: "",
         lekar: { 
             ime: '', 
             prezime: '',
@@ -146,6 +134,9 @@ export default {
         ],
         rule2: [
           v => v.length != 0 || 'Obavezno polje'
+        ],
+        rule3: [
+          v => console.log(v) || "Mora imati polje"
         ],
         emailRules: [
           v => !!v || 'E-mail je obavezan',
@@ -177,6 +168,8 @@ export default {
             event.preventDefault();
             this.lekar.radnoVreme = [];
             this.lekar.radnoVreme.push(this.radnoVreme);
+            console.log(this.lekar.adresa);
+
             axios
             .post('lekar',this.lekar)
             .then(() => {
@@ -184,7 +177,8 @@ export default {
                 router.push("/lekari");
             })
             .catch(function (error) { console.log(error); });
-        }
+        },
+        
 
     }
     

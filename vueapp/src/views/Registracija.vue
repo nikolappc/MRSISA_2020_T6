@@ -38,24 +38,9 @@
               label="Prezime"
               required
             ></v-text-field></td></tr>
-            <tr><td><v-text-field
-              v-model="reg.adresa.adresa"
-              :rules="Rules"
-              label="Adresa prebivalista"
-              required
-            ></v-text-field></td>
-            <td><v-text-field
-              v-model="reg.adresa.grad"
-              :rules="Rules"
-              label="Grad"
-              required
-            ></v-text-field></td>
-			<td><v-text-field
-              v-model="reg.adresa.drzava"
-              :rules="Rules"
-              label="Država"
-              required
-            ></v-text-field></td></tr>
+            <tr>
+              <AutocompleteAdresa v-bind:adresa="reg.adresa"/>
+            </tr>
             <tr><td colspan="3"><v-text-field
               v-model="reg.brojTelefona"
               :rules="Rules"
@@ -85,8 +70,12 @@
 
 <script>
 import axios from 'axios';
-import router from "../router/index.js"
+import router from "../router/index.js";
+import AutocompleteAdresa from "../components/Autocomplete.vue";
 export default {
+  components:{
+    AutocompleteAdresa
+  },
   name: 'Registracija',
   data: function () {
     return {
@@ -131,6 +120,21 @@ export default {
     }
   },
   methods: {
+    getAddressData(formattedData) {
+          try{
+            console.log(formattedData);
+            this.reg.adresa.adresa = formattedData.name;
+            if(formattedData.locality != undefined && formattedData != null)
+              this.reg.adresa.grad = formattedData.locality;
+            else
+              this.reg.adresa.grad = formattedData.administrative_area_level_1;
+            this.reg.adresa.drzava = formattedData.country;
+
+          }
+          catch{
+            this.reg.adresa = {adresa: '', grad: '', drzava: ''};
+          }
+        },
     posaljiZahtjev: function(event) {
 		this.reg.password = this.novaSifra;
         event.preventDefault();

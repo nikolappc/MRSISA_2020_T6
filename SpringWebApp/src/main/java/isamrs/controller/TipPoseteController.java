@@ -37,6 +37,7 @@ public class TipPoseteController {
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
 		Collection<TipPosete> tipovi = tipService.findAll(ak.getId());
+		
 		return new ResponseEntity<Collection<TipPosete>>(tipovi, HttpStatus.OK);
 	}
 	

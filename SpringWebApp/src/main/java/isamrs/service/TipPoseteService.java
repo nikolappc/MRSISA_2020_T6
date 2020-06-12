@@ -1,11 +1,13 @@
 package isamrs.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import isamrs.domain.AdministratorKlinike;
 import isamrs.domain.Operacija;
 import isamrs.domain.Pregled;
+import isamrs.domain.StavkaCenovnika;
 import isamrs.domain.TipPosete;
 import isamrs.repository.AdministratorKlinikeRepository;
 import isamrs.repository.OperacijaRepository;
@@ -64,8 +66,14 @@ public class TipPoseteService {
 		} catch (Exception e) {
 			return null;
 		}
+		ak.getKlinika().getTipPosete().add(t);
+		ArrayList<StavkaCenovnika> lista = (ArrayList<StavkaCenovnika>) t.getStavkeCenovnika();
+		StavkaCenovnika sc = lista.get(lista.size() - 1);
+		sc.setTipPosete(t);
+		sc.setCenovnik(ak.getKlinika().getCenovnik());
+		ak.getKlinika().getCenovnik().getStavkaCenovnika().add(sc);
 		TipPosete tp = tipRepo.save(t); 
-		ak.getKlinika().getTipPosete().add(tp);
+		adminRepo.save(ak);
 		return tp;
 	}
 
@@ -79,8 +87,11 @@ public class TipPoseteService {
 		if(pregledi.isEmpty()) {
 			List<Operacija> operacije = operacijaRepo.findByTip(tp);
 			if(operacije.isEmpty()) {
-
-				return tipRepo.save(t);
+				StavkaCenovnika sc =  tp.getStavkeCenovnika().iterator().next();
+				sc.setCena( ((ArrayList<StavkaCenovnika>) t.getStavkeCenovnika()).get(0).getCena());
+				tp.setTip(t.getTip());
+				tp.setNaziv(t.getNaziv());
+				return tipRepo.save(tp);
 			}
 			else
 				throw new Exception();

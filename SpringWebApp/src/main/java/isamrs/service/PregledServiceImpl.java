@@ -1,5 +1,9 @@
 package isamrs.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -28,10 +32,13 @@ import isamrs.dto.ZakazaniPregledDTO;
 import isamrs.repository.KlinikaRepository;
 import isamrs.repository.LekarRepository;
 import isamrs.exceptions.NotFoundException;
+import isamrs.operacije.zakazivanje.OperacijaRunnable;
+import isamrs.operacije.zakazivanje.PregledRunnable;
 import isamrs.repository.PacijentRepository;
 import isamrs.repository.PregledRepository;
 import isamrs.repository.TipPoseteRepository;
 import isamrs.repository.ZdravstveniKartonRepository;
+import isamrs.tasks.ThreadPoolTaskSchedulerConfig;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -42,10 +49,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 
 @Service
 public class PregledServiceImpl implements PregledService {
+	
+	@Autowired
+	ThreadPoolTaskSchedulerConfig threadPoolTaskSchedulerConfig;
 	
 	@Autowired
 	private PregledRepository pregledRepository;
@@ -71,6 +82,9 @@ public class PregledServiceImpl implements PregledService {
 	@Autowired
 	private ZdravstveniKartonRepository zdrrepo;
 
+	
+	@Autowired
+	PregledRunnable pregledRunnable;
 
 	//@Override
 	public Collection<Pregled> findAll() {
@@ -85,7 +99,14 @@ public class PregledServiceImpl implements PregledService {
 
 	//@Override
 	public Pregled create(Pregled t) {
-		return pregledRepository.save(t);
+		Pregled p = pregledRepository.save(t);
+		ThreadPoolTaskScheduler threadPoolTaskScheduler = threadPoolTaskSchedulerConfig.threadPoolTaskScheduler();
+		pregledRunnable.setId(p.getId());
+		LocalDate date = LocalDate.now().plusDays(1);
+		LocalDateTime datetime = date.atTime(LocalTime.of(0,0));
+		threadPoolTaskScheduler.schedule(pregledRunnable, Date.from(datetime.atZone(ZoneId.systemDefault()).toInstant()));
+		
+		return p;
 	}
 
 	
