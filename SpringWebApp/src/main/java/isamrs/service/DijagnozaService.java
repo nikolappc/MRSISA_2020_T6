@@ -10,6 +10,8 @@ import isamrs.domain.Lek;
 import isamrs.exceptions.NotFoundException;
 import isamrs.repository.DijagnozaRepository;
 import isamrs.repository.LekRepository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @org.springframework.stereotype.Service
 public class DijagnozaService implements Service<Dijagnoza, Long>{
@@ -37,6 +39,7 @@ public class DijagnozaService implements Service<Dijagnoza, Long>{
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public Dijagnoza update(Long id, Dijagnoza t) throws NotFoundException {
 		if(!repo.findById(id).isPresent()){
 			throw new NotFoundException();

@@ -20,12 +20,12 @@ public class Sala {
 	
 	@Column(name = "naziv",nullable = false, unique = false)
 	private String naziv;
-	
-	
-	
+
+
+
 	@Version
 	private Long version;
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -52,4 +52,11 @@ public class Sala {
 	
 	public Sala() {}
 
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
 }

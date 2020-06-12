@@ -212,7 +212,7 @@ public class DateFinder {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void resolve(Integer id) {
-        Operacija o = null;
+        Operacija o;
         try {
             o = operacijaService.findOne(id);
         } catch (NotFoundException e) {
@@ -221,8 +221,8 @@ public class DateFinder {
         }
         if(o.getSala() == null){
             Klinika k = klinikaService.findByOperacija(id);
-            Collection<Lekar> lekari = lekarService.findByKlinika(k);
-            Collection<Sala> sale = salaService.findByKlinika(k);
+            this.lekari = lekarService.findByKlinika(k);
+            this.sale = salaService.findByKlinika(k);
 
             Termin t = o.getTermin();
 

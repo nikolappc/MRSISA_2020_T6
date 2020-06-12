@@ -26,11 +26,11 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @MappedSuperclass
 public class Poseta {
 
-	
+
 	@Version
 	private Long version;
-	
-	
+
+
 	@Column(name = "ime", unique = false, nullable = true)
 	private String opis;
 
@@ -156,4 +156,11 @@ public class Poseta {
 	public Poseta() {
 	}
 
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
 }

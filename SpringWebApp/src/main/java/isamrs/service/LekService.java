@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import isamrs.domain.Lek;
 import isamrs.exceptions.NotFoundException;
 import isamrs.repository.LekRepository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 @org.springframework.stereotype.Service
 public class LekService implements Service<Lek, Long>{
 
@@ -34,6 +37,7 @@ public class LekService implements Service<Lek, Long>{
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public Lek update(Long id, Lek t) throws NotFoundException {
 		if(!repo.findById(id).isPresent()){
 			throw new NotFoundException();
