@@ -27,4 +27,7 @@ public interface PacijentService {
 	Collection<PosetaDTO> findBuduciPregled(Integer id) throws NotFoundException;
 	Pacijent findByKarton(Integer idKartona);
 
+    void setOdobren(String email, boolean b);
+
+    Pacijent respond(String email);
 }

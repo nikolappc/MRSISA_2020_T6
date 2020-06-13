@@ -120,8 +120,22 @@ Vue.use(VueRouter, VueAxios, axios)
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/OveriRecepte.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/medicinskaSestra/OveriRecepte.vue')
   },
+  {
+    path: '/overavanjeRecepata',
+    name: 'OveravanjeRecepata',
+    props:true,
+    beforeEnter: (to, from, next) => {
+      check(to,from,next,["SESTRA"]);
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/medicinskaSestra/OveravanjeRecepata.vue')
+  },
+
+
   {
     path: '/about',
     name: 'About',

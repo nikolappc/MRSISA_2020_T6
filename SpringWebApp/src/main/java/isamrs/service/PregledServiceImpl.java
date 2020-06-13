@@ -78,7 +78,8 @@ public class PregledServiceImpl implements PregledService {
 	
 	@Autowired
 	private ZdravstveniKartonRepository kartonRepo;
-	
+
+
 	@Autowired
 	private MailSender mailSender;
 
@@ -87,7 +88,7 @@ public class PregledServiceImpl implements PregledService {
 
 	@Autowired
 	private SalaRepository salaRepo;
-	
+
 	@Autowired
 	PregledRunnable pregledRunnable;
 
@@ -104,7 +105,7 @@ public class PregledServiceImpl implements PregledService {
 
 	//@Override
 	public Pregled create(Pregled t) {
-		
+
 		Lekar l = lekarRepo.findById(t.getLekar().getId()).get();
 		TipPosete tp = tipRepo.findById(t.getTipPosete().getId()).get();
 		t.setLekar(l);
@@ -122,26 +123,47 @@ public class PregledServiceImpl implements PregledService {
 	
 
 
-	//@Override
-	//@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public Pregled update(Integer id, Pregled t) throws NotFoundException {
 		Pregled pregledForUpdate = pregledRepository.findById(id).orElseThrow(NotFoundException::new);
 		try {
-			t.setZdravstveniKarton(zdrrepo.findById(t.getZdravstveniKarton().getId()).get());			
+			pregledForUpdate.setPotvrdjen(t.isPotvrdjen());
+			pregledForUpdate.setTipPosete(t.tipPosete);
+			pregledForUpdate.setOdradjen(t.isOdradjen());
+			pregledForUpdate.setTermin(t.getTermin());
+			try{
+				pregledForUpdate.setTipPosete(tipRepo.findById(t.getTipPosete().getId()).orElseThrow(NotFoundException::new));
+			}catch (Exception e){
+				e.printStackTrace();
+			}
+			try{
+				pregledForUpdate.setLekar(lekarRepo.findById(t.getLekar().getId()).orElseThrow(NotFoundException::new));
+			}catch (Exception e){
+				e.printStackTrace();
+			}
+			try{
+				pregledForUpdate.setZdravstveniKarton(zdrrepo.findById(t.getZdravstveniKarton().getId()).orElseThrow(NotFoundException::new));
+			}catch (Exception e){
+				e.printStackTrace();
+			}
+			pregledForUpdate.setRecepti(t.getRecepti());
+			pregledForUpdate.setDijagnoza(t.getDijagnoza());
+			pregledForUpdate.setOpis(t.getOpis());
+			pregledForUpdate.setSala(t.getSala());
 		}
 		catch (Exception e) {
 			throw new NotFoundException();
 		}
-		return pregledRepository.save(t);
+		return pregledRepository.save(pregledForUpdate);
 	}
-
-	//@Override
+	@Override
 	public void delete(Integer id) {
 		pregledRepository.deleteById(id);
 		
 	}
 
-	//@Override
+	@Override
 	public List<Pregled> findByKartonId(Integer id) {
 		return pregledRepository.findByIdKarton(id);
 	}
@@ -151,17 +173,17 @@ public class PregledServiceImpl implements PregledService {
 	}
 
 
-	//@Override
+	@Override
 	public Collection<Pregled> findPreglediKlinike(Integer idKlinike) {
 		return pregledRepository.getPreglediKlinike(idKlinike);
 	}
 	
-	//@Override
+	@Override
 	public Collection<Pregled> findPredefinisaniPreglediKlinike(Integer idKlinike) {
 		return pregledRepository.getPredefinisaniPreglediKlinike(idKlinike);
 	}
 	
-	//@Override
+	@Override
 	public List<ZakazaniPregledDTO> getBuduciPotvrdjeniPregledi(Integer id){
 		Date now = new Date();
 		List<Pregled> pregledi = pregledRepository.getBuduciPotvrdjeniPregledi(id, now);
@@ -177,12 +199,12 @@ public class PregledServiceImpl implements PregledService {
 		return zakazani;
 	}
 
-	//@Override
+	@Override
 	public Collection<Pregled> findByLekar(Lekar lekar) {
 		return pregledRepository.findByLekar(lekar);
 	}
 
-	//@Override
+	@Override
 	public Iterable<? extends Pregled> findBySala(Sala s) {
 		return pregledRepository.findBySala(s);
 	}

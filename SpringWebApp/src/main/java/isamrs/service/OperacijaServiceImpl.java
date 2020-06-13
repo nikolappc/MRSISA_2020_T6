@@ -57,10 +57,10 @@ public class OperacijaServiceImpl implements OperacijaService {
 
 	@Autowired
 	private TipPoseteRepository tipRepo;
-	
+
 	@Autowired
 	private LekarRepository lekarRepo;
-	
+
 	@Override
 	public Collection<Operacija> findAll() {
 
