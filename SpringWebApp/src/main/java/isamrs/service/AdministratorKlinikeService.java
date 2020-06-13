@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.Collectors;
@@ -122,7 +123,7 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
 			.collect(Collectors.toList());
     }
 
-
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public Operacija update(Integer id, Operacija operacija) throws Exception, SalaZauzetaException, LekarZauzetException {
 
         Operacija operacijaBaza = operacijaRepo.findById(id).orElseGet(null);
@@ -184,7 +185,7 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
     }
 
     
-    @Transactional(readOnly = false)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public Pregled update(Integer id, Pregled pregled) throws Exception, NotFoundException {
         Pregled pregledBaza = pregledRepo.findById(id).orElseThrow(NotFoundException::new);
         if(pregledBaza == null)

@@ -81,9 +81,10 @@ public class TipPoseteService {
 		return tp;
 	}
 
+	@Transactional(readOnly = false)
 	public TipPosete update(Integer id, TipPosete t) throws Exception {
 		
-		TipPosete tp = tipRepo.findById(t.getId()).orElseGet(null);
+		TipPosete tp = tipRepo.findOneById(t.getId());
 		if(tp == null)
 			return null;
 		

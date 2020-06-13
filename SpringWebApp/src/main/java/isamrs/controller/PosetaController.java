@@ -58,10 +58,15 @@ public class PosetaController {
 	@Autowired
 	private MailSender mailSender;
 	
-//
-//	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-//	public ResponseEntity<Poseta> getPosete(HttpServletRequest req){
-//
+
+//	@PostMapping(value = "otkazi/{id}",produces = MediaType.TEXT_HTML_VALUE)
+//	public ResponseEntity<Boolean> zavrsiPregled(@PathVariable("id") Integer id, HttpServletRequest req) throws NotFoundException {
+//		if (!(req.getSession().getAttribute("user") instanceof Lekar)) {
+//			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+//		}
+//		Integer idLekar =  ((Lekar)req.getSession().getAttribute("user")).getId();
+//		Pregled updated = posetaService.update(id, pregled);
+//		return new ResponseEntity<>(pregledToPregledDTO(updated), HttpStatus.OK);
 //	}
 
 	@PutMapping(value = "pregled/{id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

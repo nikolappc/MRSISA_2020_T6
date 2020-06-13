@@ -23,8 +23,7 @@ import isamrs.dto.TipPoseteDTO;
 public class TipPosete {
 
 	
-	@Version
-	private Long version;
+
 	
 	
 	@Id
@@ -44,7 +43,9 @@ public class TipPosete {
 	
 	@OneToMany(mappedBy = "tipPosete", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
 	public Collection<StavkaCenovnika> stavkeCenovnika;
-
+	@Version
+	private Long version;
+	
 	public TipPosete(int id, Tip tip, String naziv) {
 		this.id = id;
 		this.tip = tip;
@@ -55,7 +56,16 @@ public class TipPosete {
 		this(tip.getId(), tip.getTip(), tip.getNaziv());
 	}
 
-    public java.util.Collection<Lekar> getLekari() {
+	
+    public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
+
+	public java.util.Collection<Lekar> getLekari() {
 		return lekari;
 	}
 
