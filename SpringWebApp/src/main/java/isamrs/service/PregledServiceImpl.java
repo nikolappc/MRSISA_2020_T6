@@ -211,7 +211,6 @@ public class PregledServiceImpl implements PregledService {
 	
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public Boolean zakaziPregled(ZakazivanjePregledaDTO zahtjev) {
-		//Klinika k = klinikaService.findOne(zahtjev.getIdKlinike());
 		Klinika k = klinikaRepo.findById(zahtjev.getIdKlinike()).orElseGet(null);
 		if(k == null)
 			return false;
@@ -220,10 +219,8 @@ public class PregledServiceImpl implements PregledService {
 		pregled.setOdradjen(false);
 		pregled.setRecepti(new ArrayList<Recepti>());
 		pregled.setDijagnoza(new ArrayList<Dijagnoza>());
-		//Pacijent p = pacijentService.findOne(zahtjev.getIdPacijenta());
 		Pacijent p = pacijentRepo.findById(zahtjev.getIdPacijenta()).orElseGet(null);
 		pregled.setZdravstveniKarton(p.getZdravstveniKarton());
-		//TipPosete tp = posetaService.findTipByNaziv(zahtjev.getNazivTipa());
 		TipPosete tp = tipRepo.findByNaziv(zahtjev.getNazivTipa());
 		pregled.setTipPosete(tp);   //falice sala
 		Termin termin = new Termin();
@@ -232,18 +229,13 @@ public class PregledServiceImpl implements PregledService {
 		c.setTime(zahtjev.getTerminPocetak());
 		c.add(Calendar.MINUTE, 30);
 		termin.setKraj(c.getTime());
-		//Termin ter = terminService.create(termin);
-		//Lekar l = posetaService.findOneLekar(zahtjev.getIdLekara());
 		Lekar l = null;
 		try {
 			l = lekarRepo.findOneById(zahtjev.getIdLekara());		
 		} catch (/*PessimisticLockingFailureException*/Exception e) {
-			System.out.println("greskaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 			return false;
 		}
-		System.out.println(l.getIme());
 		if (lekarZauzetZaTermin(l, termin)) {
-			System.out.println("nije prosloo");
 			return false;
 		}
 		pregled.setLekar(l);
@@ -253,7 +245,6 @@ public class PregledServiceImpl implements PregledService {
 		p.getZdravstveniKarton().getPregled().add(pregled);
 		
 		Pregled pr = create(pregled);
-		System.out.println(pr.getId() + "PREGLED");
 
 		//send mail
 		String subject = "Zahtjev za zakazivanje pregleda";
@@ -273,8 +264,6 @@ public class PregledServiceImpl implements PregledService {
 	
 	
 	Boolean lekarZauzetZaTermin(Lekar l, Termin t) {
-		System.out.println("*****************"+t.getPocetak() + " " + t.getKraj());
-		System.out.println("-----------");
 		if (l.getGodisnjiOdmor() != null) {
 			for (GodisnjiOdmor go : l.getGodisnjiOdmor()) {
 				if ((t.getPocetak().after(go.getPocetak()) || t.getPocetak().equals(go.getPocetak())) && (t.getPocetak().before(go.getKraj()) || t.getPocetak().equals(go.getKraj()))) {
@@ -304,26 +293,16 @@ public class PregledServiceImpl implements PregledService {
 			return true;
 		}
 		for (Pregled p : l.getPregled()) {
-			System.out.println("+++++"+p.getTermin().getPocetak() + " " + p.getTermin().getKraj());
 			if ( ( !p.getTermin().getPocetak().after(t.getPocetak() )
 				&& p.getTermin().getKraj().after(t.getPocetak()) )
 			|| ( p.getTermin().getPocetak().after(t.getPocetak()) && p.getTermin().getPocetak().before(t.getKraj()) ) ){
-				System.out.println("zauzet");
 				return true;
 			}
-			System.out.println(!p.getTermin().getPocetak().after(t.getPocetak()));
-			System.out.println(p.getTermin().getPocetak().before(t.getPocetak()));
-			System.out.println(p.getTermin().getPocetak().equals(t.getPocetak()));
-			System.out.println(p.getTermin().getKraj().after(t.getPocetak()));
-			System.out.println(p.getTermin().getPocetak().after(t.getPocetak()));
-			System.out.println(p.getTermin().getPocetak().before(t.getKraj()));
 		}
 		for (Operacija p : l.getOperacije()) {
-			System.out.println("+++++"+p.getTermin().getPocetak() + " " + p.getTermin().getKraj());
 			if (((p.getTermin().getPocetak().before(t.getPocetak()) || p.getTermin().getPocetak().equals(t.getPocetak()))
 				&& (p.getTermin().getKraj().after(t.getPocetak())))
 			|| (p.getTermin().getPocetak().after(t.getPocetak()) && (p.getTermin().getPocetak().before(t.getKraj())))){
-				System.out.println("zauzet");
 				return true;
 			}
 		}
@@ -336,14 +315,10 @@ public class PregledServiceImpl implements PregledService {
 		if(k == null)
 			return null;
 		Pregled prDef = findOne(zahtjev.getIdPredefinisanogTermina());
-		System.out.println("*******"+prDef);
 		if (prDef == null) {
-			System.out.println("NIJE pregled");
 			return false;
 		}
-		System.out.println(prDef.getZdravstveniKarton());
 		if (prDef.getZdravstveniKarton() != null) {
-			System.out.println("ne moze se pregaziti, vise nije predefinisan");
 			return false;
 		}
 		//ZdravstveniKarton zk = kartonService.findOne(idZk);
@@ -353,7 +328,6 @@ public class PregledServiceImpl implements PregledService {
 		try {
 			Pregled prDef1 = update(zahtjev.getIdPredefinisanogTermina(), prDef);
 		} catch (Exception e) {
-			System.out.println("greska");
 			return false;
 		}
 
@@ -365,10 +339,8 @@ public class PregledServiceImpl implements PregledService {
 		SimpleMailMessage email1 = new SimpleMailMessage();
 		email1.setSubject(subject1);
 		email1.setText(message1);
-		//String recipient1 = ((Pacijent)req.getSession().getAttribute("user")).getEmail();
 		email1.setTo(email);
 		mailSender.send(email1);
-		System.out.println("ZAKAZALOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
 		return true;
 	}
 	

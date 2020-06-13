@@ -91,12 +91,5 @@ public class Pacijent extends Osoba {
 		this.responded = responded;
 	}
 	
-	public Long getVersion() {
-		return version;
-	}
-
-	public void setVersion(Long version) {
-		this.version = version;
-	}
 	
 }

@@ -29,8 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/pacijent")
 public class PacijentController {
 	
-	@Autowired
-	KlinikaRepository klinikaRepo;
 
 	@Autowired
 	private PacijentServiceImpl pacijentService;
@@ -48,7 +46,6 @@ public class PacijentController {
 	public ResponseEntity<Collection<OsobaDTO>> getPacijents(HttpServletRequest req){
 		MedicinskoOsoblje o = (MedicinskoOsoblje)req.getSession().getAttribute("user");
 		Klinika k = o.getKlinika();
-////		Hibernate.initialize(k.getPacijent());
 		Collection<OsobaDTO> finalni = k.getPacijent().stream().map(this::pacijentToOsobaDTO).collect(Collectors.toList());
 		return new ResponseEntity<>(finalni, HttpStatus.OK);
 	}
@@ -101,28 +98,10 @@ public class PacijentController {
 		if (req.getSession().getAttribute("user") == null || !(req.getSession().getAttribute("user") instanceof Pacijent)) {
 			return new ResponseEntity<Pacijent>(HttpStatus.FORBIDDEN);
 		}
-		/*Pacijent p = pacijentService.findOne(pacijent.getId());
-
-		if (p == null) {
-			return new ResponseEntity<Pacijent>(p, HttpStatus.BAD_REQUEST);
-		}
-
-		p.setIme(pacijent.getIme());
-		p.setPrezime(pacijent.getPrezime());
-		p.setPassword(pacijent.getPassword());
-		p.setBrojTelefona(pacijent.getBrojTelefona());
-		p.setJbo(pacijent.getJbo());
-		p.getAdresa().setAdresa(pacijent.getAdresa().getAdresa());
-		p.getAdresa().setGrad(pacijent.getAdresa().getGrad());
-		p.getAdresa().setDrzava(pacijent.getAdresa().getDrzava());
-
-		p = pacijentService.save(p);*/
-		
 		Pacijent p = null;
 		try {
 			p = pacijentService.izmijeni(pacijent.getId(), pacijent);
 		} catch (Exception e) {
-			System.out.println("KONFLIIIIIIIIIIIIIIIIKT<333333");
 			return new ResponseEntity<Pacijent>(p, HttpStatus.BAD_REQUEST);
 		}
 		
@@ -136,26 +115,28 @@ public class PacijentController {
 	}
 
 	@GetMapping(value = "/listaPregleda/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<PosetaDTO>> getPregledi(@PathVariable("id") Integer id, HttpServletRequest req) {
+	public ResponseEntity<ArrayList<PosetaDTO>> getPregledi(@PathVariable("id") Integer id, HttpServletRequest req) {
 		if (req.getSession().getAttribute("user") == null || (req.getSession().getAttribute("user") instanceof Pacijent && ((Pacijent)req.getSession().getAttribute("user")).getId() != id)) {
-			return new ResponseEntity<List<PosetaDTO>>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<ArrayList<PosetaDTO>>(HttpStatus.FORBIDDEN);
 		}
 		Pacijent p = pacijentService.findOne(id);
 		List<Pregled> pregledi = pregledService.findByKartonIdOdradjen(p.getZdravstveniKarton().getId());
 		List<Operacija> operacije = operacijaService.findByKartonId(p.getZdravstveniKarton().getId());
 
-		List<PosetaDTO> preglediDTO = new ArrayList<>();
+		ArrayList<PosetaDTO> preglediDTO = new ArrayList<>();
 		for (Pregled pregled : pregledi) {
 			if (pregled.getSala() != null && pregled.getTermin().getPocetak().before(new Date())) {
 				preglediDTO.add(new PregledDTO(pregled));
 			}
-			//System.out.println("pacijent kontroler" + pregled.getTermin().getPocetak().toString());
+		}
+		for (PosetaDTO prpr : preglediDTO) {
+			System.out.println(((PregledDTO) prpr).getLekar());
 		}
 		for (Operacija operacija : operacije) {
 			preglediDTO.add(new OperacijaDTO(operacija));
 		}
 
-		return new ResponseEntity<List<PosetaDTO>>(preglediDTO, HttpStatus.OK);
+		return new ResponseEntity<ArrayList<PosetaDTO>>(preglediDTO, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/karton/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -164,14 +145,11 @@ public class PacijentController {
 			return new ResponseEntity<ZdravstveniKartonDTO>(HttpStatus.FORBIDDEN);
 		}
 		Pacijent p = pacijentService.findOne(id);
-		//System.out.println("KARTON");
-		//System.out.println(id);
 
 		if (p.getZdravstveniKarton() == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		ZdravstveniKarton zk = p.getZdravstveniKarton();
-		///System.out.println(zk.getKrvnaGrupa());
 
 		ZdravstveniKartonDTO zk_dto = new ZdravstveniKartonDTO(zk);
 		return new ResponseEntity<ZdravstveniKartonDTO>(zk_dto, HttpStatus.OK);
@@ -183,11 +161,6 @@ public class PacijentController {
 	
 	@GetMapping(value = "/potvrdiPregled/{idPregleda}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> potvrdiPregled(@PathVariable("idPregleda") Integer idPregleda) {
-		System.out.println("prije porvrde");
-		Klinika kkkk = klinikaRepo.findById(1).orElseGet(null);
-		for (Lekar llll : kkkk.getLekari()) {
-			System.out.println(llll.getIme() + llll.getId());
-		}
 		Pregled p = null;
 		try {
 			p = pregledService.findOne(idPregleda);
@@ -205,11 +178,6 @@ public class PacijentController {
 			e.printStackTrace();
 		}
 		
-		System.out.println("potvrda");
-		Klinika kkk = klinikaRepo.findById(1).orElseGet(null);
-		for (Lekar llll : kkk.getLekari()) {
-			System.out.println(llll.getIme() + llll.getId());
-		}
 		return new ResponseEntity<String>("Uspešno potvrdjen pregled!", HttpStatus.OK);
 	}
 	

@@ -63,10 +63,10 @@ insert into termini (pocetak, kraj) values (to_timestamp('2020-06-26 10:00', 'YY
 
 
 
-insert into pacijent (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_kartona, allowed, responded, version) values (1, '065/123-111', 'neekolapapic@gmail.com', 'nklppc', '0101', 'hermione12345', 'papic',  4, false, false, 0);
-insert into pacijent (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_kartona, allowed, responded, version) values (2, '065/123-111', 'hermione@gmail.com', 'Hermione', '0101', 'hermione12345', 'Granger', 1, true, true, 0);
-insert into pacijent (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_kartona, allowed, responded, version) values (3, '065/823-115', 'harry@gmail.com', 'Harry', '000', 'harry12345', 'Potter', 2, true, true, 0);
-insert into pacijent (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_kartona, allowed, responded, version) values (1, '065/923-115', 'verakovacevic98@gmail.com', 'Ron', '000', 'ron12345', 'Weasley', 3, true, true, 0);
+insert into pacijent (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_kartona, allowed, responded) values (1, '065/123-111', 'neekolapapic@gmail.com', 'nklppc', '0101', 'hermione12345', 'papic',  4, false, false);
+insert into pacijent (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_kartona, allowed, responded) values (2, '065/123-111', 'hermione@gmail.com', 'Hermione', '0101', 'hermione12345', 'Granger', 1, true, true);
+insert into pacijent (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_kartona, allowed, responded) values (3, '065/823-115', 'harry@gmail.com', 'Harry', '000', 'harry12345', 'Potter', 2, true, true);
+insert into pacijent (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_kartona, allowed, responded) values (1, '065/923-115', 'verakovacevic98@gmail.com', 'Ron', '000', 'ron12345', 'Weasley', 3, true, true);
 
 insert into ocene (vrednost, id_lekara, id_pacijenta) values (5, 1, 3);
 insert into ocene (vrednost, id_lekara, id_pacijenta) values (3, 2, 3);

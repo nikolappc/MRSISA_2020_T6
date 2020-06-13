@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import isamrs.domain.GodisnjiOdmor;
+import isamrs.domain.MedicinskoOsoblje;
 
 @Repository
 public interface OdmorRepository extends JpaRepository<GodisnjiOdmor, Integer>{
@@ -16,4 +17,5 @@ public interface OdmorRepository extends JpaRepository<GodisnjiOdmor, Integer>{
 	
 	@Query("SELECT od as odmor,l as mo FROM MedicinskaSestra l JOIN l.godisnjiOdmor od WHERE l.klinika.id = ?1 and od.odobren = false")
 	public ArrayList<Object[]> zahteviSestre(Integer id);
+
 }

@@ -125,10 +125,8 @@ public class UserController {
 
 	@GetMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Boolean> logout(HttpServletRequest req) {
-		// if (req.getSession().getAttribute("user") != null) {
 		req.getSession().invalidate();
 		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
-		// }
 	}
 
 	@PostMapping(value = "/registracija", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)

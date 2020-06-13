@@ -122,7 +122,6 @@ public class PacijentServiceImpl implements PacijentService {
 	}
 	
 	
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public Pacijent izmijeni(Integer id, IzmjenaOsobeDTO pacijent) {
 		Pacijent p = findOne(pacijent.getId());
 
@@ -140,10 +139,7 @@ public class PacijentServiceImpl implements PacijentService {
 		p.getAdresa().setGrad(pacijent.getAdresa().getGrad());
 		p.getAdresa().setDrzava(pacijent.getAdresa().getDrzava());
 
-		System.out.println(p.getVersion()+"----------------------------------------------------------------------------------1");
 		Pacijent updated = pacijentRepository.save(p);
-		//pacijentRepository.flush();
-		System.out.println(p.getVersion()+"----------------------------------------------------------------------------------2");
 
 		return updated;
 		

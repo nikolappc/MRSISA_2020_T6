@@ -58,11 +58,6 @@ public class PosetaController {
 	@Autowired
 	private MailSender mailSender;
 	
-//
-//	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-//	public ResponseEntity<Poseta> getPosete(HttpServletRequest req){
-//
-//	}
 
 	@PutMapping(value = "pregled/{id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PregledDTO> zavrsiPregled(@PathVariable("id") Integer id, @RequestBody PregledDTO p, HttpServletRequest req) throws NotFoundException {
@@ -184,11 +179,6 @@ public class PosetaController {
 			return new ResponseEntity<List<ZakazaniPregledDTO>>(HttpStatus.FORBIDDEN);
 		}
 		List<ZakazaniPregledDTO> buduciPotvrdjeni = pregledService.getBuduciPotvrdjeniPregledi(id);
-		/*ArrayList<ZakazaniPregledDTO> zakazani = new ArrayList<ZakazaniPregledDTO>();
-		for (Pregled p : buduciPotvrdjeni) {
-			Cenovnik c = p.getLekar().getKlinika().getCenovnik();
-			zakazani.add(new ZakazaniPregledDTO(p, c));
-		}*/
 		return new ResponseEntity<List<ZakazaniPregledDTO>>(buduciPotvrdjeni, HttpStatus.OK);
 	}
 
@@ -205,29 +195,6 @@ public class PosetaController {
 		} else {
 			return new ResponseEntity<String>("Uspešno otkazan pregled.", HttpStatus.OK);
 		}
-		/*if (req.getSession().getAttribute("user") == null) {
-			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
-		}
-		Pregled p = pregledService.findOne(idPregleda);
-		if (req.getSession().getAttribute("user") instanceof Pacijent && ((Pacijent)req.getSession().getAttribute("user")).getId() != p.getZdravstveniKarton().getPacijent().getId()){
-			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
-		}
-		Calendar c = Calendar.getInstance();
-		c.setTime(new Date());
-		c.add(Calendar.DATE, 1);
-		if (c.getTime().after(p.getTermin().getPocetak())) {
-			return new ResponseEntity<String>("Ne možete otkazati pregled koji počinje u naredna 24 sata.", HttpStatus.BAD_REQUEST);
-		}
-		p.setPotvrdjen(false);  //nije vise potvrdjen jer svi nezakazani su nepotvrdjeni
-		p.setZdravstveniKarton(null);   //uklanja se pacijent
-		//ako je sala rezervisana ne uklanja se, nego pregled postaje predefinisani
-		if (p.getSala() != null) {
-			Pregled pr = pregledService.update(idPregleda, p);
-		} else {
-			//ako sala nije rezervisana
-			//OVO NE MOZE?? JER JE POTVRDJEN=FALSE
-		}
-		return new ResponseEntity<String>("Uspešno otkazan pregled.", HttpStatus.OK);*/
 	}
 
 	@PostMapping(value = "/zakaziPregled", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -243,7 +210,6 @@ public class PosetaController {
 			String recipient1 = ((Pacijent)req.getSession().getAttribute("user")).getEmail();
 			response = pregledService.zakaziPredefinisaniPregled(zahtjev, idZk, recipient1);
 		}
-		System.out.println("++++++++++++++++++++++++++++++++++++++"+response);
 		if (response == true) {
 			return new ResponseEntity<String>("Uspesno!", HttpStatus.OK);
 		} else {

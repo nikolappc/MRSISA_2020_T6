@@ -59,18 +59,13 @@ export default {
     pregledi : [],
     headers: [
         {
-          text: 'Id',
-          sortable: true,
-          value: 'id',
-        },
-        {
           text: 'Opis', 
           value: 'opis', 
           sortable: true, 
         },
         {
           text: 'Sala', 
-          value: 'sala.id', 
+          value: 'sala.naziv', 
           sortable: true, 
         },
         {
@@ -85,7 +80,7 @@ export default {
         },
         {
           text: 'Tip', 
-          value: 'tip.tip', 
+          value: 'tip.naziv', 
           sortable: true, 
         },
         {
@@ -157,21 +152,13 @@ export default {
             } else {
                 return dd2.getTime() < dd1.getTime() ? -1 : 1;
             }
-          } else if (index[0]=='sala.id') {
+          } else if (index[0]=='tip.naziv') {
             console.log(index[0]);
             if (!isDesc[0]) {
               console.log(a[index]);
-              return a['sala'].id < b['sala'].id ? -1 : 1;
+              return a['tip'].tip < b['tip'].naziv ? -1 : 1;
             } else {
-              return b['sala'].id < a['sala'].id ? -1 : 1;
-            }
-          } else if (index[0]=='tip.tip') {
-            console.log(index[0]);
-            if (!isDesc[0]) {
-              console.log(a[index]);
-              return a['tip'].tip < b['tip'].tip ? -1 : 1;
-            } else {
-              return b['tip'].tip < a['tip'].tip ? -1 : 1;
+              return b['tip'].tip < a['tip'].naziv ? -1 : 1;
             }
           }
           else {

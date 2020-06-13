@@ -58,6 +58,7 @@ public class OdmorService {
 		med.addGodisnjiOdmor(t);
 		return odmorRepo.save(t);
 	}
+	
 	public GodisnjiOdmor update(Integer id, GodisnjiOdmor t) throws NotFoundException {
 		if(t.isOdobren()) {
 			GodisnjiOdmor go = odmorRepo.findById(id).orElseThrow(NotFoundException::new);

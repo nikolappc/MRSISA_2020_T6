@@ -48,7 +48,7 @@ public class PregledDTO extends PosetaDTO {
 	public PregledDTO() {}
 	
 	public PregledDTO(Pregled p) {
-		this(p.getId(), p.getOpis(), p.getTermin(), p.getTipPosete(), p.getSala(), p.getLekar());
+		super(p.getId(), p.getOpis(), p.getTermin(), p.getTipPosete(), p.getSala());
 		setOdradjen(p.isOdradjen());
 		setPotvrdjen(p.isPotvrdjen());
 		this.recepti = new ArrayList<ReceptiDTO>();
@@ -60,6 +60,7 @@ public class PregledDTO extends PosetaDTO {
 			this.dijagnoze.add(new DijagnozaDTO(d));
 		}
 		this.zdravstveniKarton = new ZdravstveniKartonDTO(p.zdravstveniKarton);
+		this.lekar = p.getLekar().getIme() + " " + p.getLekar().getPrezime();
 	}
 
 	public ZdravstveniKartonDTO getZdravstveniKarton() {

@@ -80,7 +80,7 @@ public class SpringWebAppApplicationTests {
 	
 	
 	
-	@Before
+	/*@Before
 	public void setUp() throws Exception {
 		pacijentService.save(new Pacijent("A", "AA", "aaa", "111", "1", "a@gmail.com", 1));
 		pacijentService.save(new Pacijent("B", "BB", "bbb", "222", "2", "b@gmail.com", 2));
@@ -125,6 +125,6 @@ public class SpringWebAppApplicationTests {
 		}
 		executor.shutdown();
 
-	}
+	}*/
 
 }

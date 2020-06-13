@@ -157,7 +157,7 @@ public class AdminKlinikeController {
 	}
 
 	@PutMapping(value = "/pregled/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Pregled> updateSala(@RequestBody Pregled pregled, @PathVariable Integer id) throws NotFoundException {
+	public ResponseEntity<Pregled> updateSala(@RequestBody Pregled pregled, @PathVariable Integer id, HttpServletRequest req) throws NotFoundException {
 
 
 		Pregled updatePregled = null;
@@ -174,8 +174,12 @@ public class AdminKlinikeController {
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 			String subject1 = "Zakazivanje pregleda";
-			String link1 = "http://localhost:8080/api/pacijent/potvrdiPregled/" + updatePregled.getId();
-			String link2 = "http://localhost:8080/api/pacijent/odbijPregled/" + updatePregled.getId();
+			System.out.println(req.getRequestURL().toString());
+			String adresa = req.getRequestURL().toString().split("://")[0] + "://" + req.getRequestURL().toString().split("://")[1].split("/")[0];
+			String link1 = adresa+"/api/pacijent/potvrdiPregled/" + updatePregled.getId();
+			System.out.println(link1);
+			//String link1 = "http://localhost:8080/api/pacijent/potvrdiPregled/" + updatePregled.getId();
+			String link2 = adresa+"/api/pacijent/odbijpregled/" + updatePregled.getId();
 			String message1 = "Zakazali ste pregled kod lekara "+updatePregled.getLekar().getIme()+""
 					+updatePregled.getLekar().getPrezime()+", u vreme "+sdf.format(updatePregled.getTermin().getPocetak())
 					+".\nMolimo Vas da potvrdite zakazivanje pregleda klikom na link "+link1
