@@ -7,6 +7,9 @@ import javax.persistence.Column;
 
 public class TipKlinikeDTO extends TipKlinike{
 
+    public TipKlinikeDTO() {
+    }
+
     public TipKlinikeDTO(TipKlinike t) {
         setId(t.getId());
         setTip(t.getTip());

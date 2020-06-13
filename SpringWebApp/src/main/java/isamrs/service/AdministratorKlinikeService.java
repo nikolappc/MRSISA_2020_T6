@@ -57,6 +57,9 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
     @Autowired
     ApplicationEventPublisher eventPublisher;
 
+    @Autowired
+    private AdresaService adresaService;
+
     public AdministratorKlinike findByEmail(String email) {
         return adminklinikeRepository.findByEmail(email);
     }
@@ -73,6 +76,9 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
 
     @Override
     public AdministratorKlinike create(AdministratorKlinike administratorKlinickogCentra) {
+
+        Adresa a = adresaService.createAdresa(administratorKlinickogCentra.getAdresa());
+        administratorKlinickogCentra.setAdresa(a);
         return adminklinikeRepository.save(administratorKlinickogCentra);
     }
 
@@ -82,7 +88,8 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
         AdministratorKlinike ak = adminklinikeRepository.findById(integer).orElseGet(null);
         if(ak == null)
 			return null;
-        ak.setAdresa(administratorKlinickogCentra.getAdresa());
+        Adresa a = adresaService.createAdresa(administratorKlinickogCentra.getAdresa());
+        ak.setAdresa(a);
         ak.setBrojTelefona(administratorKlinickogCentra.getBrojTelefona());
         ak.setEmail(administratorKlinickogCentra.getEmail());
         ak.setIme(administratorKlinickogCentra.getIme());

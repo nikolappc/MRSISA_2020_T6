@@ -1,5 +1,6 @@
 package isamrs.service;
 
+import isamrs.domain.Adresa;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import isamrs.domain.MedicinskaSestra;
@@ -13,7 +14,10 @@ public class MedicinskaSestraService {
 	
 	@Autowired
 	private SestraRepository sestraRepository;
-	
+
+	@Autowired
+	private AdresaService adresaService;
+
 	public MedicinskaSestra findByEmail(String email) {
 		return sestraRepository.findByEmail(email);
 	}
@@ -22,7 +26,9 @@ public class MedicinskaSestraService {
 		MedicinskaSestra ms = sestraRepository.findById(id).orElseGet(null);
 		if(ms == null)
 			return null;
-		ms.setAdresa(osoba.getAdresa());
+		Adresa a = adresaService.createAdresa(osoba.getAdresa());
+		ms.setAdresa(a);
+
 		ms.setBrojTelefona(osoba.getBrojTelefona());
 		ms.setEmail(osoba.getEmail());
 		ms.setIme(osoba.getIme());

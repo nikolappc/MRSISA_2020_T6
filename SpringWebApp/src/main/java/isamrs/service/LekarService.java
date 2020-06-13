@@ -51,7 +51,9 @@ public class LekarService {
 	
 	@Autowired
 	private TipPoseteRepository tipRepo;
-	
+
+	@Autowired
+	private AdresaService adresaService;
 
 
 	public Collection<Lekar> findAll(Integer idAdmina) {
@@ -86,6 +88,8 @@ public class LekarService {
 			tp1.lekari.add(l);
 		}
 		ak.getKlinika().getLekari().add(l);
+		Adresa a = adresaService.createAdresa(l.getAdresa());
+		l.setAdresa(a);
 		l = lekarRepo.save(l);
 		return l;
 	}
@@ -105,10 +109,9 @@ public class LekarService {
 			if(o.getTermin().getKraj().after(today))
 				throw new Exception();
 		}
-		
-		lekarForUpdate.getAdresa().setAdresa(lekar.getAdresa().getAdresa());
-		lekarForUpdate.getAdresa().setGrad(lekar.getAdresa().getGrad());
-		lekarForUpdate.getAdresa().setDrzava(lekar.getAdresa().getDrzava());
+
+		Adresa a = adresaService.createAdresa(lekar.getAdresa());
+		lekarForUpdate.setAdresa(a);
 		lekarForUpdate.setBrojTelefona(lekar.getBrojTelefona());
 		lekarForUpdate.setEmail(lekar.getEmail());
 		lekarForUpdate.setIme(lekar.getIme());

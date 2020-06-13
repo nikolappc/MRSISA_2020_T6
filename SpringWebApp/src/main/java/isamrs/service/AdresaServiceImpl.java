@@ -12,7 +12,11 @@ public class AdresaServiceImpl implements AdresaService{
     AdresaRepository adresaRepository;
 
     @Override
-    public Adresa createAdresa(Adresa a) {
-        return adresaRepository.save(a);
+    public Adresa createAdresa(Adresa nova) {
+        Adresa a =  adresaRepository.findByAdresa(nova.getAdresa(), nova.getGrad(), nova.getDrzava());
+        if(a==null){
+            a = adresaRepository.save(nova);
+        }
+        return a;
     }
 }

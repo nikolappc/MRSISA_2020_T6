@@ -33,7 +33,7 @@
                                 >
 
                                 </v-select>
-                                <Autocomplete></Autocomplete>
+                                <Autocomplete :adresa="adresa"></Autocomplete>
                                 <!-- <v-row>
                                     <v-col>
                                         <v-text-field
@@ -116,19 +116,18 @@
 </template>
 
 <script>
+    import Autocomplete from "../../components/Autocomplete.vue"
     const axios = require('axios');
     export default {
         name:"RegKlinika",
         components:{
-            
+            Autocomplete
         },
         data:function () {
             return {
                 rules:[v=>!!v||"Ovo polje je obavezno!"],
                 naziv:"",
-                adresa:"",
-                grad:"",
-                drzava:"",
+                adresa:{},
                 opis:"",
                 tipKlinike:"",
                 tipoviKlinika:[],
@@ -158,11 +157,7 @@
                         axios.post("/klinika",
                             {
                                 naziv:this.naziv,
-                                adresa:{
-                                    grad:this.grad,
-                                    drzava:this.drzava,
-                                    adresa:this.adresa
-                                },
+                                adresa:this.adresa,
                                 opis:this.opis, 
                                 tipKlinike:res.data
                             })

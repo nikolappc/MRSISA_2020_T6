@@ -42,9 +42,7 @@ public class PosetaController {
 	
 	@Autowired
 	private PregledServiceImpl pregledService;
-	
-	@Autowired
-	private KlinikaServiceImpl klinikaService;
+
 	
 	@Autowired
 	private OperacijaService operacijaService;

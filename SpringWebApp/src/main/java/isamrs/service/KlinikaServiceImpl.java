@@ -8,17 +8,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import isamrs.domain.*;
+import isamrs.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
-import isamrs.domain.GodisnjiOdmor;
-import isamrs.domain.Klinika;
-import isamrs.domain.Lekar;
-import isamrs.domain.Ocena;
-import isamrs.domain.Operacija;
-import isamrs.domain.Pacijent;
-import isamrs.domain.Pregled;
-import isamrs.domain.RadnoVreme;
 import isamrs.dto.GetOcenaDTO;
 import isamrs.dto.KlinikaZaPacijentaDTO;
 import isamrs.dto.LekarZaPacijentaDTO;
@@ -26,10 +20,6 @@ import isamrs.dto.PretragaKlinikeDTO;
 import isamrs.dto.SetOcenaDTO;
 import isamrs.dto.SlobodniLekariKlinikeDTO;
 import isamrs.exceptions.NotFoundException;
-import isamrs.repository.KlinikaRepository;
-import isamrs.repository.LekarRepository;
-import isamrs.repository.OcenaRepository;
-import isamrs.repository.PacijentRepository;
 
 @org.springframework.stereotype.Service
 public class KlinikaServiceImpl implements Service<Klinika, Integer>{
@@ -46,7 +36,8 @@ public class KlinikaServiceImpl implements Service<Klinika, Integer>{
 	@Autowired
 	private PacijentRepository repoPacijent;
 	
-	
+	@Autowired
+	private AdresaService adresaService;
 	
 	@Override
 	public Collection<Klinika> findAll() {
@@ -64,6 +55,8 @@ public class KlinikaServiceImpl implements Service<Klinika, Integer>{
 
 	@Override
 	public Klinika create(Klinika t) {
+		Adresa a = adresaService.createAdresa(t.getAdresa());
+		t.setAdresa(a);
 		return repo.save(t);
 	}
 
