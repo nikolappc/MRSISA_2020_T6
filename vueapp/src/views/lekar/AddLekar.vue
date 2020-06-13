@@ -65,7 +65,7 @@
 
 
     <v-select
-      v-model="lekar.tipoviPoseta"
+      v-model="odabraniTipovi"
       :items="tipovi"
       label="Specijalizacija lekara"
       chips
@@ -112,6 +112,7 @@ export default {
         smena: [{ pocetak: new Date("1000-01-01 07:00"),kraj: new Date("1000-01-01 15:00")},
           { pocetak: new Date("1000-01-01 15:00"),kraj: new Date("1000-01-01 23:00")}
         ],
+        odabraniTipovi: [],
         adresa: "",
         lekar: { 
             ime: '', 
@@ -168,10 +169,10 @@ export default {
             event.preventDefault();
             this.lekar.radnoVreme = [];
             this.lekar.radnoVreme.push(this.radnoVreme);
-            console.log(this.lekar.adresa);
+            console.log(this.lekar);
 
             axios
-            .post('lekar',this.lekar)
+            .post('lekar',{lekar: this.lekar, tipovi: this.odabraniTipovi})
             .then(() => {
                 this.$store.commit("setSnackbar", {text:"Lekar je uspešno dodat", color: "success"});
                 router.push("/lekari");

@@ -143,6 +143,17 @@
                 </v-dialog>
             </v-container>
         </v-card>
+        <v-overlay
+            v-model="overlay"
+            absolute="true"
+        >
+            <v-progress-circular
+                :indeterminate="overlay"
+                :width="7"
+                color="primary"
+            >
+            </v-progress-circular>
+        </v-overlay>
     </v-container>
 </template>
 
@@ -170,6 +181,7 @@ import IzmenaSale from "./IzmenaSale.vue"
 export default {
     data: () => ({
         sale : [],
+        overlay: false,
         dialog : false,
         dialogSala: null,
         search: '',
@@ -323,18 +335,19 @@ export default {
 
                 this.pregled.termin.pocetak = this.pocetak;
                 this.pregled.termin.kraj = this.kraj;
-                
-                this.$store.commit("setSnackbar", {text:"Wait for it", color: "info"});
+                this.overlay = true;
                 axios
                     .put(this.address+ this.id,this.pregled)
                     .then((response) => {
                         console.log(response);
                         this.$store.commit("setSnackbar", {text:"Termin je uspesno zakazan", color: "success"});
                         this.$router.push("/homeAdminKlinike");
+                        this.overlay = false;
                     })
                     .catch((err) => { 
                         console.log(err);
                         this.$store.commit("setSnackbar", {text:"Termin je zauzet za tog lekara", color: "error"});
+                        this.overlay = false;
                     });
             }
         }

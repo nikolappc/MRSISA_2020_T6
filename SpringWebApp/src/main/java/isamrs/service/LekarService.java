@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import isamrs.dto.GetOcenaDTO;
+import isamrs.dto.LekarDTO;
 import isamrs.dto.LekarSlobodanDTO;
 import isamrs.dto.SetOcenaDTO;
 import isamrs.repository.AdministratorKlinikeRepository;
@@ -23,6 +24,7 @@ import isamrs.repository.OcenaRepository;
 import isamrs.repository.OperacijaRepository;
 import isamrs.repository.PacijentRepository;
 import isamrs.repository.PregledRepository;
+import isamrs.repository.TipPoseteRepository;
 import isamrs.dto.ProveraLekarSlobodanDTO;
 
 @Service
@@ -47,6 +49,9 @@ public class LekarService {
 	@Autowired
 	private AdministratorKlinikeRepository adminRepository;
 	
+	@Autowired
+	private TipPoseteRepository tipRepo;
+	
 
 
 	public Collection<Lekar> findAll(Integer idAdmina) {
@@ -66,8 +71,8 @@ public class LekarService {
 	}
 
 	@Transactional(readOnly = false)
-	public Lekar create(Lekar lekar, Integer idAdmina) {
-		Lekar l = lekarRepo.save(lekar);
+	public Lekar create(LekarDTO lekar, Integer idAdmina) {
+		Lekar l = lekarRepo.save(lekar.getLekar());
 		AdministratorKlinike ak;
 		try {
 			ak = adminRepository.findById(idAdmina).get();			
@@ -75,7 +80,13 @@ public class LekarService {
 			return null;
 		}
 		l.setKlinika(ak.getKlinika());
+		for(TipPosete tp : lekar.getTipovi()) {
+			TipPosete tp1 = tipRepo.findById(tp.getId()).orElseGet(null);
+			l.getTipoviPoseta().add(tp1);
+			tp1.lekari.add(l);
+		}
 		ak.getKlinika().getLekari().add(l);
+		l = lekarRepo.save(l);
 		return l;
 	}
 

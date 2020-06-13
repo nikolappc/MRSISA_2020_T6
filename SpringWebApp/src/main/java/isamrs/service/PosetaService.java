@@ -2,6 +2,8 @@ package isamrs.service;
 
 import isamrs.domain.*;
 import isamrs.dto.PregledDTO;
+import isamrs.exceptions.NotFoundException;
+import isamrs.repository.AdministratorKlinikeRepository;
 import isamrs.repository.LekarRepository;
 import isamrs.repository.OdmorRepository;
 import isamrs.repository.OperacijaRepository;
@@ -17,6 +19,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.Optional;
 
 @Service
 public class PosetaService {
@@ -37,12 +40,23 @@ public class PosetaService {
 	private SalaRepository salaRepo;
 	
 	@Autowired
+	private AdministratorKlinikeRepository adminRepo;
+	
+	@Autowired
 	private OdmorRepository odmorRepo;
 
-	public Pregled create(Pregled pre) throws Exception{
+	public Pregled create(Pregled pre, Integer idAdmina) throws Exception, NotFoundException{
 		Lekar l = lekarRepo.findById(pre.getLekar().getId()).get();
 		Sala s = salaRepo.findById(pre.getSala().getId()).get();
 		TipPosete t = tipRepo.findById(pre.getTipPosete().getId()).get();
+		Optional<AdministratorKlinike> o = adminRepo.findById(idAdmina);
+		AdministratorKlinike ak = null;
+		if(o.isPresent()) {
+			ak = o.get();
+		}
+		else {
+			throw new NotFoundException();
+		}
 		
 		if(s != null)
 			if (!proveriTerminSala(s, pre.getTermin())) {
@@ -56,7 +70,11 @@ public class PosetaService {
         pre.setSala(s);
         pre.setLekar(l);
         pre.setTipPosete(t);
-		return pregledRepo.save(pre);
+        
+        Pregled p = pregledRepo.save(pre);
+        ak.getKlinika().getPregledi().add(p);
+        pregledRepo.save(p);
+		return p;
 	}
 	
 

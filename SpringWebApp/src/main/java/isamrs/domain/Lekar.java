@@ -58,7 +58,7 @@ public class Lekar extends MedicinskoOsoblje {
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "lekari_specijalnosti", joinColumns = { @JoinColumn(name = "lekar_id") }, inverseJoinColumns = {
 	@JoinColumn(name = "tip_id") })
-	public Collection<TipPosete> tipoviPoseta;
+	public Collection<TipPosete> tipoviPoseta = new ArrayList<>();
 	
 	@Transient
 	public String tip = "LEKAR";

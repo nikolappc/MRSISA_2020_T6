@@ -89,9 +89,9 @@ insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_le
 insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen, version) values ('zakazani1', 1, 7, 1, 2, 2, 1, true, false, 0);
 insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen, version) values ('zakazani2', 1, 8, 1, 2, 2, 1, true, false, 0);
 insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen, version) values ('zakazani3', null, 8, 1, 2, 2, 1, false, false, 0);
-insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen, version) values ('zakazani3', 1, 12, 1, null, 2, 1, false, false, 0);
-insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen, version) values ('zakazani3', 1, 12, 1, null, 2, 1, false, false, 0);
-insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen, version) values ('zakazani3', 1, 12, 1, 4, 2, 1, true, false, 0);
+insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen, version) values ('zakazani4', 1, 12, 1, null, 2, 1, false, false, 0);
+insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen, version) values ('zakazani5', 1, 12, 1, null, 2, 1, false, false, 0);
+insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen, version) values ('zakazani6', 1, 12, 1, 4, 2, 1, true, false, 0);
 
 
 insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike, potvrdjen, odradjen, version) values ('slijepo crijevo1', 2, 3, 2, 3, 1, true, true,0);

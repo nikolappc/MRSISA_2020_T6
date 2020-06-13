@@ -162,14 +162,16 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
                 if (ids.contains(l.getId())) {
                     continue;
                 }
-                eventPublisher.publishEvent(new OnDoktorDodatEvent(l, operacijaBaza, operacija.getTermin()));
-                l.getOperacije().add(operacijaBaza);
-                lekarRepo.save(l);
+                Lekar l1 = lekarRepo.findById(l.getId()).orElse(null);
+                l1.getOperacije().add(operacijaBaza);
+                operacijaBaza.addLekar(l1);
+                lekarRepo.save(l1);
+                eventPublisher.publishEvent(new OnDoktorDodatEvent(l, operacijaBaza, operacijaBaza.getTermin()));
+                
             }
             operacijaBaza.setSala(s);
 
-
-            operacijaBaza.setLekar(operacija.getLekari());
+            operacijaBaza.setPotvrdjen(true);
             operacijaRepo.save(operacijaBaza);
         }
         return operacijaBaza;
@@ -300,7 +302,7 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
         radnoVremeKraj.set(Calendar.YEAR, terminPocetak.get(Calendar.YEAR));
         
         
-        if(!(radnoVremePocetak.before(terminPocetak) && radnoVremeKraj.after(terminKraj) ))  {
+        if(!((radnoVremePocetak.before(terminPocetak) || radnoVremePocetak.equals(terminPocetak)) && (radnoVremeKraj.after(terminKraj) || radnoVremeKraj.equals(terminKraj))))  {
         	return false;
         }
         
