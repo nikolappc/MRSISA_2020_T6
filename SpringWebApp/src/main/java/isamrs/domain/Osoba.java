@@ -10,6 +10,8 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import isamrs.dto.AdminKCDTO;
+import isamrs.dto.OsobaDTO;
 
 
 @JsonTypeInfo(
@@ -68,7 +70,19 @@ public abstract class Osoba implements Serializable{
 		this.adresa = adresa;
 	}
 
-	public Adresa getAdresa() {
+	public Osoba(OsobaDTO o) {
+		this.ime = o.getIme();
+		this.prezime = o.getPrezime();
+		this.password = o.getPassword();
+		this.brojTelefona = o.getBrojTelefona();
+		this.jbo = o.getJbo();
+		this.email = o.getEmail();
+		this.adresa = o.getAdresa();
+		this.id = o.getId();
+		this.adresa = o.getAdresa();
+	}
+
+    public Adresa getAdresa() {
 		return adresa;
 	}
 

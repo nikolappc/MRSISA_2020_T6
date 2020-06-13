@@ -6,6 +6,9 @@
 
 package isamrs.domain;
 
+import isamrs.dto.GodisnjiOdmorContainerDTO;
+import isamrs.dto.GodisnjiOdmorDTO;
+
 import java.util.*;
 
 import javax.persistence.Column;
@@ -36,8 +39,16 @@ public class GodisnjiOdmor {
 	public GodisnjiOdmor() {
 		super();
 	}
-	
-	
+
+
+
+	public GodisnjiOdmor(GodisnjiOdmorDTO go) {
+		this.id = go.getId();
+		this.kraj = go.getKraj();
+		this.pocetak = go.getPocetak();
+		this.odobren = go.isOdobren();
+	}
+
 
 	public Integer getId() {
 		return id;

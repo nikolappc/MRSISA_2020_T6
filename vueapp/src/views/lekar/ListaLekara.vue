@@ -12,7 +12,7 @@
                 <th id="prezime">Prezime</th>
                 <th id="adresa">Adresa</th>
                 <th id="br">Broj Telefona</th>
-                <th></th>
+                <th id=""></th>
             </thead>
             <tbody>
                 <Lekar v-for="lekar in filterLekari" v-bind:key="lekar.id" v-bind:lekar="lekar" v-on:del-lekar="deleteLekar"

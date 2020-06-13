@@ -21,6 +21,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import isamrs.dto.DijagnozaDTO;
 
 @Entity
 @Table(name = "dijagnoze")
@@ -46,7 +47,13 @@ public class Dijagnoza {
 		super();
 	}
 
-	public Long getId() {
+	public Dijagnoza(DijagnozaDTO d) {
+		this.id = d.getId();
+		this.nazivDijagnoze = d.getNazivDijagnoze();
+		this.sifraDijagnoze = d.getSifraDijagnoze();
+	}
+
+    public Long getId() {
 		return id;
 	}
 
