@@ -13,7 +13,7 @@
 
     <v-text-field
       v-model="lekar.email"
-      :rules="rule"
+      :rules="emailRules"
       label="E-mail"
       required
     ></v-text-field>

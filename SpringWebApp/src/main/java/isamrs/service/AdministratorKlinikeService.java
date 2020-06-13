@@ -158,6 +158,7 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
             for (Lekar l : operacijaBaza.getLekari()) {
                 ids.add(l.getId());
             }
+            Lekar bazaLekar = null;
             for (Lekar l : operacija.getLekari()) {
                 if (ids.contains(l.getId())) {
                     continue;
@@ -165,13 +166,14 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
                 Lekar l1 = lekarRepo.findById(l.getId()).orElse(null);
                 l1.getOperacije().add(operacijaBaza);
                 operacijaBaza.addLekar(l1);
-                lekarRepo.save(l1);
+                bazaLekar = lekarRepo.save(l1);
                 eventPublisher.publishEvent(new OnDoktorDodatEvent(l, operacijaBaza, operacijaBaza.getTermin()));
                 
             }
+            bazaLekar.getKlinika().getOperacije().add(operacijaBaza);
             operacijaBaza.setSala(s);
-
             operacijaBaza.setPotvrdjen(true);
+            operacijaBaza.setTermin(operacija.getTermin());
             operacijaRepo.save(operacijaBaza);
         }
         return operacijaBaza;
@@ -226,10 +228,11 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
         eventPublisher.publishEvent(new OnDoktorDodatEventPregled(l, pregledBaza, pregled.getTermin()));
         l.getPregled().add(pregledBaza);
         lekarRepo.save(l);
-        
+        l.getKlinika().getPregledi().add(pregledBaza);
         pregledBaza.setPotvrdjen(true);
         pregledBaza.setSala(s);
         pregledBaza.setLekar(l);
+        pregledBaza.setTermin(pregled.getTermin());
         pregledRepo.save(pregledBaza);
 
         return pregledBaza;

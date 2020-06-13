@@ -50,6 +50,8 @@ export default {
     },
     computed:{
       adresaText(){
+        if(this.adresa.adresa == "")
+          return '';
         return this.adresa.adresa + ", " + this.adresa.grad  + ", " + this.adresa.drzava;
       }
     }
