@@ -114,6 +114,7 @@ public class TipPoseteService {
 		return tipRepo.findAll();
 	}
 
+	@Transactional(readOnly = false)
 	public Collection<TipPosete> findAllLekar(Integer id) {
 		return lekarRepo.findOneById(id).getTipoviPoseta();
 	}

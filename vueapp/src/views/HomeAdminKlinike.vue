@@ -65,6 +65,20 @@
               </LinkCard>
             </router-link>
           </v-col>
+          <v-col
+            lg="6"
+            md="6"
+            sm="6"
+            xs="12"
+          >
+            <router-link to="/izvestaj">
+              <LinkCard
+                :img="dodavanje"
+                title="Izvestaj poslovanja"
+              >
+              </LinkCard>
+            </router-link>
+          </v-col>
         </v-row>
       </v-card>
       <v-container>

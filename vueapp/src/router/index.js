@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import axios from 'axios'
+import store from '../store/index.js'
 import VueAxios from 'vue-axios'
 import Home from '../views/Home.vue';
 import HomeMed from '../views/HomeMed.vue';
@@ -126,6 +127,15 @@ Vue.use(VueRouter, VueAxios, axios)
   {
     path: '/izvestaj',
     name: 'IzvestajKlinike',
+    beforeEnter: (to, from, next) => {
+      console.error(to, from, next);
+      if(store.state.ulogovan.tip == "ADMIN_K"){
+        next();
+      }
+      else{
+        console.error("Nemate pravo pristpa");
+      }
+    },
     component: () => import('../views/adminKlinike/Izvestaji.vue')
   },
   {
@@ -141,11 +151,29 @@ Vue.use(VueRouter, VueAxios, axios)
   {
     path: '/lekar/add',
     name: 'dodajLekara',
+    beforeEnter: (to, from, next) => {
+      console.error(to, from, next);
+      if(store.state.ulogovan.tip == "ADMIN_K"){
+        next();
+      }
+      else{
+        console.error("Nemate pravo pristpa");
+      }
+    },
     component: () => import('../views/lekar/AddLekar.vue')
   },
   {
     path: '/lekari',
     name: 'listaLekara',
+    beforeEnter: (to, from, next) => {
+      console.error(to, from, next);
+      if(store.state.ulogovan.tip == "ADMIN_K"){
+        next();
+      }
+      else{
+        console.error("Nemate pravo pristpa");
+      }
+    },
     component: () => import('../views/lekar/ListaLekara.vue')
   },
   {
@@ -157,12 +185,30 @@ Vue.use(VueRouter, VueAxios, axios)
   {
     path: '/sale',
     name: 'Sale',
+    beforeEnter: (to, from, next) => {
+      console.error(to, from, next);
+      if(store.state.ulogovan.tip == "ADMIN_K"){
+        next();
+      }
+      else{
+        console.error("Nemate pravo pristpa");
+      }
+    },
     component: () => import('../views/sala/ListaSala.vue')
 
   },
   {
     path: '/potvrdaPosete/:id/:isPregled',
     name: 'SalePotvrda',
+    beforeEnter: (to, from, next) => {
+      console.error(to, from, next);
+      if(store.state.ulogovan.tip == "ADMIN_K"){
+        next();
+      }
+      else{
+        console.error("Nemate pravo pristpa");
+      }
+    },
     component: () => import('../views/sala/DodelaSala.vue'),
     props:(route)=>({
       id:route.params.id,
@@ -173,42 +219,114 @@ Vue.use(VueRouter, VueAxios, axios)
   {
     path: '/pacijent/:id',
     name: 'RNG',
+    beforeEnter: (to, from, next) => {
+      console.error(to, from, next);
+      if(store.state.ulogovan.tip == "LEKAR"){
+        next();
+      }
+      else{
+        console.error("Nemate pravo pristpa");
+      }
+    },
     component: () => import('../views/lekar/ProfilPacijenta.vue')
 
   },
   {
     path: '/sala/add',
     name: 'AddSala',
+    beforeEnter: (to, from, next) => {
+      console.error(to, from, next);
+      if(store.state.ulogovan.tip == "ADMIN_K"){
+        next();
+      }
+      else{
+        console.error("Nemate pravo pristpa");
+      }
+    },
     component: () => import('../views/sala/AddSala.vue')
   },
   {
     path: '/tipoviPoseta',
     name: 'TipPosete',
+    beforeEnter: (to, from, next) => {
+      console.error(to, from, next);
+      if(store.state.ulogovan.tip == "ADMIN_K"){
+        next();
+      }
+      else{
+        console.error("Nemate pravo pristpa");
+      }
+    },
     component: () => import('../views/tipPosete/ListaTip.vue')
   },
   {
     path: '/tipoviPoseta/add',
     name: 'TipPoseteAdd',
+    beforeEnter: (to, from, next) => {
+      console.error(to, from, next);
+      if(store.state.ulogovan.tip == "ADMIN_K"){
+        next();
+      }
+      else{
+        console.error("Nemate pravo pristpa");
+      }
+    },
     component: () => import('../views/tipPosete/AddTip.vue')
   },
   {
     path: '/DodavanjeTermina',
     name: 'DodavanjeTermina',
+    beforeEnter: (to, from, next) => {
+      console.error(to, from, next);
+      if(store.state.ulogovan.tip == "ADMIN_K"){
+        next();
+      }
+      else{
+        console.error("Nemate pravo pristpa");
+      }
+    },
     component: () => import('../views/DodavanjeTermina.vue')
   },
   {
     path: '/listaPacijenata',
     name: 'ListaPacijenata',
+    beforeEnter: (to, from, next) => {
+      console.error(to, from, next);
+      if(store.state.ulogovan.tip == "LEKAR" || store.state.ulogovan.tip == "SESTRA"){
+        next();
+      }
+      else{
+        console.error("Nemate pravo pristpa");
+      }
+    },
     component: () => import('../views/pacijenti/ListaPacijenta.vue')
   },
   {
     path: '/pregled/:id',
     name: 'PregledPacijenta',
+    beforeEnter: (to, from, next) => {
+      console.error(to, from, next);
+      if(store.state.ulogovan.tip == "LEAKR"){
+        next();
+      }
+      else{
+        console.error("Nemate pravo pristpa");
+      }
+    },
     component: () => import('../views/pacijenti/Pregled.vue')
   },
   {
     path: '/operacija/:id',
     name: 'OperacijaPacijenta',
+    beforeEnter: (to, from, next) => {
+      console.error(to, from, next);
+      if(store.state.ulogovan.tip == "LEKAR"){
+        next();
+      }
+      else{
+        console.error("Nemate pravo pristpa");
+      }
+    },
     component: () => import('../views/pacijenti/Operacija.vue')
   },
   {
@@ -224,11 +342,29 @@ Vue.use(VueRouter, VueAxios, axios)
   {
     path: '/zakaziPregled',
     name: 'ZakazivanjePregleda',
+    beforeEnter: (to, from, next) => {
+      console.error(to, from, next);
+      if(store.state.ulogovan.tip == "LEKAR"){
+        next();
+      }
+      else{
+        console.error("Nemate pravo pristpa");
+      }
+    },
     component: () => import('../views/pacijenti/ZakazivanjePregleda.vue')
   },
   {
     path: '/zakaziOdmor',
     name: 'ZakazivanjeOdmor',
+    beforeEnter: (to, from, next) => {
+      console.error(to, from, next);
+      if(store.state.ulogovan.tip == "LEKAR" || store.state.ulogovan.tip == "SESTRA"){
+        next();
+      }
+      else{
+        console.error("Nemate pravo pristpa");
+      }
+    },
     component: () => import('../views/lekar/GodisnjiOdmor.vue')
   },
   {
@@ -239,6 +375,15 @@ Vue.use(VueRouter, VueAxios, axios)
   {
     path: '/izmenaKlinike',
     name: 'IzmenaKlinike',
+    beforeEnter: (to, from, next) => {
+      console.error(to, from, next);
+      if(store.state.ulogovan.tip == "ADMIN_K" || store.state.ulogovan.tip == "ADMIN_KC"){
+        next();
+      }
+      else{
+        console.error("Nemate pravo pristpa");
+      }
+    },
     component: () => import('../views/adminKlinike/IzmenaKlinike.vue')
   },
   {
@@ -249,11 +394,29 @@ Vue.use(VueRouter, VueAxios, axios)
   {
     path:"/homeLekar",
     name:"HomeLekar",
+    beforeEnter: (to, from, next) => {
+      console.error(to, from, next);
+      if(store.state.ulogovan.tip == "LEKAR"){
+        next();
+      }
+      else{
+        console.error("Nemate pravo pristpa");
+      }
+    },
     component:HomeLekar
   },
   {
     path:"/homeAdminKlinike",
     name:"HomeAdminKlinike",
+    beforeEnter: (to, from, next) => {
+      console.error(to, from, next);
+      if(store.state.ulogovan.tip == "ADMIN_K"){
+        next();
+      }
+      else{
+        console.error("Nemate pravo pristpa");
+      }
+    },
     component:HomeAdminKlinike
   },
   {
