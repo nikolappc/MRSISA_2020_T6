@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import isamrs.domain.AdministratorKlinike;
+import isamrs.domain.Lekar;
 import isamrs.domain.Sala;
 import isamrs.dto.SalaTerminiDTO;
 import isamrs.service.SalaService;
@@ -30,6 +31,9 @@ public class SalaController {
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Sala>> getSalas(HttpServletRequest req) {
+		if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		AdministratorKlinike ak;
 		try {
 			ak = (AdministratorKlinike) req.getSession().getAttribute("user");
@@ -44,6 +48,9 @@ public class SalaController {
 	
 	@GetMapping(value = "/DTO", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<SalaTerminiDTO>> getSalaDTO(HttpServletRequest req) {
+		if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		AdministratorKlinike ak;
 		try {
 			ak = (AdministratorKlinike) req.getSession().getAttribute("user");
@@ -56,7 +63,10 @@ public class SalaController {
 	}
 	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Sala> getSala(@PathVariable("id") Integer id) {
+	public ResponseEntity<Sala> getSala(HttpServletRequest req,@PathVariable("id") Integer id) {
+		if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		Sala sala = salaService.findOne(id);
 
 		if (sala == null) {
@@ -68,6 +78,9 @@ public class SalaController {
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Sala> createSala(@RequestBody Sala sala, HttpServletRequest req) throws Exception {
+		if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		AdministratorKlinike ak;
 		try {
 			ak = (AdministratorKlinike) req.getSession().getAttribute("user");
@@ -81,9 +94,11 @@ public class SalaController {
 
 
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Sala> updateSala(@RequestBody Sala sala, @PathVariable Integer id){
+	public ResponseEntity<Sala> updateSala(HttpServletRequest req,@RequestBody Sala sala, @PathVariable Integer id){
 		
-		
+		if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		Sala updatedSala = null;
 		try {
 			updatedSala = salaService.update(id,sala);
@@ -95,7 +110,10 @@ public class SalaController {
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Sala> deleteSala(@PathVariable("id") Integer id) {
+	public ResponseEntity<Sala> deleteSala(HttpServletRequest req,@PathVariable("id") Integer id) {
+		if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		try {
 			salaService.delete(id);
 		} catch (Exception e) {

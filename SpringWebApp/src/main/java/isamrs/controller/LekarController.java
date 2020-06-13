@@ -33,6 +33,9 @@ public class LekarController {
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Lekar>> getLekars(HttpServletRequest req) {
+		if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		AdministratorKlinike ak;
 		try {
 			ak = (AdministratorKlinike) req.getSession().getAttribute("user");
@@ -46,7 +49,10 @@ public class LekarController {
 
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Lekar> getLekar(@PathVariable("id") Integer id) {
+	public ResponseEntity<Lekar> getLekar(HttpServletRequest req ,@PathVariable("id") Integer id) {
+		if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		Lekar lekar = lekarService.findOne(id);
 
 		if (lekar == null) {
@@ -57,9 +63,12 @@ public class LekarController {
 	}
 	
 	@GetMapping(value = "/poseta/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<PosetaPacijentDTO>> getPosetaLekar(@PathVariable("id") Integer id) throws NotFoundException {
+	public ResponseEntity<Collection<PosetaPacijentDTO>> getPosetaLekar(HttpServletRequest req,@PathVariable("id") Integer id) throws NotFoundException {
+		if (!(req.getSession().getAttribute("user") instanceof Lekar)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		Collection<PosetaPacijentDTO> termini = lekarService.findPosete(id);
-
+		
 		if (termini == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -67,9 +76,11 @@ public class LekarController {
 		return new ResponseEntity<>(termini, HttpStatus.OK);
 	}
 	@PostMapping(value = "/pocetak/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<HashMap<String, Boolean>> checkStart(@RequestBody Lekar lekar, @PathVariable Integer id)
+	public ResponseEntity<HashMap<String, Boolean>> checkStart(HttpServletRequest req ,@RequestBody Lekar lekar, @PathVariable Integer id)
 			throws Exception {
-		
+		if (!(req.getSession().getAttribute("user") instanceof Lekar)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		boolean check = lekarService.checkStart(id,lekar);
 		
 		HashMap<String, Boolean> mapa = new HashMap<String, Boolean>();	
@@ -78,9 +89,11 @@ public class LekarController {
 	}
 	
 	@PostMapping(value = "/pocetak/operacija/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<HashMap<String, Boolean>> checkStartOperacija(@RequestBody Lekar lekar, @PathVariable Integer id)
+	public ResponseEntity<HashMap<String, Boolean>> checkStartOperacija(HttpServletRequest req ,@RequestBody Lekar lekar, @PathVariable Integer id)
 			throws Exception {
-		
+		if (!(req.getSession().getAttribute("user") instanceof Lekar)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		boolean check = lekarService.checkStartOperacija(id, lekar);
 		HashMap<String, Boolean> mapa = new HashMap<String, Boolean>();	
 		mapa.put("zapocni", check);
@@ -96,9 +109,11 @@ public class LekarController {
 
 
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Lekar> updateLekar(@RequestBody Lekar lekar, @PathVariable Integer id )
+	public ResponseEntity<Lekar> updateLekar(HttpServletRequest req ,@RequestBody Lekar lekar, @PathVariable Integer id )
 			throws Exception {
-		
+		if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		Lekar updatedLekar = lekarService.update(id,lekar);
 		return new ResponseEntity<Lekar>(updatedLekar, HttpStatus.OK);
 	}
@@ -107,7 +122,10 @@ public class LekarController {
 	 * url: /api/Lekars/1 DELETE
 	 */
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Lekar> deleteLekar(@PathVariable("id") Integer id) {
+	public ResponseEntity<Lekar> deleteLekar(HttpServletRequest req ,@PathVariable("id") Integer id) {
+		if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		try {
 			lekarService.delete(id);
 		} catch (Exception e) {

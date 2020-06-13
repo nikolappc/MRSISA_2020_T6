@@ -32,6 +32,9 @@ public class GodisnjiOdmorController {
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<OdmorDTO>> getOdmors(HttpServletRequest req) {
+		if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		AdministratorKlinike ak = (AdministratorKlinike)req.getSession().getAttribute("user");
 		Collection<OdmorDTO> odmori = odmorService.findAll(ak.getKlinika().getId());
 		return new ResponseEntity<Collection<OdmorDTO>>(odmori, HttpStatus.OK);
@@ -42,6 +45,9 @@ public class GodisnjiOdmorController {
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<GodisnjiOdmor> createZahtev(HttpServletRequest req,@RequestBody GodisnjiOdmor go) throws NotFoundException {
+		if (!(req.getSession().getAttribute("user") instanceof MedicinskoOsoblje)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		MedicinskoOsoblje mo = (MedicinskoOsoblje)req.getSession().getAttribute("user");
 		GodisnjiOdmor savedGO;
 		if(mo instanceof Lekar){
@@ -56,9 +62,11 @@ public class GodisnjiOdmorController {
 
 
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<GodisnjiOdmor> updateLekar(@RequestBody GodisnjiOdmorDTO odmor,@PathVariable Integer id)
+	public ResponseEntity<GodisnjiOdmor> updateLekar(HttpServletRequest req,@RequestBody GodisnjiOdmorDTO odmor,@PathVariable Integer id)
 			throws Exception, NotFoundException {
-		
+		if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		GodisnjiOdmor updatedOdmor = odmorService.update(id,odmor.getOdmor());
 		return new ResponseEntity<GodisnjiOdmor>(updatedOdmor, HttpStatus.OK);
 	}
