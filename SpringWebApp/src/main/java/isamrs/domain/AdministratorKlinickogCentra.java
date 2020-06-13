@@ -6,6 +6,8 @@
 
 package isamrs.domain;
 
+import isamrs.dto.AdminKCDTO;
+
 import java.util.*;
 
 import javax.persistence.Entity;
@@ -29,4 +31,9 @@ public class AdministratorKlinickogCentra extends Osoba {
 		this.setTip("ADMIN_KC");
 	}
 
+	public AdministratorKlinickogCentra(AdminKCDTO admin) {
+		super(admin);
+		this.setTip("ADMIN_KC");
+
+	}
 }

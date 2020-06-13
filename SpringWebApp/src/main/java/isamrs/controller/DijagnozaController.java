@@ -57,20 +57,20 @@ public class DijagnozaController {
 	}
 	
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<DijagnozaDTO> createDijagnoza(@RequestBody Dijagnoza d, HttpServletRequest request){
+	public ResponseEntity<DijagnozaDTO> createDijagnoza(@RequestBody DijagnozaDTO d, HttpServletRequest request){
 		if (!(request.getSession().getAttribute("user") instanceof AdministratorKlinickogCentra)){
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-		Dijagnoza d2 = service.create(d);
+		Dijagnoza d2 = service.create(new Dijagnoza(d));
 		return new ResponseEntity<DijagnozaDTO>(new DijagnozaDTO(d2), HttpStatus.CREATED);
 	}
 
 	@PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<DijagnozaDTO> updateDijagnoza(@RequestBody Dijagnoza d, @PathVariable("id") Long id, HttpServletRequest request) throws NotFoundException {
+	public ResponseEntity<DijagnozaDTO> updateDijagnoza(@RequestBody DijagnozaDTO d, @PathVariable("id") Long id, HttpServletRequest request) throws NotFoundException {
 		if (!(request.getSession().getAttribute("user") instanceof AdministratorKlinickogCentra)){
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-		Dijagnoza d2 = service.update(id, d);
+		Dijagnoza d2 = service.update(id, new Dijagnoza(d));
 		return new ResponseEntity<DijagnozaDTO>(new DijagnozaDTO(d2), HttpStatus.OK);
 	}
 	

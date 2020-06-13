@@ -63,20 +63,20 @@ public class LekController {
 	}
 	
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<LekDTO> createLek(@RequestBody Lek l, HttpServletRequest request){
+	public ResponseEntity<LekDTO> createLek(@RequestBody LekDTO l, HttpServletRequest request){
 		if (!(request.getSession().getAttribute("user") instanceof AdministratorKlinickogCentra)){
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-		Lek l2 = service.create(l);
+		Lek l2 = service.create(new Lek(l));
 		return new ResponseEntity<LekDTO>(LektoDTO(l2), HttpStatus.CREATED);
 	}
 
 	@PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<LekDTO> updateLek(@RequestBody Lek l, @PathVariable("id") Long id, HttpServletRequest request) throws NotFoundException {
+	public ResponseEntity<LekDTO> updateLek(@RequestBody LekDTO l, @PathVariable("id") Long id, HttpServletRequest request) throws NotFoundException {
 		if (!(request.getSession().getAttribute("user") instanceof AdministratorKlinickogCentra)){
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-		Lek l2 = service.update(id, l);
+		Lek l2 = service.update(id, new Lek(l));
 		return new ResponseEntity<LekDTO>(LektoDTO(l2), HttpStatus.OK);
 	}
 	

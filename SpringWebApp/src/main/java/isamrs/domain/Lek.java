@@ -6,6 +6,8 @@
 
 package isamrs.domain;
 
+import isamrs.dto.LekDTO;
+
 import java.util.*;
 
 import javax.persistence.Column;
@@ -36,7 +38,14 @@ public class Lek {
 		super();
 	}
 
-	public Long getId() {
+	public Lek(LekDTO l) {
+		this.id = l.getId();
+		this.sifraLeka = l.getSifraLeka();
+		this.nazivLeka = l.getNazivLeka();
+		this.opisLeka = l.getOpisLeka();
+	}
+
+    public Long getId() {
 		return id;
 	}
 

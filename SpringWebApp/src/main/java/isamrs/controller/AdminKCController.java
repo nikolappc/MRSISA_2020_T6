@@ -41,13 +41,13 @@ public class AdminKCController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AdminKCDTO> createAdminKC(@RequestBody AdministratorKlinickogCentra admin){
-        AdministratorKlinickogCentra a = administratorKlinickogCentraService.create(admin);
+    public ResponseEntity<AdminKCDTO> createAdminKC(@RequestBody AdminKCDTO admin){
+        AdministratorKlinickogCentra a = administratorKlinickogCentraService.create(new AdministratorKlinickogCentra(admin));
         return new ResponseEntity<>(new AdminKCDTO(a), HttpStatus.OK);
     }
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AdminKCDTO> updateAdminKC(@PathVariable("id") Integer id,@RequestBody AdministratorKlinickogCentra admin){
-        AdministratorKlinickogCentra a = administratorKlinickogCentraService.update(id, admin);
+    public ResponseEntity<AdminKCDTO> updateAdminKC(@PathVariable("id") Integer id,@RequestBody AdminKCDTO admin){
+        AdministratorKlinickogCentra a = administratorKlinickogCentraService.update(id, new AdministratorKlinickogCentra(admin));
         return new ResponseEntity<>(new AdminKCDTO(a), HttpStatus.OK);
     }
 

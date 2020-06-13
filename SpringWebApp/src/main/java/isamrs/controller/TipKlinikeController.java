@@ -56,7 +56,7 @@ public class TipKlinikeController {
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<TipKlinikeDTO> createTipKlinike(@RequestBody TipKlinike t, HttpServletRequest httpServletRequest){
+	public ResponseEntity<TipKlinikeDTO> createTipKlinike(@RequestBody TipKlinikeDTO t, HttpServletRequest httpServletRequest){
 		if (!(httpServletRequest.getSession().getAttribute("user") instanceof AdministratorKlinickogCentra)){
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
@@ -65,7 +65,7 @@ public class TipKlinikeController {
 	}
 	
 	@PutMapping(value = "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<TipKlinikeDTO> updateTipKlinike(@PathVariable("id") Long id, @RequestBody TipKlinike t, HttpServletRequest httpServletRequest) throws NotFoundException {
+	public ResponseEntity<TipKlinikeDTO> updateTipKlinike(@PathVariable("id") Long id, @RequestBody TipKlinikeDTO t, HttpServletRequest httpServletRequest) throws NotFoundException {
 		if (!(httpServletRequest.getSession().getAttribute("user") instanceof AdministratorKlinickogCentra)){
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
