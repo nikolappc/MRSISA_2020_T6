@@ -86,7 +86,7 @@
                       v-if="checkStart(kalendar.selected)"
                       color="success"
                       class="mr-4"
-                      @click="pocniPregled(item.id)"
+                      @click="pocniPregled(kalendar.selected.id)"
                     >
                       Započni pregled
                     </v-btn>

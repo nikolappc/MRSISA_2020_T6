@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <label class="display-1">
-            Istorija pregleda
+            Istorija poseta
         </label>
         <v-card
             outlined="true"

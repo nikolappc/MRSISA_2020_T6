@@ -46,7 +46,7 @@
                     <v-container>
                         {{selected.opis}}
                         <v-row>
-                            <v-btn :disabled="selected.recepti.length==0" collor="success" :to="{ name: 'OveriRecepte', params: { pregled: selected }}" class="ml-auto">
+                            <v-btn :disabled="selected.recepti.length!=0&&selected.odradjen==true" collor="success" :to="{ name: 'OveriRecepte', params: { pregled: selected }}" class="ml-auto">
                               Overi recepte
                             </v-btn>
                         </v-row>
@@ -148,7 +148,7 @@ export default {
         {
           title:"Overavanje recepata",
           img:require("../assets/recepti.jpg"),
-          link:"/homeMed"
+          link:"/overavanjeRecepata"
         },
       ],
       pregledi : [],

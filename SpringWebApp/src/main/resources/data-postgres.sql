@@ -101,12 +101,12 @@ insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_
 insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike, potvrdjen, odradjen, version) values ('slijepo crijevo5', null, 10, 2, 1, 1, true, true,0);
 insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike, potvrdjen, odradjen, version) values ('slijepo crijevo6', null, 11, 2, 1, 1, true, true,0);
 
-insert into recepti (overen, id_recepta, id_pregleda) values (false, 1, 1);
-insert into recepti (overen, id_recepta, id_pregleda) values (true, 2, 2);
-insert into recepti (overen, id_recepta, id_pregleda) values (false, 3, 2);
-insert into recepti (overen, id_recepta, id_pregleda) values (true, 4, 2);
-insert into recepti (overen, id_recepta, id_pregleda) values (false, 5, 2);
-insert into recepti (overen, id_recepta, id_pregleda) values (false, 5, 3);
+insert into recepti (overen, id_recepta, id_pregleda, version) values (false, 1, 1,0);
+insert into recepti (overen, id_recepta, id_pregleda, version) values (true, 2, 2,0);
+insert into recepti (overen, id_recepta, id_pregleda, version) values (false, 3, 2,0);
+insert into recepti (overen, id_recepta, id_pregleda, version) values (true, 4, 2,0);
+insert into recepti (overen, id_recepta, id_pregleda, version) values (false, 5, 2,0);
+insert into recepti (overen, id_recepta, id_pregleda, version) values (false, 5, 3,0);
 
 
 insert into dijagnoze (sifra, naziv, id_kartona) values (1, 'Covid-19', 1);

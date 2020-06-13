@@ -4,16 +4,16 @@
     min-height="200px"
     :img="img"
     >
-        <v-container>
             <v-card
             color="primary"
+            class="mt-5"
             dark
+            :flat="true"
             >
             <v-card-title>
                 {{title}}
             </v-card-title>
             </v-card>
-        </v-container>
     </v-card>
 </template>
 

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import isamrs.dto.*;
+import isamrs.dto.post.RazlogOdbijanja;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
@@ -184,8 +185,8 @@ public class UserController {
 		}
 		try {
 			System.out.println("email:" + email);
-			Pacijent pacijent = pacijentService.findByEmail(email);
-			pacijent.setResponded(true);
+			Pacijent pacijent = pacijentService.respond(email);
+
 			eventPublisher.publishEvent(new OnRegistrationSuccessEvent(pacijent, request.getContextPath()));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -193,17 +194,15 @@ public class UserController {
 		return new ResponseEntity<String>("Uspešno odobrena registracija.", HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/denyRegistration/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> denyRegistration(@PathVariable("email") String email, WebRequest request, HttpServletRequest httpServletRequest) {
+	@PostMapping(value = "/denyRegistration/{email}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> denyRegistration(@PathVariable("email") String email, @RequestBody RazlogOdbijanja razlg, WebRequest request, HttpServletRequest httpServletRequest) {
 		if (!(httpServletRequest.getSession().getAttribute("user") instanceof AdministratorKlinickogCentra)){
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
 		try {
 			Pacijent pacijent = pacijentService.findByEmail(email);
-			eventPublisher.publishEvent(new OnRegistrationFailEvent(pacijent, request.getContextPath()));
-			pacijent.setResponded(true);
-			pacijent.setAllowed(false);
-			pacijentService.save(pacijent);
+			pacijentService.setOdobren(email, false);
+			eventPublisher.publishEvent(new OnRegistrationFailEvent(pacijent, request.getContextPath(), razlg.getRazlog()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -221,8 +220,8 @@ public class UserController {
 		if ((verificationToken.getExpiryDate().getTime() - calendar.getTime().getTime()) <= 0) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Isteklo je vrijeme za potvrdu registracije.");
 		}
-		user.setResponded(true);
-		user.setAllowed(true);
+		pacijentService.setOdobren(user.getEmail(), true);
+
 		pacijentService.save(user);
 		return new ResponseEntity<String>("Uspešna registracija!", HttpStatus.OK);
 	}

@@ -33,7 +33,8 @@
                                 >
 
                                 </v-select>
-                                <v-row>
+                                <Autocomplete></Autocomplete>
+                                <!-- <v-row>
                                     <v-col>
                                         <v-text-field
                                             label="Adresa"
@@ -64,7 +65,7 @@
                     
                                         </v-text-field>
                                     </v-col>
-                                </v-row>
+                                </v-row> -->
                                 <v-textarea
                                     label="Opis"
                                     :rules="rules"
@@ -118,6 +119,9 @@
     const axios = require('axios');
     export default {
         name:"RegKlinika",
+        components:{
+            
+        },
         data:function () {
             return {
                 rules:[v=>!!v||"Ovo polje je obavezno!"],
