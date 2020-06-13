@@ -114,7 +114,14 @@ public class LekarController {
 		if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-		Lekar updatedLekar = lekarService.update(id,lekar);
+		Lekar updatedLekar;
+		try {
+			
+			updatedLekar = lekarService.update(id,lekar);
+		}
+		catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		return new ResponseEntity<Lekar>(updatedLekar, HttpStatus.OK);
 	}
 

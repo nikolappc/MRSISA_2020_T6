@@ -42,6 +42,7 @@ public class PosetaService {
 	public Pregled create(Pregled pre) throws Exception{
 		Lekar l = lekarRepo.findById(pre.getLekar().getId()).get();
 		Sala s = salaRepo.findById(pre.getSala().getId()).get();
+		TipPosete t = tipRepo.findById(pre.getTipPosete().getId()).get();
 		
 		if(s != null)
 			if (!proveriTerminSala(s, pre.getTermin())) {
@@ -52,6 +53,9 @@ public class PosetaService {
         if (!proveriTerminLekara(l, pre.getTermin())) {
             throw new Exception();
         }
+        pre.setSala(s);
+        pre.setLekar(l);
+        pre.setTipPosete(t);
 		return pregledRepo.save(pre);
 	}
 	

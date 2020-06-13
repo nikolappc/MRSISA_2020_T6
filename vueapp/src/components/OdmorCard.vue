@@ -68,9 +68,12 @@ export default{
                     if(!response.data.odobren){
                        this.$store.commit("setSnackbar", {text:"Zahtev nije odobren jer lekar ima posetu u tom terminu", color: "error"});
                     }
+                    else{
+                        this.$store.commit("setSnackbar", {text:"Zahtev je odobren", color: "error"});
+                    }
                     this.$emit("zatvori",this.zahtev.id);
                 })
-                .catch(function (error) { console.log(error); //router.push("/loginPage"); 
+                .catch(function (error) { console.log(error); 
                 });
         },
         odbi: function(){

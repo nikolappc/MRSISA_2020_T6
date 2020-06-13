@@ -192,13 +192,7 @@ public class AdminKlinikeController {
 		Pregled updatePregled = null;
 
 		try {
-			System.out.println("prije servisa");
-	        Klinika kk = klinikaRepo.findById(1).orElseGet(null);
-			for (Lekar llll : kk.getLekari()) {
-				System.out.println(llll.getIme() + llll.getId());
-			}
 			
-			//pregled.setPotvrdjen(true);
 			updatePregled = adminService.update(id,pregled);
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");

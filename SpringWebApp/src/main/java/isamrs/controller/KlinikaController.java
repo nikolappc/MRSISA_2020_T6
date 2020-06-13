@@ -62,7 +62,7 @@ public class KlinikaController {
 	public ResponseEntity<KlinikaDTO> getKlinikaAdmin(HttpServletRequest req) throws NotFoundException {
 		AdministratorKlinike ak = (AdministratorKlinike) req.getSession().getAttribute("user");
 		
-		Klinika k = klinikaService.findOne(ak.getKlinika().getId());
+		Klinika k = klinikaService.findByAdmin(ak.getId());
 		if(k==null) {
 			return new ResponseEntity<KlinikaDTO>(HttpStatus.NOT_FOUND);
 		}

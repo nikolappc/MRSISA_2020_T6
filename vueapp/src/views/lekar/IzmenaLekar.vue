@@ -109,7 +109,7 @@ export default {
                 this.tipovi = response.data;
                 console.log(response);
             })
-            .catch(() => { this.tipovi = [{naziv: 'pera',tip: 'operacija',stavkaCenovnika: {cena: 20}}]; });
+            .catch((err) => { console.log(err) });
     },
     methods: {
         izmeniLekara: function(event) {

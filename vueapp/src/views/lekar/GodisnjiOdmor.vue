@@ -109,6 +109,7 @@ export default {
                 .post('/odmor',this.zahtev)
                 .then(() => {
                     this.$store.commit("setSnackbar", {text:"Uspešno ste poslali zahtev", color: "success"});
+                    this.$router.push("/");
                 })
                 .catch(function (error) { console.log(error); });
 

@@ -98,7 +98,8 @@ public class PosetaController {
 		Lekar lekar = lekarService.findOne(idLekar);
 		pregled.setZdravstveniKarton(zdravstveniKarton);
 		pregled.setLekar(lekar);
-		Pregled savedPregled = pregledService.create(pregled);
+			Pregled savedPregled = pregledService.create(pregled);
+
 		
 		String subject1 = "Kreiran novi pregled";
 		String message1 = "Obavestavamo Vas da je u Vasoj klinici kreiran novi pregled.";
@@ -124,13 +125,9 @@ public class PosetaController {
         ZdravstveniKarton zdravstveniKarton = zdravstveniKartonService.findByPacijent(o.getPacijentId());
         operacija.setZdravstveniKarton(zdravstveniKarton);
         Lekar lekar = lekarService.findOne(idLekar);
-        Operacija savedOperacija = operacijaService.create(operacija);
         operacija.addLekar(lekar);
-        Klinika k = klinikaService.findByLekar(lekar);
-        k.getOperacije().add(operacija);
-        klinikaService.update(k.getId(), k);
-        lekar.addOperacija(savedOperacija);
-        lekarService.update(lekar.getId(), lekar);
+        lekar.addOperacija(operacija);
+        Operacija savedOperacija = operacijaService.create(operacija);
         
         String subject1 = "Kreirana nova operacija";
 		String message1 = "Obavestavamo Vas da je u Vasoj klinici kreirana nova operacija.";

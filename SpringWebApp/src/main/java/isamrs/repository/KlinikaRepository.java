@@ -53,4 +53,8 @@ public interface KlinikaRepository extends JpaRepository<Klinika, Integer>{
 	@Query("SELECT SUM(sc.cena) FROM Klinika k JOIN k.operacije p  JOIN k.cenovnik cen2 JOIN p.termin t JOIN p.tipPosete tip JOIN tip.stavkeCenovnika sc JOIN sc.cenovnik cen1 "
 			+ "WHERE k.id = ?1 and t.pocetak >= ?2 and t.kraj <= ?3 and cen1.id = cen2.id")
 	public Double operacijeUIntervalu(Integer id,Date pocetak, Date kraj);
+
+	@Query("SELECT k FROM AdministratorKlinike a JOIN a.klinika k WHERE a.id = ?1")
+	public Klinika findByAdmin(Integer id);
+
 }

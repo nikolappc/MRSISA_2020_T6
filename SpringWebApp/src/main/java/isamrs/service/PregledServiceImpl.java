@@ -38,6 +38,7 @@ import isamrs.operacije.zakazivanje.OperacijaRunnable;
 import isamrs.operacije.zakazivanje.PregledRunnable;
 import isamrs.repository.PacijentRepository;
 import isamrs.repository.PregledRepository;
+import isamrs.repository.SalaRepository;
 import isamrs.repository.TipPoseteRepository;
 import isamrs.repository.ZdravstveniKartonRepository;
 import isamrs.tasks.ThreadPoolTaskSchedulerConfig;
@@ -84,6 +85,8 @@ public class PregledServiceImpl implements PregledService {
 	@Autowired
 	private ZdravstveniKartonRepository zdrrepo;
 
+	@Autowired
+	private SalaRepository salaRepo;
 	
 	@Autowired
 	PregledRunnable pregledRunnable;
@@ -101,6 +104,11 @@ public class PregledServiceImpl implements PregledService {
 
 	//@Override
 	public Pregled create(Pregled t) {
+		
+		Lekar l = lekarRepo.findById(t.getLekar().getId()).get();
+		TipPosete tp = tipRepo.findById(t.getTipPosete().getId()).get();
+		t.setLekar(l);
+		t.setTipPosete(tp);
 		Pregled p = pregledRepository.save(t);
 		ThreadPoolTaskScheduler threadPoolTaskScheduler = threadPoolTaskSchedulerConfig.threadPoolTaskScheduler();
 		pregledRunnable.setId(p.getId());

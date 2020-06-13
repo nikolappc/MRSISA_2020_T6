@@ -97,11 +97,11 @@
 
     <template slot="selection" slot-scope="data">
             <!-- HTML that describe how select should render selected items -->
-            Naziv: {{ data.item.naziv }} , Cena: {{ data.item.stavkeCenovnika.cena }}
+            Naziv: {{ data.item.naziv }} , Cena: {{ data.item.stavkeCenovnika[0].cena }}
         </template>
         <template slot="item" slot-scope="data">
             <!-- HTML that describe how select should render items when the select is open -->
-            Naziv: {{ data.item.naziv }} , Cena: {{ data.item.stavkeCenovnika.cena }}
+            Naziv: {{ data.item.naziv }} , Cena: {{ data.item.stavkeCenovnika[0].cena }}
         </template>
     </v-select>
 
@@ -194,7 +194,7 @@ export default {
                 this.$store.commit("setSnackbar", {text:"Uspešno ste dodali slobodan termin", color: "success"});
                 router.push("/sale");
             })
-            .catch(function (error) { this.$store.commit("setSnackbar", {text:"Termin je zauzet kod lekara ili sale", color: "error"});
+            .catch((error) =>{ this.$store.commit("setSnackbar", {text:"Termin je zauzet kod lekara ili sale", color: "error"});
             console.log(error); });
         },
         generateTimes: function(){

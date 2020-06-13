@@ -58,11 +58,11 @@
       
           <template slot="selection" slot-scope="data">
                   <!-- HTML that describe how select should render selected items -->
-                  Naziv: {{ data.item.naziv }} , Cena: {{ data.item.stavkeCenovnika.cena }}
+                  Naziv: {{ data.item.naziv }} , Cena: {{ data.item.stavkeCenovnika[0].cena }}
               </template>
               <template slot="item" slot-scope="data">
                   <!-- HTML that describe how select should render items when the select is open -->
-                  Naziv: {{ data.item.naziv }} , Cena: {{ data.item.stavkeCenovnika.cena }}
+                  Naziv: {{ data.item.naziv }} , Cena: {{ data.item.stavkeCenovnika[0].cena }}
               </template>
           </v-select>
       
@@ -123,7 +123,7 @@ export default {
                 this.tipovi = response.data;
                 console.log(response);
             })
-            .catch(() => { this.tipovi = [{naziv: 'pera',tip: 'operacija',stavkaCenovnika: {cena: 20}}]; });
+            .catch((response) => { console.log(response); });
             
     },
     methods: {

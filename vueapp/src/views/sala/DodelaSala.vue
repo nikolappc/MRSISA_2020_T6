@@ -323,7 +323,8 @@ export default {
 
                 this.pregled.termin.pocetak = this.pocetak;
                 this.pregled.termin.kraj = this.kraj;
-
+                
+                this.$store.commit("setSnackbar", {text:"Wait for it", color: "info"});
                 axios
                     .put(this.address+ this.id,this.pregled)
                     .then((response) => {

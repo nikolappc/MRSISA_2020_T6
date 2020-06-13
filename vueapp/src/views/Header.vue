@@ -23,7 +23,7 @@
         <v-btn v-if="ulogovan" @click="logoutFunc" icon><v-icon color="white">mdi-logout</v-icon></v-btn>
         <v-snackbar
             v-model="snackbarSH"
-            :timeout="3000"
+            :timeout="5000"
             :color="snackbarColor"
             :style="'top: 10px'"
             >
