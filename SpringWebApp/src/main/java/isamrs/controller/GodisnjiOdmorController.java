@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import isamrs.dto.GodisnjiOdmorDTO;
 import isamrs.dto.OdmorDTO;
 import isamrs.service.OdmorService;
 
@@ -55,10 +56,10 @@ public class GodisnjiOdmorController {
 
 
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<GodisnjiOdmor> updateLekar(@RequestBody GodisnjiOdmor odmor, @PathVariable Integer id)
+	public ResponseEntity<GodisnjiOdmor> updateLekar(@RequestBody GodisnjiOdmorDTO odmor,@PathVariable Integer id)
 			throws Exception, NotFoundException {
 		
-		GodisnjiOdmor updatedOdmor = odmorService.update(id,odmor);
+		GodisnjiOdmor updatedOdmor = odmorService.update(id,odmor.getOdmor());
 		return new ResponseEntity<GodisnjiOdmor>(updatedOdmor, HttpStatus.OK);
 	}
 	

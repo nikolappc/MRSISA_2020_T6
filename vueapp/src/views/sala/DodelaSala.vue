@@ -333,7 +333,7 @@ export default {
                     })
                     .catch((err) => { 
                         console.log(err);
-                        this.$store.commit("setSnackbar", {text:"Termin je zauzet", color: "error"});
+                        this.$store.commit("setSnackbar", {text:"Termin je zauzet za tog lekara", color: "error"});
                     });
             }
         }

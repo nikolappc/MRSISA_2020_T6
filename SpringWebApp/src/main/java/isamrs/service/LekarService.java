@@ -104,6 +104,7 @@ public class LekarService {
 		lekarForUpdate.setPrezime(lekar.getPrezime());
 		lekarForUpdate.setJbo(lekar.getJbo());
 		lekarForUpdate.setPassword(lekar.getPassword());
+		lekarForUpdate.setPrviPut(false);
 		
 		return lekarRepo.save(lekarForUpdate);
 	}

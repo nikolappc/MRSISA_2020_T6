@@ -88,7 +88,21 @@
           </v-card>
         </v-col>
       </v-row>
-
+      <v-dialog
+      v-model="dialog"
+      max-width="290"
+      >
+      <v-card>
+        <v-text-field
+          label="Nova sifra"
+          v-model="ulogovan.password"
+        >
+        </v-text-field>
+        <v-btn @click="promeniSifru">
+          Promeni sifru
+        </v-btn>
+      </v-card>
+      </v-dialog>
     </v-container>
 </div>
 </template>
@@ -109,6 +123,7 @@ export default {
   },
   data:function(){
     return {
+      dialog: false,
       patients:require("../assets/patients.jpg"),
       kalendar:require("../assets/kalendar.jpg"),
       profile:require("../assets/profile.jpg"),
@@ -148,6 +163,9 @@ export default {
     }
   },
   mounted () {
+    if(this.ulogovan.prviPut == true)
+      this.dialog = true;
+
       axios.get("/poseta/pregledi")
         .then(res=>{
             this.pregledi = res.data;
@@ -171,6 +189,17 @@ export default {
         })
   },
   methods: {
+    promeniSifru: function(){
+      this.ulogovan.prviPut = false;
+      axios
+        .put('api/'+this.ulogovan.id,this.ulogovan)
+        .then(response => {
+            this.$store.commit("setUlogovan", response.data);
+            this.$store.commit("setSnackbar", {text:"Uspešno ste izmenili profil", color: "success"});
+            this.dialog = false;
+        })
+        .catch(function (error) { console.log(error); });
+    },
     formatDate (a) {
       return `${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()} ${a.getHours()}:${a.getMinutes()}`;
     },
