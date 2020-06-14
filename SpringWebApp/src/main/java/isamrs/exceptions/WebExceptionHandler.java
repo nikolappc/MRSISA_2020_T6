@@ -4,12 +4,13 @@ import javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;;
 
 /*
  * Klasa koja sluzi za globalno hendlovanje izuzetaka
  */
-@ControllerAdvice
+@RestControllerAdvice
 public class WebExceptionHandler{
     @ExceptionHandler({NotFoundException.class})
     public ResponseEntity<String> respondTo404(isamrs.exceptions.NotFoundException nfe){

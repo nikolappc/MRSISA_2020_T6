@@ -34,29 +34,25 @@
                             <v-spacer>
 
                             </v-spacer>
-                            <template
-                                v-if="poseta.tip.tip == 'pregled'"
+                            <v-chip 
+                                v-if="poseta.odradjen"
+                                color="success"
                             >
-                                <v-chip 
-                                    v-if="poseta.odradjen"
-                                    color="success"
-                                >
-                                    Odrađen
-                                </v-chip
-                                >
-                                <v-chip
-                                    v-else-if="checkStart(poseta)"
-                                    color="warning"
-                                >
-                                    U toku
-                                </v-chip>
-                                <v-chip
-                                    v-else
-                                    color="error"
-                                >
-                                    Nije odrađen
-                                </v-chip>
-                            </template>
+                                Odrađen
+                            </v-chip
+                            >
+                            <v-chip
+                                v-else-if="checkStart(poseta)"
+                                color="warning"
+                            >
+                                U toku
+                            </v-chip>
+                            <v-chip
+                                v-else
+                                color="error"
+                            >
+                                Nije odrađen
+                            </v-chip>
                         </v-expansion-panel-header>
                         <v-expansion-panel-content>
                             <v-simple-table>
@@ -97,7 +93,7 @@
                                 class="mr-4"
                                 @click="pocniPregled(poseta.id)"
                             >
-                                Započni pregled
+                                Započni
                             </v-btn>
                         </v-expansion-panel-content>
                     </v-expansion-panel>
@@ -146,7 +142,7 @@
       },
       methods:{
         checkStart: function(pregled){
-            if(pregled.tip.tip=="operacija"||pregled.odradjen){
+            if(pregled.odradjen){
                 return false;
             }
             return this.checkDate(pregled);

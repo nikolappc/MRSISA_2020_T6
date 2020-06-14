@@ -11,58 +11,56 @@
       </label>
     </v-container>
     <v-container>
-      <v-row>
-        <v-col
-          cols="12"
-          lg="8"
+      <v-card>
+        <RadniKalendar
+          :events="events"
+          @selected="selektovan"
         >
-          <v-card>
-            <RadniKalendar
-              :events="events"
-              @selected="selektovan"
+          <template slot-scope="kalendar">
+            <v-menu
+              v-model="kalendar.opened"
+              :close-on-content-click="false"
+              :activator="kalendar.activator"
+              offset-x
+              v-if="selected!=null"
             >
-              <template slot-scope="kalendar">
-                <v-menu
-                  v-model="kalendar.opened"
-                  :close-on-content-click="false"
-                  :activator="kalendar.activator"
-                  offset-x
-                  v-if="selected!=null"
-                >
-                  <v-card>
-                    <v-toolbar color="blue">
-                      <v-row>
-                        <v-col>
-                          {{selected.tip.naziv}}
-                        </v-col>
-                        <v-col>
-                          <v-icon>
-                            mdi-doctor
-                          </v-icon>
-                          {{selected.lekar}}
-                        </v-col>
-                      </v-row>
-                    </v-toolbar>
-                    <v-container>
-                        {{selected.opis}}
-                        <v-row>
-                            <v-btn :disabled="selected.recepti.length==0||!selected.odradjen" collor="success" :to="{ name: 'OveriRecepte', params: { pregled: selected }}" class="ml-auto">
-                              Overi recepte
-                            </v-btn>
-                        </v-row>
-                    </v-container>
-                  </v-card>
-                </v-menu>
-              </template>
-            </RadniKalendar>
-          </v-card>
-        </v-col>
-        <v-col
-          cols="12"
-          lg="4"
-        >
-          <v-card class="main-card">
-            Linkovi
+              <v-card>
+                <v-toolbar color="blue">
+                  <v-row>
+                    <v-col>
+                      {{selected.tip.naziv}}
+                    </v-col>
+                    <v-col>
+                      <v-icon>
+                        mdi-doctor
+                      </v-icon>
+                      {{selected.lekar}}
+                    </v-col>
+                  </v-row>
+                </v-toolbar>
+                <v-container>
+                    {{selected.opis}}
+                    <v-row>
+                        <v-btn :disabled="selected.recepti.length==0||!selected.odradjen" collor="success" :to="{ name: 'OveriRecepte', params: { pregled: selected }}" class="ml-auto">
+                          Overi recepte
+                        </v-btn>
+                    </v-row>
+                </v-container>
+              </v-card>
+            </v-menu>
+          </template>
+        </RadniKalendar>
+        <v-divider class="pt-5">
+
+        </v-divider>
+        <label class="display-1">
+          Linkovi
+        </label>
+        <v-row>
+          <v-col
+            cols="12"
+            lg="4"
+          >
             <v-row
               justify="center"
               align-content="stretch"
@@ -85,23 +83,23 @@
                 </router-link>
               </v-col>
             </v-row>
-          </v-card>
-        </v-col>
-      </v-row>
+          </v-col>
+        </v-row>
+      </v-card>
       <v-dialog
       v-model="dialog"
       max-width="290"
       >
-      <v-card>
-        <v-text-field
-          label="Nova sifra"
-          v-model="ulogovan.password"
-        >
-        </v-text-field>
-        <v-btn @click="promeniSifru">
-          Promeni sifru
-        </v-btn>
-      </v-card>
+        <v-card>
+          <v-text-field
+            label="Nova sifra"
+            v-model="ulogovan.password"
+          >
+          </v-text-field>
+          <v-btn @click="promeniSifru">
+            Promeni sifru
+          </v-btn>
+        </v-card>
       </v-dialog>
     </v-container>
 </div>

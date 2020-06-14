@@ -68,6 +68,7 @@
               .get('/poseta/' + this.$route.params.id)
               .then(response => {
                   this.pregled = response.data;
+                  console.log(this.pregled);
               })    
               .catch((err) => { 
                   console.log(err);
