@@ -4,11 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 import isamrs.domain.AdministratorKlinike;
@@ -29,15 +25,9 @@ import isamrs.domain.ZdravstveniKarton;
 import isamrs.dto.PredefinisaniPregledDTO;
 import isamrs.dto.ZakazaniPregledDTO;
 import isamrs.dto.ZakazivanjePregledaDTO;
-import isamrs.repository.KlinikaRepository;
-import isamrs.repository.LekarRepository;
+import isamrs.repository.*;
 import isamrs.exceptions.NotFoundException;
 import isamrs.operacije.zakazivanje.PregledRunnable;
-import isamrs.repository.PacijentRepository;
-import isamrs.repository.PregledRepository;
-import isamrs.repository.SalaRepository;
-import isamrs.repository.TipPoseteRepository;
-import isamrs.repository.ZdravstveniKartonRepository;
 import isamrs.tasks.ThreadPoolTaskSchedulerConfig;
 
 import org.springframework.stereotype.Service;
@@ -72,6 +62,9 @@ public class PregledServiceImpl implements PregledService {
 	
 	@Autowired
 	private ZdravstveniKartonRepository kartonRepo;
+
+	@Autowired
+	private DijagnozaRepository dijagnozaRepository;
 
 
 	@Autowired
@@ -125,6 +118,8 @@ public class PregledServiceImpl implements PregledService {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public Pregled update(Integer id, Pregled t) throws NotFoundException {
 		Pregled pregledForUpdate = pregledRepository.findById(id).orElseThrow(NotFoundException::new);
+		List<Dijagnoza> dijagnozas = new LinkedList<>();
+		List<Dijagnoza> removedDijagnoze = new LinkedList<>();
 		try {
 			pregledForUpdate.setPotvrdjen(t.isPotvrdjen());
 			pregledForUpdate.setTipPosete(t.tipPosete);
@@ -145,15 +140,61 @@ public class PregledServiceImpl implements PregledService {
 			}catch (Exception e){
 				e.printStackTrace();
 			}
+			if(t.getDijagnoza()!=null){
+				for(Dijagnoza d:t.getDijagnoza()){
+					boolean flag = true;
+					for(Dijagnoza dd: pregledForUpdate.getDijagnoza()){
+						if(d.getId().equals(dd.getId())){
+							flag = false;
+							break;
+						}
+					}
+					if(flag){
+						dijagnozas.add(d);
+					}
+				}
+				for(Dijagnoza d:pregledForUpdate.getDijagnoza()){
+					boolean flag = true;
+					for(Dijagnoza dd: t.getDijagnoza()){
+						if(d.getId().equals(dd.getId())){
+							flag = false;
+							break;
+						}
+					}
+					if(flag){
+						removedDijagnoze.add(d);
+					}
+				}
+			}
 			pregledForUpdate.setRecepti(t.getRecepti());
-			pregledForUpdate.setDijagnoza(t.getDijagnoza());
 			pregledForUpdate.setOpis(t.getOpis());
 			pregledForUpdate.setSala(t.getSala());
 		}
 		catch (Exception e) {
 			throw new NotFoundException();
 		}
-		return pregledRepository.save(pregledForUpdate);
+		Pregled p = pregledRepository.save(pregledForUpdate);
+		for(Dijagnoza d:dijagnozas){
+			d = dijagnozaRepository.getOne(d.getId());
+			d.getPregled().add(p);
+			dijagnozaRepository.save(d);
+		}
+		for(Dijagnoza d:dijagnozas){
+			d = dijagnozaRepository.getOne(d.getId());
+			boolean flag = false;
+			Pregled pp = null;
+			for(Pregled ppp:d.getPregled()){
+				if(ppp.getId().equals(p.getId())){
+					flag = true;
+					pp = ppp;
+					break;
+				}
+			}
+			d.getPregled().remove(pp);
+			dijagnozaRepository.save(d);
+
+		}
+		return p;
 	}
 	@Override
 	public void delete(Integer id) {

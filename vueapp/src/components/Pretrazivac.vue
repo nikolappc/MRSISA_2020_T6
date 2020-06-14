@@ -92,33 +92,33 @@
         props:["atribut", "color", "id", "elementi", "pozadina", "odabrani"],
         data:function () {
             return{
-                filtriraniElementi:[],
                 odabraniElementi:[],
                 sifra:""
             }
         },
         watch:{
-            sifra:function () {
-                this.filtriraj();
+            odabrani(val){
+                this.odabraniElementi = val;
             }
+        },
+        computed:{
+            filtriraniElementi(){
+                let sifra = this.sifra;
+                let id = this.id;
+                return this.elementi.filter(function (element) {
+                    let sifraLeka = element[id]+"";
+                    return sifraLeka.includes(sifra);
+                });
+            }
+
         },
         mounted:function () {
             console.log(this.odabrani);
             
-            if(this.odabrani){
-                this.odabraniElementi = this.odabrani;
-            }
+           
             this.filtriraniElementi = this.elementi;
         },
         methods:{
-            filtriraj(){
-                let sifra = this.sifra;
-                let id = this.id;
-                this.filtriraniElementi = this.elementi.filter(function (element) {
-                    let sifraLeka = element[id]+"";
-                    return sifraLeka.includes(sifra);
-                });
-            },
             odaberiElement(element){
                 this.sifra = "";
                 let id = this.id;

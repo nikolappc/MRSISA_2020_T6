@@ -16,6 +16,7 @@ import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import isamrs.dto.DijagnozaDTO;
 import isamrs.dto.PregledDTO;
 import isamrs.dto.post.PosetaPostDTO;
 
@@ -44,6 +45,10 @@ public class Pregled extends Poseta {
 		super(p.getOpis(), p.getId(), p.getTermin(),new TipPosete(p.getTip()), new ZdravstveniKarton(p.getZdravstveniKarton()),p.getSala());
 		this.setPotvrdjen(p.isPotvrdjen());
 		this.setOdradjen(p.isOdradjen());
+		this.dijagnoza = new LinkedList<>();
+		for(DijagnozaDTO d:p.getDijagnoze()){
+			dijagnoza.add(new Dijagnoza(d));
+		}
 	}
 
 	public Collection<Recepti> getRecepti() {

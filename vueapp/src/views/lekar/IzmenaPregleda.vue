@@ -77,7 +77,7 @@
     },
     methods:{
       promenaDijagnoza(dijagnoze){
-          this.dijagnoze = dijagnoze;
+          this.pregled.dijagnoze = dijagnoze;
       },
       izmeni(){
           axios.put("/poseta/pregled/"+this.pregled.id, this.pregled)
