@@ -56,6 +56,18 @@ public class PosetaController {
 	@Autowired
 	private MailSender mailSender;
 
+	
+
+	@DeleteMapping(value = "otkazi/{id}/{tip}",produces = MediaType.TEXT_HTML_VALUE)
+	public ResponseEntity<String> zavrsiPregled(@PathVariable("id") Integer id, HttpServletRequest req,@PathVariable("tip") String tip) throws NotFoundException {
+		if (!(req.getSession().getAttribute("user") instanceof Lekar)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
+		Integer idLekar =  ((Lekar)req.getSession().getAttribute("user")).getId();
+		Boolean b = posetaService.delete(id,tip);
+		return new ResponseEntity<>(b.toString(), HttpStatus.OK);
+	}
+
 	@PutMapping(value = "pregled/{id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PregledDTO> zavrsiPregled(@PathVariable("id") Integer id, @RequestBody PregledDTO p, HttpServletRequest req) throws NotFoundException {
 		if (!(req.getSession().getAttribute("user") instanceof Lekar)) {

@@ -33,7 +33,8 @@ import StranicaKlinike from '../views/StranicaKlinike.vue';
 
 
 function check(to,from,next,dozvoljeni){
-  console.log(to,from);
+  to;
+  from;
   for(let tip of dozvoljeni){
     if(store.state.ulogovan.tip == tip){
       next();

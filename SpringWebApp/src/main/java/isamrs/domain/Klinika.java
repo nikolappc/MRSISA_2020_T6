@@ -7,6 +7,8 @@
 package isamrs.domain;
 
 
+import java.util.HashSet;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,8 +42,8 @@ public class Klinika {
 	@Column(name = "opis", unique = false, nullable = false)
 	private String opis;
 	
-	@OneToOne
-	public Cenovnik cenovnik ;
+	@OneToOne(cascade = CascadeType.ALL)
+	public Cenovnik cenovnik = new Cenovnik();
 
 	@OneToOne
 	@JoinColumn(name = "id_adrese", referencedColumnName = "id")

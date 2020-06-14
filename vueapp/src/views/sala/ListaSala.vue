@@ -1,4 +1,5 @@
 <template>
+    <v-container>
     <div>
         <h2>Lista sala</h2>
         <v-text-field
@@ -92,6 +93,8 @@
                 </v-card>
         </v-dialog>
     </div>
+
+    </v-container>
 </template>
 
 

@@ -88,8 +88,8 @@ public class LekarService {
 			tp1.lekari.add(l);
 		}
 		ak.getKlinika().getLekari().add(l);
-		Adresa a = adresaService.createAdresa(l.getAdresa());
-		l.setAdresa(a);
+		//Adresa a = adresaService.createAdresa(l.getAdresa());
+		//l.setAdresa(a);
 		l = lekarRepo.save(l);
 		return l;
 	}

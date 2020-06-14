@@ -115,15 +115,17 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
         return operacijaRepo.findById(id).orElseGet(null);
     }
 
-    public Collection<PosetaPacijentDTO> findAllZahteviPregleda() {
-		return pregledRepo.findZahteve().stream().map(p -> {
+    public Collection<PosetaPacijentDTO> findAllZahteviPregleda(Integer idAdmin) {
+    	Klinika k = klinikaRepo.findByAdmin(idAdmin);
+		return pregledRepo.findZahteve(k.getId()).stream().map(p -> {
 			Pacijent pac = pacijentRepository.findByKarton(p.getZdravstveniKarton().getId());
 			return new PosetaPacijentDTO(p, pac);
 		})
 				.collect(Collectors.toList());    }
 
-    public Collection<PosetaPacijentDTO> findAllZahteviOperacija() {
-        return operacijaRepo.findZahteve().stream().map(p -> {
+    public Collection<PosetaPacijentDTO> findAllZahteviOperacija(Integer idAdmin) {
+    	Klinika k = klinikaRepo.findByAdmin(idAdmin);
+        return operacijaRepo.findZahteve(k.getId()).stream().map(p -> {
 				Pacijent pac = pacijentRepository.findByKarton(p.getZdravstveniKarton().getId());
 				return new PosetaPacijentDTO(p,  pac);
         	})
@@ -174,7 +176,7 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
                 l1.getOperacije().add(operacijaBaza);
                 operacijaBaza.addLekar(l1);
                 bazaLekar = lekarRepo.save(l1);
-                eventPublisher.publishEvent(new OnDoktorDodatEvent(l, operacijaBaza, operacijaBaza.getTermin()));
+                eventPublisher.publishEvent(new OnDoktorDodatEvent(l1, operacijaBaza, operacijaBaza.getTermin()));
                 
             }
             bazaLekar.getKlinika().getOperacije().add(operacijaBaza);

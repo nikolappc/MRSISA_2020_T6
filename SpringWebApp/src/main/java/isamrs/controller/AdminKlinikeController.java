@@ -150,7 +150,8 @@ public class AdminKlinikeController {
 		if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-		Collection<PosetaPacijentDTO> pregledi = adminService.findAllZahteviPregleda();
+		AdministratorKlinike ak = (AdministratorKlinike)req.getSession().getAttribute("user") ;
+		Collection<PosetaPacijentDTO> pregledi = adminService.findAllZahteviPregleda(ak.getId());
 		return new ResponseEntity<>(pregledi, HttpStatus.OK);
 	}
 
@@ -159,7 +160,8 @@ public class AdminKlinikeController {
     	if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)){
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-        Collection<PosetaPacijentDTO> operacije = adminService.findAllZahteviOperacija();
+    	AdministratorKlinike ak = (AdministratorKlinike)req.getSession().getAttribute("user") ;
+        Collection<PosetaPacijentDTO> operacije = adminService.findAllZahteviOperacija(ak.getId());
         return new ResponseEntity<>(operacije, HttpStatus.OK);
     }
 

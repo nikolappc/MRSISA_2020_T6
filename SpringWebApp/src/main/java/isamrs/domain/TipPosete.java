@@ -42,7 +42,7 @@ public class TipPosete {
 	public java.util.Collection<Lekar> lekari;
 	
 	@OneToMany(mappedBy = "tipPosete", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-	public Collection<StavkaCenovnika> stavkeCenovnika;
+	public Collection<StavkaCenovnika> stavkeCenovnika = new ArrayList<StavkaCenovnika>();
 	@Version
 	private Long version;
 	

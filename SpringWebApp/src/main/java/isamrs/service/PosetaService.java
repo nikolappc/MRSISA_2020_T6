@@ -13,6 +13,7 @@ import isamrs.repository.TipPoseteRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -236,6 +237,20 @@ public class PosetaService {
 		posete.addAll(pregled);
 		posete.addAll(operacija);
 		return posete;
+	}
+
+
+	@Transactional(readOnly = false)
+	public Boolean delete(Integer id, String tip) {
+		System.out.println("\n\nPocetak\n\n");
+		if(tip.equals("operacija")) {
+			operacijaRepository.deleteById(id);
+			return true;
+		}
+		else {
+			pregledRepo.deleteById(id);
+			return true;
+		}
 	}
 
 }

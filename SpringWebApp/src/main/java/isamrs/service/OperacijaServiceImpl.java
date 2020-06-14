@@ -78,7 +78,19 @@ public class OperacijaServiceImpl implements OperacijaService {
 	public Operacija create(Operacija t) {
 		TipPosete tp = tipRepo.findById(t.getTipPosete().getId()).get();
 		t.setTipPosete(tp);
+		ArrayList<Lekar> lekari = new ArrayList<Lekar>();
+		
 		Operacija o = operacijaRepository.save(t);
+		for(Lekar l : t.getLekari()) {
+			Lekar bazniLekar = lekarRepo.findById(l.getId()).orElseGet(null);
+			if(bazniLekar != null) {
+				lekari.add(bazniLekar);
+				bazniLekar.addOperacija(o);
+			}
+		}
+		o.setLekar(lekari);
+		o.getLekari().iterator().next().getKlinika().getOperacije().add(o);
+		o = operacijaRepository.save(o);
 		ThreadPoolTaskScheduler threadPoolTaskScheduler = threadPoolTaskSchedulerConfig.threadPoolTaskScheduler();
 		operacijaRunnable.setId(o.getId());
 		LocalDate date = LocalDate.now().plusDays(1);

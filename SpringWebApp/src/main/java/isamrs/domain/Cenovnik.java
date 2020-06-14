@@ -27,7 +27,7 @@ public class Cenovnik {
 	private Integer id;
 
 	@OneToMany(mappedBy = "cenovnik", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	public Collection<StavkaCenovnika> stavkaCenovnika;
+	public Collection<StavkaCenovnika> stavkaCenovnika = new HashSet<StavkaCenovnika>();
 
 	public Collection<StavkaCenovnika> getStavkaCenovnika() {
 		if (stavkaCenovnika == null)
