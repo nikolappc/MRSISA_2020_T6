@@ -69,6 +69,15 @@ public class Lekar extends MedicinskoOsoblje {
 	}
 
 	
+	public void izbrisiOperaciju(Integer id) {
+		for(Operacija o : this.getOperacije()) {
+			if(o.getId().equals(id)) {
+				this.operacije.remove(o);
+				return;
+			}
+		}
+	}
+	
 	public Collection<TipPosete> getTipoviPoseta() {
 		return tipoviPoseta;
 	}

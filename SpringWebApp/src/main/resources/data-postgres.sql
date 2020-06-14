@@ -95,7 +95,7 @@ insert into lekari (id_adrese, broj_telefona, email, ime, jbo, password, prezime
 insert into lekari (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike, prvi_put, version) values (16, '066/123-344', 'black@gmail.com', 'Sirius', '483777', 'sirius12345', 'Black', 4, false,0);
 
 insert into medicinske_sestre (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike, prvi_put) values (3, '064/123-897', 'nikolajevic@gmail.com', 'Snežana', '395653', 'snezana12345', 'Nikolajević', 1,false);
-insert into medicinske_sestre (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike, prvi_put) values (4, '064/123-232', 'petrovicolga@gmail.com', 'Olga', '330472', 'olga12345', 'Petrović', 1,false);
+insert into medicinske_sestre (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike, prvi_put) values (4, '064/123-232', 'petrovicolga	x@gmail.com', 'Olga', '330472', 'olga12345', 'Petrović', 1,false);
 insert into medicinske_sestre (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike, prvi_put) values (7, '064/123-114', 'orsic@gmail.com', 'Marija', '407353', 'marija12345', 'Oršić', 2,false);
 insert into medicinske_sestre (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike, prvi_put) values (8, '064/123-332', 'davidovic@gmail.com', 'Maja', '053638', 'maja12345', 'Davidović', 2,false);
 insert into medicinske_sestre (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike, prvi_put) values (12, '064/123-344', 'eriksen1@gmail.com', 'Marvin', '393930', 'marvin12345', 'Eriksen', 3,false);
@@ -221,8 +221,8 @@ insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_
 insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike, potvrdjen, odradjen, version) values ('Prošla operacija 2', 10, 18, 4, 2, 4, true, true,0);
 insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike, potvrdjen, odradjen, version) values ('Prošla operacija 3', 10, 19, 4, 1, 4, true, true,0);
 insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike, potvrdjen, odradjen, version) values ('Prošla operacija 4', 10, 20, 10, 1, 4, true, true,0);
-insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike, potvrdjen, odradjen, version) values ('', null, 21, 11, 10, 4, true, true,0);
-insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike, potvrdjen, odradjen, version) values ('', null, 22, 11, 11, 4, true, true,0);
+insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike, potvrdjen, odradjen, version) values ('', null, 21, 11, 10, 4, true, false,0);
+insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike, potvrdjen, odradjen, version) values ('', null, 22, 11, 11, 4, true, false,0);
 
 insert into recepti (overen, id_recepta, id_pregleda, version) values (true, 1, 1,0);
 insert into recepti (overen, id_recepta, id_pregleda, version) values (true, 2, 2,0);

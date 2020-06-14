@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
@@ -245,6 +247,11 @@ public class PosetaService {
 	public Boolean delete(Integer id, String tip) {
 		System.out.println("\n\nPocetak\n\n");
 		if(tip.equals("operacija")) {
+			Operacija o = operacijaRepository.findById(id).orElseGet(null);
+			for(Lekar l : o.getLekari()) {
+				l.izbrisiOperaciju(o.getId());
+			}
+			o.removeAllLekar();
 			operacijaRepository.deleteById(id);
 			return true;
 		}
