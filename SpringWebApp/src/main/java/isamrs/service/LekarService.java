@@ -80,19 +80,19 @@ public class LekarService {
 	}
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public Lekar update(Integer id,Lekar lekar) {
+	public Lekar update(Integer id,Lekar lekar) throws Exception {
 		
 		
 		Lekar lekarForUpdate = lekarRepo.findOneById(id);
 		Date today = new Date();
 		for(Pregled p : lekarForUpdate.getPregled()) {
 			if(p.getTermin().getKraj().after(today))
-				return null;
+				throw new Exception();
 		}
 		
 		for(Operacija o : lekarForUpdate.getOperacije()) {
 			if(o.getTermin().getKraj().after(today))
-				return null;
+				throw new Exception();
 		}
 		
 		lekarForUpdate.getAdresa().setAdresa(lekar.getAdresa().getAdresa());
@@ -104,6 +104,7 @@ public class LekarService {
 		lekarForUpdate.setPrezime(lekar.getPrezime());
 		lekarForUpdate.setJbo(lekar.getJbo());
 		lekarForUpdate.setPassword(lekar.getPassword());
+		lekarForUpdate.setPrviPut(false);
 		
 		return lekarRepo.save(lekarForUpdate);
 	}

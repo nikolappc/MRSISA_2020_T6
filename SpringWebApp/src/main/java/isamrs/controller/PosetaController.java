@@ -57,11 +57,12 @@ public class PosetaController {
 	
 	@Autowired
 	private MailSender mailSender;
-	
 
 	@PutMapping(value = "pregled/{id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PregledDTO> zavrsiPregled(@PathVariable("id") Integer id, @RequestBody PregledDTO p, HttpServletRequest req) throws NotFoundException {
-
+		if (!(req.getSession().getAttribute("user") instanceof Lekar)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		Pregled pregled = new Pregled(p);
 		Integer idLekar =  ((Lekar)req.getSession().getAttribute("user")).getId();
 		Lekar lekar = lekarService.findOne(idLekar);
@@ -72,7 +73,9 @@ public class PosetaController {
 	
 	@PutMapping(value = "operacija/{id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Operacija> zavrsiOperaciju(@PathVariable("id") Integer id, @RequestBody OperacijaDTO pregled, HttpServletRequest req) throws NotFoundException {
-
+		if (!(req.getSession().getAttribute("user") instanceof Lekar)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		Integer idLekar =  ((Lekar)req.getSession().getAttribute("user")).getId();
 		Operacija updated = operacijaService.update(id, pregled,idLekar);
 		return new ResponseEntity<>(updated, HttpStatus.OK);
@@ -80,13 +83,17 @@ public class PosetaController {
 	
 	@PostMapping(value = "/pregled", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Pregled> createPregled(@RequestBody PosetaPostDTO p, HttpServletRequest req) throws Exception, NotFoundException {
+		if (!(req.getSession().getAttribute("user") instanceof Lekar)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		Pregled pregled = DTOtoNewPregled(p);
 		ZdravstveniKarton zdravstveniKarton = zdravstveniKartonService.findByPacijent(p.getPacijentId());
 		Integer idLekar =  ((Lekar)req.getSession().getAttribute("user")).getId();
 		Lekar lekar = lekarService.findOne(idLekar);
 		pregled.setZdravstveniKarton(zdravstveniKarton);
 		pregled.setLekar(lekar);
-		Pregled savedPregled = pregledService.create(pregled);
+			Pregled savedPregled = pregledService.create(pregled);
+
 		
 		String subject1 = "Kreiran novi pregled";
 		String message1 = "Obavestavamo Vas da je u Vasoj klinici kreiran novi pregled.";
@@ -104,19 +111,17 @@ public class PosetaController {
 	}
 	@PostMapping(value = "/operacija", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Operacija> createOperacija(@RequestBody PosetaPostDTO o, HttpServletRequest req) throws Exception, NotFoundException {
-
+		if (!(req.getSession().getAttribute("user") instanceof Lekar)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		Integer idLekar =  ((Lekar)req.getSession().getAttribute("user")).getId();
 		Operacija operacija = DTOtoOperacija(o);
         ZdravstveniKarton zdravstveniKarton = zdravstveniKartonService.findByPacijent(o.getPacijentId());
         operacija.setZdravstveniKarton(zdravstveniKarton);
         Lekar lekar = lekarService.findOne(idLekar);
-        Operacija savedOperacija = operacijaService.create(operacija);
         operacija.addLekar(lekar);
-        Klinika k = klinikaService.findByLekar(lekar);
-        k.getOperacije().add(operacija);
-        klinikaService.update(k.getId(), k);
-        lekar.addOperacija(savedOperacija);
-        lekarService.update(lekar.getId(), lekar);
+        lekar.addOperacija(operacija);
+        Operacija savedOperacija = operacijaService.create(operacija);
         
         String subject1 = "Kreirana nova operacija";
 		String message1 = "Obavestavamo Vas da je u Vasoj klinici kreirana nova operacija.";
@@ -142,14 +147,19 @@ public class PosetaController {
 		return new Pregled(p.getOpis(), p.getTermin(), p.getTipPosete());
 	}
 	@GetMapping(value = "/pacijent/{idPregled}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PacijentDTO> getPacijentPregleda(@PathVariable("idPregled") Integer idPregled) throws Exception {
-
+	public ResponseEntity<PacijentDTO> getPacijentPregleda(HttpServletRequest req ,@PathVariable("idPregled") Integer idPregled) throws Exception {
+		if (!(req.getSession().getAttribute("user") instanceof Lekar)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		Pacijent pacijent = posetaService.findPacijent(idPregled);
 		return new ResponseEntity<PacijentDTO>(pacijentToDTO(pacijent), HttpStatus.CREATED);
 	}
 
 	@PutMapping(value = "/zdravstveniKarton/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ZdravstveniKartonDTO> updateZdravstveniKarton(@RequestBody ZdravstveniKartonDTO zdravstveniKarton, @PathVariable Integer id){
+	public ResponseEntity<ZdravstveniKartonDTO> updateZdravstveniKarton(HttpServletRequest req,@RequestBody ZdravstveniKartonDTO zdravstveniKarton, @PathVariable Integer id){
+		if (!(req.getSession().getAttribute("user") instanceof Lekar)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		try{
 			ZdravstveniKarton z = zdravstveniKartonService.update(id, DTOtoZKarton(zdravstveniKarton));
 			return new ResponseEntity<>(zdravstveniKartonToDTO(z), HttpStatus.OK);
@@ -161,7 +171,10 @@ public class PosetaController {
 
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Pregled> createSlobodniTerminiDTO(@RequestBody SlobodniTerminiDTO poseta) throws Exception {
+	public ResponseEntity<Pregled> createSlobodniTerminiDTO(HttpServletRequest req,@RequestBody SlobodniTerminiDTO poseta) throws Exception {
+		if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		Pregled savedSlobodniTerminiDTO = null;
 		try {
 			
@@ -230,6 +243,9 @@ public class PosetaController {
 
 	@GetMapping(value = "/pregledi", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<PregledDTO>> getPregledi(HttpServletRequest request){
+		if (!(request.getSession().getAttribute("user") instanceof MedicinskoOsoblje)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		try{
 			MedicinskoOsoblje medicinskoOsoblje = (MedicinskoOsoblje) request.getSession().getAttribute("user");
 			Collection<Pregled> pregledi = pregledService.findPreglediKlinike(medicinskoOsoblje.getKlinika().getId());
@@ -242,7 +258,11 @@ public class PosetaController {
 	}
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PregledDTO> getPregled(@PathVariable("id") Integer id) throws NotFoundException {
+	public ResponseEntity<PregledDTO> getPregled(HttpServletRequest req ,@PathVariable("id") Integer id) throws NotFoundException {
+		if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike 
+				|| req.getSession().getAttribute("user") instanceof MedicinskoOsoblje) ) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		Pregled pregled = pregledService.findOne(id);
 
 		if (pregled == null) {
@@ -253,7 +273,10 @@ public class PosetaController {
 	}
 	
 	@GetMapping(value = "operacija/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<OperacijaDTO> getOperacija(@PathVariable("id") Integer id) throws NotFoundException {
+	public ResponseEntity<OperacijaDTO> getOperacija(HttpServletRequest req,@PathVariable("id") Integer id) throws NotFoundException {
+		if (!(req.getSession().getAttribute("user") instanceof Lekar)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		Operacija pregled = operacijaService.findOne(id);
 
 		if (pregled == null) {
@@ -264,14 +287,20 @@ public class PosetaController {
 	}
 	
 	@GetMapping(value = "/pacijent/operacija/{idPregled}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PacijentDTO> getPacijentOperacija(@PathVariable("idPregled") Integer idPregled) throws Exception {
-
+	public ResponseEntity<PacijentDTO> getPacijentOperacija(HttpServletRequest req,@PathVariable("idPregled") Integer idPregled) throws Exception {
+		if (!(req.getSession().getAttribute("user") instanceof Lekar)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
+		
 		Pacijent pacijent = posetaService.findPacijentOperacija(idPregled);
 		return new ResponseEntity<PacijentDTO>(pacijentToDTO(pacijent), HttpStatus.CREATED);
 	}
 
 	@GetMapping(value = "/predstojeciPregledi/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<PosetaDTO>> getBuduciPregledi(@PathVariable("id") Integer idPacijent) throws NotFoundException {
+	public ResponseEntity<Collection<PosetaDTO>> getBuduciPregledi(HttpServletRequest req,@PathVariable("id") Integer idPacijent) throws NotFoundException {
+		if (!(req.getSession().getAttribute("user") instanceof Lekar)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		Collection<PosetaDTO> posete = pacijentService.findBuduciPregled(idPacijent);
 		
 		return new ResponseEntity<Collection<PosetaDTO>>(posete, HttpStatus.OK);

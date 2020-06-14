@@ -1,6 +1,6 @@
 insert into adrese ( adresa, grad, drzava) values ( 'Svetozara Markovica 44', 'Bac', 'Srbija');
 insert into adrese ( adresa, grad, drzava) values ( 'Svetozara Markovskog 44', 'Vidin', 'Bugarska');
-insert into adrese ( adresa, grad, drzava) values ( 'Svjetozara Markovica 44', 'Prnjavor', 'Bosna i Hercegovina');
+insert into adrese ( adresa, grad, drzava) values ( 'Svetozara Markovica 44', 'Prnjavor', 'Bosna i Hercegovina');
 insert into adrese ( adresa, grad, drzava) values ( 'Kneza Lazara 22', 'Novi Sad', 'Srbija');
 
 insert into administratori_klinickog_centra (id_adrese, broj_telefona, email, ime, jbo, password, prezime) values (1, '065/123-112', 'admin@gmail.com', 'Admin', '0000', 'admin', 'Admin');
@@ -31,15 +31,15 @@ insert into stavke_cenovnika (cena, id_cenovnik, id_tip) values (50, 1);
 
 insert into administratori_klinike (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike) values (1, '066/125-112', 'dumbledore@gmail.com', 'Albus', '0221', 'albus12345', 'Dumbledore', 1);
 
-insert into lekari (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike) values (2, '066/123-113', 'lupin@gmail.com', 'Remus', '000', 'remus12345', 'Lupin', 1);
-insert into lekari (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike) values (3, '066/123-163', 'black@gmail.com', 'Sirius', '000', 'sirius12345', 'Black', 1);
-insert into lekari (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike) values (3, '066/123-163', 'neekolapapic@gmail.com', 'Nikola', '000', '1', 'PPC', 1);
+insert into lekari (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike, prvi_put, version) values (2, '066/123-113', 'lupin@gmail.com', 'Remus', '000', 'remus12345', 'Lupin', 1, false,0);
+insert into lekari (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike, prvi_put, version) values (3, '066/123-163', 'black@gmail.com', 'Sirius', '000', 'sirius12345', 'Black', 1, false,0);
+insert into lekari (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike, prvi_put, version) values (3, '066/123-163', 'neekolapapic@gmail.com', 'Nikola', '000', '1', 'PPC', 1, true,0);
 
-insert into medicinske_sestre (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike) values (2, '064/123-114', 'evans@gmail.com', 'Lily', '000', 'lily12345', 'Evans', 1);
+insert into medicinske_sestre (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_klinike, prvi_put) values (2, '064/123-114', 'evans@gmail.com', 'Lily', '000', 'lily12345', 'Evans', 1,false);
 
 insert into godisnji_odmori (kraj, pocetak, odobren, id_lekara) values (to_timestamp('2020-03-10', 'YYYY-MM-DD'), to_timestamp('2020-03-03', 'YYYY-MM-DD'), true, 1);
 insert into godisnji_odmori (kraj, pocetak, odobren, id_sestre) values (to_timestamp('2020-03-10', 'YYYY-MM-DD'), to_timestamp('2020-03-03', 'YYYY-MM-DD'), true, 1);
-insert into godisnji_odmori (kraj, pocetak, odobren, id_lekara) values (to_timestamp('2020-03-10', 'YYYY-MM-DD'), to_timestamp('2020-03-03', 'YYYY-MM-DD'), false, 1);
+insert into godisnji_odmori (kraj, pocetak, odobren, id_lekara) values (to_timestamp('2020-03-21', 'YYYY-MM-DD'), to_timestamp('2020-03-03', 'YYYY-MM-DD'), false, 1);
 insert into godisnji_odmori (kraj, pocetak, odobren, id_sestre) values (to_timestamp('2020-03-10', 'YYYY-MM-DD'), to_timestamp('2020-03-03', 'YYYY-MM-DD'), false, 1);
 
 insert into lekovi (sifra_leka, naziv_leka) values (1, 'Bromazepam');
@@ -101,12 +101,12 @@ insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_
 insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike, potvrdjen, odradjen, version) values ('slijepo crijevo5', null, 10, 2, 1, 1, true, true,0);
 insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike, potvrdjen, odradjen, version) values ('slijepo crijevo6', null, 11, 2, 1, 1, true, true,0);
 
-insert into recepti (overen, id_recepta, id_pregleda) values (false, 1, 1);
-insert into recepti (overen, id_recepta, id_pregleda) values (true, 2, 2);
-insert into recepti (overen, id_recepta, id_pregleda) values (false, 3, 2);
-insert into recepti (overen, id_recepta, id_pregleda) values (true, 4, 2);
-insert into recepti (overen, id_recepta, id_pregleda) values (false, 5, 2);
-insert into recepti (overen, id_recepta, id_pregleda) values (false, 5, 3);
+insert into recepti (overen, id_recepta, id_pregleda, version) values (false, 1, 1,0);
+insert into recepti (overen, id_recepta, id_pregleda, version) values (true, 2, 2,0);
+insert into recepti (overen, id_recepta, id_pregleda, version) values (false, 3, 2,0);
+insert into recepti (overen, id_recepta, id_pregleda, version) values (true, 4, 2,0);
+insert into recepti (overen, id_recepta, id_pregleda, version) values (false, 5, 2,0);
+insert into recepti (overen, id_recepta, id_pregleda, version) values (false, 5, 3,0);
 
 
 insert into dijagnoze (sifra, naziv, id_kartona) values (1, 'Covid-19', 1);

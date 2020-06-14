@@ -43,6 +43,7 @@ public class KlinikaController {
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<KlinikaDTO>> getKlinike(){
+		//autorizacija
 		Collection<Klinika> klinike = klinikaService.findAll();
 		Collection<KlinikaDTO> kdto = klinike.parallelStream().map(this::mapToDTO).collect(Collectors.toList());
 		return new ResponseEntity<Collection<KlinikaDTO>>(kdto, HttpStatus.OK);
@@ -51,6 +52,7 @@ public class KlinikaController {
 	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<KlinikaDTO> getKlinika(@PathVariable("id") Integer id) throws NotFoundException {
+		//autorizacija
 		Klinika k = klinikaService.findOne(id);
 		if(k==null) {
 			return new ResponseEntity<KlinikaDTO>(HttpStatus.NOT_FOUND);
@@ -60,9 +62,10 @@ public class KlinikaController {
 	
 	@GetMapping(value = "/admin", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<KlinikaDTO> getKlinikaAdmin(HttpServletRequest req) throws NotFoundException {
+		//autorizacija
 		AdministratorKlinike ak = (AdministratorKlinike) req.getSession().getAttribute("user");
 		
-		Klinika k = klinikaService.findOne(ak.getKlinika().getId());
+		Klinika k = klinikaService.findByAdmin(ak.getId());
 		if(k==null) {
 			return new ResponseEntity<KlinikaDTO>(HttpStatus.NOT_FOUND);
 		}
@@ -72,6 +75,7 @@ public class KlinikaController {
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<KlinikaDTO> createKlinika(@RequestBody KlinikaDTO k){
+		//autorizacija
 		Klinika klinika = klinikaService.create(mapToEntity(k));
 		
 		return new ResponseEntity<KlinikaDTO>(mapToDTO(klinika), HttpStatus.CREATED);
@@ -79,6 +83,7 @@ public class KlinikaController {
 	
 	@PutMapping(value = "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<KlinikaDTO> updateKlinika(@RequestBody KlinikaDTO k, @PathVariable("id") Integer id) throws NotFoundException {
+		//autorizacija
 		Klinika klinika = klinikaService.update(id, mapToEntity(k));
 		
 		return new ResponseEntity<KlinikaDTO>(mapToDTO(klinika), HttpStatus.CREATED);
@@ -86,6 +91,7 @@ public class KlinikaController {
 	
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<KlinikaDTO> deleteKlinika(@PathVariable Integer id){
+		//autorizacija
 		try {
 
 			klinikaService.delete(id);

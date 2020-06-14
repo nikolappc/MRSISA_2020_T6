@@ -65,18 +65,21 @@
               label="Grad"
               append-icon='mdi-map-marker'
               outlined
+              dense
             ></v-text-field></td>
             <td colspan="2"><v-text-field
               v-model="drzava"
               label="Država"
               append-icon='mdi-map-marker'
               outlined
+              dense
             ></v-text-field></td>
             <td colspan="2"><v-text-field
               v-model="ocjena"
               label="Minimalna ocena"
               prepend-inner-icon="mdi-file-chart"
               outlined
+              dense
             ></v-text-field></td></tr></v-simple-table></v-card-text>
 			<v-card-actions><v-spacer></v-spacer><v-btn
 			:disabled="!valid"
@@ -152,7 +155,7 @@ export default {
     klinike : [],
     headers: [
         {
-          text: 'Ime', 
+          text: 'Naziv klinike', 
           value: 'naziv', 
           sortable: true, 
         },
@@ -207,14 +210,10 @@ export default {
 	},
 	computed: {
 		klinikeFilter() {
-			console.log(this.od);
-			console.log(this.doo);
 			let proveraOd = this.od;
 			if (this.od == ""  || isNaN(this.od)) { proveraOd = 0; }
 			let proveraDo = this.doo;
 			if (this.doo == "" || isNaN(this.doo)) { proveraDo = 9999999; }
-			console.log(Number(proveraOd));
-			console.log(Number(proveraDo));
 			return this.klinike.filter(klinika => (Number(klinika.cenaPregleda) >= Number(proveraOd)) && (Number(klinika.cenaPregleda) <= Number(proveraDo)));
 		},
 	minDate() {
@@ -223,8 +222,6 @@ export default {
 	},	
 	fromDateDisp() {
 		return this.datum;
-	// format date, apply validations, etc. Example below.
-	// return this.fromDateVal ? this.formatDate(this.fromDateVal) : "";
 	}
 	},
 	methods: {

@@ -56,10 +56,16 @@
                 color="success"
                 class="mr-4"
                 @click="pocniPregled(item.id,item.tipPregleda)"
+                v-if="ulogovan.tip == 'LEKAR'"
               >
                 Započni pregled
               </v-btn>
-              
+              <v-btn
+                :disabled="item.recepti.length==0&&item.odradjen==true"
+                v-if="ulogovan.tip == 'SESTRA'"
+                @click="overi(item)"
+              >
+              </v-btn>
             </template>
           </v-data-table>
         </v-container>
@@ -111,6 +117,9 @@ export default {
       ]
   }),
   methods:{
+    overi(selected){
+      this.$router.push({ name: 'OveriRecepte', params: { pregled: selected }});
+    },
     toStringAdresa:function(p){
         return p.adresa.adresa+ ", " + p.adresa.grad + ", " + p.adresa.drzava;
       },
@@ -149,6 +158,11 @@ export default {
     formatDate(value) {
 			return moment(String(value)).format('DD.MM.YYYY. HH:mm');
 		},
+  },
+  computed:{
+    ulogovan(){
+        return this.$store.state.ulogovan
+    },
   },
   mounted () {
     axios

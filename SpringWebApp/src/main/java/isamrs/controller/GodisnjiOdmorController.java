@@ -5,6 +5,8 @@ import java.util.Collection;
 import javax.servlet.http.HttpServletRequest;
 
 import isamrs.domain.*;
+import isamrs.dto.GodisnjiOdmorContainerDTO;
+import isamrs.dto.GodisnjiOdmorDTO;
 import isamrs.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,6 +33,9 @@ public class GodisnjiOdmorController {
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<OdmorDTO>> getOdmors(HttpServletRequest req) {
+		if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		AdministratorKlinike ak = (AdministratorKlinike)req.getSession().getAttribute("user");
 		Collection<OdmorDTO> odmori = odmorService.findAll(ak.getKlinika().getId());
 		return new ResponseEntity<Collection<OdmorDTO>>(odmori, HttpStatus.OK);
@@ -40,26 +45,32 @@ public class GodisnjiOdmorController {
 	
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<GodisnjiOdmor> createZahtev(HttpServletRequest req,@RequestBody GodisnjiOdmor go) throws NotFoundException {
+	public ResponseEntity<GodisnjiOdmorDTO> createZahtev(HttpServletRequest req,@RequestBody GodisnjiOdmorDTO go) throws NotFoundException {
+		if (!(req.getSession().getAttribute("user") instanceof MedicinskoOsoblje)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		MedicinskoOsoblje mo = (MedicinskoOsoblje)req.getSession().getAttribute("user");
 		GodisnjiOdmor savedGO;
 		if(mo instanceof Lekar){
-			savedGO = odmorService.create(go, mo.getId());
+			savedGO = odmorService.create(new GodisnjiOdmor(go), mo.getId());
 		}else if(mo instanceof MedicinskaSestra){
-			savedGO = odmorService.createSestra(go, mo.getId());
+			savedGO = odmorService.createSestra(new GodisnjiOdmor(go), mo.getId());
 		}else{
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<GodisnjiOdmor>(savedGO, HttpStatus.OK);
+		return new ResponseEntity<GodisnjiOdmorDTO>(new GodisnjiOdmorDTO(savedGO), HttpStatus.OK);
 	}
 
 
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<GodisnjiOdmor> updateLekar(@RequestBody GodisnjiOdmor odmor, @PathVariable Integer id)
+	public ResponseEntity<GodisnjiOdmorDTO> updateLekar(@RequestBody GodisnjiOdmorContainerDTO odmor, @PathVariable Integer id, HttpServletRequest req)
 			throws Exception, NotFoundException {
-		
-		GodisnjiOdmor updatedOdmor = odmorService.update(id,odmor);
-		return new ResponseEntity<GodisnjiOdmor>(updatedOdmor, HttpStatus.OK);
+
+		if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
+		GodisnjiOdmor updatedOdmor = odmorService.update(id,odmor.getOdmor());
+		return new ResponseEntity<>(new GodisnjiOdmorDTO(updatedOdmor), HttpStatus.OK);
 	}
 	
 }

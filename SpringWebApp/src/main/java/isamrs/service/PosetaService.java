@@ -3,6 +3,7 @@ package isamrs.service;
 import isamrs.domain.*;
 import isamrs.dto.PregledDTO;
 import isamrs.repository.LekarRepository;
+import isamrs.repository.OdmorRepository;
 import isamrs.repository.OperacijaRepository;
 import isamrs.repository.PregledRepository;
 import isamrs.repository.SalaRepository;
@@ -34,10 +35,14 @@ public class PosetaService {
 	
 	@Autowired
 	private SalaRepository salaRepo;
+	
+	@Autowired
+	private OdmorRepository odmorRepo;
 
 	public Pregled create(Pregled pre) throws Exception{
 		Lekar l = lekarRepo.findById(pre.getLekar().getId()).get();
 		Sala s = salaRepo.findById(pre.getSala().getId()).get();
+		TipPosete t = tipRepo.findById(pre.getTipPosete().getId()).get();
 		
 		if(s != null)
 			if (!proveriTerminSala(s, pre.getTermin())) {
@@ -48,7 +53,9 @@ public class PosetaService {
         if (!proveriTerminLekara(l, pre.getTermin())) {
             throw new Exception();
         }
-		
+        pre.setSala(s);
+        pre.setLekar(l);
+        pre.setTipPosete(t);
 		return pregledRepo.save(pre);
 	}
 	
@@ -125,6 +132,21 @@ public class PosetaService {
         	return false;
         }
         
+        //Provera da li je godisnji odmor tad
+        for(GodisnjiOdmor go : odmorRepo.odobreniLekari(lekar.getId())) {
+        	 
+             
+             //Ako je termin posle kraja nekog odmora to je ok
+             if (go.getKraj().before(termin.getPocetak()) || 
+            		 go.getKraj().equals(termin.getPocetak())) {
+                 continue;
+             }
+             //Ako je termin pre pocetka nekog odmora to je ok
+             if (go.getPocetak().after(termin.getKraj())  || 
+            		 go.getPocetak().equals(termin.getKraj())) {
+                 continue;
+             }
+        }
         
         return true;
     }

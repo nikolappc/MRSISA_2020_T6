@@ -86,7 +86,7 @@
                       v-if="checkStart(kalendar.selected)"
                       color="success"
                       class="mr-4"
-                      @click="pocniPregled(item.id)"
+                      @click="pocniPregled(kalendar.selected.id)"
                     >
                       Započni pregled
                     </v-btn>
@@ -165,7 +165,21 @@
           </v-col>
         </v-row>
       </v-card>
-      
+      <v-dialog
+      v-model="dialog"
+      max-width="290"
+      >
+      <v-card>
+        <v-text-field
+          label="Nova sifra"
+          v-model="ulogovan.password"
+        >
+        </v-text-field>
+        <v-btn @click="promeniSifru">
+          Promeni sifru
+        </v-btn>
+      </v-card>
+      </v-dialog>
     </v-container>
   </div>
 </template>
@@ -185,6 +199,7 @@ export default {
     RadniKalendar
   },
    data: () => ({
+      dialog: false,
       termini: {},
       events:[],
       pacijent:require("../assets/pacijent.jpg"),
@@ -198,6 +213,9 @@ export default {
     }
   },
   mounted () {
+    if(this.ulogovan.prviPut == true)
+      this.dialog = true;
+    
     axios
             .get('lekar/poseta/'+this.$store.state.ulogovan.id)
             .then((res) => {
@@ -212,6 +230,17 @@ export default {
             });
   },
   methods: {
+    promeniSifru: function(){
+      this.ulogovan.prviPut = false;
+      axios
+        .put('api/'+this.ulogovan.id,this.ulogovan)
+        .then(response => {
+            this.$store.commit("setUlogovan", response.data);
+            this.$store.commit("setSnackbar", {text:"Uspešno ste izmenili profil", color: "success"});
+            this.dialog = false;
+        })
+        .catch(function (error) { console.log(error); });
+    },
     checkStart: function(pregled){
         if(pregled.tip=="operacija"||pregled.odradjen){
             return false;

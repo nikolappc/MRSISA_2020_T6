@@ -53,7 +53,7 @@ export default {
                 this.tipovi = response.data;
                 console.log(response);
             })
-            .catch(() => { this.tipovi = [{naziv: 'pera',tip: 'operacija',stavkaCenovnika: [{cena: 20}]}]; });
+            .catch((err) => { console.log(err) });
     },
     components: {
         Tip,
@@ -78,7 +78,7 @@ export default {
                 else if(tip.tip.match(this.search)){
                     return true;
                 }
-                else if((tip.stavkaCenovnika.cena + "").match(this.search)){
+                else if((tip.stavkeCenovnika[0].cena + "").match(this.search)){
                     return true;
                 }
                 return false;

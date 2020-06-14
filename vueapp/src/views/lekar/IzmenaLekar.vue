@@ -36,25 +36,9 @@
       :rules="rule"
       required
     ></v-text-field>
+    <AutocompleteAdresa v-bind:adresa="lekar.adresa"/>
     <v-text-field
-      v-model="lekar.adresa.adresa"
-      label="Adresa"
-      :rules="rule"
-      required
-    ></v-text-field>
-    <v-text-field
-      v-model="lekar.adresa.grad"
-      label="Grad"
-      :rules="rule"
-      required
-    ></v-text-field>
-    <v-text-field
-      v-model="lekar.adresa.drzava"
-      label="Država"
-      :rules="rule"
-      required
-    ></v-text-field>
-    <v-text-field
+      disabled="true"
       v-model="lekar.jbo"
       label="Jedinstveni broj osiguranika"
       :rules="rule"
@@ -76,7 +60,11 @@
 <script>
 import axios from "axios";
 import router from "../../router/index.js"
+import AutocompleteAdresa from "../../components/Autocomplete.vue";
 export default {
+  components:{
+      AutocompleteAdresa
+    },
     name: 'IzmenaLekar',
     props: ["lekar"],
     data: function() { return {
@@ -109,7 +97,7 @@ export default {
                 this.tipovi = response.data;
                 console.log(response);
             })
-            .catch(() => { this.tipovi = [{naziv: 'pera',tip: 'operacija',stavkaCenovnika: {cena: 20}}]; });
+            .catch((err) => { console.log(err) });
     },
     methods: {
         izmeniLekara: function(event) {

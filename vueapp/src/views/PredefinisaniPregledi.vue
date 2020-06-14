@@ -42,11 +42,6 @@ export default {
           sortable: true, 
         },
         {
-          text: 'Opis', 
-          value: 'ime', 
-          sortable: true, 
-        },
-        {
           text: 'Tip', 
           value: 'nazivTipa', 
           sortable: true, 
@@ -140,7 +135,7 @@ export default {
 			this.$store.commit("setSnackbar", {text:"Uspešno ste poslali zahtev za zakazivanje pregleda!", color: "success"});
 				router.push("/");   
 			})
-		.catch( () => { this.$store.commit("setSnackbar", {text:"Greska", color: "error"}); console.log("greska"); router.push("/");  });
+		.catch( () => { this.$store.commit("setSnackbar", {text:"Greška prilikom zakazivanja unapred definisanog pregleda.", color: "error"}); console.log("greska"); router.push("/");  });
 	},
   },
 }

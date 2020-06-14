@@ -1,7 +1,8 @@
 <template>
   <div class="mapouter">
           <div class="gmap_canvas">
-            <iframe width="150" height="150" id="gmap_canvas" :src= napraviAdresu(adresaMape) frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+            <iframe title="mapa" width="150" height="150" id="gmap_canvas" :src= napraviAdresu(adresaMape) frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+            <td>{{adresaMape.adresa}} {{adresaMape.grad}} {{adresaMape.drzava}}</td>
           </div>
         </div>
 </template>

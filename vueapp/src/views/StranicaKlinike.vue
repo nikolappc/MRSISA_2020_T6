@@ -189,7 +189,6 @@ export default {
 		router.push("/");
 	}
 	this.idKlinike = this.$route.params.idKlinike;
-	console.log(this.idKlinike);
 	axios
 	.get('klinika/' + this.idKlinike)
 	.then(response => {
@@ -212,7 +211,6 @@ export default {
 		for (let ll of this.ljekari) {
 			this.sviLjekari.push(ll);
 		}
-		//this.sviLjekari = this.ljekari;
 		this.pretrazeno = false;
 	})
 	.catch(function (error) { console.log(error); router.go(-1); });
@@ -222,8 +220,6 @@ export default {
 	var getOcena = response.data;
 	this.mozeOcjenjivati = getOcena.mozeOcjenjivati;
 	this.ocjena = getOcena.ocjena; //ako vrati 0 zvjezdice staviti rando, nema ocjene
-	console.log(this.mozeOcjenjivati);
-	console.log(this.ocjena);
 	})
 	.catch(function (error) { console.log(error); router.push("/"); });
 	},
@@ -237,8 +233,6 @@ export default {
 	},	
 	fromDateDisp() {
 		return this.datum;
-	// format date, apply validations, etc. Example below.
-	// return this.fromDateVal ? this.formatDate(this.fromDateVal) : "";
 	}
 	},
 	methods: {
@@ -269,16 +263,9 @@ export default {
 		return moment(String(value)).format('DD.MM.YYYY.');
 	},
 	formatDateStr(value) {
-		//console.log(value);
-		//console.log(String(value));
 		return moment(String(value)).format('DD.MM.YYYY.');
 	},
 	otvoriDialog(value) {
-		console.log(value.listaVremena);
-		/*for (let i = 0; i < value.listaVremena.length; i++) {
-			value.listaVremena[i] = value.listaVremena[i].substr(1);
-		}
-		console.log(value.listaVremena);*/
 		let adr = this.adresaKlinike.adresa + ", " + this.adresaKlinike.grad + ", " + this.adresaKlinike.drzava;
 
 		console.log(value.id);
@@ -288,8 +275,6 @@ export default {
 		var getOcena = response.data;
 		this.mozeOcjenjivatiL = getOcena.mozeOcjenjivati;
 		this.ocjenaL = getOcena.ocjena;
-		console.log(this.mozeOcjenjivatiL);
-		console.log(this.ocjenaL);
 		
 		if (this.pretrazeno == true) {
 			axios
@@ -298,8 +283,6 @@ export default {
 			var podaci = response.data;
 			this.cijena = podaci.cijenaTipaOpciono;
 			this.vremena = podaci.listaVremena;
-			console.log(podaci.cijenaTipaOpciono);
-			console.log(podaci.listaVremena);
 			
 			this.dialogZahtjev = {zakazivanje: this.pretrazeno, idKlinike: this.idKlinike, nazivKlinike: this.nazivKlinike, adresaKlinike: adr, idPacijenta: this.ulogovani.id, idLekara: value.id, imeLekara: value.ime, prezimeLekara: value.prezime, nazivTipa: this.nazivTipa, listaVremena: this.vremena, datum: this.datum, cenaPregleda: this.cijena, mozeOcjenjivati: this.mozeOcjenjivatiL, ocjena: this.ocjenaL};
 			this.dialog = true;
@@ -322,10 +305,7 @@ export default {
 	pretrazi() {
 		this.pretrazeno = true;
 		this.nazivTipa = this.tip.naziv;
-		//this.datum
-		//this.cena = 0;
 		this.ljekari = [];
-		console.log(this.sviLjekari);
 		for (let l of this.sviLjekari) {
 			console.log(l.id);
 			axios

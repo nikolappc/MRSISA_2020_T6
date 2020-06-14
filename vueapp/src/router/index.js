@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import axios from 'axios'
+import store from '../store/index.js'
 import VueAxios from 'vue-axios'
 import Home from '../views/Home.vue';
 import HomeMed from '../views/HomeMed.vue';
@@ -31,6 +32,14 @@ import ZakazaniPregledi from '../views/ZakazaniPregledi.vue';
 import StranicaKlinike from '../views/StranicaKlinike.vue';
 
 
+function check(to,from,next,dozvoljeni){
+  console.log(to,from);
+  for(let tip of dozvoljeni){
+    if(store.state.ulogovan.tip == tip){
+      next();
+    }
+  }
+}
 
 
 
@@ -111,8 +120,22 @@ Vue.use(VueRouter, VueAxios, axios)
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/OveriRecepte.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/medicinskaSestra/OveriRecepte.vue')
   },
+  {
+    path: '/overavanjeRecepata',
+    name: 'OveravanjeRecepata',
+    props:true,
+    beforeEnter: (to, from, next) => {
+      check(to,from,next,["SESTRA"]);
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/medicinskaSestra/OveravanjeRecepata.vue')
+  },
+
+
   {
     path: '/about',
     name: 'About',
@@ -126,11 +149,17 @@ Vue.use(VueRouter, VueAxios, axios)
   {
     path: '/izvestaj',
     name: 'IzvestajKlinike',
+    beforeEnter: (to, from, next) => {
+      check(to,from,next,["ADMIN_K"]);
+    },
     component: () => import('../views/adminKlinike/Izvestaji.vue')
   },
   {
     path: '/profilPacijentaIzmjena',
     name: 'profilPacijentaIzmjena',
+    beforeEnter: (to, from, next) => {
+        check(to,from,next,["PACIJENT"]);
+      },
     component: ProfilPacijentaIzmjena
   },
   {
@@ -141,11 +170,17 @@ Vue.use(VueRouter, VueAxios, axios)
   {
     path: '/lekar/add',
     name: 'dodajLekara',
+    beforeEnter: (to, from, next) => {
+      check(to,from,next,["ADMIN_K"]);
+    },
     component: () => import('../views/lekar/AddLekar.vue')
   },
   {
     path: '/lekari',
     name: 'listaLekara',
+    beforeEnter: (to, from, next) => {
+      check(to,from,next,["ADMIN_K"]);
+    },
     component: () => import('../views/lekar/ListaLekara.vue')
   },
   {
@@ -157,12 +192,18 @@ Vue.use(VueRouter, VueAxios, axios)
   {
     path: '/sale',
     name: 'Sale',
+    beforeEnter: (to, from, next) => {
+      check(to,from,next,["ADMIN_K"]);
+    },
     component: () => import('../views/sala/ListaSala.vue')
 
   },
   {
     path: '/potvrdaPosete/:id/:isPregled',
     name: 'SalePotvrda',
+    beforeEnter: (to, from, next) => {
+      check(to,from,next,["ADMIN_K"]);
+    },
     component: () => import('../views/sala/DodelaSala.vue'),
     props:(route)=>({
       id:route.params.id,
@@ -173,42 +214,66 @@ Vue.use(VueRouter, VueAxios, axios)
   {
     path: '/pacijent/:id',
     name: 'RNG',
+    beforeEnter: (to, from, next) => {
+      check(to,from,next,["LEKAR"]);
+    },
     component: () => import('../views/lekar/ProfilPacijenta.vue')
 
   },
   {
     path: '/sala/add',
     name: 'AddSala',
+    beforeEnter: (to, from, next) => {
+      check(to,from,next,["ADMIN_K"]);
+    },
     component: () => import('../views/sala/AddSala.vue')
   },
   {
     path: '/tipoviPoseta',
     name: 'TipPosete',
+    beforeEnter: (to, from, next) => {
+      check(to,from,next,["ADMIN_K"]);
+    },
     component: () => import('../views/tipPosete/ListaTip.vue')
   },
   {
     path: '/tipoviPoseta/add',
     name: 'TipPoseteAdd',
+    beforeEnter: (to, from, next) => {
+      check(to,from,next,["ADMIN_K"]);
+    },
     component: () => import('../views/tipPosete/AddTip.vue')
   },
   {
     path: '/DodavanjeTermina',
     name: 'DodavanjeTermina',
+    beforeEnter: (to, from, next) => {
+      check(to,from,next,["ADMIN_K"]);
+    },
     component: () => import('../views/DodavanjeTermina.vue')
   },
   {
     path: '/listaPacijenata',
     name: 'ListaPacijenata',
+    beforeEnter: (to, from, next) => {
+      check(to,from,next,["LEKAR","SESTRA"]);
+    },
     component: () => import('../views/pacijenti/ListaPacijenta.vue')
   },
   {
     path: '/pregled/:id',
     name: 'PregledPacijenta',
+    beforeEnter: (to, from, next) => {
+      check(to,from,next,["LEKAR"]);
+    },
     component: () => import('../views/pacijenti/Pregled.vue')
   },
   {
     path: '/operacija/:id',
     name: 'OperacijaPacijenta',
+    beforeEnter: (to, from, next) => {
+      check(to,from,next,["LEKAR"]);
+    },
     component: () => import('../views/pacijenti/Operacija.vue')
   },
   {
@@ -224,11 +289,17 @@ Vue.use(VueRouter, VueAxios, axios)
   {
     path: '/zakaziPregled',
     name: 'ZakazivanjePregleda',
+    beforeEnter: (to, from, next) => {
+      check(to,from,next,["LEKAR"]);
+    },
     component: () => import('../views/pacijenti/ZakazivanjePregleda.vue')
   },
   {
     path: '/zakaziOdmor',
     name: 'ZakazivanjeOdmor',
+    beforeEnter: (to, from, next) => {
+      check(to,from,next,["LEKAR","SESTRA"]);
+    },
     component: () => import('../views/lekar/GodisnjiOdmor.vue')
   },
   {
@@ -239,21 +310,33 @@ Vue.use(VueRouter, VueAxios, axios)
   {
     path: '/izmenaKlinike',
     name: 'IzmenaKlinike',
+    beforeEnter: (to, from, next) => {
+      check(to,from,next,["ADMIN_K", "ADMIN_KC"]);
+    },
     component: () => import('../views/adminKlinike/IzmenaKlinike.vue')
   },
   {
     path:"/homePacijent",
     name:"HomePacijent",
+    beforeEnter: (to, from, next) => {
+        check(to,from,next,["PACIJENT"]);
+      },
     component:HomePacijent
   },
   {
     path:"/homeLekar",
     name:"HomeLekar",
+    beforeEnter: (to, from, next) => {
+      check(to,from,next,["LEKAR"]);
+    },
     component:HomeLekar
   },
   {
     path:"/homeAdminKlinike",
     name:"HomeAdminKlinike",
+    beforeEnter: (to, from, next) => {
+      check(to,from,next,["ADMIN_K"]);
+    },
     component:HomeAdminKlinike
   },
   {
@@ -279,23 +362,34 @@ Vue.use(VueRouter, VueAxios, axios)
   {
     path:"/pretragaKlinika",
     name:"PretragaKlinika",
+    beforeEnter: (to, from, next) => {
+        check(to,from,next,["PACIJENT"]);
+      },
     component:PretragaKlinika
   },
   {
-    //path:"/pretragaLjekara/:id/:cenaPregleda/:nazivTipa/:datum",
 	path:"/pretragaLjekara",
     name:"PretragaLjekara",
+    beforeEnter: (to, from, next) => {
+        check(to,from,next,["PACIJENT"]);
+      },
     props:true,
     component:PretragaLjekara
   },
   {
     path:"/predefinisaniPregledi/:idKlinike",
     name:"PredefinisaniPregledi",
+    beforeEnter: (to, from, next) => {
+        check(to,from,next,["PACIJENT"]);
+      },
     component:PredefinisaniPregledi
   },
   {
     path:"/zakazaniPregledi",
     name:"ZakazaniPregledi",
+    beforeEnter: (to, from, next) => {
+        check(to,from,next,["PACIJENT"]);
+      },
     component:ZakazaniPregledi
   },
   {
@@ -309,6 +403,8 @@ Vue.use(VueRouter, VueAxios, axios)
 const router = new VueRouter({
   routes
 })
+
+
 
 
 export default router

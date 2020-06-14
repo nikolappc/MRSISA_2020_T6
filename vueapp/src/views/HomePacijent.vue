@@ -88,7 +88,7 @@
           <router-link to="/zakazaniPregledi">
             <LinkCard
               :img="zakazani"
-              title="ZakazaniPregledi"
+              title="Zakazani pregledi"
             >
             </LinkCard>
           </router-link>

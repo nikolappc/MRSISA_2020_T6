@@ -64,10 +64,10 @@ public class Klinika {
 	@JoinColumn(name = "id_klinike")
 	public java.util.Collection<Sala> sala;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	/*@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "klinika_pacijent", joinColumns = @JoinColumn(name = "id_klinike"), inverseJoinColumns = @JoinColumn(name = "id_pacijenta"))
 	@JsonIgnore
-	public java.util.Collection<Pacijent> pacijent;
+	public java.util.Collection<Pacijent> pacijent;*/
 	
 	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_klinike")
@@ -141,40 +141,6 @@ public class Klinika {
 			sala.clear();
 	}
 
-	public java.util.Collection<Pacijent> getPacijent() {
-		if (pacijent == null)
-			pacijent = new java.util.HashSet<>();
-		return pacijent;
-	}
-
-
-
-	public void setPacijent(java.util.Collection<Pacijent> newPacijent) {
-		removeAllPacijent();
-		for (java.util.Iterator<Pacijent> iter = newPacijent.iterator(); iter.hasNext();)
-			addPacijent((Pacijent) iter.next());
-	}
-
-	public void addPacijent(Pacijent newPacijent) {
-		if (newPacijent == null)
-			return;
-		if (this.pacijent == null)
-			this.pacijent = new java.util.HashSet<Pacijent>();
-		if (!this.pacijent.contains(newPacijent))
-			this.pacijent.add(newPacijent);
-	}
-
-	public void removePacijent(Pacijent oldPacijent) {
-		if (oldPacijent == null)
-			return;
-		if ((this.pacijent != null) && (this.pacijent.contains(oldPacijent)))
-			this.pacijent.remove(oldPacijent);
-	}
-
-	public void removeAllPacijent() {
-		if (pacijent != null)
-			pacijent.clear();
-	}
 
 
 	public Cenovnik getCenovnik() {

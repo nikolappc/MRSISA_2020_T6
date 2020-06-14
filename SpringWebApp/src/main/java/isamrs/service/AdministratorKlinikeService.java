@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.Collectors;
@@ -49,6 +50,9 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
 
     @Autowired
     private PacijentRepository pacijentRepository;
+    
+    @Autowired
+    private OdmorRepository odmorRepo;
 
     @Autowired
     ApplicationEventPublisher eventPublisher;
@@ -119,15 +123,33 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
 			.collect(Collectors.toList());
     }
 
-
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public Operacija update(Integer id, Operacija operacija) throws Exception, SalaZauzetaException, LekarZauzetException {
 
         Operacija operacijaBaza = operacijaRepo.findById(id).orElseGet(null);
         if (operacijaBaza != null) {
             Sala s = salaRepo.findById(operacija.getSala().getId()).orElseGet(null);
 
-            if (!proveriTerminSala(s, operacija.getTermin())) {
-                throw new SalaZauzetaException("Zauzeta sala", "Izvinjavamo se sala je zauzeta u odabranom terminu");
+            while(!proveriTerminSala(s, operacija.getTermin())) {
+            	
+            	
+            	Date pocetak = operacija.getTermin().getPocetak();
+            	Date kraj = operacija.getTermin().getKraj();
+            	
+            	Calendar pocetakK = Calendar.getInstance();
+            	pocetakK.setTime(pocetak);
+                
+                Calendar krajK = Calendar.getInstance();
+                krajK.setTime(kraj);
+                
+                long ONE_MINUTE_IN_MILLIS=60000;//millisecs
+
+            	long t= pocetakK.getTimeInMillis();
+            	operacija.getTermin().setPocetak(new Date(t + (30 * ONE_MINUTE_IN_MILLIS)));
+            	
+            	t= krajK.getTimeInMillis();
+            	operacija.getTermin().setKraj(new Date(t + (30 * ONE_MINUTE_IN_MILLIS)));
+                
             }
             if (!proveriTerminLekara(operacija.getLekari(), operacija.getTermin())) {
                 throw new LekarZauzetException("Zauzet lekar", "Izvinjavamo se lekar je zauzet u odabranom terminu");
@@ -163,7 +185,7 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
     }
 
     
-    @Transactional(readOnly = false)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     public Pregled update(Integer id, Pregled pregled) throws Exception, NotFoundException {
         Pregled pregledBaza = pregledRepo.findById(id).orElseThrow(NotFoundException::new);
         if(pregledBaza == null)
@@ -171,24 +193,42 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
         Sala s = salaRepo.findById(pregled.getSala().getId()).orElseGet(null);
         if(s == null)
         	return pregledBaza;
-        if (!proveriTerminSala(s, pregled.getTermin())) {
-            throw new Exception();
+        if (!proveriTerminLekara(pregled.getLekar().getId(), pregled.getTermin())) {
+        	throw new Exception();
+        }
+        
+        while(!proveriTerminSala(s, pregled.getTermin())) {
+        	
+        	
+        	Date pocetak = pregled.getTermin().getPocetak();
+        	Date kraj = pregled.getTermin().getKraj();
+        	
+        	Calendar pocetakK = Calendar.getInstance();
+        	pocetakK.setTime(pocetak);
+            
+            Calendar krajK = Calendar.getInstance();
+            krajK.setTime(kraj);
+            
+            long ONE_MINUTE_IN_MILLIS=60000;//millisecs
+
+        	long t= pocetakK.getTimeInMillis();
+        	pregled.getTermin().setPocetak(new Date(t + (30 * ONE_MINUTE_IN_MILLIS)));
+        	
+        	t= krajK.getTimeInMillis();
+        	pregled.getTermin().setKraj(new Date(t + (30 * ONE_MINUTE_IN_MILLIS)));
+            
         }
 
-        if (!proveriTerminLekara(pregled.getLekar().getId(), pregled.getTermin())) {
-            throw new Exception();
-        }
 
         Lekar l = lekarRepo.findById(pregled.getLekar().getId()).orElse(null);
         eventPublisher.publishEvent(new OnDoktorDodatEventPregled(l, pregledBaza, pregled.getTermin()));
         l.getPregled().add(pregledBaza);
         lekarRepo.save(l);
         
-        
+        pregledBaza.setPotvrdjen(true);
         pregledBaza.setSala(s);
         pregledBaza.setLekar(l);
         pregledRepo.save(pregledBaza);
-        //Dodaj pacijenta u klinici
 
         return pregledBaza;
     }
@@ -237,7 +277,48 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
             //Ako je bilo koji drugi slucaj onda je zauzeta sala
             return false;
         }
-
+        
+        RadnoVreme r = lekar.getRadnoVreme().iterator().next();
+        
+        
+        Calendar terminPocetak = Calendar.getInstance();
+        terminPocetak.setTime(termin.getPocetak());
+        
+        Calendar terminKraj = Calendar.getInstance();
+        terminKraj.setTime(termin.getKraj());
+        
+        Calendar radnoVremePocetak = Calendar.getInstance();
+        radnoVremePocetak.setTime(r.getPocetak());
+        radnoVremePocetak.set(Calendar.DAY_OF_MONTH, terminPocetak.get(Calendar.DAY_OF_MONTH));
+        radnoVremePocetak.set(Calendar.MONTH, terminPocetak.get(Calendar.MONTH));
+        radnoVremePocetak.set(Calendar.YEAR, terminPocetak.get(Calendar.YEAR));
+        
+        Calendar radnoVremeKraj = Calendar.getInstance();
+        radnoVremeKraj.setTime(r.getKraj());
+        radnoVremeKraj.set(Calendar.DAY_OF_MONTH, terminPocetak.get(Calendar.DAY_OF_MONTH));
+        radnoVremeKraj.set(Calendar.MONTH, terminPocetak.get(Calendar.MONTH));
+        radnoVremeKraj.set(Calendar.YEAR, terminPocetak.get(Calendar.YEAR));
+        
+        
+        if(!(radnoVremePocetak.before(terminPocetak) && radnoVremeKraj.after(terminKraj) ))  {
+        	return false;
+        }
+        
+        //Provera da li je godisnji odmor tad
+        for(GodisnjiOdmor go : odmorRepo.odobreniLekari(lekar.getId())) {
+        	 
+             
+             //Ako je termin posle kraja nekog odmora to je ok
+             if (go.getKraj().before(termin.getPocetak()) || 
+            		 go.getKraj().equals(termin.getPocetak())) {
+                 continue;
+             }
+             //Ako je termin pre pocetka nekog odmora to je ok
+             if (go.getPocetak().after(termin.getKraj())  || 
+            		 go.getPocetak().equals(termin.getKraj())) {
+                 continue;
+             }
+        }
 
         return true;
     }

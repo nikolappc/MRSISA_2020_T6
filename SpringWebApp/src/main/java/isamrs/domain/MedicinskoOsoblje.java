@@ -16,8 +16,20 @@ public class MedicinskoOsoblje extends Osoba {
     @JsonIgnore
     Klinika klinika;
 
+    @Column(name="prvi_put", nullable = false)
+    private boolean prviPut = false;
+    
+    
+    
+    public boolean isPrviPut() {
+		return prviPut;
+	}
 
-    public Klinika getKlinika() {
+	public void setPrviPut(boolean prviPut) {
+		this.prviPut = prviPut;
+	}
+
+	public Klinika getKlinika() {
         return klinika;
     }
 

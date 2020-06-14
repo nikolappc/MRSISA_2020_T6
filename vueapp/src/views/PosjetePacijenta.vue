@@ -58,7 +58,12 @@ export default {
     ulogovani : {},
     pregledi : [],
     headers: [
-        {
+		{
+			text: 'Tip', 
+			value: 'tip.naziv', 
+			sortable: true, 
+		},
+		{
           text: 'Opis', 
           value: 'opis', 
           sortable: true, 
@@ -76,11 +81,6 @@ export default {
         {
           text: 'Kraj', 
           value: 'termin.kraj', 
-          sortable: true, 
-        },
-        {
-          text: 'Tip', 
-          value: 'tip.naziv', 
           sortable: true, 
         },
         {

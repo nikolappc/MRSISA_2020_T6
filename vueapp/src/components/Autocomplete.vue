@@ -1,6 +1,7 @@
 <template>
   <vuetify-google-autocomplete
     id='map'
+    v-model="adresaText"
     append-icon='mdi-map-marker'
     v-bind:disable='true'
     placeholder="Adresa"
@@ -46,6 +47,11 @@ export default {
           this.adresa.grad = '';
           this.adresa.drzava = '';
         }
+    },
+    computed:{
+      adresaText(){
+        return this.adresa.adresa + ", " + this.adresa.grad  + ", " + this.adresa.drzava;
+      }
     }
 }
 </script>

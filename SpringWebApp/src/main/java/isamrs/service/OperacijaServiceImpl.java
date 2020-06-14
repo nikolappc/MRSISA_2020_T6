@@ -15,6 +15,7 @@ import isamrs.domain.Lekar;
 import isamrs.domain.Operacija;
 import isamrs.domain.Pregled;
 import isamrs.domain.Sala;
+import isamrs.domain.TipPosete;
 import isamrs.domain.ZdravstveniKarton;
 import isamrs.dto.DijagnozaDTO;
 import isamrs.dto.OperacijaDTO;
@@ -22,9 +23,11 @@ import isamrs.dto.post.OperacijaPostDTO;
 import isamrs.exceptions.NotFoundException;
 import isamrs.operacije.zakazivanje.OperacijaRunnable;
 import isamrs.repository.DijagnozaRepository;
+import isamrs.repository.LekarRepository;
 import isamrs.repository.OperacijaRepository;
 import isamrs.repository.PacijentRepository;
 import isamrs.repository.PregledRepository;
+import isamrs.repository.TipPoseteRepository;
 import isamrs.repository.ZdravstveniKartonRepository;
 import isamrs.tasks.ThreadPoolTaskSchedulerConfig;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
@@ -52,6 +55,12 @@ public class OperacijaServiceImpl implements OperacijaService {
 	@Autowired
 	private DijagnozaRepository dijagnozaRepo;
 
+	@Autowired
+	private TipPoseteRepository tipRepo;
+
+	@Autowired
+	private LekarRepository lekarRepo;
+
 	@Override
 	public Collection<Operacija> findAll() {
 
@@ -67,6 +76,8 @@ public class OperacijaServiceImpl implements OperacijaService {
 
 	@Override
 	public Operacija create(Operacija t) {
+		TipPosete tp = tipRepo.findById(t.getTipPosete().getId()).get();
+		t.setTipPosete(tp);
 		Operacija o = operacijaRepository.save(t);
 		ThreadPoolTaskScheduler threadPoolTaskScheduler = threadPoolTaskSchedulerConfig.threadPoolTaskScheduler();
 		operacijaRunnable.setId(o.getId());

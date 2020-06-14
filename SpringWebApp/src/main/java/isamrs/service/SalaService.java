@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import isamrs.domain.AdministratorKlinike;
@@ -84,7 +85,7 @@ public class SalaService {
 		return s;
 	}
 
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public Sala update(Integer id,Sala sala) throws Exception {
 		Sala salaForUpdate = salaRepo.findById(id).orElseGet(null);
 		
@@ -107,7 +108,7 @@ public class SalaService {
 		
 	}
 
-	
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public void delete(Integer id) throws Exception {
 		Date today = new Date();
 		Sala s = salaRepo.findById(id).orElseGet(null);

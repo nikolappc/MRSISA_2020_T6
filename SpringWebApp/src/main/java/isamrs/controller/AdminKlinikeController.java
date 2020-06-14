@@ -29,6 +29,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -58,21 +59,25 @@ public class AdminKlinikeController {
     @Autowired
     private AdministratorKlinikeService adminService;
     
-    @Autowired 
-    KlinikaRepository klinikaRepo;
-    
     @Autowired
 	private MailSender mailSender;
 
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<AdministratorKlinike>> getAdministratoriKlinike(){
+    public ResponseEntity<Collection<AdministratorKlinike>> getAdministratoriKlinike(HttpServletRequest req){
+    	if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinickogCentra)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
         Collection<AdministratorKlinike> col = administratorKlinikeService.findAll();
         return new ResponseEntity<>(col, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AdministratorKlinike> getOne(@PathVariable("id") Integer id){
+    public ResponseEntity<AdministratorKlinike> getOne(@PathVariable("id") Integer id, HttpServletRequest req){
+    	if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike || 
+    			req.getSession().getAttribute("user") instanceof AdministratorKlinickogCentra)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
         try{
             AdministratorKlinike administratorKlinike = administratorKlinikeService.findOne(id);
             return new ResponseEntity<>(administratorKlinike, HttpStatus.OK);
@@ -83,8 +88,10 @@ public class AdminKlinikeController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AdministratorKlinike> createAdminKlinike(@RequestBody AdminKlinikeDTO admin){
-
+    public ResponseEntity<AdministratorKlinike> createAdminKlinike(@RequestBody AdminKlinikeDTO admin, HttpServletRequest req){
+    	if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinickogCentra)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
         AdministratorKlinike ak = toEntity(admin);
         if(admin.getKlinika()!=null){
             try{
@@ -100,8 +107,13 @@ public class AdminKlinikeController {
         return new ResponseEntity<>(a, HttpStatus.OK);
     }
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AdministratorKlinike> updateAdminKlinike(@PathVariable("id") Integer id,@RequestBody AdminKlinikeDTO admin){
-        AdministratorKlinike ak = toEntity(admin);
+    public ResponseEntity<AdministratorKlinike> updateAdminKlinike(HttpServletRequest req,@PathVariable("id") Integer id,@RequestBody AdminKlinikeDTO admin){
+    	if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike || 
+    			req.getSession().getAttribute("user") instanceof AdministratorKlinickogCentra)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
+    	
+    	AdministratorKlinike ak = toEntity(admin);
         if(admin.getKlinika()!=null){
             try{
                 Klinika k = klinikaService.findOne(admin.getKlinika());
@@ -115,7 +127,10 @@ public class AdminKlinikeController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> delete(@PathVariable("id") Integer id){
+    public ResponseEntity<String> delete(HttpServletRequest req, @PathVariable("id") Integer id){
+    	if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinickogCentra)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
         administratorKlinikeService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -131,20 +146,29 @@ public class AdminKlinikeController {
                 , adminKlinikeDTO.getEmail());
     }
 	@GetMapping(value = "/pregled",produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<PosetaPacijentDTO>> getSalas() {
+	public ResponseEntity<Collection<PosetaPacijentDTO>> getSalas(HttpServletRequest req) {
+		if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		Collection<PosetaPacijentDTO> pregledi = adminService.findAllZahteviPregleda();
 		return new ResponseEntity<>(pregledi, HttpStatus.OK);
 	}
 
     @GetMapping(value = "/operacija",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<PosetaPacijentDTO>> getOperacije() {
+    public ResponseEntity<Collection<PosetaPacijentDTO>> getOperacije(HttpServletRequest req) {
+    	if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)){
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
         Collection<PosetaPacijentDTO> operacije = adminService.findAllZahteviOperacija();
         return new ResponseEntity<>(operacije, HttpStatus.OK);
     }
 
 
 	@GetMapping(value = "/pregled/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Pregled> getPregled(@PathVariable("id") Integer id) {
+	public ResponseEntity<Pregled> getPregled(HttpServletRequest req,@PathVariable("id") Integer id) {
+		if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		Pregled pregled = adminService.findPregled(id);
 
 		if (pregled == null)
@@ -157,27 +181,21 @@ public class AdminKlinikeController {
 	}
 
 	@PutMapping(value = "/pregled/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Pregled> updateSala(@RequestBody Pregled pregled, @PathVariable Integer id, HttpServletRequest req) throws NotFoundException {
-
+	public ResponseEntity<Pregled> updateSala(HttpServletRequest req,@RequestBody Pregled pregled, @PathVariable Integer id) throws NotFoundException {
+		if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 
 		Pregled updatePregled = null;
 
 		try {
-			System.out.println("prije servisa");
-	        Klinika kk = klinikaRepo.findById(1).orElseGet(null);
-			for (Lekar llll : kk.getLekari()) {
-				System.out.println(llll.getIme() + llll.getId());
-			}
 			
-			//pregled.setPotvrdjen(true);
 			updatePregled = adminService.update(id,pregled);
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 			String subject1 = "Zakazivanje pregleda";
-			System.out.println(req.getRequestURL().toString());
 			String adresa = req.getRequestURL().toString().split("://")[0] + "://" + req.getRequestURL().toString().split("://")[1].split("/")[0];
 			String link1 = adresa+"/api/pacijent/potvrdiPregled/" + updatePregled.getId();
-			System.out.println(link1);
 			//String link1 = "http://localhost:8080/api/pacijent/potvrdiPregled/" + updatePregled.getId();
 			String link2 = adresa+"/api/pacijent/odbijpregled/" + updatePregled.getId();
 			String message1 = "Zakazali ste pregled kod lekara "+updatePregled.getLekar().getIme()+""
@@ -207,7 +225,10 @@ public class AdminKlinikeController {
 
 
     @GetMapping(value = "/operacija/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Operacija> getOperacija(@PathVariable("id") Integer id) {
+    public ResponseEntity<Operacija> getOperacija(HttpServletRequest req,@PathVariable("id") Integer id) {
+    	if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
         Operacija operacija = adminService.findOperacija(id);
 
         if (operacija == null)
@@ -220,8 +241,10 @@ public class AdminKlinikeController {
     }
 
     @PutMapping(value = "/operacija/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Operacija> updateSalaOperacija(@RequestBody Operacija operacija, @PathVariable Integer id) throws Exception, SalaZauzetaException, LekarZauzetException {
-
+    public ResponseEntity<Operacija> updateSalaOperacija(HttpServletRequest req,@RequestBody Operacija operacija, @PathVariable Integer id) throws Exception, SalaZauzetaException, LekarZauzetException {
+    	if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 
         Operacija updateOperacija = null;
 
@@ -230,7 +253,10 @@ public class AdminKlinikeController {
     }
 
     @PostMapping(value = "/lekar", consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Lekar>> getSlobodniLekari(@RequestBody Termin termin){
+    public ResponseEntity<Collection<Lekar>> getSlobodniLekari(HttpServletRequest req, @RequestBody Termin termin){
+    	if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
         Collection<Lekar> lekari = adminService.getSlobodniLekari(termin);
         return new ResponseEntity<>(lekari, HttpStatus.OK);
     }
@@ -238,7 +264,9 @@ public class AdminKlinikeController {
     
     @GetMapping(value = "/izvestaj", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<IzvestajDTO> getIzvestaj(HttpServletRequest req){
-    	
+    	if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
     	AdministratorKlinike ak = (AdministratorKlinike)req.getSession().getAttribute("user");
     	IzvestajDTO izvestaj = adminService.izvestaj(ak.getId());
         return new ResponseEntity<>(izvestaj, HttpStatus.OK);
@@ -246,7 +274,9 @@ public class AdminKlinikeController {
     
     @GetMapping(value = "/izvestaj/{tip}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GrafDTO> getIzvestajDnevni(HttpServletRequest req, @PathVariable String tip){
-    	
+    	if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
     	AdministratorKlinike ak = (AdministratorKlinike)req.getSession().getAttribute("user");
     	GrafDTO izvestaj = adminService.izvestajTip(ak.getId(),tip);
         return new ResponseEntity<>(izvestaj, HttpStatus.OK);
@@ -254,6 +284,9 @@ public class AdminKlinikeController {
     
     @PostMapping(value = "/troskovi", consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<HashMap<String,Double>> getTroskovi(HttpServletRequest req, @RequestBody HashMap<String,Date> mapa){
+    	if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
     	AdministratorKlinike ak = (AdministratorKlinike)req.getSession().getAttribute("user");
     	
         Double troskovi = adminService.troskovi(ak.getId(), mapa.get("pocetak"), mapa.get("kraj"));

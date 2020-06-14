@@ -9,7 +9,9 @@ import org.springframework.mail.SimpleMailMessage;
 
 import isamrs.domain.Pacijent;
 import isamrs.service.PacijentService;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RegistrationFailListener implements ApplicationListener<OnRegistrationFailEvent> {
 	@Autowired
 	private MailSender mailSender;
@@ -19,7 +21,7 @@ public class RegistrationFailListener implements ApplicationListener<OnRegistrat
 		
 		String recipient = user.getEmail();
 		String subject = "Odbijanje registracije";
-		String message = "Sa žalošću vas obaveštavamo vas da je vaša registracija odbijena.";
+		String message = "Sa žalošću vas obaveštavamo vas da je vaša registracija odbijena.\nRazlog odbijanja: "+event.getOpis();
 		
 		SimpleMailMessage email = new SimpleMailMessage();
 		email.setTo(recipient);

@@ -29,9 +29,40 @@
                             </v-btn>
                         </td>
                         <td>
-                            <v-btn color="error" @click="deny()"> 
-                                Odbij
-                            </v-btn>
+                            
+                            <v-menu
+                            
+                            :close-on-content-click = "false"
+                            v-model="menu"
+                            >
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn color="error"
+                                    v-bind="attrs"
+                                    v-on="on"
+                                    
+                                    > 
+                                        Odbij
+                                    </v-btn>
+                                
+                                </template>
+                                <v-card>
+                                    <v-card
+                                        color="error"
+                                    >
+                                        Razlog odbijanja
+                                    </v-card>
+                                    <div class="pa-5">
+
+                                        <v-textarea
+                                            label="Razlog"
+                                            :rules="[v=>!!v||'Ovo polje je obavezno']"
+                                            required
+                                            v-model="opis"
+                                        ></v-textarea>
+                                        <v-btn color="warning" @click="deny">Potvrdi</v-btn>
+                                    </div>
+                                </v-card>
+                            </v-menu>
                         </td>
                     </tr>
                 </tbody>
@@ -61,18 +92,28 @@
         data:function () {
             return{
                 overlay:false,
+                opis:"",
+                menu:false
             }
         },
         methods:{
             allow:function () {
-                this.notifyServer("/api/approveRegistration");
+                this.overlay = true;
+                axios.get("/api/approveRegistration/"+this.user.email)
+                    .then(res=>{
+                        this.$store.commit("setSnackBar", {text:res.data, color:"success"});
+                        this.$emit("resolved");
+                        this.overlay = false;
+                    })
+                    .catch(error=>{
+                        console.log(error);
+                        this.overlay = false;    
+                    });
             },
             deny:function () {
-                this.notifyServer("/api/denyRegistration");
-            },
-            notifyServer:function(address){
+                this.menu = false;
                 this.overlay = true;
-                axios.get(address+"/"+this.user.email)
+                axios.post("/api/denyRegistration/"+this.user.email, {razlog:this.opis})
                     .then(res=>{
                         this.$store.commit("setSnackBar", {text:res.data, color:"success"});
                         this.$emit("resolved");

@@ -54,11 +54,11 @@
       
             <template slot="selection" slot-scope="data">
                   <!-- HTML that describe how select should render selected items -->
-                  Naziv: {{ data.item.naziv }} , Cena: {{ data.item.stavkeCenovnika.cena }}
+                  Naziv: {{ data.item.naziv }} , Cena: {{ data.item.stavkeCenovnika[0].cena }}
               </template>
               <template slot="item" slot-scope="data">
                   <!-- HTML that describe how select should render items when the select is open -->
-                  Naziv: {{ data.item.naziv }} , Cena: {{ data.item.stavkeCenovnika.cena }}
+                  Naziv: {{ data.item.naziv }} , Cena: {{ data.item.stavkeCenovnika[0].cena }}
               </template>
           </v-select>
       
@@ -94,26 +94,7 @@
           </v-select>
       
       
-          <v-select
-            v-model="pregled.tipPosete"
-            :items="tipovi"
-            label="Tip"
-            outlined
-            dense
-            :rules="rule"
-            required
-            return-object
-          >
-      
-          <template slot="selection" slot-scope="data">
-                  <!-- HTML that describe how select should render selected items -->
-                  Naziv: {{ data.item.naziv }} , Cena: {{ data.item.stavkeCenovnika.cena }}
-              </template>
-              <template slot="item" slot-scope="data">
-                  <!-- HTML that describe how select should render items when the select is open -->
-                  Naziv: {{ data.item.naziv }} , Cena: {{ data.item.stavkeCenovnika.cena }}
-              </template>
-          </v-select>
+          
       
           <v-btn
             :disabled="!valid"
@@ -159,7 +140,7 @@ export default {
                 this.tipovi = response.data;
                 console.log(response);
             })
-            .catch(() => { this.tipovi = [{naziv: 'pera',tip: 'operacija',stavkaCenovnika: {cena: 20}}]; });
+            .catch((err) => { console.log(err); });
         
         axios
             .get('api/pacijent')
@@ -167,7 +148,7 @@ export default {
                 this.pacijenti = response.data;
                 console.log(response);
             })
-            .catch(() => { this.tipovi = [{naziv: 'pera',tip: 'operacija',stavkaCenovnika: {cena: 20}}]; });
+            .catch((err) => { console.log(err) });
             
     },
     methods: {
@@ -179,7 +160,7 @@ export default {
                     .post('poseta/operacija',this.pregled)
                     .then(() => {
                         this.$store.commit("setSnackbar", {text:"Uspešno ste poslali zahtev za operaciju", color: "success"});
-                        this.$emit("zatvori");
+                        this.$router.push("/");
                     })
                     .catch(function (error) { console.log(error); });
             }
@@ -189,7 +170,7 @@ export default {
                     .post('poseta/pregled',this.pregled)
                     .then(() => {
                         this.$store.commit("setSnackbar", {text:"Uspešno ste poslali zahtev za pregled", color: "success"});
-                        this.$emit("zatvori");
+                        this.$router.push("/");
                     })
                     .catch(function (error) { console.log(error); });
             }

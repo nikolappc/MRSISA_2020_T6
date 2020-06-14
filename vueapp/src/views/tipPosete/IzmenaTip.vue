@@ -67,6 +67,7 @@ export default {
             .catch((error) => { console.log(error); 
               this.$store.commit("setSnackbar", {text:"Tip se koristi na pregledu", color: "error"});
             });
+            this.$emit("zatvori");
         }
 
     }

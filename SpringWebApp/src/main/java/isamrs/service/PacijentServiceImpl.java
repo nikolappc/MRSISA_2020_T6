@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import isamrs.registracija.OnRegistrationFailEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -105,7 +106,24 @@ public class PacijentServiceImpl implements PacijentService {
 	public Pacijent findByKarton(Integer idKartona) {
 		return pacijentRepository.findByKarton(idKartona);
 	}
-	
+
+    @Override
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void setOdobren(String email, boolean b) {
+		Pacijent pacijent = pacijentRepository.findByEmail(email);
+		pacijent.setResponded(true);
+		pacijent.setAllowed(b);
+		pacijentRepository.save(pacijent);
+    }
+
+	@Override
+	public Pacijent respond(String email) {
+		Pacijent p = pacijentRepository.findByEmail(email);
+		p.setResponded(true);
+		pacijentRepository.save(p);
+		return p;
+	}
+
 	public Pacijent update(Integer id,Pacijent lekar) {
 		Pacijent pForUpdate = pacijentRepository.findById(id).orElseGet(null);
 		if(pForUpdate == null)

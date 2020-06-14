@@ -44,9 +44,12 @@ public class PacijentController {
 
 	@GetMapping(value ="/klinike", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<OsobaDTO>> getPacijents(HttpServletRequest req){
-		MedicinskoOsoblje o = (MedicinskoOsoblje)req.getSession().getAttribute("user");
+		//autorizacija
+		/*MedicinskoOsoblje o = (MedicinskoOsoblje)req.getSession().getAttribute("user");
 		Klinika k = o.getKlinika();
 		Collection<OsobaDTO> finalni = k.getPacijent().stream().map(this::pacijentToOsobaDTO).collect(Collectors.toList());
+		*/
+		Collection<OsobaDTO> finalni = pacijentService.findAll().stream().map(this::pacijentToOsobaDTO).collect(Collectors.toList());
 		return new ResponseEntity<>(finalni, HttpStatus.OK);
 	}
 	
@@ -160,7 +163,10 @@ public class PacijentController {
 	}
 	
 	@GetMapping(value = "/potvrdiPregled/{idPregleda}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> potvrdiPregled(@PathVariable("idPregleda") Integer idPregleda) {
+	public ResponseEntity<String> potvrdiPregled(@PathVariable("idPregleda") Integer idPregleda, HttpServletRequest req) {
+		if (!(req.getSession().getAttribute("user") instanceof Pacijent)) {
+			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
+		}
 		Pregled p = null;
 		try {
 			p = pregledService.findOne(idPregleda);
@@ -182,7 +188,10 @@ public class PacijentController {
 	}
 	
 	@GetMapping(value = "/odbijPregled/{idPregleda}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> odbijPregled(HttpServletRequest request, @PathVariable("idPregleda") Integer idPregleda) {
+	public ResponseEntity<String> odbijPregled(HttpServletRequest req, @PathVariable("idPregleda") Integer idPregleda) {
+		if (!(req.getSession().getAttribute("user") instanceof Pacijent)) {
+			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
+		}
 		Pregled p = null;
 		try {
 			p = pregledService.findOne(idPregleda);

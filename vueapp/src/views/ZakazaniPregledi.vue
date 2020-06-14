@@ -27,10 +27,6 @@ export default {
     pregledi : [],
     headers: [
         {
-          text: 'Id', 
-          value: 'id', 
-        },
-        {
           text: 'Tip', 
           value: 'tip', 
         },

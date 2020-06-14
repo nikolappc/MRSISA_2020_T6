@@ -329,4 +329,9 @@ public class KlinikaServiceImpl implements Service<Klinika, Integer>{
 		
 		return vremenaStr;
 	}
+
+	public Klinika findByAdmin(Integer id) {
+		return repo.findByAdmin(id);
+	}
+
 }

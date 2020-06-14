@@ -46,7 +46,7 @@
                     <thead>
                         <th id="id">ID</th>
                         <th id="naziv">Naziv</th>
-                        <th></th>
+                        <th id=""></th>
                     </thead>
                     <tbody>
                         <Sala @click="dialog = true" v-for="sala in filterSale" v-bind:key="sala.id"
@@ -323,7 +323,8 @@ export default {
 
                 this.pregled.termin.pocetak = this.pocetak;
                 this.pregled.termin.kraj = this.kraj;
-
+                
+                this.$store.commit("setSnackbar", {text:"Wait for it", color: "info"});
                 axios
                     .put(this.address+ this.id,this.pregled)
                     .then((response) => {
@@ -333,7 +334,7 @@ export default {
                     })
                     .catch((err) => { 
                         console.log(err);
-                        this.$store.commit("setSnackbar", {text:"Termin je zauzet", color: "error"});
+                        this.$store.commit("setSnackbar", {text:"Termin je zauzet za tog lekara", color: "error"});
                     });
             }
         }

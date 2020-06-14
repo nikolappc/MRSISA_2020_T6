@@ -62,7 +62,7 @@ export default {
       .then(response => {
           this.karton = response.data;
       })
-		.catch(() => { this.$store.commit("setSnackbar", {text:"Pacijent joÅ¡ uvek nema svoj zdravstveni karton.", color: "info"}); router.go(-1); });
+		.catch(() => { this.$store.commit("setSnackbar", {text:"Pacijent još uvek nema svoj zdravstveni karton.", color: "info"}); router.go(-1); });
 },
 	
 }

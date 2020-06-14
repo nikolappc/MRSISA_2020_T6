@@ -59,8 +59,10 @@ public class PregledDTO extends PosetaDTO {
 		for (Dijagnoza d : p.getDijagnoza()) {
 			this.dijagnoze.add(new DijagnozaDTO(d));
 		}
-		this.zdravstveniKarton = new ZdravstveniKartonDTO(p.zdravstveniKarton);
 		this.lekar = p.getLekar().getIme() + " " + p.getLekar().getPrezime();
+		if(p.zdravstveniKarton!=null){
+			this.zdravstveniKarton = new ZdravstveniKartonDTO(p.zdravstveniKarton);
+		}
 	}
 
 	public ZdravstveniKartonDTO getZdravstveniKarton() {

@@ -29,6 +29,7 @@
 				:rules="rule"
 				outlined
 				required
+				dense
 				return-object
 			>
 				<template slot="selection" slot-scope="data">
@@ -72,10 +73,6 @@ export default {
 	data: () => ({
 		valid: false,
 		terminPocetak: null,
-		//vremena: [],
-		//cijena: null,
-		//mozeOcjenjivati : false,
-		//ocjena: null,
 		rule: [
 			v => !!v || 'Obavezno polje'
 		]
@@ -89,34 +86,8 @@ export default {
 		}
 	},
 	mounted() {
-		/*console.log(this.dialogZahtjev.idLekara);
-		axios
-		.get('lekar/pacijentPosjetio/' + this.dialogZahtjev.idPacijenta + '/' + this.dialogZahtjev.idLekara)
-		.then(response => {
-		var getOcena = response.data;
-		this.mozeOcjenjivati = getOcena.mozeOcjenjivati;
-		this.ocjena = getOcena.ocjena;
-		console.log(this.mozeOcjenjivati);
-		console.log(this.ocjena);
-		})
-		.catch(function (error) { console.log(error); router.push("/"); });*/
 		this.cijena = this.dialogZahtjev.cenaPregleda;
 		this.vremena = this.dialogZahtjev.listaVremena;
-		console.log(this.cijena);
-		console.log(this.vremena);
-
-		/*if (this.dialogZahtjev.zakazivanje == true && this.dialogZahtjev.listaVremena == null) {
-		axios
-		.get('lekar/vratiVremenaCijenu/' + this.dialogZahtjev.idLekara + '/' + this.dialogZahtjev.nazivTipa + '/' + this.formatDate(this.dialogZahtjev.datum))
-		.then(response => {
-		var podaci = response.data;
-		this.cijena = podaci.cijenaTipaOpciono;
-		this.vremena = podaci.listaVremena;
-		console.log(podaci.cijenaTipaOpciono);
-		console.log(podaci.listaVremena);
-		})
-		.catch(function (error) { console.log(error); router.push("/"); });
-		}*/
 	},
     methods: {
 		otkazi() {
@@ -134,14 +105,12 @@ export default {
 					this.$store.commit("setSnackbar", {text:"Zahtev za zakazivanje pregleda je poslat!", color: "success"});
 					router.push("/");   
 				})
-				.catch( () => { this.$store.commit("setSnackbar", {text:"Greska", color: "error"}); console.log("greska");
+				.catch( () => { this.$store.commit("setSnackbar", {text:"Greška prilikom slanja zahteva za zakazivanje pregleda. Moguće je da je pregled u međuvremenu zauzet.", color: "error"}); console.log("greska");
 				});
 			}
          
         },
 		formatDateStr(value) {
-			console.log(value);
-			console.log(moment(String(value)).format('DD.MM.YYYY. HH:mm'));
 			return moment(String(value)).format('HH:mm');
 		},
 		formatDate(value) {

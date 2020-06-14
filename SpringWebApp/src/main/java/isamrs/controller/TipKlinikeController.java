@@ -3,6 +3,7 @@ package isamrs.controller;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+import isamrs.domain.AdministratorKlinickogCentra;
 import isamrs.dto.TipKlinikeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,8 @@ import isamrs.domain.TipKlinike;
 import isamrs.exceptions.NotFoundException;
 import isamrs.service.TipKlinikeService;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 @RequestMapping("/tipKlinike")
 public class TipKlinikeController {
@@ -30,7 +33,10 @@ public class TipKlinikeController {
 	
 	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<TipKlinikeDTO> getTipKlinike(@PathVariable("id")Long id){
+	public ResponseEntity<TipKlinikeDTO> getTipKlinike(@PathVariable("id") Long id, HttpServletRequest httpServletRequest){
+		if (!(httpServletRequest.getSession().getAttribute("user") instanceof AdministratorKlinickogCentra)){
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		try {
 			TipKlinike t = service.findOne(id);
 			return new ResponseEntity<TipKlinikeDTO>(new TipKlinikeDTO(t), HttpStatus.OK);
@@ -41,25 +47,37 @@ public class TipKlinikeController {
 
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<TipKlinikeDTO>> getTipoviKlinike(){
+	public ResponseEntity<Collection<TipKlinikeDTO>> getTipoviKlinike(HttpServletRequest httpServletRequest){
+		if (!(httpServletRequest.getSession().getAttribute("user") instanceof AdministratorKlinickogCentra)){
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		Collection<TipKlinikeDTO> tipovi = service.findAll().stream().map(TipKlinikeDTO::new).collect(Collectors.toList());
 		return new ResponseEntity<Collection<TipKlinikeDTO>>(tipovi, HttpStatus.OK);
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<TipKlinikeDTO> createTipKlinike(@RequestBody TipKlinike t){
+	public ResponseEntity<TipKlinikeDTO> createTipKlinike(@RequestBody TipKlinikeDTO t, HttpServletRequest httpServletRequest){
+		if (!(httpServletRequest.getSession().getAttribute("user") instanceof AdministratorKlinickogCentra)){
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		TipKlinike t2 = service.create(t);
 		return new ResponseEntity<TipKlinikeDTO>(new TipKlinikeDTO(t2), HttpStatus.OK);
 	}
 	
 	@PutMapping(value = "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<TipKlinikeDTO> updateTipKlinike(@PathVariable("id") Long id,@RequestBody TipKlinike t) throws NotFoundException {
+	public ResponseEntity<TipKlinikeDTO> updateTipKlinike(@PathVariable("id") Long id, @RequestBody TipKlinikeDTO t, HttpServletRequest httpServletRequest) throws NotFoundException {
+		if (!(httpServletRequest.getSession().getAttribute("user") instanceof AdministratorKlinickogCentra)){
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		TipKlinike t2 = service.update(id, t);
 		return new ResponseEntity<TipKlinikeDTO>(new TipKlinikeDTO(t2), HttpStatus.OK);
 	}
 	
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<TipKlinikeDTO> deleteTipKlinike(@PathVariable("id") Long id){
+	public ResponseEntity<TipKlinikeDTO> deleteTipKlinike(@PathVariable("id") Long id, HttpServletRequest httpServletRequest){
+		if (!(httpServletRequest.getSession().getAttribute("user") instanceof AdministratorKlinickogCentra)){
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		service.delete(id);
 		return new ResponseEntity<TipKlinikeDTO>(HttpStatus.OK);
 	}

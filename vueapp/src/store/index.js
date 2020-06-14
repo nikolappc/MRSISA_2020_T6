@@ -31,8 +31,13 @@ export default new Vuex.Store({
       state.ulogovan = ulogovan
     },
     setSnackbar(state, snackbar) {
-      snackbar.showing = true;
-      state.snackbar = snackbar;
+      state.snackbar.showing = true;
+      state.snackbar.text = snackbar.text;
+      state.snackbar.color = snackbar.color;
+      setTimeout(function () {
+        state.snackbar.showing = false;
+        state.snackbar.text= "";
+      }, 5000);
     },
     resetState (state) {
       Object.assign(state, getDefaultState())

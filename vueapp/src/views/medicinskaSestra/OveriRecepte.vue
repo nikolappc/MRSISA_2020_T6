@@ -35,13 +35,24 @@
                         </Recepat>
                     </v-col>
                 </v-row>
+                <v-row>
+                    <v-col
+                        cols="4"
+                    >
+                        <v-btn
+                            @click="this.$router.push(-1)"
+                        >
+                            Završi overu
+                        </v-btn>
+                    </v-col>
+                </v-row>
             </v-container>
         </v-card>
     </v-container>
 </template>
 
 <script>
-    import Recepat from "../components/Recepat.vue";
+    import Recepat from "../../components/Recepat.vue";
     export default{
         components:{
             Recepat

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import isamrs.domain.AdministratorKlinike;
+import isamrs.domain.Lekar;
 import isamrs.domain.TipPosete;
 import isamrs.service.TipPoseteService;
 @RestController
@@ -29,26 +30,37 @@ public class TipPoseteController {
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<TipPosete>> getTipovi(HttpServletRequest req) {
-		AdministratorKlinike ak;
-		try {
-			ak = (AdministratorKlinike) req.getSession().getAttribute("user");
+		//autorizacija
+		if ((req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			AdministratorKlinike ak= (AdministratorKlinike) req.getSession().getAttribute("user");
+			
+			Collection<TipPosete> tipovi = tipService.findAll(ak.getId());
+			
+			return new ResponseEntity<Collection<TipPosete>>(tipovi, HttpStatus.OK);
 		}
-		catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		else if ((req.getSession().getAttribute("user") instanceof Lekar)) {
+			Lekar l= (Lekar) req.getSession().getAttribute("user");
+			
+			Collection<TipPosete> tipovi = tipService.findAllLekar(l.getId());
+			
+			return new ResponseEntity<Collection<TipPosete>>(tipovi, HttpStatus.OK);
 		}
-		Collection<TipPosete> tipovi = tipService.findAll(ak.getId());
-		
-		return new ResponseEntity<Collection<TipPosete>>(tipovi, HttpStatus.OK);
+		else {
+			Collection<TipPosete> tipovi = tipService.findAll();
+			return new ResponseEntity<Collection<TipPosete>>(tipovi, HttpStatus.OK);
+		}
 	}
 	
 	@GetMapping(value = "/tipoviPregleda", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<TipPosete>> getTipoviPregleda() {
+		//autorizacija
 		Collection<TipPosete> tipovi = tipService.findPregledi();
 		return new ResponseEntity<Collection<TipPosete>>(tipovi, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TipPosete> getTip(@PathVariable("id") Integer id) {
+		//autorizacija
 		TipPosete tip = tipService.findOne(id);
 
 		if (tip == null) {
@@ -60,6 +72,9 @@ public class TipPoseteController {
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TipPosete> createTipPosete(@RequestBody TipPosete tip, HttpServletRequest req) throws Exception {
+		if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		AdministratorKlinike ak;
 		try {
 			ak = (AdministratorKlinike) req.getSession().getAttribute("user");
@@ -73,8 +88,10 @@ public class TipPoseteController {
 
 
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<TipPosete> updateTipPosete(@RequestBody TipPosete tip, @PathVariable Integer id) {
-		
+	public ResponseEntity<TipPosete> updateTipPosete(HttpServletRequest req,@RequestBody TipPosete tip, @PathVariable Integer id) {
+		if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		TipPosete updatedTipPosete = null;
 		
 		try {
@@ -86,7 +103,10 @@ public class TipPoseteController {
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<TipPosete> deleteTipPosete(@PathVariable("id") Integer id) {
+	public ResponseEntity<TipPosete> deleteTipPosete(HttpServletRequest req,@PathVariable("id") Integer id) {
+		if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		try {
 			tipService.delete(id);
 		} catch (Exception e) {

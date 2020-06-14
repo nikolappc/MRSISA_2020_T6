@@ -157,20 +157,7 @@ export default {
         
     },
   },
-  /*watch: {
-    novaSifra: function() {
-      this.$nextTick(() => {
-        this.$refs.form.validate();
-        this.novaSifraPotvrda += "";
-      });
-    },
-    novaSifraPotvrda: function() {
-      this.$nextTick(() => {
-        this.$refs.form.validate();
-        this.novaSifra += "";
-      });
-    }
-  },*/
+
     
 }
 </script>

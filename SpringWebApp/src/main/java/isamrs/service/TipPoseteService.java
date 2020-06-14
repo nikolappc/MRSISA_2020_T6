@@ -10,6 +10,7 @@ import isamrs.domain.Pregled;
 import isamrs.domain.StavkaCenovnika;
 import isamrs.domain.TipPosete;
 import isamrs.repository.AdministratorKlinikeRepository;
+import isamrs.repository.LekarRepository;
 import isamrs.repository.OperacijaRepository;
 import isamrs.repository.PregledRepository;
 import isamrs.repository.TipPoseteRepository;
@@ -33,6 +34,9 @@ public class TipPoseteService {
 	
 	@Autowired
 	private AdministratorKlinikeRepository adminRepo;
+	
+	@Autowired
+	private LekarRepository lekarRepo;
 	
 	
 	public Collection<TipPosete> findAll(Integer idAdmina) {
@@ -77,9 +81,10 @@ public class TipPoseteService {
 		return tp;
 	}
 
+	@Transactional(readOnly = false)
 	public TipPosete update(Integer id, TipPosete t) throws Exception {
 		
-		TipPosete tp = tipRepo.findById(t.getId()).orElseGet(null);
+		TipPosete tp = tipRepo.findOneById(t.getId());
 		if(tp == null)
 			return null;
 		
@@ -104,6 +109,15 @@ public class TipPoseteService {
 
 	public void delete(Integer id) throws Exception {
 		tipRepo.deleteById(id);
+	}
+
+	public Collection<TipPosete> findAll() {
+		return tipRepo.findAll();
+	}
+
+	@Transactional(readOnly = false)
+	public Collection<TipPosete> findAllLekar(Integer id) {
+		return lekarRepo.findOneById(id).getTipoviPoseta();
 	}
 
 }

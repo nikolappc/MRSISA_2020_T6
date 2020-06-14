@@ -31,9 +31,6 @@ public class Pacijent extends Osoba {
 	@JoinColumn(name = "id_kartona")
 	@JsonBackReference(value = "zdravstveniKartonReference")
 	private ZdravstveniKarton zdravstveniKarton;
-	
-	@Version
-	private Long version;
 
 	@Transient
 	public String tip = "PACIJENT";

@@ -115,12 +115,6 @@ export default {
 	.post('klinika/getSlobodniLekariKlinike', {idKlinike: this.idKlinike, datum: this.datum, nazivTipa: this.nazivTipa})
 	.then(response => {
 		this.ljekari = response.data;
-		for (let i = 0; i < this.ljekari.length; i++) {
-			for (let j = 0; j < this.ljekari[i].listaVremena.length; j++) {
-				console.log("********");
-				console.log(this.ljekari[i].listaVremena[j]);
-			}
-		}
 	})
 	.catch(function (error) { console.log(error); router.go(-1); });
 	},
@@ -134,8 +128,6 @@ export default {
 	},	
 	fromDateDisp() {
 		return this.datum;
-	// format date, apply validations, etc. Example below.
-	// return this.fromDateVal ? this.formatDate(this.fromDateVal) : "";
 	}
 	},
 	methods: {
@@ -163,16 +155,9 @@ export default {
 		return [year, month, day].join('-');
 	},
 	formatDateStr(value) {
-		//console.log(value);
-		//console.log(String(value));
 		return moment(String(value)).format('DD.MM.YYYY.');
 	},
 	otvoriDialog(value) {
-		console.log(value.listaVremena);
-		/*for (let i = 0; i < value.listaVremena.length; i++) {
-			value.listaVremena[i] = value.listaVremena[i].substr(1);
-		}
-		console.log(value.listaVremena);*/
 		let adr = this.adresaKlinike.adresa + ", " + this.adresaKlinike.grad + ", " + this.adresaKlinike.drzava;
 		
 		axios
@@ -181,8 +166,6 @@ export default {
 		var getOcena = response.data;
 		this.mozeOcjenjivati = getOcena.mozeOcjenjivati;
 		this.ocjena = getOcena.ocjena;
-		console.log(this.mozeOcjenjivati);
-		console.log(this.ocjena);
 		
 		this.dialogZahtjev = {zakazivanje: true, idKlinike: this.idKlinike, nazivKlinike: this.nazivKlinike, adresaKlinike: adr, idPacijenta: this.ulogovani.id, idLekara: value.id, imeLekara: value.ime, prezimeLekara: value.prezime, nazivTipa: this.nazivTipa, listaVremena: value.listaVremena, datum: this.datum, cenaPregleda: this.cena, mozeOcjenjivati: this.mozeOcjenjivati, ocjena: this.ocjena};
 		this.dialog = true;
@@ -194,25 +177,16 @@ export default {
 	},
 	pretrazi() {
 		this.nazivTipa = this.tip.naziv;
-		//this.datum
-		//this.cena = 0;
 		axios
 		.post('klinika/getSlobodniLekariKlinike', {idKlinike: this.idKlinike, datum: this.datum, nazivTipa: this.nazivTipa})
 		.then(response => {
 			this.ljekari = response.data;
 			if (this.ljekari != []) {
 				this.cena = this.ljekari[0].cijenaTipaOpciono;
-				for (let i = 0; i < this.ljekari.length; i++) {
-					for (let j = 0; j < this.ljekari[i].listaVremena.length; j++) {
-						console.log("----------");
-						console.log(this.ljekari[i].listaVremena[j]);
-					}
-				}
 			}
 			
 		})
 		.catch(function (error) { console.log(error); router.go(-1); });
-		//		<!--prepend-icon="event"-->
 	},
   },
 }
