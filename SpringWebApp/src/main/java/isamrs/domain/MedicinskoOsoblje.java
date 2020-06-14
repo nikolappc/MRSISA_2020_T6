@@ -17,7 +17,7 @@ public class MedicinskoOsoblje extends Osoba {
     Klinika klinika;
 
     @Column(name="prvi_put", nullable = false)
-    private boolean prviPut = false;
+    private boolean prviPut = true;
     
     
     

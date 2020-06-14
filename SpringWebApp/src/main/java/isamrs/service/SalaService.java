@@ -108,7 +108,7 @@ public class SalaService {
 		
 	}
 
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	@Transactional(readOnly = false,  propagation = Propagation.REQUIRES_NEW)
 	public void delete(Integer id) throws Exception {
 		Date today = new Date();
 		Sala s = salaRepo.findById(id).orElseGet(null);

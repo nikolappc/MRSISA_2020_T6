@@ -42,7 +42,7 @@ public class Poseta {
 	@JoinColumn(name = "id_termina")
 	public Termin termin;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "id_tipa_posete", nullable = false)
 	public TipPosete tipPosete;
 
@@ -51,7 +51,7 @@ public class Poseta {
 	@JsonBackReference
 	public ZdravstveniKarton zdravstveniKarton;
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_sale")
 	public Sala sala;
 

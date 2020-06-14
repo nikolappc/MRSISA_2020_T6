@@ -23,15 +23,15 @@ import isamrs.dto.post.PosetaPostDTO;
 @Table(name = "pregled")
 public class Pregled extends Poseta {
 
-	@OneToMany(mappedBy = "pregled", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "pregled", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	@JsonManagedReference(value = "pregledReference")
 	public Collection<Recepti> recepti;
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn(name="id_lekara")
 	public Lekar lekar;
 
-	@ManyToMany(mappedBy = "pregled", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(mappedBy = "pregled", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	public Collection<Dijagnoza> dijagnoza;
 	
 	

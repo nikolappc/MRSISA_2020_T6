@@ -1,4 +1,6 @@
 <template>
+<v-container>
+
   <v-form
     ref="form"
     v-model="valid"
@@ -21,16 +23,17 @@
     </v-btn>
 
   </v-form>
+  </v-container>
 </template>
 
 <script>
 import axios from "axios";
 import router from "../../router/index.js"
 export default {
-    name: 'AddSalu',
+  name: 'AddSalu',
     data: function() { return {
       sala: { 
-          id: null,
+        id: null,
           naziv: '',
           },
       valid: true,

@@ -110,7 +110,9 @@ public class PregledServiceImpl implements PregledService {
 		TipPosete tp = tipRepo.findById(t.getTipPosete().getId()).get();
 		t.setLekar(l);
 		t.setTipPosete(tp);
+		
 		Pregled p = pregledRepository.save(t);
+		l.getKlinika().getPregledi().add(p);
 		l.getPregled().add(p);
 		pregledRepository.save(p);
 		ThreadPoolTaskScheduler threadPoolTaskScheduler = threadPoolTaskSchedulerConfig.threadPoolTaskScheduler();

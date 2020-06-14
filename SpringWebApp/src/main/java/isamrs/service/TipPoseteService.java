@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import isamrs.domain.AdministratorKlinike;
+import isamrs.domain.Cenovnik;
 import isamrs.domain.Operacija;
 import isamrs.domain.Pregled;
 import isamrs.domain.StavkaCenovnika;
@@ -75,7 +76,10 @@ public class TipPoseteService {
 		StavkaCenovnika sc = lista.get(lista.size() - 1);
 		sc.setTipPosete(t);
 		sc.setCenovnik(ak.getKlinika().getCenovnik());
-		ak.getKlinika().getCenovnik().getStavkaCenovnika().add(sc);
+		
+		Cenovnik c = ak.getKlinika().getCenovnik();
+		c.getStavkaCenovnika()
+		.add(sc);
 		TipPosete tp = tipRepo.save(t); 
 		adminRepo.save(ak);
 		return tp;

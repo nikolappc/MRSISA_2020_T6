@@ -39,6 +39,8 @@ public class KlinikaServiceImpl implements Service<Klinika, Integer>{
 	@Autowired
 	private AdresaService adresaService;
 	
+	@Autowired
+	
 	@Override
 	public Collection<Klinika> findAll() {
 		return repo.findAll();

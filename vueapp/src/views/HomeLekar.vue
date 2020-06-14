@@ -76,7 +76,7 @@
                     </v-card>
                     
                     <v-btn
-                      v-if="kalendar.selected.tip=='pregled'&&kalendar.selected.odradjen"
+                      v-if="kalendar.selected.odradjen"
                       @click="toIzmena(kalendar.selected.id)"
                       :disabled="!kalendar.selected.odradjen"
                     >
@@ -86,9 +86,18 @@
                       v-if="checkStart(kalendar.selected)"
                       color="success"
                       class="mr-4"
-                      @click="pocniPregled(kalendar.selected.id)"
+                      @click="pocniPregled(kalendar.selected.id,kalendar.selected.tip)"
                     >
                       Započni pregled
+                    </v-btn>
+                    <v-btn
+                      v-if="checkCancel(kalendar.selected)"
+                      color="error"
+                      class="mr-4"
+                      :disabled="kalendar.selected.odradjen"
+                      @click="otkaziPregled(kalendar.selected.id,kalendar.selected.tip)"
+                    >
+                      Otkaži pregled
                     </v-btn>
                 </v-container>
               </v-card>
@@ -242,20 +251,44 @@ export default {
         .catch(function (error) { console.log(error); });
     },
     checkStart: function(pregled){
-        if(pregled.tip=="operacija"||pregled.odradjen){
+        if(pregled.odradjen){
             return false;
         }
         return this.checkDate(pregled);
       },
-      checkDate(pregled){
-        let trenutno = new Date(Date.now() + 5 * 60000);
-        if(pregled.startDate <= trenutno&&trenutno<=pregled.endDate){
-            return true;
-        }
-        return false;
+    checkDate(pregled){
+      let trenutno = new Date(Date.now() + 5 * 60000);
+      if(pregled.startDate <= trenutno&&trenutno<=pregled.endDate){
+          return true;
+      }
+      return false;
+    },
+    otkaziPregled(id,tip){
+      axios
+        .delete('poseta/otkazi/'+id+"/"+tip)
+        .then((response) => {
+            console.log(response);
+            this.$store.commit("setSnackbar", {text:"Uspesno ste otkazali posetu", color: "success"});
+            this.$router.go();
+        })
+        .catch(function (error) { console.log(error); });
+    },
+    checkCancel(pregled){
+      let trenutno = new Date(Date.now() + 60 * 60000);//60 minuta od sad
+      if(trenutno <= pregled.startDate){
+          return true;
+      }
+      return false;
     },
     toIzmena(id){
       this.$router.push('/izmenaPregleda/' + id);
+    },
+    pocniPregled(id,tip){
+      if(tip=="pregled")
+        this.$router.push('/pregled/' + id);
+      else{
+        this.$router.push('/operacija/' + id);
+      }
     },
     preurediEvent(termini){
         for(let termin of termini){

@@ -346,7 +346,7 @@ export default {
                     })
                     .catch((err) => { 
                         console.log(err);
-                        this.$store.commit("setSnackbar", {text:"Termin je zauzet za tog lekara", color: "error"});
+                        this.$store.commit("setSnackbar", {text:"Lekar nije dostupan u tom delu dana", color: "error"});
                         this.overlay = false;
                     });
             }
