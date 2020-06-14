@@ -10,7 +10,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.PessimisticLockException;
 
 import isamrs.domain.AdministratorKlinike;
 import isamrs.domain.Cenovnik;
@@ -30,11 +29,9 @@ import isamrs.domain.ZdravstveniKarton;
 import isamrs.dto.PredefinisaniPregledDTO;
 import isamrs.dto.ZakazaniPregledDTO;
 import isamrs.dto.ZakazivanjePregledaDTO;
-import isamrs.dto.ZakazaniPregledDTO;
 import isamrs.repository.KlinikaRepository;
 import isamrs.repository.LekarRepository;
 import isamrs.exceptions.NotFoundException;
-import isamrs.operacije.zakazivanje.OperacijaRunnable;
 import isamrs.operacije.zakazivanje.PregledRunnable;
 import isamrs.repository.PacijentRepository;
 import isamrs.repository.PregledRepository;
@@ -47,9 +44,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.PessimisticLockingFailureException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
@@ -195,8 +189,6 @@ public class PregledServiceImpl implements PregledService {
 		for (Pregled p : pregledi) {
 			Pregled pr = pregledRepository.getOne(p.getId());
 			Klinika k = klinikaRepo.findByLekar(pr.getLekar().getId());
-			//Lekar ll = lekarRepo.getOne(pr.getLekar().getId());
-			//System.out.println(ll.getKlinika());
 			Cenovnik c = k.getCenovnik();
 			zakazani.add(new ZakazaniPregledDTO(p, c));
 		}
@@ -213,6 +205,7 @@ public class PregledServiceImpl implements PregledService {
 		return pregledRepository.findBySala(s);
 	}
 	
+	@Transactional(readOnly = false)
 	public Boolean otkaziPregled(int idPregleda, int idUlogovanog) throws NotFoundException {
 		Pregled p = findOne(idPregleda);
 		if (p.getZdravstveniKarton().getPacijent().getId() != idUlogovanog) {
