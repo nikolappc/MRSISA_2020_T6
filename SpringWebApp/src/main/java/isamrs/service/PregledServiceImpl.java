@@ -165,6 +165,9 @@ public class PregledServiceImpl implements PregledService {
 						removedDijagnoze.add(d);
 					}
 				}
+				for(Dijagnoza d:dijagnozas){
+					pregledForUpdate.addDijagnoza(d);
+				}
 			}
 			pregledForUpdate.setRecepti(t.getRecepti());
 			pregledForUpdate.setOpis(t.getOpis());
@@ -176,10 +179,13 @@ public class PregledServiceImpl implements PregledService {
 		Pregled p = pregledRepository.save(pregledForUpdate);
 		for(Dijagnoza d:dijagnozas){
 			d = dijagnozaRepository.getOne(d.getId());
+			if(d.getPregled()==null){
+				d.setPregled(new LinkedList<>());
+			}
 			d.getPregled().add(p);
 			dijagnozaRepository.save(d);
 		}
-		for(Dijagnoza d:dijagnozas){
+		for(Dijagnoza d:removedDijagnoze){
 			d = dijagnozaRepository.getOne(d.getId());
 			boolean flag = false;
 			Pregled pp = null;
