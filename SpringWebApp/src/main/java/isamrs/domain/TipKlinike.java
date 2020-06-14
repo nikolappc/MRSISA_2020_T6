@@ -1,5 +1,7 @@
 package isamrs.domain;
 
+import isamrs.dto.TipKlinikeDTO;
+
 import java.util.*;
 
 import javax.persistence.Column;
@@ -21,7 +23,12 @@ public class TipKlinike {
 	@Column(name = "tip", unique = true, nullable = false)
 	private String tip;
 
-	public Long getId() {
+    public TipKlinike(TipKlinikeDTO t) {
+		this.id = t.getId();
+		this.tip = t.getTip();
+    }
+
+    public Long getId() {
 		return id;
 	}
 

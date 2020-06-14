@@ -60,7 +60,7 @@ public class TipKlinikeController {
 		if (!(httpServletRequest.getSession().getAttribute("user") instanceof AdministratorKlinickogCentra)){
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-		TipKlinike t2 = service.create(t);
+		TipKlinike t2 = service.create(new TipKlinike(t));
 		return new ResponseEntity<TipKlinikeDTO>(new TipKlinikeDTO(t2), HttpStatus.OK);
 	}
 	
