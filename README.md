@@ -11,6 +11,8 @@ Za pokretanje ovog projekta na računaru je potrebno imati sledeće programe:
 * Apache Maven
 * Java JRE 8 ili noviju verziju
 * Node.js
+
+
 Nakon preuzimanja projekta sa github-a potrebno je instalirati npm (Node package manager) u folderu "vueapp" u korenu projekta sledećom komandom:
 ```bash
 npm install
