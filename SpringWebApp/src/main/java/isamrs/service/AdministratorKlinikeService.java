@@ -15,11 +15,13 @@ import isamrs.operacije.doktori.OnDoktorDodatEventPregled;
 import isamrs.repository.*;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -179,7 +181,6 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
                 eventPublisher.publishEvent(new OnDoktorDodatEvent(l1, operacijaBaza, operacijaBaza.getTermin()));
                 
             }
-            bazaLekar.getKlinika().getOperacije().add(operacijaBaza);
             operacijaBaza.setSala(s);
             operacijaBaza.setPotvrdjen(true);
             operacijaBaza.setTermin(operacija.getTermin());
@@ -268,7 +269,6 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
             if (p.getTermin().getPocetak().after(termin.getKraj())) {
                 continue;
             }
-
             //Ako je bilo koji drugi slucaj onda je zauzeta sala
             return false;
         }
@@ -295,26 +295,15 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
         RadnoVreme r = lekar.getRadnoVreme().iterator().next();
         
         
-        Calendar terminPocetak = Calendar.getInstance();
-        terminPocetak.setTime(termin.getPocetak());
-        
-        Calendar terminKraj = Calendar.getInstance();
-        terminKraj.setTime(termin.getKraj());
-        
-        Calendar radnoVremePocetak = Calendar.getInstance();
-        radnoVremePocetak.setTime(r.getPocetak());
-        radnoVremePocetak.set(Calendar.DAY_OF_MONTH, terminPocetak.get(Calendar.DAY_OF_MONTH));
-        radnoVremePocetak.set(Calendar.MONTH, terminPocetak.get(Calendar.MONTH));
-        radnoVremePocetak.set(Calendar.YEAR, terminPocetak.get(Calendar.YEAR));
-        
-        Calendar radnoVremeKraj = Calendar.getInstance();
-        radnoVremeKraj.setTime(r.getKraj());
-        radnoVremeKraj.set(Calendar.DAY_OF_MONTH, terminPocetak.get(Calendar.DAY_OF_MONTH));
-        radnoVremeKraj.set(Calendar.MONTH, terminPocetak.get(Calendar.MONTH));
-        radnoVremeKraj.set(Calendar.YEAR, terminPocetak.get(Calendar.YEAR));
-        
-        
-        if(!((radnoVremePocetak.before(terminPocetak) || radnoVremePocetak.equals(terminPocetak)) && (radnoVremeKraj.after(terminKraj) || radnoVremeKraj.equals(terminKraj))))  {
+        LocalDateTime terminPocetak = termin.getPocetak().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+        LocalDateTime terminKraj = termin.getKraj().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+        LocalDateTime radnoVremePocetak = LocalDateTime.of(terminPocetak.toLocalDate(), r.getPocetak().toInstant().atZone(ZoneId.systemDefault()).toLocalTime());
+
+        LocalDateTime radnoVremeKraj = LocalDateTime.of(terminKraj.toLocalDate(), r.getKraj().toInstant().atZone(ZoneId.systemDefault()).toLocalTime());
+
+        if(!((radnoVremePocetak.isBefore(terminPocetak) || radnoVremePocetak.equals(terminPocetak)) && (radnoVremeKraj.isAfter(terminKraj) || radnoVremeKraj.equals(terminKraj))))  {
         	return false;
         }
         

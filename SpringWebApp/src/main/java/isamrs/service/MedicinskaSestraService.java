@@ -28,7 +28,6 @@ public class MedicinskaSestraService {
 			return null;
 		Adresa a = adresaService.createAdresa(osoba.getAdresa());
 		ms.setAdresa(a);
-
 		ms.setBrojTelefona(osoba.getBrojTelefona());
 		ms.setEmail(osoba.getEmail());
 		ms.setIme(osoba.getIme());

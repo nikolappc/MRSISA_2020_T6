@@ -104,7 +104,7 @@
                                         :key="lekar.id"
                                     >
                                         <v-checkbox
-                                            @click="dodajDoktora(lekar)"
+                                            v-model="pregled.lekari"
                                             :label="lekar.ime+' '+lekar.prezime"
                                         >   
                                         </v-checkbox>
@@ -249,6 +249,13 @@ export default {
                                             break;
                                         }
                                     }
+                                }else{
+                                    for(var id in this.lekari){
+                                        if(this.lekari[id].id == this.pregled.lekari[0].id){
+                                            this.lekari[id] = this.pregled.lekari[0];
+                                            break;
+                                        }
+                                    }
                                 }
                                 console.log(response);
                             })
@@ -306,17 +313,7 @@ export default {
         } 
     },
     methods: {
-        dodajDoktora(l){
-            if(this.pregled.lekari.find(lekar=>
-                lekar.id==l.id
-            )){
-                this.pregled.lekari.filter(lekar=>
-                    lekar.id != l.id
-                )
-            }else{
-                this.pregled.lekari.push(l);
-            }
-        },
+       
         deleteSala: function(id){
             this.sale = this.sale.filter(sala => sala.sala.id !== id);
         },
@@ -324,7 +321,7 @@ export default {
             this.$router.push("/");
         },
         otvoriDialog: function(id){
-            if(!this.isPregled&&this.pregled.lekari.length==0||this.isPregled&&this.pregled.lekar == null){
+            if(this.isPregled&&this.pregled.lekar == null){
                 this.dialogSala = {...this.sale.filter(sala => sala.sala.id === id)[0].sala };
                 this.dialog = true;
             }

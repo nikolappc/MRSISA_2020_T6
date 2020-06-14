@@ -80,7 +80,7 @@
                       @click="toIzmena(kalendar.selected.id)"
                       :disabled="!kalendar.selected.odradjen"
                     >
-                      Izmena pregleda
+                      Izmena
                     </v-btn>
                     <v-btn
                       v-if="checkStart(kalendar.selected)"
@@ -88,7 +88,7 @@
                       class="mr-4"
                       @click="pocniPregled(kalendar.selected.id,kalendar.selected.tip)"
                     >
-                      Započni pregled
+                      Započni
                     </v-btn>
                     <v-btn
                       v-if="checkCancel(kalendar.selected)"
@@ -97,13 +97,18 @@
                       :disabled="kalendar.selected.odradjen"
                       @click="otkaziPregled(kalendar.selected.id,kalendar.selected.tip)"
                     >
-                      Otkaži pregled
+                      Otkaži
                     </v-btn>
                 </v-container>
               </v-card>
             </v-menu>
           </template>
         </RadniKalendar>
+        <v-divider class="pt-5">
+        </v-divider>
+        <label class="display-1">
+          Linkovi
+        </label>
         <v-row
           justify="center"
           align-content="stretch"
@@ -133,7 +138,7 @@
           <router-link to="/zakaziPregled">
             <LinkCard
               :img="pregled"
-              title="Zakaži pregled"
+              title="Zakaži pregled/operaciju"
             >
             </LinkCard>
           </router-link>
@@ -291,7 +296,9 @@ export default {
       }
     },
     preurediEvent(termini){
+        console.log(termini);
         for(let termin of termini){
+          
             let event = {}; 
             event.id = termin.id;
             event.startDate = new Date(termin.termin.pocetak);
