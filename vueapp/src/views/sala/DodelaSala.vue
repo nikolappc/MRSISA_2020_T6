@@ -243,14 +243,14 @@ export default {
                             .then(response => {
                                 this.lekari = response.data;
                                 if(this.isPregled){
-                                    for(var id in this.lekari){
+                                    for(let id in this.lekari){
                                         if(this.lekari[id].id == this.pregled.lekar.id){
                                             this.lekari[id] = this.pregled.lekar;
                                             break;
                                         }
                                     }
                                 }else{
-                                    for(var id in this.lekari){
+                                    for(let id in this.lekari){
                                         if(this.lekari[id].id == this.pregled.lekari[0].id){
                                             this.lekari[id] = this.pregled.lekari[0];
                                             break;
