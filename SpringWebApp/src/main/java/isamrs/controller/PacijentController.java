@@ -44,7 +44,9 @@ public class PacijentController {
 
 	@GetMapping(value ="/klinike", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<OsobaDTO>> getPacijents(HttpServletRequest req){
-		//autorizacija
+		if (!(req.getSession().getAttribute("user") instanceof MedicinskoOsoblje)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		Collection<OsobaDTO> finalni =pacijentService.findAll().stream().map(this::pacijentToOsobaDTO).collect(Collectors.toList());
 		return new ResponseEntity<>(finalni, HttpStatus.OK);
 	}

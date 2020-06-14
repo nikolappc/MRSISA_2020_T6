@@ -17,10 +17,10 @@ insert into adrese (adresa, grad, drzava) values ('Diagon Alley', 'London', 'UK'
 
 insert into administratori_klinickog_centra (id_adrese, broj_telefona, email, ime, jbo, password, prezime) values (1, '065/123-112', 'admin@gmail.com', 'Admin', '123345', 'admin', 'Admin');
 
-insert into cenovnici (id) values (1);
-insert into cenovnici (id) values (2);
-insert into cenovnici (id) values (3);
-insert into cenovnici (id) values (4);
+insert into cenovnici (version) values(0);
+insert into cenovnici (version) values(0);
+insert into cenovnici (version) values(0);
+insert into cenovnici (version) values(0);
 
 insert into zdravstveni_kartoni (visina, tezina, krvna_grupa) values (1.6, 60, 'A+');
 insert into zdravstveni_kartoni (visina, tezina, krvna_grupa) values (1.7, 70, 'B-');
@@ -143,6 +143,10 @@ insert into termini (pocetak, kraj) values (to_timestamp('2020-06-05 14:00', 'YY
 insert into termini (pocetak, kraj) values (to_timestamp('2020-06-11 10:30', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-06-11 11:00', 'YYYY-MM-DD HH24:MI'));
 insert into termini (pocetak, kraj) values (to_timestamp('2020-06-19 11:30', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-06-19 12:00', 'YYYY-MM-DD HH24:MI'));
 insert into termini (pocetak, kraj) values (to_timestamp('2020-06-19 14:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-06-19 14:30', 'YYYY-MM-DD HH24:MI'));
+insert into termini (pocetak, kraj) values (to_timestamp('2020-07-05 14:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-07-05 14:30', 'YYYY-MM-DD HH24:MI'));
+insert into termini (pocetak, kraj) values (to_timestamp('2020-07-11 10:30', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-07-11 11:00', 'YYYY-MM-DD HH24:MI'));
+insert into termini (pocetak, kraj) values (to_timestamp('2020-07-19 11:30', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-07-19 12:00', 'YYYY-MM-DD HH24:MI'));
+insert into termini (pocetak, kraj) values (to_timestamp('2020-07-19 14:00', 'YYYY-MM-DD HH24:MI'), to_timestamp('2020-07-19 14:30', 'YYYY-MM-DD HH24:MI'));
 
 insert into pacijent (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_kartona, allowed, responded) values (1, '065/123-111', 'neekolapapic@gmail.com', 'Nklppc', '384265', 'nikola12345', 'Papic',  1, true, true);
 insert into pacijent (id_adrese, broj_telefona, email, ime, jbo, password, prezime, id_kartona, allowed, responded) values (2, '065/123-111', 'rodoljub@gmail.com', 'Rodoljub', '037462', 'rodoljub12345', 'Petrovic', 2, true, true);
@@ -197,7 +201,7 @@ insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_le
 insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen, version) values ('Prošao pregled 2', 7, 5, 11, 10, 11, 4, true, true, 0);
 insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen, version) values ('Prošao pregled 3', 8, 3, 12, 10, 12, 4, true, true, 0);
 insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen, version) values ('Prošao pregled 4', 8, 4, 10, 11, 11, 4, true, true, 0);
-insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen, version) values ('Prošao pregled 5', 8, 5, 11, 11, 12, 4, true, true, 0);
+insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen, version) values ('Prošao pregled 5', 8, 2, 11, 11, 12, 4, true, true, 0);
 insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen, version) values ('Prošao pregled 6', 8, 6, 12, 12, 11, 4, true, true, 0);
 insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen, version) values ('Prošao pregled 7', 9, 7, 10, 12, 12, 4, true, true, 0);
 
@@ -213,10 +217,10 @@ insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_le
 insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen, version) values ('', null, 15, 11, 12, 11, 4, false, false, 0);
 insert into pregled (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_lekara, id_klinike, potvrdjen, odradjen, version) values ('', null, 16, 10, 11, 12, 4, false, false, 0);
 
-insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike, potvrdjen, odradjen, version) values ('Prošla operacija 1', 10, 11, 10, 3, 4, true, true,0);
-insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike, potvrdjen, odradjen, version) values ('Prošla operacija 2', 10, 11, 4, 2, 4, true, true,0);
-insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike, potvrdjen, odradjen, version) values ('Prošla operacija 3', 10, 11, 4, 1, 4, true, true,0);
-insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike, potvrdjen, odradjen, version) values ('Prošla operacija 4', 10, 11, 10, 1, 4, true, true,0);
+insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike, potvrdjen, odradjen, version) values ('Prošla operacija 1', 10, 17, 10, 3, 4, true, true,0);
+insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike, potvrdjen, odradjen, version) values ('Prošla operacija 2', 10, 18, 4, 2, 4, true, true,0);
+insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike, potvrdjen, odradjen, version) values ('Prošla operacija 3', 10, 19, 4, 1, 4, true, true,0);
+insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike, potvrdjen, odradjen, version) values ('Prošla operacija 4', 10, 20, 10, 1, 4, true, true,0);
 insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike, potvrdjen, odradjen, version) values ('', null, 21, 11, 10, 4, true, true,0);
 insert into operacije (ime, id_sale, id_termina, id_tipa_posete, id_kartona, id_klinike, potvrdjen, odradjen, version) values ('', null, 22, 11, 11, 4, true, true,0);
 

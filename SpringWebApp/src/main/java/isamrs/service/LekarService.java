@@ -93,6 +93,27 @@ public class LekarService {
 		l = lekarRepo.save(l);
 		return l;
 	}
+	
+	
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public Lekar updateUser(Integer id,Lekar lekar) throws Exception {
+		
+		
+		Lekar lekarForUpdate = lekarRepo.findOneById(id);
+		
+		Adresa a = adresaService.createAdresa(lekar.getAdresa());
+		lekarForUpdate.setAdresa(a);
+		lekarForUpdate.setBrojTelefona(lekar.getBrojTelefona());
+		lekarForUpdate.setEmail(lekar.getEmail());
+		lekarForUpdate.setIme(lekar.getIme());
+		lekarForUpdate.setPrezime(lekar.getPrezime());
+		lekarForUpdate.setJbo(lekar.getJbo());
+		lekarForUpdate.setPassword(lekar.getPassword());
+		lekarForUpdate.setPrviPut(false);
+		
+		return lekarRepo.save(lekarForUpdate);
+	}
+	
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public Lekar update(Integer id,Lekar lekar) throws Exception {
@@ -100,16 +121,19 @@ public class LekarService {
 		
 		Lekar lekarForUpdate = lekarRepo.findOneById(id);
 		Date today = new Date();
-		for(Pregled p : lekarForUpdate.getPregled()) {
-			if(p.getTermin().getKraj().after(today))
-				throw new Exception();
-		}
-		
-		for(Operacija o : lekarForUpdate.getOperacije()) {
-			if(o.getTermin().getKraj().after(today))
-				throw new Exception();
-		}
+		if(!lekarForUpdate.isPrviPut()) {
+			
+			for(Pregled p : lekarForUpdate.getPregled()) {
+				if(p.getTermin().getKraj().after(today))
+					throw new Exception();
+			}
+			
+			for(Operacija o : lekarForUpdate.getOperacije()) {
+				if(o.getTermin().getKraj().after(today))
+					throw new Exception();
+			}
 
+		}
 		Adresa a = adresaService.createAdresa(lekar.getAdresa());
 		lekarForUpdate.setAdresa(a);
 		lekarForUpdate.setBrojTelefona(lekar.getBrojTelefona());

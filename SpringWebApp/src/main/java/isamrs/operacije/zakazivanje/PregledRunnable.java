@@ -23,7 +23,7 @@ public class PregledRunnable implements Runnable {
     Integer id;
 
     @Autowired
-    DateFinderPregled dateFinder;
+    DateFinder dateFinder;
 
 
     public PregledRunnable() {

@@ -260,7 +260,7 @@ public class UserController {
 				updatedOsoba = adminKlinikeService.update(id, (AdministratorKlinike)osoba);
 				break;
 			case "LEKAR":
-				updatedOsoba = lekarService.update(id, (Lekar)osoba);
+				updatedOsoba = lekarService.updateUser(id, (Lekar)osoba);
 				break;
 			case "SESTRA":
 				updatedOsoba = sestraService.update(id, (MedicinskaSestra)osoba);

@@ -298,8 +298,8 @@ export default {
             event.endDate = new Date(termin.termin.kraj);
             event.start = this.formatirajDatum(event.startDate);
             event.end = this.formatirajDatum(event.endDate);
-            event.color = termin.tip.tip == "pregled"?"blue":"lek";
-            event.tip = termin.tip.tip;
+            event.color = termin.tipPregleda == "pregled"?"blue":"lek";
+            event.tip = termin.tipPregleda;
             event.opis = termin.opis;
             event.name = termin.tip.naziv;
             event.odradjen = termin.odradjen;

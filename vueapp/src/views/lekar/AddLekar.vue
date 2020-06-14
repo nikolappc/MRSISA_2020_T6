@@ -112,8 +112,8 @@ export default {
     },
     name: 'AddLekar',
     data: function() { return {
-        smena: [{ pocetak: new Date("1000-01-01 07:00"),kraj: new Date("1000-01-01 15:00")},
-          { pocetak: new Date("1000-01-01 15:00"),kraj: new Date("1000-01-01 23:00")}
+        smena: [{ pocetak: new Date("2000-01-01 07:00"),kraj: new Date("2000-01-01 15:00")},
+          { pocetak: new Date("2000-01-01 15:00"),kraj: new Date("2000-01-01 23:00")}
         ],
         odabraniTipovi: [],
         adresa: "",

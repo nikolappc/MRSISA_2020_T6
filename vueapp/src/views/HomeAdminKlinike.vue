@@ -73,7 +73,7 @@
           >
             <router-link to="/izvestaj">
               <LinkCard
-                :img="dodavanje"
+                :img="izvestaj"
                 title="Izvestaj poslovanja"
               >
               </LinkCard>
@@ -254,6 +254,7 @@ export default {
       sale:require("../assets/sale.jpg"),
       tipPregleda:require("../assets/tipPregleda.jpg"),
       dodavanje:require("../assets/dodavanje.jpg"),
+      izvestaj:require("../assets/izvestaj.jpg"),
       pregledi: [],
       operacije: [],
       odsustva: [],

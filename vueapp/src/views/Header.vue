@@ -9,10 +9,10 @@
         <router-link v-if="ulogovan.tip == 'ADMIN_K'"  to="/izmenaKlinike">
             <v-btn icon><v-icon color="white">mdi-hospital-building</v-icon></v-btn>
         </router-link>
-        <router-link to="/izmenaNaloga">
+        <router-link v-if="ulogovan != ''" to="/izmenaNaloga">
             <v-btn icon><v-icon color="white">mdi-account</v-icon></v-btn>
         </router-link>
-        <router-link to="/">
+        <router-link v-if="ulogovan != ''" to="/">
             <v-btn icon><v-icon color="white">mdi-home</v-icon></v-btn>
         </router-link>
         <router-link v-if="!ulogovan"  to="/loginPage">

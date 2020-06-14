@@ -183,6 +183,7 @@ export default {
         
         dodajTermin: function(event) {
             event.preventDefault();
+            
             this.pregled.termin.pocetak = new Date(this.date);
             this.pregled.termin.pocetak = moment(this.pregled.termin.pocetak).add(this.vreme.getMinutes(), 'm').toDate();
             this.pregled.termin.pocetak = moment(this.pregled.termin.pocetak).add(this.vreme.getHours(), 'h').toDate();

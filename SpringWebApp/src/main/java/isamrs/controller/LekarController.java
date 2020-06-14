@@ -102,7 +102,9 @@ public class LekarController {
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Lekar> createLekar(@RequestBody LekarDTO lekar, HttpServletRequest req) throws Exception {
-		//autorizacija
+		if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 		AdministratorKlinike ak = (AdministratorKlinike) req.getSession().getAttribute("user");
 		Lekar savedLekar = lekarService.create(lekar,ak.getId());
 		return new ResponseEntity<Lekar>(savedLekar, HttpStatus.CREATED);

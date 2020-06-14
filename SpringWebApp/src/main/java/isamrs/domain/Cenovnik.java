@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 @Entity
 @Table(name = "cenovnici")
@@ -25,6 +26,32 @@ public class Cenovnik {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	
+	@Version
+	private Long version;
+	
+	
+	
+
+	public Integer getId() {
+		return id;
+	}
+
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+
+	public Long getVersion() {
+		return version;
+	}
+
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
+
 
 	@OneToMany(mappedBy = "cenovnik", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	public Collection<StavkaCenovnika> stavkaCenovnika = new HashSet<StavkaCenovnika>();

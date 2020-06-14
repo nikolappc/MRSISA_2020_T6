@@ -30,7 +30,6 @@ public class TipPoseteController {
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<TipPosete>> getTipovi(HttpServletRequest req) {
-		//autorizacija
 		if ((req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
 			AdministratorKlinike ak= (AdministratorKlinike) req.getSession().getAttribute("user");
 			

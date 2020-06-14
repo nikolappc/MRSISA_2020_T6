@@ -74,6 +74,7 @@ public class PosetaService {
         
         Pregled p = pregledRepo.save(pre);
         ak.getKlinika().getPregledi().add(p);
+        adminRepo.save(ak);
         pregledRepo.save(p);
 		return p;
 	}
