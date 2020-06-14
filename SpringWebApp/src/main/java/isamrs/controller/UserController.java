@@ -31,6 +31,7 @@ import isamrs.domain.Lekar;
 import isamrs.domain.MedicinskaSestra;
 import isamrs.domain.Osoba;
 import isamrs.domain.Pacijent;
+import isamrs.domain.ZdravstveniKarton;
 import isamrs.registracija.OnRegistrationFailEvent;
 import isamrs.registracija.OnRegistrationSuccessEvent;
 import isamrs.registracija.VerificationToken;
@@ -39,6 +40,7 @@ import isamrs.service.AdministratorKlinikeService;
 import isamrs.service.LekarService;
 import isamrs.service.MedicinskaSestraService;
 import isamrs.service.PacijentServiceImpl;
+import isamrs.service.ZdravstveniKartonServiceImpl;
 
 @RestController
 @RequestMapping("/api")
@@ -53,17 +55,21 @@ public class UserController {
 	@Autowired
 	private AdministratorKlinikeService adminKlinikeService;
 	@Autowired
+	private ZdravstveniKartonServiceImpl kartonService;
+	@Autowired
 	private AdministratorKlinickogCentraService adminKCService;
 
 	@Autowired
 	ApplicationEventPublisher eventPublisher;
+	
+	public static String adresa = "";
 
 	@PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Osoba> loginUser(HttpServletRequest req, @RequestBody UserDTO user) {
 		if (req.getSession().getAttribute("user") != null) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Vec je ulogovan korisnik.");
 		}
-
+		adresa = req.getRequestURL().toString().split("://")[0] + "://" + req.getRequestURL().toString().split("://")[1].split("/")[0];
 		AdministratorKlinickogCentra akc = adminKCService.findByEmail(user.getUsername());
 		if (akc != null) {
 			if (akc.getPassword().equals(user.getPassword())) {
@@ -99,7 +105,7 @@ public class UserController {
 				return new ResponseEntity<Osoba>(p, HttpStatus.OK);
 			}
 		}
-
+		adresa = "";
 		throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Korisnik ne postoji.");
 
 	}
@@ -171,6 +177,8 @@ public class UserController {
 		pac.setBrojTelefona(reg.getBrojTelefona());
 		pac.setJbo(reg.getJbo());
 		pac.setAdresa(reg.getAdresa());
+		pac.setAllowed(false);
+		pac.setResponded(false);
 		pacijentService.create(pac);
 
 		return new ResponseEntity<String>("Uspjesno poslat zahtjev.", HttpStatus.OK);
@@ -219,7 +227,9 @@ public class UserController {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Isteklo je vrijeme za potvrdu registracije.");
 		}
 		pacijentService.setOdobren(user.getEmail(), true);
-
+		ZdravstveniKarton zk = new ZdravstveniKarton();
+		kartonService.create(zk);
+		user.setZdravstveniKarton(zk);
 		pacijentService.save(user);
 		return new ResponseEntity<String>("Uspešna registracija!", HttpStatus.OK);
 	}

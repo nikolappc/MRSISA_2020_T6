@@ -8,6 +8,8 @@ import isamrs.domain.*;
 import isamrs.exceptions.NotFoundException;
 import isamrs.repository.SestraRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +43,9 @@ public class OdmorService {
 	@Autowired
 	private OperacijaRepository operacijaRepository;
 	
+	@Autowired
+	private MailSender mailSender;
+	
 	
 	public Collection<OdmorDTO> findAll(Integer klinikaID) {
 		ArrayList<OdmorDTO> odmori = new ArrayList<OdmorDTO>();
@@ -73,24 +78,34 @@ public class OdmorService {
 	@Transactional(readOnly = false)
 	public GodisnjiOdmor update(Integer id, GodisnjiOdmor t) throws NotFoundException {
 		if(t.isOdobren()) {
+			SimpleMailMessage email1 = new SimpleMailMessage();
+			email1.setSubject("Godisnji odmor");
 			GodisnjiOdmor go = odmorRepo.findById(id).orElseThrow(NotFoundException::new);
 			Lekar l = odmorRepo.getLekar(go.getId());
 			if (l != null) {
 				if(proveriTerminLekara(l, go)) {
 					go.setOdobren(true);
+					email1.setTo(l.getEmail());
+					email1.setText("Vas zahtev za godisnji odmor je odobren.");
+					mailSender.send(email1);
 					return odmorRepo.save(go);
 				}
 				else {
 					this.delete(id);
 					t.setOdobren(false);
+					email1.setTo(l.getEmail());
+					email1.setText("Vas zahtev za godisnji odmor je odbijen.");
+					mailSender.send(email1);
 					return t;
 				}
 			} else {
 				MedicinskaSestra ms = odmorRepo.getSestra(go.getId());
 				go.setOdobren(true);
+				email1.setTo(ms.getEmail());
+				email1.setText("Vas zahtev za godisnji odmor je odobren.");
+				mailSender.send(email1);
 				return odmorRepo.save(go);
 			}
-			
 		}
 		else {
 			this.delete(id);

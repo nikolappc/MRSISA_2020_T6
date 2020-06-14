@@ -13,92 +13,84 @@
                 <v-col v-if="admini.length!=0"> 
                     <v-card>
                         <v-container>
-                            <v-row>
-                                <v-col
-                                    cols="11"
-                                >
-                                    <v-simple-table>     
-                                         <thead>
-                                             <tr>
-                                                 <th
-                                                    id="ime"
-                                                 >
-                                                     Ime
-                                                 </th>
-                                                 <th
-                                                    id="prezime"
-                                                 >
-                                                     Prezime
-                                                 </th>
-                                                 <th
-                                                    id="br"
-                                                 >
-                                                     Broj telefona
-                                                 </th>
-                                                 <th
-                                                    id="jbo"
-                                                 >
-                                                     JBO
-                                                 </th>
-                                                 <th
-                                                    id="email"
-                                                 >
-                                                     E-mail
-                                                 </th>
-                                                 <th
-                                                    id="adresa"
-                                                 >
-                                                     Adresa
-                                                 </th>
-                                             </tr>
-                                         </thead>
-                                         <tbody @click="izmena(a)" v-for="a in admini" :key="a.id">
-                                             <tr> 
-                                                 <td>
-                                                     {{a.ime}}
-                                                 </td>
-                                                 <td>
-                                                     {{a.prezime}}
-                                                 </td>
-                                                 <td>
-                                                     {{a.brojTelefona}}
-                                                 </td>
-                                                 <td>
-                                                     {{a.jbo}}
-                                                 </td>
-                                                 <td>
-                                                     {{a.email}}
-                                                 </td>
-                                                 <td>
-                                                     {{toStringAdresa(a.adresa)}}
-                                                 </td>
-                                             </tr>
-                                         </tbody>
-                                     </v-simple-table>
-                                </v-col>
-                                <v-col
-                                    cols="1"
-                                    v-if="this.admini.length>1"
-                                >
-                                    <v-simple-table>
-                                        <thead>
-                                            <tr>
-                                                <th id="">
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody v-for="a in admini" :key="a.id">
-                                            <tr>
-                                                <td>
-                                                    <v-btn icon @click="deleteAdmin(a.id)">
-                                                        <v-icon>mdi-delete</v-icon>
-                                                    </v-btn>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </v-simple-table>
-                                </v-col>
-                            </v-row>
+                            <v-simple-table>     
+                                <thead>
+                                    <tr>
+                                        <th
+                                        id="ime"
+                                        >
+                                            Ime
+                                        </th>
+                                        <th
+                                        id="prezime"
+                                        >
+                                            Prezime
+                                        </th>
+                                        <th
+                                        id="br"
+                                        >
+                                            Broj telefona
+                                        </th>
+                                        <th
+                                        id="jbo"
+                                        >
+                                            JBO
+                                        </th>
+                                        <th
+                                        id="email"
+                                        >
+                                            E-mail
+                                        </th>
+                                        <th
+                                        id="adresa"
+                                        >
+                                            Adresa
+                                        </th>
+                                        <th
+                                        id="izmena"
+                                        >
+                                            Izmena
+                                        </th>
+                                        <th
+                                        id="brisanje"
+                                        >
+                                            Brisanje
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody v-for="a in admini" :key="a.id">
+                                    <tr> 
+                                        <td>
+                                            {{a.ime}}
+                                        </td>
+                                        <td>
+                                            {{a.prezime}}
+                                        </td>
+                                        <td>
+                                            {{a.brojTelefona}}
+                                        </td>
+                                        <td>
+                                            {{a.jbo}}
+                                        </td>
+                                        <td>
+                                            {{a.email}}
+                                        </td>
+                                        <td>
+                                        <Map :adresaMape = "a.adresa"></Map>
+                                        </td>
+                                        <td>
+                                        <v-btn icon @click="izmena(a)">
+                                            <v-icon>mdi-pencil</v-icon>
+                                        </v-btn>
+                                    </td>
+                                        <td>
+                                        <v-btn icon @click="deleteAdmin(a.id)">
+                                            <v-icon>mdi-delete</v-icon>
+                                        </v-btn>
+                                    </td>
+                                    </tr>
+                                </tbody>
+                            </v-simple-table>
                             <v-row
                             align="center"
                             justify-content="center">
@@ -153,12 +145,15 @@
     </div>
 </template>
 <script>
+    import Map from "../../components/Map.vue"
+
     const axios = require('axios');
     import IzmenaAdminaKlinike from "./IzmenaAdminaKlinike.vue";
     export default {
         name:"PregledAdminaKC",
         components:{
-            IzmenaAdminaKlinike
+            IzmenaAdminaKlinike,
+            Map
         },
         data:function () {
             return {

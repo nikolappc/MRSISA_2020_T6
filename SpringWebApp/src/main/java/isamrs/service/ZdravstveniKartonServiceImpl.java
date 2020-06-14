@@ -37,8 +37,12 @@ public class ZdravstveniKartonServiceImpl implements Service<ZdravstveniKarton, 
 
 	@Override
 	public ZdravstveniKarton update(Integer id, ZdravstveniKarton t) throws NotFoundException {
-		zdravstveniKartonRepository.findById(id).orElseThrow(NotFoundException::new);
-		return zdravstveniKartonRepository.save(t);
+		
+		ZdravstveniKarton zd = zdravstveniKartonRepository.findById(id).orElseThrow(NotFoundException::new);
+		zd.setKrvnaGrupa(t.getKrvnaGrupa());
+		zd.setTezina(t.getTezina());
+		zd.setVisina(t.getVisina());
+		return zdravstveniKartonRepository.save(zd);
 	}
 
 	@Override

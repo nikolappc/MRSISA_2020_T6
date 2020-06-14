@@ -104,13 +104,15 @@ public class PregledServiceImpl implements PregledService {
 	}
 
 	//@Override
-	public Pregled create(Pregled t) {
+	public Pregled create(Pregled t, Lekar lekar) {
 
 		Lekar l = lekarRepo.findById(t.getLekar().getId()).get();
 		TipPosete tp = tipRepo.findById(t.getTipPosete().getId()).get();
 		t.setLekar(l);
 		t.setTipPosete(tp);
 		Pregled p = pregledRepository.save(t);
+		l.getPregled().add(p);
+		pregledRepository.save(p);
 		ThreadPoolTaskScheduler threadPoolTaskScheduler = threadPoolTaskSchedulerConfig.threadPoolTaskScheduler();
 		pregledRunnable.setId(p.getId());
 		LocalDate date = LocalDate.now().plusDays(1);
@@ -124,7 +126,7 @@ public class PregledServiceImpl implements PregledService {
 
 
 	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public Pregled update(Integer id, Pregled t) throws NotFoundException {
 		Pregled pregledForUpdate = pregledRepository.findById(id).orElseThrow(NotFoundException::new);
 		try {
@@ -274,7 +276,9 @@ public class PregledServiceImpl implements PregledService {
 		l.getPregled().add(pregled);
 		p.getZdravstveniKarton().getPregled().add(pregled);
 		
-		Pregled pr = create(pregled);
+		//Pregled pr = create(pregled);
+		Pregled pr = create(pregled,l);
+		System.out.println(pr.getId() + "PREGLED");
 
 		//send mail
 		String subject = "Zahtjev za zakazivanje pregleda";
@@ -392,6 +396,12 @@ public class PregledServiceImpl implements PregledService {
 			}
 		}
 		return posete;
+	}
+
+	@Override
+	public Pregled create(Pregled t) throws NotFoundException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

@@ -14,11 +14,16 @@ import isamrs.domain.Ocena;
 @Repository
 public interface KlinikaRepository extends JpaRepository<Klinika, Integer>{
 	
-	@Query("SELECT k FROM Klinika k WHERE k.adresa.grad LIKE %?1% AND k.adresa.drzava LIKE %?2% "
+	@Query("SELECT k FROM Klinika k WHERE k.adresa.grad LIKE %?1% AND k.adresa.drzava LIKE %?2%"
+			+ " AND (SELECT avg(o.vrednost) FROM Klinika kk JOIN kk.ocena o WHERE kk.id = k.id) >= ?3"
+			+ " AND (SELECT count(st) FROM StavkaCenovnika st WHERE st.tipPosete.naziv = ?4 AND st MEMBER OF k.cenovnik.stavkaCenovnika) > 0")
+	public List<Klinika> pretragaZakazivanje(String grad, String drzava, double ocjena, String nazivTipa);
+	
+	/*@Query("SELECT k FROM Klinika k WHERE k.adresa.grad LIKE %?1% AND k.adresa.drzava LIKE %?2% "
 			+ " AND (SELECT avg(o.vrednost) FROM Ocena o WHERE o MEMBER OF k.ocena) >= ?3 "
 			+ "AND (SELECT count(st) FROM StavkaCenovnika st WHERE st.tipPosete.naziv = ?4 AND st MEMBER OF k.cenovnik.stavkaCenovnika) > 0")
 	public List<Klinika> pretragaZakazivanje(String grad, String drzava, double ocjena, String nazivTipa);
-	
+	*/
 	@Query("SELECT COUNT (o.id) FROM Klinika k JOIN k.ocena o WHERE k.id = ?2 AND o.pacijent.id = ?1")
 	public Integer pacijentOcijenioKliniku(int idPacijenta, int idKlinike);
 	

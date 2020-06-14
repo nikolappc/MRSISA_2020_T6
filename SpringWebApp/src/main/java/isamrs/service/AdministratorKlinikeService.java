@@ -57,6 +57,9 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
     @Autowired
     ApplicationEventPublisher eventPublisher;
 
+    @Autowired
+    private AdresaService adresaService;
+
     public AdministratorKlinike findByEmail(String email) {
         return adminklinikeRepository.findByEmail(email);
     }
@@ -73,6 +76,9 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
 
     @Override
     public AdministratorKlinike create(AdministratorKlinike administratorKlinickogCentra) {
+
+        Adresa a = adresaService.createAdresa(administratorKlinickogCentra.getAdresa());
+        administratorKlinickogCentra.setAdresa(a);
         return adminklinikeRepository.save(administratorKlinickogCentra);
     }
 
@@ -82,7 +88,8 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
         AdministratorKlinike ak = adminklinikeRepository.findById(integer).orElseGet(null);
         if(ak == null)
 			return null;
-        ak.setAdresa(administratorKlinickogCentra.getAdresa());
+        Adresa a = adresaService.createAdresa(administratorKlinickogCentra.getAdresa());
+        ak.setAdresa(a);
         ak.setBrojTelefona(administratorKlinickogCentra.getBrojTelefona());
         ak.setEmail(administratorKlinickogCentra.getEmail());
         ak.setIme(administratorKlinickogCentra.getIme());
@@ -158,18 +165,22 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
             for (Lekar l : operacijaBaza.getLekari()) {
                 ids.add(l.getId());
             }
+            Lekar bazaLekar = null;
             for (Lekar l : operacija.getLekari()) {
                 if (ids.contains(l.getId())) {
                     continue;
                 }
-                eventPublisher.publishEvent(new OnDoktorDodatEvent(l, operacijaBaza, operacija.getTermin()));
-                l.getOperacije().add(operacijaBaza);
-                lekarRepo.save(l);
+                Lekar l1 = lekarRepo.findById(l.getId()).orElse(null);
+                l1.getOperacije().add(operacijaBaza);
+                operacijaBaza.addLekar(l1);
+                bazaLekar = lekarRepo.save(l1);
+                eventPublisher.publishEvent(new OnDoktorDodatEvent(l, operacijaBaza, operacijaBaza.getTermin()));
+                
             }
+            bazaLekar.getKlinika().getOperacije().add(operacijaBaza);
             operacijaBaza.setSala(s);
-
-
-            operacijaBaza.setLekar(operacija.getLekari());
+            operacijaBaza.setPotvrdjen(true);
+            operacijaBaza.setTermin(operacija.getTermin());
             operacijaRepo.save(operacijaBaza);
         }
         return operacijaBaza;
@@ -224,10 +235,11 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
         eventPublisher.publishEvent(new OnDoktorDodatEventPregled(l, pregledBaza, pregled.getTermin()));
         l.getPregled().add(pregledBaza);
         lekarRepo.save(l);
-        
+        l.getKlinika().getPregledi().add(pregledBaza);
         pregledBaza.setPotvrdjen(true);
         pregledBaza.setSala(s);
         pregledBaza.setLekar(l);
+        pregledBaza.setTermin(pregled.getTermin());
         pregledRepo.save(pregledBaza);
 
         return pregledBaza;
@@ -300,7 +312,7 @@ public class AdministratorKlinikeService implements isamrs.service.Service<Admin
         radnoVremeKraj.set(Calendar.YEAR, terminPocetak.get(Calendar.YEAR));
         
         
-        if(!(radnoVremePocetak.before(terminPocetak) && radnoVremeKraj.after(terminKraj) ))  {
+        if(!((radnoVremePocetak.before(terminPocetak) || radnoVremePocetak.equals(terminPocetak)) && (radnoVremeKraj.after(terminKraj) || radnoVremeKraj.equals(terminKraj))))  {
         	return false;
         }
         

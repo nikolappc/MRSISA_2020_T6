@@ -23,38 +23,7 @@
                 >
 
                 </v-select>
-                <v-row>
-                    <v-col>
-                        <v-text-field
-                            label="Adresa"
-                        :rules="rules"
-                        required
-                        v-model="klinika.adresa.adresa"
-                        >
-    
-                        </v-text-field>
-                    </v-col>
-                    <v-col>
-                        <v-text-field
-                        label="Grad"
-                        :rules="rules"
-                        required
-                        v-model="klinika.adresa.grad"
-                        >
-    
-                        </v-text-field>
-                    </v-col>
-                    <v-col>
-                        <v-text-field
-                            label="Država"
-                            :rules="rules"
-                            required
-                            v-model="klinika.adresa.drzava"
-                        >
-    
-                        </v-text-field>
-                    </v-col>
-                </v-row>
+                <Autocomplete :adresa="klinika.adresa"></Autocomplete>
                 <v-textarea
                     label="Opis"
                     :rules="rules"
@@ -86,6 +55,7 @@
 </template>
 
 <script>
+    import Autocomplete from "../../components/Autocomplete.vue"
     const axios = require("axios");
     export default{
         name:"IzmenaKlinike",
@@ -93,8 +63,13 @@
             return {
                 tipoviKlinika:[],
                 rules:[v=>!!v||"Ovo polje je obavezno!"],
-                klinika:""
+                klinika:{
+                    
+                }
             }
+        },
+        components:{
+            Autocomplete
         },
         props:[
             "klinikaZaIzmenu"

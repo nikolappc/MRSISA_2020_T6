@@ -42,9 +42,7 @@ public class PosetaController {
 	
 	@Autowired
 	private PregledServiceImpl pregledService;
-	
-	@Autowired
-	private KlinikaServiceImpl klinikaService;
+
 	
 	@Autowired
 	private OperacijaService operacijaService;
@@ -92,8 +90,7 @@ public class PosetaController {
 		Lekar lekar = lekarService.findOne(idLekar);
 		pregled.setZdravstveniKarton(zdravstveniKarton);
 		pregled.setLekar(lekar);
-			Pregled savedPregled = pregledService.create(pregled);
-
+		Pregled savedPregled = pregledService.create(pregled,lekar);
 		
 		String subject1 = "Kreiran novi pregled";
 		String message1 = "Obavestavamo Vas da je u Vasoj klinici kreiran novi pregled.";
@@ -175,11 +172,15 @@ public class PosetaController {
 		if (!(req.getSession().getAttribute("user") instanceof AdministratorKlinike)) {
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
+		AdministratorKlinike ak = (AdministratorKlinike) req.getSession().getAttribute("user");
+		
 		Pregled savedSlobodniTerminiDTO = null;
 		try {
 			
-			savedSlobodniTerminiDTO = posetaService.create(poseta.napraviPregled());
+			savedSlobodniTerminiDTO = posetaService.create(poseta.napraviPregled(), ak.getId());
 		}catch (Exception e) {
+			return new ResponseEntity<Pregled>(HttpStatus.FORBIDDEN);
+		} catch (NotFoundException e) {
 			return new ResponseEntity<Pregled>(HttpStatus.FORBIDDEN);
 		}
 		return new ResponseEntity<Pregled>(savedSlobodniTerminiDTO, HttpStatus.CREATED);

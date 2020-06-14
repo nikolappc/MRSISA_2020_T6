@@ -5,6 +5,7 @@
 			<v-card-title>Zakazivanje pregleda</v-card-title>
 			<v-card-subtitle>Izaberite tip pregleda i datum kada želite da zakažete pregled.</v-card-subtitle>
 		<v-card-text>
+		<p></p>
 		<v-simple-table>
 			<tr>
 			<td colspan="3" valign="middle"><v-select
@@ -91,7 +92,7 @@
 			</v-btn></v-card-actions>
 		</v-form></v-card>
 	<v-card-title>
-		Filtriraj po ceni:
+		<h6>Filtriraj po ceni: </h6>
 		<v-text-field
 		v-model="od"
 		label="Od "
@@ -254,7 +255,7 @@ export default {
 		console.log(this.datum);
 		if (this.datum != '' && this.tip != null) {
 			let oc = 0;
-			if ((this.ocjena != '') && (typeof this.ocjena == 'number')) {
+			if ((this.ocjena != '') && !isNaN(this.ocjena)) {
 				oc = this.ocjena;
 			}
 			axios		

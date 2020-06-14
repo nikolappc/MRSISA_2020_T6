@@ -8,17 +8,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import isamrs.domain.*;
+import isamrs.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
-import isamrs.domain.GodisnjiOdmor;
-import isamrs.domain.Klinika;
-import isamrs.domain.Lekar;
-import isamrs.domain.Ocena;
-import isamrs.domain.Operacija;
-import isamrs.domain.Pacijent;
-import isamrs.domain.Pregled;
-import isamrs.domain.RadnoVreme;
 import isamrs.dto.GetOcenaDTO;
 import isamrs.dto.KlinikaZaPacijentaDTO;
 import isamrs.dto.LekarZaPacijentaDTO;
@@ -26,10 +20,6 @@ import isamrs.dto.PretragaKlinikeDTO;
 import isamrs.dto.SetOcenaDTO;
 import isamrs.dto.SlobodniLekariKlinikeDTO;
 import isamrs.exceptions.NotFoundException;
-import isamrs.repository.KlinikaRepository;
-import isamrs.repository.LekarRepository;
-import isamrs.repository.OcenaRepository;
-import isamrs.repository.PacijentRepository;
 
 @org.springframework.stereotype.Service
 public class KlinikaServiceImpl implements Service<Klinika, Integer>{
@@ -46,7 +36,8 @@ public class KlinikaServiceImpl implements Service<Klinika, Integer>{
 	@Autowired
 	private PacijentRepository repoPacijent;
 	
-	
+	@Autowired
+	private AdresaService adresaService;
 	
 	@Override
 	public Collection<Klinika> findAll() {
@@ -64,6 +55,8 @@ public class KlinikaServiceImpl implements Service<Klinika, Integer>{
 
 	@Override
 	public Klinika create(Klinika t) {
+		Adresa a = adresaService.createAdresa(t.getAdresa());
+		t.setAdresa(a);
 		return repo.save(t);
 	}
 
@@ -143,14 +136,30 @@ public class KlinikaServiceImpl implements Service<Klinika, Integer>{
 	}
 	
 	
+	public boolean lekarImaTip(Lekar l, String nt) {
+		if (l.getTipoviPoseta() == null || l.getTipoviPoseta().isEmpty()) {
+			return false;
+		}
+		for (TipPosete tp : l.getTipoviPoseta()) {
+			if (tp.getNaziv().equals(nt)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	
 	public ArrayList<KlinikaZaPacijentaDTO> pretragaKlinikaZakazivanje(PretragaKlinikeDTO pretraga) {
+		if (pretraga.getOcjena() == 0) {
+			pretraga.setOcjena(-1);
+		}
+		System.out.println(pretraga.getOcjena());
 		Collection<Klinika> kliniks = pretragaZakazivanje(pretraga);
 		ArrayList<Klinika> klinike = new ArrayList<Klinika>();
 		for (Klinika kk : kliniks) {
 			boolean datumOk = false;
 			for (Lekar l : kk.getLekari()) {
-				if (lekarImaSlobodanTermin(l, pretraga.getDatum())) {
+				if (lekarImaTip(l, pretraga.getNazivTipa()) && lekarImaSlobodanTermin(l, pretraga.getDatum())) {
 					datumOk = true;
 					break;
 				}
@@ -270,12 +279,15 @@ public class KlinikaServiceImpl implements Service<Klinika, Integer>{
 		Calendar cal1 = Calendar.getInstance();
 		cal1.setTime(date1);
 		if (lekarNaGodisnjem(l, cal1.getTime())) {
+			System.out.println("na godisnjem");
 			return false;
 		}
 		if (cal1.get(Calendar.DAY_OF_WEEK)==0 || cal1.get(Calendar.DAY_OF_WEEK)==1) {
+			System.out.println("vikend");
 			return false;
 		}
 		if (l.getRadnoVreme() == null || l.getRadnoVreme().isEmpty()) {
+			System.out.println("nema radno vrijeme");
 			return false;
 		}
 		ArrayList<RadnoVreme> radnaVremena = new ArrayList<RadnoVreme>(l.getRadnoVreme());
@@ -289,6 +301,7 @@ public class KlinikaServiceImpl implements Service<Klinika, Integer>{
 		for (c = cal3; c.before(cal4); c.add(Calendar.MINUTE, 30)) {
 			boolean terminZauzet = terminZauzetF(l, cal1, c);
 			if (!terminZauzet) {
+				System.out.println("slobodan");
 				return true;
 			}
 		}

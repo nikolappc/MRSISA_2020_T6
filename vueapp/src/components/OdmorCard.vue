@@ -16,13 +16,16 @@
         
         </v-row>
         <v-row>
-            <v-text-field
-            label = "Razlog"
-            v-model="razlog"
-            dense
-        >
+            <v-container>
 
-        </v-text-field>
+                <v-text-field
+                label = "Razlog"
+                v-model="razlog"
+                dense
+            >
+
+            </v-text-field>
+            </v-container>
         </v-row>
         <v-row
             justify="center"
@@ -40,7 +43,7 @@
                 justify="center"
                 align="center">
                 <v-btn color="error" @click="odbi">
-                    Odbi
+                    Odbij
                 </v-btn>
             </v-col>
         </v-row>
@@ -69,7 +72,7 @@ export default{
                        this.$store.commit("setSnackbar", {text:"Zahtev nije odobren jer lekar ima posetu u tom terminu", color: "error"});
                     }
                     else{
-                        this.$store.commit("setSnackbar", {text:"Zahtev je odobren", color: "error"});
+                        this.$store.commit("setSnackbar", {text:"Zahtev je odobren", color: "success"});
                     }
                     this.$emit("zatvori",this.zahtev.id);
                 })

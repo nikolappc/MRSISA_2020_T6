@@ -192,22 +192,27 @@ public class AdminKlinikeController {
 			
 			updatePregled = adminService.update(id,pregled);
 			
-			SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-			String subject1 = "Zakazivanje pregleda";
-			String adresa = req.getRequestURL().toString().split("://")[0] + "://" + req.getRequestURL().toString().split("://")[1].split("/")[0];
-			String link1 = adresa+"/api/pacijent/potvrdiPregled/" + updatePregled.getId();
-			//String link1 = "http://localhost:8080/api/pacijent/potvrdiPregled/" + updatePregled.getId();
-			String link2 = adresa+"/api/pacijent/odbijpregled/" + updatePregled.getId();
-			String message1 = "Zakazali ste pregled kod lekara "+updatePregled.getLekar().getIme()+""
-					+updatePregled.getLekar().getPrezime()+", u vreme "+sdf.format(updatePregled.getTermin().getPocetak())
-					+".\nMolimo Vas da potvrdite zakazivanje pregleda klikom na link "+link1
-					+" ili da odbijete klikom na link "+link2;
-			SimpleMailMessage email1 = new SimpleMailMessage();
-			email1.setSubject(subject1);
-			email1.setText(message1);
-			String recipient = updatePregled.getZdravstveniKarton().getPacijent().getEmail();
-			email1.setTo(recipient);
-			mailSender.send(email1);
+			try {
+				SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+				String subject1 = "Zakazivanje pregleda";
+				//String link1 = "http://localhost:8081/api/pacijent/potvrdiPregled/" + updatePregled.getId();
+				//String link2 = "http://localhost:8081/api/pacijent/odbijPregled/" + updatePregled.getId();
+				String link1 = UserController.adresa + "/api/pacijent/potvrdiPregled/" + updatePregled.getId();
+				String link2 = UserController.adresa + "/api/pacijent/odbijPregled/" + updatePregled.getId();
+				String message1 = "Zakazali ste pregled kod lekara "+updatePregled.getLekar().getIme()+""
+						+updatePregled.getLekar().getPrezime()+", u vreme "+sdf.format(updatePregled.getTermin().getPocetak())
+						+".\nMolimo Vas da potvrdite zakazivanje pregleda klikom na link "+link1
+						+" ili da odbijete klikom na link "+link2;
+				SimpleMailMessage email1 = new SimpleMailMessage();
+				email1.setSubject(subject1);
+				email1.setText(message1);
+				String recipient = updatePregled.getZdravstveniKarton().getPacijent().getEmail();
+				email1.setTo(recipient);
+				mailSender.send(email1);
+			}catch (Exception e){
+				System.out.println("ups");
+			}
+	
 
 			
 		}

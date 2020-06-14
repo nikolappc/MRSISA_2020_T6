@@ -13,87 +13,71 @@
                 <v-col v-if="klinike.length!=0"> 
                     <v-card>
                         <v-container>
-                            <v-row>
-                                <v-col
-                                    cols="11"
-                                >
-                                    <v-simple-table>
-                                        
-                                        <thead>
-                                            <tr>
-                                                <th id="naziv">
-                                                    Naziv
-                                                </th>
-                                                <th id="adresa">
-                                                    Adresa
-                                                </th>
-                                                <th id="spec">
-                                                    Specijalizacija
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody v-for="k in klinike" :key="k.id" @click="izmena(k)">
-                                            <tr> 
-                                                <td>
-                                                    {{k.naziv}}
-                                                </td>
-                                                <td>
-                                                    {{toStringAdresa(k)}}
-                                                </td>
-                                                <td>
-                                                    {{k.tipKlinike.tip}}
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </v-simple-table>
-                                </v-col>
-                                <v-col
-                                    cols="1"
-                                >
-                                    <v-simple-table>
-                                        <thead>
-                                            <tr>
-                                                <th id="">
-        
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody v-for="(k,i) in klinike" :key="i">
-                                            <tr>
-                                                <td>
-                                                    <v-btn icon @click="deleteKlinika(k.id)">
-                                                        <v-icon>mdi-delete</v-icon>
-                                                    </v-btn>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-        
-                                    </v-simple-table>
-                                </v-col>
-                            </v-row>
+                               
+                            <v-simple-table>
+                                
+                                <thead>
+                                    <tr>
+                                        <th id="naziv">
+                                            Naziv
+                                        </th>
+                                        <th id="adresa">
+                                            Adresa
+                                        </th>
+                                        <th id="spec">
+                                            Specijalizacija
+                                        </th>
+                                        <th id="izmena">
+                                            Izmena
+                                        </th>
+                                        <th id="Brisanje">
+                                            Brisanje
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody v-for="k in klinike" :key="k.id" >
+                                    <tr> 
+                                        <td>
+                                            {{k.naziv}}
+                                        </td>
+                                        <td>
+                                            <Map :adresaMape="k.adresa"></Map>
+                                        </td>
+                                        <td>
+                                            {{k.tipKlinike.tip}}
+                                        </td>
+                                        <td>
+                                            <v-btn icon @click="izmena(k)">
+                                                <v-icon>mdi-pencil</v-icon>
+                                            </v-btn>
+                                        </td>
+                                        <td>
+                                            <v-btn icon @click="deleteKlinika(k.id)">
+                                                <v-icon>mdi-delete</v-icon>
+                                            </v-btn>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </v-simple-table>
                             <v-row
                             align="center"
                             justify-content="center">
                                 <v-col
                                     cols="12"
-                                    lg="4"
+                                    lg="3"
                                     class="ml-auto"
                                 >
-                                    <router-link to="/regKlinika">
-                                        <v-btn color="success">
-                                            Registrovanje klinika
-                                        </v-btn>
-                                    </router-link>
+                                    <v-btn to="/regKlinika" color="success">
+                                        Registrovanje klinika
+                                    </v-btn>
                                 </v-col>
                                 <v-col
                                     cols="12"
-                                    lg="4"
+                                    lg="3"
                                 >
-                                    <router-link to="/regTipKlinike">
-                                        <v-btn color="success">
-                                            Registrovanje tipa klinika
-                                        </v-btn>
-                                    </router-link>
+                                    <v-btn to="/regTipKlinike" color="success">
+                                        Registrovanje tipa klinika
+                                    </v-btn>
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -137,6 +121,7 @@
 </template>
 
 <script>
+    import Map from "../../components/Map.vue"
     const axios = require('axios');
     import IzmenaKlinike from "./IzmenaKlinike.vue";
     export default {
@@ -150,7 +135,8 @@
             }
         },
         components:{
-            IzmenaKlinike
+            IzmenaKlinike,
+            Map
         },  
         mounted:function () {
             this.refresh();

@@ -40,7 +40,8 @@
                         cols="4"
                     >
                         <v-btn
-                            @click="this.$router.push(-1)"
+                            @click="back"
+                            collor="success"
                         >
                             Završi overu
                         </v-btn>
@@ -57,7 +58,13 @@
         components:{
             Recepat
         },
-        props:["pregled"]
+        props:["pregled"],
+        methods:{
+            back()
+            {
+                this.$router.go(-1);
+            }
+        }
     }
 </script>
 

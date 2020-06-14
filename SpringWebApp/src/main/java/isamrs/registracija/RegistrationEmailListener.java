@@ -8,7 +8,9 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
 
+import isamrs.controller.UserController;
 import isamrs.domain.Pacijent;
+import isamrs.domain.ZdravstveniKarton;
 import isamrs.service.PacijentService;
 
 @Component
@@ -31,13 +33,14 @@ public class RegistrationEmailListener implements ApplicationListener<OnRegistra
 		
 		String recipient = user.getEmail();
 		String subject = "Potvrda registracije";
-		String url = event.getAppUrl() + "/api/confirmRegistration?token=" + token;
-		String message = "Uspjesno ste se registrovali. Kliknite na link da biste aktivirali svoj nalog.";
+		//String url = "http://localhost:8080" + "/api/confirmRegistration?token=" + token;
+		String url = UserController.adresa + "/api/confirmRegistration?token=" + token;
+		String message = "Uspjesno ste se registrovali. Kliknite na link da biste aktivirali svoj nalog. ";
 		
 		SimpleMailMessage email = new SimpleMailMessage();
 		email.setTo(recipient);
 		email.setSubject(subject);
-		email.setText(message + " http://localhost:8081" + url);
+		email.setText(message + url);
 		mailSender.send(email);
 	}
 	

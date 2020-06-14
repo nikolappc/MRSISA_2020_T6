@@ -65,41 +65,11 @@
                                     v-model="admin.email"
                                 >
                                 </v-text-field>
-                                <v-row>
-                                    <v-col
-                                        cols="4"
-                                    >
-                                        <v-text-field
-                                            label="Adresa"
-                                            :rules="[notEmptyRule]"
-                                            required
-                                            v-model="admin.adresa.adresa"
-                                        >
-                                        </v-text-field>
-                                    </v-col>
-                                    <v-col
-                                        cols="4"
-                                    >
-                                        <v-text-field
-                                            label="Grad"
-                                            :rules="[notEmptyRule]"
-                                            required
-                                            v-model="admin.adresa.grad"
-                                        >
-                                        </v-text-field>
-                                    </v-col>
-                                    <v-col
-                                        cols="4"
-                                    >
-                                        <v-text-field
-                                            label="Država"
-                                            :rules="[notEmptyRule]"
-                                            required
-                                            v-model="admin.adresa.drzava"
-                                        >
-                                        </v-text-field>
-                                    </v-col>
-                                </v-row>
+                                <Autocomplete
+                                    :adresa="admin.adresa"
+                                >
+
+                                </Autocomplete>
                                 <v-row>
                                     <v-col
                                         cols="3"
@@ -121,6 +91,8 @@
 
 
 <script>
+    import Autocomplete from "../../components/Autocomplete.vue"
+
     const axios = require("axios");
     export default {
         name:"RegAdminKC",
@@ -136,13 +108,12 @@
                     brojTelefona:"",
                     jbo:"",
                     email:"",
-                    adresa:{
-                        grad:"",
-                        drzava:"",
-                        adresa:""
-                    },
+                    adresa:{}
                 }
             }
+        },
+        components:{
+            Autocomplete
         },
         methods:{
             registruj(){

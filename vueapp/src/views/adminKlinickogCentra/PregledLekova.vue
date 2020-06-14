@@ -13,58 +13,44 @@
                 <v-col v-if="lekovi.length!=0"> 
                     <v-card>
                         <v-container>
-                            <v-row>
-                                <v-col
-                                    cols="11"
-                                >
-                                    <v-simple-table>
-                                        <thead>
-                                            <tr>
-                                                <th id="sleka">
-                                                    Šifra leka
-                                                </th>
-                                                <th id="naziv">
-                                                    Naziv leka
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody v-for="l in lekovi" :key="l.sifraLeka" @click="izmena(l)">
-                                            <tr>
-                                                <td>
-                                                    {{l.sifraLeka}}
-                                                </td>
-                                                <td>
-                                                    {{l.nazivLeka}}
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </v-simple-table>
-                                </v-col>
-                                
-                                <v-col
-                                    cols="1"
-                                >
-                                    <v-simple-table>
-                                        <thead>
-                                            <tr>
-                                                <th id="">
-        
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody v-for="(l,i) in lekovi" :key="i">
-                                            <tr>
-                                                <td>
-                                                    <v-btn v-if="!l.koristen" icon @click="deleteLek(l.sifraLeka)">
-                                                        <v-icon>mdi-delete</v-icon>
-                                                    </v-btn>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-        
-                                    </v-simple-table>
-                                </v-col>
-                            </v-row>
+                            <v-simple-table>
+                                <thead>
+                                    <tr>
+                                        <th id="sleka">
+                                            Šifra leka
+                                        </th>
+                                        <th id="naziv">
+                                            Naziv leka
+                                        </th>
+                                        <th id="izmena">
+                                            Izmena
+                                        </th>
+                                        <th id="brisanje">
+                                            Brisanje
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody v-for="l in lekovi" :key="l.sifraLeka">
+                                    <tr>
+                                        <td>
+                                            {{l.sifraLeka}}
+                                        </td>
+                                        <td>
+                                            {{l.nazivLeka}}
+                                        </td>
+                                        <td>
+                                            <v-btn icon @click="izmena(l)">
+                                                <v-icon>mdi-pencil</v-icon>
+                                            </v-btn>
+                                        </td>
+                                        <td>
+                                            <v-btn v-if="!l.koristen" icon @click="deleteLek(l.sifraLeka)">
+                                                <v-icon>mdi-delete</v-icon>
+                                            </v-btn>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </v-simple-table>
                             <v-row
                             align="center"
                             justify-content="center">

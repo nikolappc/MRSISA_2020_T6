@@ -3,7 +3,7 @@
     <v-container style="width:100%;"><v-card style="width:100%;">
 
 			<v-card-title>Zakazivanje pregleda</v-card-title>
-			
+			<p></p>
 			<v-card-subtitle><p>Datum pregleda: <strong>{{ formatDateStr(this.datum) }}</strong></p>
 			<p>Tip pregleda: <strong>{{ this.nazivTipa }}</strong></p>
 			<p>Izaberite lekara i termin pregleda.</p></v-card-subtitle>			

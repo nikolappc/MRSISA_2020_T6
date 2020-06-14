@@ -103,6 +103,8 @@
             }
         },
         mounted:function () {
+            console.log(this.odabrani);
+            
             if(this.odabrani){
                 this.odabraniElementi = this.odabrani;
             }

@@ -1,6 +1,7 @@
 package isamrs.service;
 
 import isamrs.domain.AdministratorKlinickogCentra;
+import isamrs.domain.Adresa;
 import isamrs.exceptions.NotFoundException;
 import isamrs.repository.AdministratorKlinickogCentraRepository;
 
@@ -13,7 +14,10 @@ import java.util.Collection;
 public class AdministratorKlinickogCentraService implements isamrs.service.Service<AdministratorKlinickogCentra, Integer> {
 	@Autowired
 	private AdministratorKlinickogCentraRepository adminkcRepository;
-	
+
+	@Autowired
+	AdresaService adresaService;
+
 	public AdministratorKlinickogCentra findByEmail(String email) {
 		return adminkcRepository.findByEmail(email);
 	}
@@ -30,12 +34,17 @@ public class AdministratorKlinickogCentraService implements isamrs.service.Servi
 
 	@Override
 	public AdministratorKlinickogCentra create(AdministratorKlinickogCentra administratorKlinickogCentra) {
+
+		Adresa a = adresaService.createAdresa(administratorKlinickogCentra.getAdresa());
+		administratorKlinickogCentra.setAdresa(a);
 		return adminkcRepository.save(administratorKlinickogCentra);
 	}
 
 	@Override
 	public AdministratorKlinickogCentra update(Integer integer, AdministratorKlinickogCentra administratorKlinickogCentra) {
 		administratorKlinickogCentra.setId(integer);
+		Adresa a = adresaService.createAdresa(administratorKlinickogCentra.getAdresa());
+		administratorKlinickogCentra.setAdresa(a);
 		return adminkcRepository.save(administratorKlinickogCentra);
 	}
 

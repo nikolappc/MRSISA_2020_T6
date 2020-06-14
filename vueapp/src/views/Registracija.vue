@@ -38,9 +38,9 @@
               label="Prezime"
               required
             ></v-text-field></td></tr>
-            <tr>
+            <tr><td colspan="3">
               <AutocompleteAdresa v-bind:adresa="reg.adresa"/>
-            </tr>
+            </td></tr>
             <tr><td colspan="3"><v-text-field
               v-model="reg.brojTelefona"
               :rules="Rules"
@@ -142,13 +142,13 @@ export default {
 			axios
 			.post('api/registracija',this.reg)
 			.then(() => {
-			this.$store.commit("setSnackbar", {text:"Poslali ste zahtev za registraciju. BiÄ‡e Vam poslat email na adresu \n" + this.reg.email + ", gde moÅ¾ete verifikovati VaÅ¡ nalog.", color: "success"});
+			this.$store.commit("setSnackbar", {text:"Poslali ste zahtev za registraciju. Bice Vam poslat email na adresu \n" + this.reg.email + ", gde mozete verifikovati VaÅ¡ nalog.", color: "success"});
 				router.push("/");
 			})
 			.catch(error => { 
 				console.log(error); 
 				if (error.response) {
-					this.$store.commit("setSnackbar", {text:error.response.data, color: "error"});
+					this.$store.commit("setSnackbar", {text: "Greska", color: "error"});
 				}
 			});
 		} else {

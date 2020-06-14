@@ -50,62 +50,35 @@
                     v-model="admin.email"
                 >
                 </v-text-field>
+                
+                <Autocomplete :adresa="admin.adresa"></Autocomplete>
+
+            
                 <v-row>
                     <v-col
-                        cols="4"
+                        cols="3"
+                        class="ml-auto"
                     >
-                        <v-text-field
-                            label="Adresa"
-                            required
-                            v-model="admin.adresa.adresa"
-                        >
-                        </v-text-field>
+                        <v-btn @click="izmena" color="success">
+                            Izmena
+                        </v-btn>
                     </v-col>
                     <v-col
-                        cols="4"
+                        cols="3"
                     >
-                        <v-text-field
-                            label="Grad"
-                            required
-                            v-model="admin.adresa.grad"
-                        >
-                        </v-text-field>
-                    </v-col>
-                    <v-col
-                        cols="4"
-                    >
-                        <v-text-field
-                            label="Država"
-                            required
-                            v-model="admin.adresa.drzava"
-                        >
-                        </v-text-field>
+                        <v-btn @click="otkazi" color="warning">
+                            Otkaži
+                        </v-btn>
                     </v-col>
                 </v-row>
-            
-            <v-row>
-                <v-col
-                    cols="3"
-                    class="ml-auto"
-                >
-                    <v-btn @click="izmena" color="success">
-                        Izmena
-                    </v-btn>
-                </v-col>
-                <v-col
-                    cols="3"
-                >
-                    <v-btn @click="otkazi" color="warning">
-                        Otkaži
-                    </v-btn>
-                </v-col>
-            </v-row>
             </v-form>
         </v-container>
     </v-card>
 </template>
 
 <script>
+    import Autocomplete from "../../components/Autocomplete.vue"
+
     const axios = require("axios");
     export default{
         name:"IzmenaAdminaKlinike",
@@ -134,6 +107,9 @@
         ],
         mounted(){
             this.admin = this.adminZaIzmenu;
+        },
+        components:{
+            Autocomplete
         },
         methods:{
             izmena(){

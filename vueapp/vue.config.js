@@ -4,6 +4,6 @@ module.exports = {
   "transpileDependencies": [
     "vuetify"
   ],
-  outputDir: path.resolve(__dirname,'..\\SpringWebApp\\src\\main\\resources\\static'),
+  outputDir: path.resolve(__dirname,'../SpringWebApp/src/main/resources/static'),
   publicPath:""
 }

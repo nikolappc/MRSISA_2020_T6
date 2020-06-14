@@ -46,7 +46,7 @@
                     <v-container>
                         {{selected.opis}}
                         <v-row>
-                            <v-btn :disabled="selected.recepti.length!=0&&selected.odradjen==true" collor="success" :to="{ name: 'OveriRecepte', params: { pregled: selected }}" class="ml-auto">
+                            <v-btn :disabled="selected.recepti.length==0||!selected.odradjen" collor="success" :to="{ name: 'OveriRecepte', params: { pregled: selected }}" class="ml-auto">
                               Overi recepte
                             </v-btn>
                         </v-row>

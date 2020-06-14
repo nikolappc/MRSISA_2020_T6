@@ -50,38 +50,9 @@
                     v-model="admin.email"
                 >
                 </v-text-field>
-                <v-row>
-                    <v-col
-                        cols="4"
-                    >
-                        <v-text-field
-                            label="Adresa"
-                            required
-                            v-model="admin.adresa.adresa"
-                        >
-                        </v-text-field>
-                    </v-col>
-                    <v-col
-                        cols="4"
-                    >
-                        <v-text-field
-                            label="Grad"
-                            required
-                            v-model="admin.adresa.grad"
-                        >
-                        </v-text-field>
-                    </v-col>
-                    <v-col
-                        cols="4"
-                    >
-                        <v-text-field
-                            label="Država"
-                            required
-                            v-model="admin.adresa.drzava"
-                        >
-                        </v-text-field>
-                    </v-col>
-                </v-row>
+                
+                <Autocomplete :adresa="admin.adresa"></Autocomplete>
+
                 <v-select
                     :items="klinike"
                     item-text="ime"
@@ -114,6 +85,7 @@
 </template>
 
 <script>
+    import Autocomplete from "../../components/Autocomplete.vue"
     const axios = require("axios");
     export default{
         name:"IzmenaAdminaKlinike",
@@ -140,6 +112,9 @@
         props:[
             "adminZaIzmenu"
         ],
+        components:{
+            Autocomplete
+        },
         mounted(){
             this.admin = this.adminZaIzmenu;
             axios.get("/klinika")

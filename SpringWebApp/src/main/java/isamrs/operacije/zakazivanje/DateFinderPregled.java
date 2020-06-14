@@ -5,10 +5,12 @@ import isamrs.exceptions.NotFoundException;
 import isamrs.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.LockModeType;
 import java.time.*;
 import java.util.Collection;
 import java.util.Date;
@@ -211,6 +213,7 @@ public class DateFinderPregled {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Lock(value = LockModeType.PESSIMISTIC_READ)
     public void resolve(Integer id) {
         Operacija o;
         try {

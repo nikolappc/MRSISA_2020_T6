@@ -5,17 +5,13 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import isamrs.domain.*;
 import isamrs.registracija.OnRegistrationFailEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import isamrs.domain.Operacija;
-import isamrs.domain.Pacijent;
-import isamrs.domain.Poseta;
-import isamrs.domain.Pregled;
-import isamrs.domain.ZdravstveniKarton;
 import isamrs.dto.IzmjenaOsobeDTO;
 import isamrs.dto.PosetaDTO;
 import isamrs.exceptions.NotFoundException;
@@ -35,7 +31,9 @@ public class PacijentServiceImpl implements PacijentService {
 	
 	@Autowired
 	private VerificationTokenRepository verificationTokenRepo;
-	
+	@Autowired
+	private AdresaService adresaService;
+
 	@Override
 	public Pacijent findOne(int id) {
 		return pacijentRepository.findById(id).orElse(null);
@@ -124,17 +122,20 @@ public class PacijentServiceImpl implements PacijentService {
 		return p;
 	}
 
-	public Pacijent update(Integer id,Pacijent lekar) {
+	public Pacijent update(Integer id,Pacijent pacijent) {
 		Pacijent pForUpdate = pacijentRepository.findById(id).orElseGet(null);
 		if(pForUpdate == null)
 			return null;
-		pForUpdate.setAdresa(lekar.getAdresa());
-		pForUpdate.setBrojTelefona(lekar.getBrojTelefona());
-		pForUpdate.setEmail(lekar.getEmail());
-		pForUpdate.setIme(lekar.getIme());
-		pForUpdate.setPrezime(lekar.getPrezime());
-		pForUpdate.setJbo(lekar.getJbo());
-		pForUpdate.setPassword(lekar.getPassword());
+
+		Adresa a = adresaService.createAdresa(pacijent.getAdresa());
+		pForUpdate.setAdresa(a);
+		pForUpdate.setAdresa(pacijent.getAdresa());
+		pForUpdate.setBrojTelefona(pacijent.getBrojTelefona());
+		pForUpdate.setEmail(pacijent.getEmail());
+		pForUpdate.setIme(pacijent.getIme());
+		pForUpdate.setPrezime(pacijent.getPrezime());
+		pForUpdate.setJbo(pacijent.getJbo());
+		pForUpdate.setPassword(pacijent.getPassword());
 		
 		return pacijentRepository.save(pForUpdate);
 	}
