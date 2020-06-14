@@ -60,7 +60,7 @@
 <script>
 import axios from 'axios';
 import router from "../router/index.js"
-import AutocompleteAdresa from "../components/Map.vue"
+import AutocompleteAdresa from "../components/Autocomplete.vue"
 export default {
   name: 'ProfilPacijentaIzmjena',
   components: {
